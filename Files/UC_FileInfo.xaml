@@ -1,0 +1,99 @@
+﻿<UserControl x:Name="UCFileInfo" x:Class="Office.Work.Platform.Files.UC_FileInfo"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Office.Work.Platform.Files"
+             mc:Ignorable="d" 
+             Loaded="UCFileInfo_Loaded"
+             >
+    <ScrollViewer>
+        <StackPanel TextElement.FontSize="14"  HorizontalAlignment="Stretch">
+            <GroupBox>
+                <GroupBox.Header>
+                    <TextBlock  Text="文件名称" Margin="5"/>
+                </GroupBox.Header>
+                <TextBox BorderBrush="#EAEAEA" Margin="5"
+                     IsEnabled="{Binding Path=UserHasGrant}"
+                     MaxLength="100"
+                     MinHeight="30"
+                     TextWrapping="Wrap" 
+                     VerticalAlignment="Center" 
+                     Padding="3" 
+                     Text="{Binding Path=EntityFileInfo.Name}" />
+            </GroupBox>
+            <GroupBox>
+                <GroupBox.Header>
+                    <TextBlock  Text="文件描述" Margin="5"/>
+                </GroupBox.Header>
+                <TextBox BorderBrush="#EAEAEA" Margin="5"
+                     IsEnabled="{Binding Path=UserHasGrant}"
+                     MaxLength="500"
+                     MinHeight="100"
+                     AcceptsReturn ="True"
+                     TextWrapping="Wrap" 
+                     VerticalAlignment="Center" 
+                     Padding="3" 
+                     Text="{Binding Path=EntityFileInfo.Describe}" />
+            </GroupBox>
+            <GroupBox>
+                <GroupBox.Header>
+                    <TextBlock  Text="有权读取" Margin="5"/>
+                </GroupBox.Header>
+                <ListBox ItemsSource="{Binding UserSelectList}"  Margin="5" IsEnabled="{Binding Path=SelectFileBool}">
+                    <ListBox.Template>
+                        <ControlTemplate TargetType="{x:Type ListBox}">
+                            <WrapPanel VerticalAlignment="Center"  IsItemsHost="True"/>
+                        </ControlTemplate>
+                    </ListBox.Template>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding IsSelect}" VerticalAlignment="Center" Content="{Binding Obj.Id}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </GroupBox>
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Left" Text="有权读取" Margin="5"/>
+                <ListBox DockPanel.Dock="Right"  ItemsSource="{Binding UserSelectList}"  Margin="5" IsEnabled="{Binding Path=SelectFileBool}">
+                    <ListBox.Template>
+                        <ControlTemplate TargetType="{x:Type ListBox}">
+                            <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center"  IsItemsHost="True"/>
+                        </ControlTemplate>
+                    </ListBox.Template>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding IsSelect}" VerticalAlignment="Center" Content="{Binding Obj.Id}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </DockPanel>
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Left" Text="宿主类型" Margin="5"/>
+                <TextBlock  DockPanel.Dock="Right"  Text="{Binding Path=EntityFileInfo.OwnerType}"  Margin="5"/>
+            </DockPanel>
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Left" Text="内容分类" Margin="5"/>
+                <TextBlock  DockPanel.Dock="Right"  Text="{Binding Path=EntityFileInfo.ContentType}"  Margin="5"/>
+            </DockPanel>
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Left" Text="上传人员" Margin="5"/>
+                <TextBlock  DockPanel.Dock="Right"  Text="{Binding Path=EntityFileInfo.UserId}"  Margin="5"/>
+            </DockPanel>
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Left" Text="上传日期" Margin="5"/>
+                <TextBlock  DockPanel.Dock="Right"  Text="{Binding Path=EntityFileInfo.UpDateTime}"  Margin="5"/>
+            </DockPanel>
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Left" Text="下载进度" Margin="5"/>
+                <TextBlock  DockPanel.Dock="Right"  Text="{Binding Path=DownIntProgress,StringFormat=正在下载 {0:F0} %}"  Margin="5"/>
+            </DockPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="20,15" HorizontalAlignment="Center"  >
+                <Button Content="打开文件" Margin="0,0,5,0" Height="30" Click="btn_OpenFileAsync" Visibility="{Binding Path=OperateGrant.CanRead}"/>
+                <Button Content="保存修改" Margin="5,0,5,0" Height="30" Click="btn_SaveChange" Visibility="{Binding Path=OperateGrant.CanUpdate}"/>
+                <Button Content="删除文件" Margin="5,0,0,0" Height="30" Click="btn_DeleFile" Visibility="{Binding Path=OperateGrant.CanDelete}"/>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

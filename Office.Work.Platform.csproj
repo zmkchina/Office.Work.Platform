@@ -1,0 +1,195 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon></ApplicationIcon>
+    <StartupObject>Office.Work.Platform.App</StartupObject>
+    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.0.1</AssemblyVersion>
+    <FileVersion>1.0.0.1</FileVersion>
+    <NoWin32Manifest>true</NoWin32Manifest>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove=".gitattributes" />
+    <None Remove=".gitignore" />
+    <None Remove="AppRes\EditorIcos\background.gif" />
+    <None Remove="AppRes\EditorIcos\bold.gif" />
+    <None Remove="AppRes\EditorIcos\charactergrowfont.png" />
+    <None Remove="AppRes\EditorIcos\charactershrinkfont.png" />
+    <None Remove="AppRes\EditorIcos\del.gif" />
+    <None Remove="AppRes\EditorIcos\editcopy.png" />
+    <None Remove="AppRes\EditorIcos\editcut.png" />
+    <None Remove="AppRes\EditorIcos\editpaste.png" />
+    <None Remove="AppRes\EditorIcos\editredo.png" />
+    <None Remove="AppRes\EditorIcos\editundo.png" />
+    <None Remove="AppRes\EditorIcos\fileopen.png" />
+    <None Remove="AppRes\EditorIcos\filesave.png" />
+    <None Remove="AppRes\EditorIcos\font.gif" />
+    <None Remove="AppRes\EditorIcos\foreground.gif" />
+    <None Remove="AppRes\EditorIcos\help_print.gif" />
+    <None Remove="AppRes\EditorIcos\help_search.gif" />
+    <None Remove="AppRes\EditorIcos\listbullets.png" />
+    <None Remove="AppRes\EditorIcos\listnumbering.png" />
+    <None Remove="AppRes\EditorIcos\paragraphcenterjustify.png" />
+    <None Remove="AppRes\EditorIcos\paragraphdecreaseindentation.png" />
+    <None Remove="AppRes\EditorIcos\paragraphfulljustify.png" />
+    <None Remove="AppRes\EditorIcos\paragraphincreaseindentation.png" />
+    <None Remove="AppRes\EditorIcos\paragraphleftjustify.png" />
+    <None Remove="AppRes\EditorIcos\paragraphrightjustify.png" />
+    <None Remove="AppRes\EditorIcos\picture.png" />
+    <None Remove="AppRes\EditorIcos\strikeout.gif" />
+    <None Remove="AppRes\EditorIcos\subscript.gif" />
+    <None Remove="AppRes\EditorIcos\superscript.gif" />
+    <None Remove="AppRes\EditorIcos\ToFullScreen.png" />
+    <None Remove="AppRes\iconfont.ttf" />
+    <None Remove="AppRes\Images\AddNewPlan.png" />
+    <None Remove="AppRes\Images\AllTasks.png" />
+    <None Remove="AppRes\Images\App.ico" />
+    <None Remove="AppRes\Images\CarTea.png" />
+    <None Remove="AppRes\Images\DefaultImg.png" />
+    <None Remove="AppRes\Images\delete.png" />
+    <None Remove="AppRes\Images\DocExcel.png" />
+    <None Remove="AppRes\Images\DocImg.png" />
+    <None Remove="AppRes\Images\DocPdf.png" />
+    <None Remove="AppRes\Images\DocPpt.png" />
+    <None Remove="AppRes\Images\DocRar.png" />
+    <None Remove="AppRes\Images\DocWord.png" />
+    <None Remove="AppRes\Images\FileAdd.png" />
+    <None Remove="AppRes\Images\Flag.png" />
+    <None Remove="AppRes\Images\HelpPlan.png" />
+    <None Remove="AppRes\Images\ManyFiles.png" />
+    <None Remove="AppRes\Images\mubiao.png" />
+    <None Remove="AppRes\Images\MyTasks.png" />
+    <None Remove="AppRes\Images\PlanAction.png" />
+    <None Remove="AppRes\Images\PlanFinish.png" />
+    <None Remove="AppRes\Images\PlanHandle.png" />
+    <None Remove="AppRes\Images\PlanNew.png" />
+    <None Remove="AppRes\Images\PlanYaoQiu.png" />
+    <None Remove="AppRes\Images\refresh.png" />
+    <None Remove="AppRes\Images\Setting.png" />
+    <None Remove="AppRes\Images\ShuXing.png" />
+    <None Remove="AppRes\Images\user.png" />
+    <None Remove="AppRes\Images\wanchenjidu.png" />
+    <None Remove="AppRes\Images\wcqk.png" />
+    <None Remove="AppRes\Images\writepaper.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DotNetCore.NPOI" Version="1.2.2" />
+    <PackageReference Include="IdentityModel" Version="4.1.1" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.2" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="3.1.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Office.Work.Platform.Lib" Version="1.1.2.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="AppRes\EditorIcos\background.gif" />
+    <Resource Include="AppRes\EditorIcos\bold.gif" />
+    <Resource Include="AppRes\EditorIcos\charactergrowfont.png" />
+    <Resource Include="AppRes\EditorIcos\charactershrinkfont.png" />
+    <Resource Include="AppRes\EditorIcos\del.gif" />
+    <Resource Include="AppRes\EditorIcos\editcopy.png" />
+    <Resource Include="AppRes\EditorIcos\editcut.png" />
+    <Resource Include="AppRes\EditorIcos\editpaste.png" />
+    <Resource Include="AppRes\EditorIcos\editredo.png" />
+    <Resource Include="AppRes\EditorIcos\editundo.png" />
+    <Resource Include="AppRes\EditorIcos\fileopen.png" />
+    <Resource Include="AppRes\EditorIcos\filesave.png" />
+    <Resource Include="AppRes\EditorIcos\font.gif" />
+    <Resource Include="AppRes\EditorIcos\foreground.gif" />
+    <Resource Include="AppRes\EditorIcos\help_print.gif" />
+    <Resource Include="AppRes\EditorIcos\help_search.gif" />
+    <Resource Include="AppRes\EditorIcos\listbullets.png" />
+    <Resource Include="AppRes\EditorIcos\listnumbering.png" />
+    <Resource Include="AppRes\EditorIcos\paragraphcenterjustify.png" />
+    <Resource Include="AppRes\EditorIcos\paragraphdecreaseindentation.png" />
+    <Resource Include="AppRes\EditorIcos\paragraphfulljustify.png" />
+    <Resource Include="AppRes\EditorIcos\paragraphincreaseindentation.png" />
+    <Resource Include="AppRes\EditorIcos\paragraphleftjustify.png" />
+    <Resource Include="AppRes\EditorIcos\paragraphrightjustify.png" />
+    <Resource Include="AppRes\EditorIcos\picture.png" />
+    <Resource Include="AppRes\EditorIcos\strikeout.gif" />
+    <Resource Include="AppRes\EditorIcos\subscript.gif" />
+    <Resource Include="AppRes\EditorIcos\superscript.gif" />
+    <Resource Include="AppRes\EditorIcos\ToFullScreen.png" />
+    <Resource Include="AppRes\iconfont.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="AppRes\Images\AddNewPlan.png" />
+    <Resource Include="AppRes\Images\AllTasks.png" />
+    <Resource Include="AppRes\Images\App.ico" />
+    <Resource Include="AppRes\Images\CarTea.png" />
+    <Resource Include="AppRes\Images\DefaultImg.png" />
+    <Resource Include="AppRes\Images\delete.png" />
+    <Resource Include="AppRes\Images\DocExcel.png" />
+    <Resource Include="AppRes\Images\DocImg.png" />
+    <Resource Include="AppRes\Images\DocPdf.png" />
+    <Resource Include="AppRes\Images\DocPpt.png" />
+    <Resource Include="AppRes\Images\DocRar.png" />
+    <Resource Include="AppRes\Images\DocWord.png" />
+    <Resource Include="AppRes\Images\FileAdd.png" />
+    <Resource Include="AppRes\Images\Flag.png" />
+    <Resource Include="AppRes\Images\HelpPlan.png" />
+    <Resource Include="AppRes\Images\ManyFiles.png" />
+    <Resource Include="AppRes\Images\mubiao.png" />
+    <Resource Include="AppRes\Images\MyTasks.png" />
+    <Resource Include="AppRes\Images\PlanAction.png" />
+    <Resource Include="AppRes\Images\PlanFinish.png" />
+    <Resource Include="AppRes\Images\PlanHandle.png" />
+    <Resource Include="AppRes\Images\PlanNew.png" />
+    <Resource Include="AppRes\Images\PlanYaoQiu.png" />
+    <Resource Include="AppRes\Images\refresh.png" />
+    <Resource Include="AppRes\Images\Setting.png" />
+    <Resource Include="AppRes\Images\ShuXing.png" />
+    <Resource Include="AppRes\Images\user.png" />
+    <Resource Include="AppRes\Images\wanchenjidu.png" />
+    <Resource Include="AppRes\Images\wcqk.png" />
+    <Resource Include="AppRes\Images\writepaper.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="UserControls\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="PageHome.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Plan\PagePlansList.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Plan\PageEditPlan.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="PageHome.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Plan\PagePlansList.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Plan\PageEditPlan.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
+</Project>

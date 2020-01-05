@@ -1,0 +1,181 @@
+﻿<UserControl x:Class="Office.Work.Platform.Plan.UC_PlanInfo"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Office.Work.Platform.Plan"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="350" 
+             Background="Transparent"
+             x:Name="UCPlanInfo"
+             Loaded="UserControl_Loaded">
+    <ScrollViewer>
+        <StackPanel TextElement.FontSize="14"  HorizontalAlignment="Stretch" Background="Transparent">
+            <GroupBox>
+                <GroupBox.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Width="24"  VerticalAlignment="Center" Source="{Binding Path=EntityPlan.PlanStateImage}"/>
+                        <Label Foreground="#777777">计划标题</Label>
+                    </StackPanel>
+                </GroupBox.Header>
+                <TextBlock   MinHeight="30" TextBlock.LineHeight="22"
+                             TextWrapping="Wrap"
+                             Text="{Binding EntityPlan.Caption}"
+                             VerticalAlignment="Center" 
+                             Margin="5">
+                </TextBlock>
+            </GroupBox>
+            <GroupBox>
+                <GroupBox.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Width="24" VerticalAlignment="Center" Source="/Office.Work.Platform;component/AppRes/Images/mubiao.png"/>
+                        <Label Foreground="#777777">目标要求:</Label>
+                    </StackPanel>
+                </GroupBox.Header>
+                <TextBlock   MinHeight="30" TextBlock.LineHeight="22"
+                             TextWrapping="Wrap" 
+                             Text="{Binding EntityPlan.Content}"
+                             VerticalAlignment="Center" 
+                             Margin="5">
+                </TextBlock>
+            </GroupBox>
+            <GroupBox>
+                <GroupBox.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Width="24" VerticalAlignment="Center" Source="/Office.Work.Platform;component/AppRes/Images/wanchenjidu.png"/>
+                        <Label Foreground="#777777">完成情况：</Label>
+                    </StackPanel>
+                </GroupBox.Header>
+                <TextBox x:Name="Text_FinishNote"
+                         IsEnabled="{Binding Path=UserHasGrant}" 
+                         BorderBrush="#EAEAEA"
+                         BorderThickness="1"
+                         MinHeight="50" TextBlock.LineHeight="22"
+                         TextWrapping="Wrap" 
+                         Text="{Binding EntityPlan.FinishNote}"
+                         VerticalAlignment="Center" 
+                         Margin="5">
+                </TextBox>
+            </GroupBox>
+            <GroupBox IsEnabled="{Binding Path=UserHasGrant}">
+                <GroupBox.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="24" VerticalAlignment="Center" Source="/Office.Work.Platform;component/AppRes/Images/FileAdd.png"/>
+                        <Button BorderBrush="Transparent" ToolTip="点击添加附件..."  Visibility="{Binding Path=OperateGrant.CanUpFile}"
+                            Background="Transparent" Margin="0,5,0,5" HorizontalAlignment="Left" Click="BtnUpFile_Click">
+                            <Label Foreground="#777777">计划附件:</Label>
+                        </Button>
+                    </StackPanel>
+                </GroupBox.Header>
+                <ListBox x:Name="LB_FileList" ItemsSource="{Binding UploadFiles}" Background="Transparent"
+                         MinHeight="20"
+                         HorizontalAlignment="Stretch"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         BorderThickness="0">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="40"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="30"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Image Width="30" MaxHeight="30"  Grid.Column="0" VerticalAlignment="Center"  Source="{Binding Path=FileTypeImageUri}"></Image>
+                                <TextBlock Grid.Column="1"
+                                           Margin="5"
+                                           ToolTip="{Binding UpDateTime}"
+                                           Tag="{Binding Id}" 
+                                           TextWrapping="Wrap"
+                                           Cursor="Hand" 
+                                           VerticalAlignment="Center"                                              
+                                           MouseLeftButtonUp="TB_OpenFile_MouseLeftButtonUp">
+                                    <Run Text="{Binding Name}"/>
+                                    <Run Text="{Binding Path=DownIntProgress,StringFormat=(已下载{0:F0}%)}"/>
+                                    <TextBlock.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="重新命名"  Tag="{Binding Id}" Click="MenuItem_ReName_Click"/>
+                                            <MenuItem Header="复制文件"  Tag="{Binding Id}" Click="MenuItem_CopyFile_Click"/>
+                                            <MenuItem Header="重新下载"  Tag="{Binding Id}" Click="MenuItem_ReDwonLoad_Click"/>
+                                            <Separator/>
+                                            <MenuItem Header="转到文件夹"  Tag="{Binding Id}" Click="MenuItem_ToFolder_Click"/>
+                                        </ContextMenu>
+                                    </TextBlock.ContextMenu>
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Foreground" Value="Red" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                                <Image Height="16" x:Name="Image_Delete" Width="16" Grid.Column="2" 
+                                       VerticalAlignment="Center" Tag="{Binding Id}" 
+                                       Source="/Office.Work.Platform;component/AppRes/Images/delete.png" 
+                                       ToolTip="删除该文件" IsEnabled="{Binding ElementName=UCPlanInfo,Path=DataContext.UserHasGrant}"
+                                       MouseLeftButtonUp="Image_Delete_MouseLeftButtonUp">
+                                    <Image.Style>
+                                        <Style TargetType="Image">
+                                            <Style.Triggers>
+                                                <Trigger Property="Image.IsMouseOver" Value="True">
+                                                    <Setter Property="Cursor" Value="Hand"/>
+                                                    <Setter Property="Effect">
+                                                        <Setter.Value>
+                                                            <!--自带效果-->
+                                                            <DropShadowEffect BlurRadius="8" ShadowDepth="3" Color="Red" Opacity="0.9"/>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </GroupBox>
+            <Expander ExpandDirection="Down" Margin="5">
+                <Expander.Header>
+                    <TextBlock Text="查看其他信息" FontWeight="Bold"/>
+                </Expander.Header>
+                <Expander.Content>
+                    <StackPanel Orientation="Vertical" Margin="5,2,0,5">
+                        <StackPanel Orientation="Horizontal" Margin="5,0,0,0">
+                            <TextBlock Text="计划类型："   Margin="5"/>
+                            <TextBlock Text="{Binding Path=EntityPlan.PlanType}"  Margin="5"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="5,0,0,0">
+                            <TextBlock Text="责任人员："   Margin="5"/>
+                            <TextBlock Text="{Binding Path=EntityPlan.ResponsiblePerson}"  Margin="5"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal"  Margin="5,2,0,0">
+                            <TextBlock Text="协助人员：" Margin="5"/>
+                            <TextBlock Text="{Binding Path=EntityPlan.Helpers}"  Margin="5"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="5,0,0,0">
+                            <TextBlock Text="创建人员："  Margin="5"/>
+                            <TextBlock Text="{Binding Path=EntityPlan.CreateUserId}"  Margin="5"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="5,0,0,0">
+                            <TextBlock Text="开始日期："  Margin="5"/>
+                            <TextBlock Text="{Binding Path=EntityPlan.BeginDate}"  Margin="5"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="5,0,0,0">
+                            <TextBlock Text="结束日期："  Margin="5"/>
+                            <TextBlock Text="{Binding Path=EntityPlan.EndDate}" Margin="5"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Expander.Content>
+            </Expander>
+            <StackPanel Orientation="Horizontal" Margin="20,15" Grid.ColumnSpan="2" HorizontalAlignment="Center"  >
+                <Button Content="修改" Padding="15,4" Margin="0,0,0,0" Height="30" Click="btn_EditPlan" Visibility="{Binding Path=OperateGrant.CanEdit}"/>
+                <Button Content="删除" Padding="15,4" Margin="5,0,0,0" Height="30" Click="btn_DelePlan"  Visibility="{Binding Path=OperateGrant.CanDelete}"/>
+                <Button Content="更新" Padding="15,4" Margin="5,0,0,0" Height="30" Click="btn_UpdatePlan" Visibility="{Binding Path=OperateGrant.CanUpdate}"/>
+                <Button Content="完结" Padding="15,4" Margin="5,0,0,0" Height="30" Click="btn_FinishPlan" Visibility="{Binding Path=OperateGrant.CanFinish}"/>
+                <Button Content="重置" Padding="15,4" Margin="5,0,0,0" Height="30" Click="btn_ResetPlan" Visibility="{Binding Path=OperateGrant.CanReset}"/>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
