@@ -1,7 +1,10 @@
 ﻿using Office.Work.Platform.AppCodes;
 using Office.Work.Platform.AppDataService;
 using Office.Work.Platform.Lib;
+using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Office.Work.Platform.Plan
@@ -12,17 +15,21 @@ namespace Office.Work.Platform.Plan
 
         public UC_PlanInfoVM()
         {
-            OperateGrant = new PlanOperateGrant();
         }
         public async Task Init_PlanInfoVMAsync(ModelPlan P_Entity)
         {
             OperateGrant = new PlanOperateGrant();
+            UploadFiles = new ObservableCollection<ModelFile>();
             if (P_Entity == null) return;
             EntityPlan = P_Entity;
-            OperateGrant = new PlanOperateGrant(AppSettings.LoginUser,P_Entity);
+            OperateGrant = new PlanOperateGrant(AppSettings.LoginUser, P_Entity);
             //设置查询条件类
             MSearchFile mSearchFile = new MSearchFile { OwnerType = "计划附件", OwnerId = EntityPlan.Id };
-            UploadFiles = await DataFileRepository.ReadFiles(mSearchFile);
+            IEnumerable<ModelFile> UpFiles = await DataFileRepository.ReadFiles(mSearchFile);
+            UpFiles.ToList().ForEach(e =>
+            {
+                UploadFiles.Add(e);
+            });
         }
         /// <summary>
         /// 当前所选计划信息
@@ -32,7 +39,7 @@ namespace Office.Work.Platform.Plan
         /// 上传的文件集合
         /// </summary>
         public ObservableCollection<ModelFile> UploadFiles { get; set; }
-      
+
         /// <summary>
         /// 用户对此计划的操作权限类对象。
         /// </summary>
@@ -46,7 +53,7 @@ namespace Office.Work.Platform.Plan
             }
         }
         #region "方法"
-       
+
         #endregion
         /// <summary>
         /// 用户对该计划的权限 A:计划修改 B:计划删除 C:计划进度更新 D:上传计划附件 E:计划完结 F:计划状态重置
@@ -63,12 +70,12 @@ namespace Office.Work.Platform.Plan
             {
                 CanDelete = CanEdit = CanUpFile = CanFinish = CanReset = CanUpdate = "Collapsed";
             }
-            public PlanOperateGrant(ModelUser P_LoginUser,ModelPlan P_CurPlan)
+            public PlanOperateGrant(ModelUser P_LoginUser, ModelPlan P_CurPlan)
             {
-                CanDelete = CanEdit = CanUpFile= CanFinish = CanReset = CanUpdate = "Collapsed";
+                CanDelete = CanEdit = CanUpFile = CanFinish = CanReset = CanUpdate = "Collapsed";
                 if (P_LoginUser.Post.Equals("SysAdmin"))
                 {
-                    CanDelete = CanEdit = CanUpFile = CanFinish = CanReset = CanUpdate  = "Visible";
+                    CanDelete = CanEdit = CanUpFile = CanFinish = CanReset = CanUpdate = "Visible";
                 }
                 else if (P_LoginUser.Post.Equals("ZgkLeader"))
                 {

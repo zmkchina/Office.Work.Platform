@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Office.Work.Platform.AppCodes;
+using Office.Work.Platform.AppDataService;
 using Office.Work.Platform.Lib;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,14 @@ namespace Office.Work.Platform.Files
             EntityFiles = new ObservableCollection<ModelFile>();
             mSearchFile = new MSearchFile();
         }
-
+        public async Task GetFilesAsync()
+        {
+            var files = await DataFileRepository.ReadFiles(mSearchFile);
+            files.ToList().ForEach(e =>
+            {
+                EntityFiles.Add(e);
+            });
+        }
         #endregion
     }
 }

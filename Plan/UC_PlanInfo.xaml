@@ -47,7 +47,6 @@
                     </StackPanel>
                 </GroupBox.Header>
                 <TextBox x:Name="Text_FinishNote"
-                         IsEnabled="{Binding Path=UserHasGrant}" 
                          BorderBrush="#EAEAEA"
                          BorderThickness="1"
                          MinHeight="50" TextBlock.LineHeight="22"
@@ -57,7 +56,7 @@
                          Margin="5">
                 </TextBox>
             </GroupBox>
-            <GroupBox IsEnabled="{Binding Path=UserHasGrant}">
+            <GroupBox>
                 <GroupBox.Header>
                         <StackPanel Orientation="Horizontal">
                             <Image Width="24" VerticalAlignment="Center" Source="/Office.Work.Platform;component/AppRes/Images/FileAdd.png"/>

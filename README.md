@@ -1,4 +1,4 @@
-# Office.Work.Platform
+ Office.Work.Platform
 
 这是一个 办公信息化系统 开发的客户端项目
 ### 关于权限
@@ -20,8 +20,7 @@ Task.Run(async () =>
       {
           ObservableCollection XX= await GetXXcollect();
           this.Dispatcher.Invoke(() =>
-          {
-              _CallBack = P_CallBack;
+          {             
               DataContext = null;
               DataContext = _UC_PlanInfoVM;
           });

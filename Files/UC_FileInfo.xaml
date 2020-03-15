@@ -14,7 +14,6 @@
                     <TextBlock  Text="文件名称" Margin="5"/>
                 </GroupBox.Header>
                 <TextBox BorderBrush="#EAEAEA" Margin="5"
-                     IsEnabled="{Binding Path=UserHasGrant}"
                      MaxLength="100"
                      MinHeight="30"
                      TextWrapping="Wrap" 
@@ -27,7 +26,6 @@
                     <TextBlock  Text="文件描述" Margin="5"/>
                 </GroupBox.Header>
                 <TextBox BorderBrush="#EAEAEA" Margin="5"
-                     IsEnabled="{Binding Path=UserHasGrant}"
                      MaxLength="500"
                      MinHeight="100"
                      AcceptsReturn ="True"
@@ -36,59 +34,50 @@
                      Padding="3" 
                      Text="{Binding Path=EntityFileInfo.Describe}" />
             </GroupBox>
-            <GroupBox>
-                <GroupBox.Header>
-                    <TextBlock  Text="有权读取" Margin="5"/>
-                </GroupBox.Header>
-                <ListBox ItemsSource="{Binding UserSelectList}"  Margin="5" IsEnabled="{Binding Path=SelectFileBool}">
-                    <ListBox.Template>
-                        <ControlTemplate TargetType="{x:Type ListBox}">
-                            <WrapPanel VerticalAlignment="Center"  IsItemsHost="True"/>
-                        </ControlTemplate>
-                    </ListBox.Template>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <CheckBox IsChecked="{Binding IsSelect}" VerticalAlignment="Center" Content="{Binding Obj.Id}"/>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </GroupBox>
-            <DockPanel>
-                <TextBlock DockPanel.Dock="Left" Text="有权读取" Margin="5"/>
-                <ListBox DockPanel.Dock="Right"  ItemsSource="{Binding UserSelectList}"  Margin="5" IsEnabled="{Binding Path=SelectFileBool}">
-                    <ListBox.Template>
-                        <ControlTemplate TargetType="{x:Type ListBox}">
-                            <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center"  IsItemsHost="True"/>
-                        </ControlTemplate>
-                    </ListBox.Template>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <CheckBox IsChecked="{Binding IsSelect}" VerticalAlignment="Center" Content="{Binding Obj.Id}"/>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </DockPanel>
-            <DockPanel>
-                <TextBlock DockPanel.Dock="Left" Text="宿主类型" Margin="5"/>
-                <TextBlock  DockPanel.Dock="Right"  Text="{Binding Path=EntityFileInfo.OwnerType}"  Margin="5"/>
-            </DockPanel>
-            <DockPanel>
-                <TextBlock DockPanel.Dock="Left" Text="内容分类" Margin="5"/>
-                <TextBlock  DockPanel.Dock="Right"  Text="{Binding Path=EntityFileInfo.ContentType}"  Margin="5"/>
-            </DockPanel>
-            <DockPanel>
-                <TextBlock DockPanel.Dock="Left" Text="上传人员" Margin="5"/>
-                <TextBlock  DockPanel.Dock="Right"  Text="{Binding Path=EntityFileInfo.UserId}"  Margin="5"/>
-            </DockPanel>
-            <DockPanel>
-                <TextBlock DockPanel.Dock="Left" Text="上传日期" Margin="5"/>
-                <TextBlock  DockPanel.Dock="Right"  Text="{Binding Path=EntityFileInfo.UpDateTime}"  Margin="5"/>
-            </DockPanel>
-            <DockPanel>
-                <TextBlock DockPanel.Dock="Left" Text="下载进度" Margin="5"/>
-                <TextBlock  DockPanel.Dock="Right"  Text="{Binding Path=DownIntProgress,StringFormat=正在下载 {0:F0} %}"  Margin="5"/>
-            </DockPanel>
-
+            <Expander ExpandDirection="Down" Margin="5">
+                <Expander.Header>
+                    <TextBlock Text="查看其他信息" FontWeight="Bold"/>
+                </Expander.Header>
+                <Expander.Content>
+                    <StackPanel Orientation="Vertical" Margin="5,2,0,5">
+                        <DockPanel>
+                            <TextBlock DockPanel.Dock="Left" Text="有权读取" Margin="5"/>
+                            <ListBox DockPanel.Dock="Right"  ItemsSource="{Binding UserSelectList}">
+                                <ListBox.Template>
+                                    <ControlTemplate TargetType="{x:Type ListBox}">
+                                        <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center"  IsItemsHost="True"/>
+                                    </ControlTemplate>
+                                </ListBox.Template>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <CheckBox IsChecked="{Binding IsSelect}" VerticalAlignment="Center" Content="{Binding Obj.Id}"/>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </DockPanel>
+                        <DockPanel>
+                            <TextBlock DockPanel.Dock="Left" Text="宿主类型" Margin="5"/>
+                            <TextBlock  DockPanel.Dock="Right"  Text="{Binding Path=EntityFileInfo.OwnerType}"  Margin="5"/>
+                        </DockPanel>
+                        <DockPanel>
+                            <TextBlock DockPanel.Dock="Left" Text="内容分类" Margin="5"/>
+                            <TextBlock  DockPanel.Dock="Right"  Text="{Binding Path=EntityFileInfo.ContentType}"  Margin="5"/>
+                        </DockPanel>
+                        <DockPanel>
+                            <TextBlock DockPanel.Dock="Left" Text="上传人员" Margin="5"/>
+                            <TextBlock  DockPanel.Dock="Right"  Text="{Binding Path=EntityFileInfo.UserId}"  Margin="5"/>
+                        </DockPanel>
+                        <DockPanel>
+                            <TextBlock DockPanel.Dock="Left" Text="上传日期" Margin="5"/>
+                            <TextBlock  DockPanel.Dock="Right"  Text="{Binding Path=EntityFileInfo.UpDateTime}"  Margin="5"/>
+                        </DockPanel>
+                        <DockPanel>
+                            <TextBlock DockPanel.Dock="Left" Text="下载进度" Margin="5"/>
+                            <TextBlock  DockPanel.Dock="Right"  Text="{Binding Path=DownIntProgress,StringFormat=正在下载 {0:F0} %}"  Margin="5"/>
+                        </DockPanel>
+                    </StackPanel>
+                </Expander.Content>
+            </Expander>
             <StackPanel Orientation="Horizontal" Margin="20,15" HorizontalAlignment="Center"  >
                 <Button Content="打开文件" Margin="0,0,5,0" Height="30" Click="btn_OpenFileAsync" Visibility="{Binding Path=OperateGrant.CanRead}"/>
                 <Button Content="保存修改" Margin="5,0,5,0" Height="30" Click="btn_SaveChange" Visibility="{Binding Path=OperateGrant.CanUpdate}"/>

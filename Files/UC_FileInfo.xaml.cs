@@ -19,20 +19,27 @@ namespace Office.Work.Platform.Files
         {
             InitializeComponent();
         }
+        /// <summary>
+        /// 构造函数 重载1
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void UCFileInfo_Loaded(object sender, RoutedEventArgs e)
         {
             _UC_FileInfoVM = new UC_FileInfoVM();
             DataContext = _UC_FileInfoVM;
         }
         /// <summary>
-        /// 初始化
+        /// 初始化视图模型属性值。
         /// </summary>
         /// <param name="P_File">待修改、删除的文件对象</param>
         /// <param name="P_DelFileCallBackFun">删除文件后回调的函数</param>
-        public void Init_FileInfo(ModelFile P_File, Action<ModelFile> P_DelFileCallBackFun = null)
+        public void Init_FileInfo(ModelFile P_File, ModelPlan P_Plan=null, Action<ModelFile> P_DelFileCallBackFun = null)
         {
-            _UC_FileInfoVM.Init_FileInfoVM(P_File);
+            _UC_FileInfoVM = new UC_FileInfoVM();
+            _UC_FileInfoVM.InitPropValus(P_File, P_Plan);
             _DelFileCallBackFun = P_DelFileCallBackFun;
+            DataContext = _UC_FileInfoVM;
         }
         private async void btn_OpenFileAsync(object sender, RoutedEventArgs e)
         {

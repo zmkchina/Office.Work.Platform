@@ -23,20 +23,14 @@ namespace Office.Work.Platform.Plan
         }
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            _UCPlanInfoVM = new UC_PlanInfoVM();
+          
         }
-        public void Init_PlanInfo(ModelPlan P_Entity, Action<ModelPlan> P_CallBack = null)
+        public async Task Init_PlanInfoAsync(ModelPlan P_Entity, Action<ModelPlan> P_CallBack = null)
         {
-            Task.Run(async () =>
-              {
-                  await _UCPlanInfoVM.Init_PlanInfoVMAsync(P_Entity);
-                  this.Dispatcher.Invoke(() =>
-                  {
-                      _CallBack = P_CallBack;
-                      DataContext = null;
-                      DataContext = _UCPlanInfoVM;
-                  });
-              });
+            _UCPlanInfoVM = new UC_PlanInfoVM();
+            await _UCPlanInfoVM.Init_PlanInfoVMAsync(P_Entity);
+            _CallBack = P_CallBack;
+            DataContext = _UCPlanInfoVM;
         }
         /// <summary>
         /// 编辑该计划

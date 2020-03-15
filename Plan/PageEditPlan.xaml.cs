@@ -14,19 +14,19 @@ namespace Office.Work.Platform.Plan
     /// </summary>
     public partial class PageEditPlan : Page
     {
+        private readonly ModelPlan _CurPlan;
         private PageEditPlanVM _PageEditPlanVM = null;
-        private ModelPlan _NeedEditPlan;
-
-        public PageEditPlan(ModelPlan NeedEditPlan = null)
+        public PageEditPlan(ModelPlan P_Plan = null)
         {
             InitializeComponent();
             col_fileInfo.Width = new GridLength(0);
-            _NeedEditPlan = NeedEditPlan;
+            _CurPlan = P_Plan;
         }
-        private void Page_Loaded(object sender, RoutedEventArgs e)
+        private async void Page_LoadedAsync(object sender, RoutedEventArgs e)
         {
-            _PageEditPlanVM = new PageEditPlanVM(_NeedEditPlan);
-            DataContext = _PageEditPlanVM;
+            _PageEditPlanVM = new PageEditPlanVM();
+            await _PageEditPlanVM.InitPropValueAsync(_CurPlan);
+            this.DataContext = _PageEditPlanVM;
         }
         /// <summary>
         /// 保存新增的计划
@@ -85,23 +85,26 @@ namespace Office.Work.Platform.Plan
         /// <param name="e"></param>
         private void BtnAddContinue_Click(object sender, RoutedEventArgs e)
         {
-            _PageEditPlanVM = new PageEditPlanVM(null);
+            _PageEditPlanVM = new PageEditPlanVM();
+            _ = _PageEditPlanVM.InitPropValueAsync();
             DataContext = _PageEditPlanVM;
         }
 
         private void LB_FileList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            this.UCFileInfo.Init_FileInfo((ModelFile)LB_FileList.SelectedItem, (DelFile) =>
-            {
-                _PageEditPlanVM.UploadFiles.Remove(DelFile);
-                col_fileInfo.Width = new GridLength(0);
-                col_fileInfo.MinWidth = 0d;
-            });
+            this.UCFileInfo.Init_FileInfo((ModelFile)LB_FileList.SelectedItem, _PageEditPlanVM.EntityPlan, (DelFile) =>
+             {
+                 _PageEditPlanVM.UploadFiles.Remove(DelFile);
+                 col_fileInfo.Width = new GridLength(0);
+                 col_fileInfo.MinWidth = 0d;
+             });
             if (col_fileInfo.Width.Value == 0)
             {
                 col_fileInfo.Width = new GridLength(1, GridUnitType.Star);
                 col_fileInfo.MinWidth = 200d;
             }
         }
+
+
     }
 }

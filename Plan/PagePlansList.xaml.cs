@@ -17,6 +17,7 @@ namespace Office.Work.Platform.Plan
         public PagePlansList(string SearchPlanType)
         {
             InitializeComponent();
+            this.UCPlanInfo.Visibility = Visibility.Collapsed;
             col_panInfo.Width = new GridLength(0);
 
             _SearchPlanType = SearchPlanType;
@@ -28,7 +29,6 @@ namespace Office.Work.Platform.Plan
 
             if (_PagePlansListVM == null)
             {
-
                 _PagePlansListVM = new PagePlansListVM();
 
                 switch (_SearchPlanType)
@@ -51,12 +51,14 @@ namespace Office.Work.Platform.Plan
         }
         private void ListBox_FileList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            this.UCPlanInfo.Init_PlanInfo(this.LB_PlanList.SelectedItem as ModelPlan, (thePlan) =>
-            {
-                _PagePlansListVM.EntityPlans.Remove(thePlan);
-                col_panInfo.Width = new GridLength(0);
-                col_panInfo.MinWidth = 0d;
-            });
+            _ = this.UCPlanInfo.Init_PlanInfoAsync(this.LB_PlanList.SelectedItem as ModelPlan, (thePlan) =>
+              {
+                  _PagePlansListVM.EntityPlans.Remove(thePlan);
+                  col_panInfo.Width = new GridLength(0);
+                  col_panInfo.MinWidth = 0d;
+              });
+            this.UCPlanInfo.Visibility = Visibility.Visible;
+
             if (col_panInfo.Width.Value == 0)
             {
                 col_panInfo.Width = new GridLength(1, GridUnitType.Star);
@@ -69,7 +71,7 @@ namespace Office.Work.Platform.Plan
             //设置查询条件类
             _PagePlansListVM.mSearchPlan.KeysInMultiple = SearchKeys;
 
-            _PagePlansListVM.EntityPlans = await DataPlanRepository.ReadPlans(_PagePlansListVM.mSearchPlan);
+            await _PagePlansListVM.GetPlansAsync();
             DataContext = _PagePlansListVM;
         }
     }

@@ -87,7 +87,7 @@ namespace Office.Work.Platform.AppDataService
             if (!File.Exists(tempFilePath) || ReDownLoad)
             {
                 HttpResponseMessage httpResponseMessage = await DataApiRepository.GetApiUri<HttpResponseMessage>(AppSettings.ApiUrlBase + @"FileDown/" + WillDownFile.Id, showDownProgress);
-                if (httpResponseMessage.Content == null)
+                if (httpResponseMessage == null || httpResponseMessage.Content == null)
                 {
                     //说明此文件读取失败，有可能是服务器上文件被删除了。
                     return null;
@@ -127,30 +127,31 @@ namespace Office.Work.Platform.AppDataService
             return null;
         }
 
-        /// <summary>
-        /// 读取所有文件列表
-        /// </summary>
-        /// <returns></returns>
-        public static async Task<List<ModelFile>> ReadFiles()
-        {
-            List<ModelFile> FileList = await DataApiRepository.GetApiUri<List<ModelFile>>(AppSettings.ApiUrlBase + "FileInfo");
-            return FileList;
-        }
+        ///// <summary>
+        ///// 读取所有文件列表
+        ///// </summary>
+        ///// <returns></returns>
+        //public static async Task<List<ModelFile>> ReadFiles()
+        //{
+        //    List<ModelFile> FileList = await DataApiRepository.GetApiUri<List<ModelFile>>(AppSettings.ApiUrlBase + "FileInfo");
+        //    return FileList;
+        //}
         /// <summary>
         /// 读取指定类型、指定宿主的文件列表。比如：读取“计划附件”编号为“201999999”的文件列表
         /// 示例：ReadPlanFiles("计划附件","201999999");
         /// </summary>
         /// <param name="mSearchFile">查询条件类的实例</param>
         /// <returns></returns>
-        public static async Task<ObservableCollection<ModelFile>> ReadFiles(MSearchFile mSearchFile)
+        public static async Task<IEnumerable<ModelFile>> ReadFiles(MSearchFile mSearchFile)
         {
-            ObservableCollection<ModelFile> FileList = new ObservableCollection<ModelFile>();
+            mSearchFile.CanReadUserId = AppSettings.LoginUser.Id;
+            IEnumerable<ModelFile> FileList = null;
             //创建查询url参数
             string urlParams = DataApiRepository.CreateUrlParams(mSearchFile);
 
             if (urlParams.Length > 0)
             {
-                FileList = await DataApiRepository.GetApiUri<ObservableCollection<ModelFile>>(AppSettings.ApiUrlBase + "FileInfo/Search" + urlParams);
+                FileList = await DataApiRepository.GetApiUri<IEnumerable<ModelFile>>(AppSettings.ApiUrlBase + "FileInfo/Search" + urlParams);
             }
             return FileList;
         }

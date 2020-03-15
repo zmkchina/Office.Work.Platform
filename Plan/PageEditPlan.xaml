@@ -6,7 +6,8 @@
       xmlns:local="clr-namespace:Office.Work.Platform.Plan"
       xmlns:uc="clr-namespace:Office.Work.Platform.Files"
       mc:Ignorable="d"  d:DesignHeight="450" d:DesignWidth="550"
-      Title="计划编辑" Loaded="Page_Loaded">
+      Loaded="Page_LoadedAsync"
+      Title="计划编辑">
     <Grid TextElement.FontSize="14" Margin="1,1" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"  MinWidth="300"/>
@@ -19,7 +20,6 @@
                         <TextBlock  Text="计划标题" Margin="5"/>
                     </GroupBox.Header>
                     <TextBox BorderBrush="#EAEAEA"  Margin="5"  Padding="3" 
-                             IsEnabled="{Binding Path=UserHasGrant}"
                              MaxLength="100"
                              MinHeight="30"
                              TextWrapping="Wrap"
@@ -31,7 +31,6 @@
                         <TextBlock  Text="内容与要求" Margin="5"/>
                     </GroupBox.Header>
                     <TextBox BorderBrush="#EAEAEA" Margin="5"  Padding="3" 
-                             IsEnabled="{Binding Path=UserHasGrant}"
                              MaxLength="500"
                              MinHeight="100"
                              AcceptsReturn ="True"
@@ -117,7 +116,6 @@
                     <Button Content="继续新增" Margin="5,0,5,0" Height="30" 
                             x:Name="BtnAddContinue"
                             Click="BtnAddContinue_Click"/>
-                    <Label Content="{Binding ElementName=leftColumn,Mode=OneWay,Path=ActualWidth}"/>
                 </StackPanel>
             </StackPanel>
         </ScrollViewer>

@@ -49,14 +49,14 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="mSearchPlan">查询条件类的实例</param>
         /// <returns></returns>
-        public static async Task<ObservableCollection<ModelPlan>> ReadPlans(MSearchPlan mSearchPlan)
+        public static async Task<IEnumerable<ModelPlan>> ReadPlans(MSearchPlan mSearchPlan)
         {
-            ObservableCollection<ModelPlan> PlansList = new ObservableCollection<ModelPlan>();
+            IEnumerable<ModelPlan> PlansList=null;
             string urlParams = DataApiRepository.CreateUrlParams(mSearchPlan);
 
             if (urlParams.Length > 0)
             {
-                PlansList = await DataApiRepository.GetApiUri<ObservableCollection<ModelPlan>>(AppSettings.ApiUrlBase + "PlanInfo/Search" + urlParams);
+                PlansList = await DataApiRepository.GetApiUri<IEnumerable<ModelPlan>>(AppSettings.ApiUrlBase + "PlanInfo/Search" + urlParams);
             }
             return PlansList;
         }

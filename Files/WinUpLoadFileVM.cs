@@ -70,11 +70,7 @@ namespace Office.Work.Platform.Files
             foreach (ModelUser item in AppSettings.SysUsers)
             {
 
-                UserSelectList.Add(new ModelSelectObj<ModelUser>
-                {
-                    IsSelect = true,
-                    Obj = item
-                });
+                UserSelectList.Add(new ModelSelectObj<ModelUser>(true, item));
             }
         }
         public string GetSelectUserIds()

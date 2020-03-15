@@ -11,17 +11,21 @@ namespace Office.Work.Platform.Files
         private ModelFile _EntityFileInfo;
         private double _DownIntProgress;
         private FileOperateGrant _OperateGrant;
-
         public UC_FileInfoVM()
         {
             OperateGrant = new FileOperateGrant();
+            UserSelectList = new ObservableCollection<ModelSelectObj<ModelUser>>();
         }
-        public void Init_FileInfoVM(ModelFile P_File)
+        public void InitPropValus(ModelFile P_File, ModelPlan P_Plan = null)
         {
             if (P_File == null) return;
             EntityFileInfo = P_File;
             FileContentTypes = AppSettings.ServerSetting.WorkContentType.Split(',', System.StringSplitOptions.RemoveEmptyEntries);
-            OperateGrant = new FileOperateGrant(AppSettings.LoginUser, P_File);
+            foreach (ModelUser item in AppSettings.SysUsers)
+            {
+                UserSelectList.Add(new ModelSelectObj<ModelUser>(P_File.ReadGrant.Contains(item.Id), item));
+            }
+            OperateGrant = new FileOperateGrant(AppSettings.LoginUser, P_File, P_Plan);
         }
         /// <summary>
         /// 文件类别
@@ -74,11 +78,9 @@ namespace Office.Work.Platform.Files
             foreach (ModelUser item in AppSettings.SysUsers)
             {
                 UserSelectList.Add(new ModelSelectObj<ModelUser>
-                {
-
-                    IsSelect = EntityFileInfo.ReadGrant != null ? EntityFileInfo.ReadGrant.Contains(item.Id) : false,
-                    Obj = item
-                });
+                (EntityFileInfo.ReadGrant != null ? EntityFileInfo.ReadGrant.Contains(item.Id) : false,
+                 item
+                ));
             }
         }
         public string GetSelectUserIds()
@@ -100,7 +102,7 @@ namespace Office.Work.Platform.Files
             {
                 CanDelete = CanRead = CanUpdate = "Collapsed";
             }
-            public FileOperateGrant(ModelUser P_LoginUser, ModelFile P_CurFile)
+            public FileOperateGrant(ModelUser P_LoginUser, ModelFile P_CurFile, ModelPlan P_OwnerPlan)
             {
                 CanDelete = CanRead = CanUpdate = "Collapsed";
                 if (P_LoginUser.Post.Equals("SysAdmin"))
@@ -113,10 +115,17 @@ namespace Office.Work.Platform.Files
                 }
                 else if (P_LoginUser.Id.Equals(P_CurFile.UserId))
                 {
-                    //文件上传人员：A—E
-                    CanDelete = CanRead = CanUpdate = "Collapsed";
+                    if (P_OwnerPlan != null && P_OwnerPlan.CurrectState != "已经完成")
+                    {
+                        //文件上传人员：A—E
+                        CanDelete = CanRead = CanUpdate = "Visible";
+                    }
+                    else
+                    {
+                        CanRead = CanUpdate = "Visible";
+                    }
                 }
-                else if (!string.IsNullOrWhiteSpace(P_CurFile.ReadGrant) && P_CurFile.ReadGrant.Contains(P_LoginUser.Id))
+                if (!string.IsNullOrWhiteSpace(P_CurFile.ReadGrant) && P_CurFile.ReadGrant.Contains(P_LoginUser.Id))
                 {
                     //有权读限人员
                     CanRead = "Visible";

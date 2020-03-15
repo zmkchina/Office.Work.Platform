@@ -105,7 +105,7 @@
                 </ListBox.ItemContainerStyle>
             </ListBox>
             <GridSplitter Grid.Column="0" BorderThickness="2" BorderBrush="#EAEAEA"/>
-            <local:UC_PlanInfo x:Name="UCPlanInfo" Grid.Column="1" Margin="10"/>
+            <local:UC_PlanInfo x:Name="UCPlanInfo" Grid.Column="1" Margin="10" />
         </Grid>
     </Grid>
 </Page>

@@ -1,31 +1,37 @@
-﻿using System;
+﻿using Office.Work.Platform.AppCodes;
+using Office.Work.Platform.AppDataService;
+using Office.Work.Platform.Lib;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading.Tasks;
-using Office.Work.Platform.AppCodes;
-using Office.Work.Platform.AppDataService;
-using Office.Work.Platform.Lib;
+using System.Windows.Threading;
 
 namespace Office.Work.Platform.Plan
 {
     public class PageEditPlanVM : NotificationObject
     {
-        private string _StrPlanSaved;
-        public PageEditPlanVM(ModelPlan NeedEditPlan = null)
+        private string _StrPlanSaved = "Visibled";
+
+        public PageEditPlanVM()
+        {
+          
+        }
+
+        public async System.Threading.Tasks.Task InitPropValueAsync(ModelPlan NeedEditPlan = null)
         {
             PlayStateTypes = AppSettings.ServerSetting.PlanStateType.Split(',', System.StringSplitOptions.RemoveEmptyEntries);
             WorkContentTypes = AppSettings.ServerSetting.WorkContentType.Split(',', System.StringSplitOptions.RemoveEmptyEntries);
+            UploadFiles = new ObservableCollection<ModelFile>();
             if (NeedEditPlan != null)
             {
                 EntityPlan = NeedEditPlan;
-                Task.Run(async () =>
+                //设置查询条件类
+                MSearchFile mSearchFile = new MSearchFile { OwnerType = "计划附件", OwnerId = EntityPlan.Id };
+                IEnumerable<ModelFile> UpFiles = await DataFileRepository.ReadFiles(mSearchFile);
+                UpFiles.ToList().ForEach(e =>
                 {
-                    //设置查询条件类
-                    MSearchFile mSearchFile = new MSearchFile { OwnerType = "计划附件",OwnerId= EntityPlan.Id };
-
-                    UploadFiles = await DataFileRepository.ReadFiles(mSearchFile);
-                    UploadFiles ??= new ObservableCollection<ModelFile>();
+                    UploadFiles.Add(e);
                 });
             }
             else
@@ -41,13 +47,10 @@ namespace Office.Work.Platform.Plan
                     FinishNote = "",
                     CurrectState = PlayStateTypes[0]
                 };
-                StrPlanSaved = "Hidden";
-                UploadFiles = new ObservableCollection<ModelFile>();
+                StrPlanSaved = "Collapsed";
             }
             InitSelectUserList();
         }
-
-
         #region "属性"
         public string[] WorkContentTypes { get; set; }
         public string[] PlayStateTypes { get; set; }
@@ -83,16 +86,8 @@ namespace Office.Work.Platform.Plan
             UserHelperSelectList = new ObservableCollection<ModelSelectObj<ModelUser>>();
             foreach (ModelUser item in AppSettings.SysUsers)
             {
-                UserGrantSelectList.Add(new ModelSelectObj<ModelUser>
-                {
-                    IsSelect = EntityPlan.ReadGrant != null && EntityPlan.ReadGrant.Contains(item.Id),
-                    Obj = item
-                });
-                UserHelperSelectList.Add(new ModelSelectObj<ModelUser>
-                {
-                    IsSelect = EntityPlan.Helpers != null && EntityPlan.Helpers.Contains(item.Id),
-                    Obj = item
-                });
+                UserGrantSelectList.Add(new ModelSelectObj<ModelUser>(EntityPlan.ReadGrant != null && EntityPlan.ReadGrant.Contains(item.Id), item));
+                UserHelperSelectList.Add(new ModelSelectObj<ModelUser>(EntityPlan.Helpers != null && EntityPlan.Helpers.Contains(item.Id), item));
             }
         }
         public string GetSelectUserIds(ObservableCollection<ModelSelectObj<ModelUser>> UserSelectList)
@@ -101,8 +96,8 @@ namespace Office.Work.Platform.Plan
 
             return string.Join(",", SelectIds.ToArray());
         }
-       
-        
+
+
         #endregion
     }
 }

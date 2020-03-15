@@ -105,7 +105,7 @@
                     </Style>
                 </ListBox.ItemContainerStyle>
             </ListBox>
-            <GridSplitter Grid.Column="0" BorderThickness="2" BorderBrush="#EAEAEA" DragCompleted="GridSplitter_DragCompleted"/>
+            <GridSplitter Grid.Column="0" BorderThickness="2" BorderBrush="#EAEAEA"/>
             <local:UC_FileInfo x:Name="UCFileInfo" Grid.Column="1" Margin="10,10,10,10"/>
         </Grid>
     </Grid>
