@@ -5,19 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Office.Work.Platform"
         mc:Ignorable="d" 
-        Width="500" Height="300"
+        WindowStyle="None"
+        AllowsTransparency="True"   WindowState="Maximized"   Background="Transparent"
+        WindowStartupLocation="CenterScreen" 
+        ResizeMode="CanResizeWithGrip"
         MinWidth="700" MinHeight="400"
-        WindowState="Maximized" 
-        WindowStartupLocation="CenterScreen"
-        AllowsTransparency="False" Title="政工办公信息化平台"
-        StateChanged="Window_StateChanged"  Loaded="Window_LoadedAsync"
-        WindowChrome.WindowChrome="{DynamicResource WindowChromeKey}">
+        StateChanged="Window_StateChanged"  Loaded="Window_LoadedAsync">
+    <!--WindowChrome.WindowChrome="{DynamicResource WindowChromeKey}">-->
     <Window.Resources>
-        <WindowChrome x:Key="WindowChromeKey">
+        <!--<WindowChrome x:Key="WindowChromeKey">
             <WindowChrome.ResizeBorderThickness>
                 <Thickness>5</Thickness>
             </WindowChrome.ResizeBorderThickness>
-        </WindowChrome>
+        </WindowChrome>-->
         <!--<Style x:Key="ToolStyle" TargetType="Button">
             <Style.Setters>
                 <Setter Property="BorderBrush" Value="Transparent"/>

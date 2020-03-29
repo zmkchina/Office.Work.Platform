@@ -24,8 +24,6 @@ namespace Office.Work.Platform
         public MainWindow()
         {
             InitializeComponent();
-            MainGrid.MaxWidth = SystemParameters.WorkArea.Width;
-            MainGrid.MaxHeight = SystemParameters.WorkArea.Height;
             AppSettings.AppMainWindow = this;
         }
         private async void Window_LoadedAsync(object sender, RoutedEventArgs e)

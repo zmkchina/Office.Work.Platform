@@ -8,10 +8,11 @@
         mc:Ignorable="d"
         Width="480" Height="350"
         WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
         WindowStartupLocation="CenterScreen" 
         ForceCursor="True"
         ResizeMode="NoResize" 
-        Title="工作助手"
         Loaded="Window_Loaded">
     <Grid Background="LightSeaGreen">
         <Grid.RowDefinitions>
