@@ -5,6 +5,7 @@ using Office.Work.Platform.Member;
 using Office.Work.Platform.Node;
 using Office.Work.Platform.Plan;
 using Office.Work.Platform.Remuneration;
+using Office.Work.Platform.Settings;
 using System;
 using System.Windows;
 using System.Windows.Input;
@@ -21,6 +22,7 @@ namespace Office.Work.Platform
         private readonly PageFileMenu _PageFileMenu = null;
         private readonly PagePlayMenu _PagePlayMenu = null;
         private readonly PageMemberMenu _PageMemberMenu = null;
+        private readonly PageSettingsMenu _PageSettingsMenu = null;
         public MainWindow()
         {
             InitializeComponent();
@@ -75,9 +77,9 @@ namespace Office.Work.Platform
             }
         }
 
-        
+
         /// <summary>
-        /// 计划管理
+        /// 计划管理菜单
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -86,7 +88,7 @@ namespace Office.Work.Platform
             LoadPageMenu(_PagePlanMenu);
         }
         /// <summary>
-        /// 全部文件
+        /// 全部文件菜单
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -95,7 +97,7 @@ namespace Office.Work.Platform
             LoadPageMenu(_PageFileMenu);
         }
         /// <summary>
-        /// 待遇发放
+        /// 待遇发放菜单
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -104,7 +106,7 @@ namespace Office.Work.Platform
             LoadPageMenu(_PagePlayMenu);
         }
         /// <summary>
-        /// 员工信息
+        /// 员工信息菜单
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -113,7 +115,7 @@ namespace Office.Work.Platform
             LoadPageMenu(_PageMemberMenu);
         }
         /// <summary>
-        /// 备忘信息
+        /// 备忘信息菜单
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -121,11 +123,23 @@ namespace Office.Work.Platform
         {
             LoadPageMenu(_PageNodeMenu);
         }
+        /// <summary>
+        /// 系统设置菜单
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ListBoxItem_MouseLeftButtonUp_5(object sender, MouseButtonEventArgs e)
+        {
+            LoadPageMenu(_PageSettingsMenu);
+
+        }
         private void LoadPageMenu<T>(T PageMenu) where T : class, new()
         {
             PageMenu ??= new T();
             this.FrameMenuPage.Content = PageMenu;
             this.FrameContentPage.Content = null;
         }
+
+       
     }
 }

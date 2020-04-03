@@ -163,6 +163,9 @@
     <Compile Update="PageHome.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Settings\PageSettingsTools.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Plan\PagePlansList.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -185,6 +188,9 @@
 
   <ItemGroup>
     <Page Update="PageHome.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Settings\PageSettingsTools.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Plan\PagePlansList.xaml">

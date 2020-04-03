@@ -138,6 +138,12 @@
                         <TextBlock  Text="备忘信息" VerticalAlignment="Center"/>
                     </StackPanel>
                 </ListBoxItem>
+                <ListBoxItem MouseLeftButtonUp="ListBoxItem_MouseLeftButtonUp_5">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="&#xe633;" Style="{StaticResource FIcon}" FontSize="25" Margin="0,0,0,5"></TextBlock>
+                        <TextBlock  Text="系统设置" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </ListBoxItem>
             </ListBox>
         </Grid>
 
