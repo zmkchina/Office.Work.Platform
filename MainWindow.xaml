@@ -6,19 +6,16 @@
         xmlns:local="clr-namespace:Office.Work.Platform"
         mc:Ignorable="d" 
         WindowStyle="None"
-        AllowsTransparency="True"   WindowState="Maximized"   Background="Transparent"
         WindowStartupLocation="CenterScreen" 
+        WindowState="Maximized"
+        AllowsTransparency="True"
         ResizeMode="CanResizeWithGrip"
-        MinWidth="700" MinHeight="400"
+        Width="800"
+        Height="600"
+        Title="政工科办公信息化平台"
         StateChanged="Window_StateChanged"  Loaded="Window_LoadedAsync">
-    <!--WindowChrome.WindowChrome="{DynamicResource WindowChromeKey}">-->
     <Window.Resources>
-        <!--<WindowChrome x:Key="WindowChromeKey">
-            <WindowChrome.ResizeBorderThickness>
-                <Thickness>5</Thickness>
-            </WindowChrome.ResizeBorderThickness>
-        </WindowChrome>-->
-        <!--<Style x:Key="ToolStyle" TargetType="Button">
+        <Style x:Key="ToolStyle" TargetType="Button">
             <Style.Setters>
                 <Setter Property="BorderBrush" Value="Transparent"/>
                 <Setter Property="Background" Value="Transparent"/>
@@ -35,7 +32,7 @@
                     <Setter Property="BorderBrush" Value="Red"/>
                 </Trigger>
             </Style.Triggers>
-        </Style>-->
+        </Style>
     </Window.Resources>
 
     <Grid x:Name="MainGrid">
@@ -55,18 +52,22 @@
                        VerticalAlignment="Center" 
                        FontSize="16"/>
             </StackPanel>
-            <StackPanel VerticalAlignment="Center" Height="35"
+            <StackPanel VerticalAlignment="Center" 
                         Orientation="Horizontal"  
-                        HorizontalAlignment="Right">
-                <Button Content="恢复" Padding="3" Background="Transparent" 
+                        HorizontalAlignment="Right"
+                        PreviewMouseLeftButtonUp="WinState_MouseLeftButtonUp"
+                        >
+                <Button Content="➖" Padding="3" Background="Transparent"
                         BorderBrush="Transparent" Cursor="Hand" 
-                        Margin="10,8,0,0" Name="tbWinState" 
-                        PreviewMouseLeftButtonUp="tbWinState_MouseLeftButtonUp" 
+                        Margin="10,8,0,0" Tag="tbWinMin" 
                         TextElement.Foreground="White"/>
-                <Button Content="关闭" Padding="3" Background="Transparent" 
+                <Button Content="🔲" Padding="3" Background="Transparent"
                         BorderBrush="Transparent" Cursor="Hand" 
-                        Margin="10,8,15,0" Name="tbClose" 
-                        PreviewMouseLeftButtonUp="tbClose_MouseLeftButtonUp" 
+                        Margin="10,8,0,0" Tag="tbWinMax" 
+                        TextElement.Foreground="White"/>
+                <Button Content="❌" Padding="3" Background="Transparent"
+                        BorderBrush="Transparent" Cursor="Hand" 
+                        Margin="10,8,15,0" Tag="tbWinCose" 
                         TextElement.Foreground="White"/>
             </StackPanel>
         </Grid>

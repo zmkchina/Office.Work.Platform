@@ -7,7 +7,9 @@ using Office.Work.Platform.Plan;
 using Office.Work.Platform.Remuneration;
 using Office.Work.Platform.Settings;
 using System;
+using System.Globalization;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace Office.Work.Platform
@@ -27,6 +29,8 @@ namespace Office.Work.Platform
         {
             InitializeComponent();
             AppSettings.AppMainWindow = this;
+            //以下代码，修复窗体全屏时覆盖任务栏以及大小不正确问题。
+            FullScreenManager.RepairWpfWindowFullScreenBehavior(this);
         }
         private async void Window_LoadedAsync(object sender, RoutedEventArgs e)
         {
@@ -47,34 +51,11 @@ namespace Office.Work.Platform
             }
         }
 
-        private void tbClose_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            Application.Current.Shutdown(0);
-        }
 
-        private void tbWinState_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
-        }
-
-        private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ClickCount == 2)
-            {
-                WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
-            }
-        }
 
         private void Window_StateChanged(object sender, EventArgs e)
         {
-            if (this.tbWinState.Content.ToString().Equals("最大化"))
-            {
-                this.tbWinState.Content = "恢复";
-            }
-            else
-            {
-                this.tbWinState.Content = "最大化";
-            }
+
         }
 
 
@@ -140,6 +121,52 @@ namespace Office.Work.Platform
             this.FrameContentPage.Content = null;
         }
 
-       
+        #region 窗口大小、关闭控制
+        private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 2)
+            {
+                WindowState ^= WindowState.Maximized;
+            }
+        }
+        private void WinState_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (e.Source is System.Windows.Controls.Button btn)
+            {
+                string tagStr = btn.Tag.ToString();
+                switch (tagStr)
+                {
+                    case "tbWinMin":
+                        WindowState = WindowState.Minimized;
+                        break;
+                    case "tbWinMax":
+                        WindowState ^= WindowState.Maximized; //采用“或等于”可以同时执行恢复和最大化两个操作。
+                        break;
+                    case "tbWinCose":
+                        Application.Current.Shutdown(0);
+                        break;
+                }
+            }
+        }
+        #endregion
+
+    }
+    [ValueConversion(typeof(string), typeof(string))]
+    public class RatioConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var size = 0d;
+            if (value != null)
+                size = System.Convert.ToDouble(value, CultureInfo.InvariantCulture) *
+                       System.Convert.ToDouble(parameter, CultureInfo.InvariantCulture);
+
+            return size;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotSupportedException();
+        }
     }
 }
