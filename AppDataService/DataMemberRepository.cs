@@ -15,12 +15,12 @@ namespace Office.Work.Platform.AppDataService
         /// <summary>
         /// 新增或更新信息（如该信息已在数据库中存在，则更新之）
         /// </summary>
-        /// <param name="P_Entity"></param>
+        /// <param name="Entity"></param>
         /// <returns></returns>
-        public static async Task<ModelResult> AddOrUpdate(ModelMember P_Entity)
+        public static async Task<ModelResult> AddOrUpdate(ModelMember Entity)
         {
-            MultipartFormDataContent V_MultFormDatas = DataApiRepository.SetFormData(P_Entity);
-            ModelResult JsonResult = await DataApiRepository.PostApiUri<ModelResult>(AppSettings.ApiUrlBase + "MemberInfo", V_MultFormDatas);
+            MultipartFormDataContent V_MultFormDatas = DataApiRepository.SetFormData(Entity);
+            ModelResult JsonResult = await DataApiRepository.PostApiUri<ModelResult>(AppSettings.ApiUrlBase + "MemberInfo", V_MultFormDatas).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -28,30 +28,30 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="P_Entity"></param>
         /// <returns></returns>
-        public static async Task<ModelResult> AddRange(List<ModelMember> P_Entitys)
+        public static async Task<ModelResult> AddRange(List<ModelMember> Entitys)
         {
-            ModelResult JsonResult = await DataApiRepository.PostApiUri<ModelResult>(AppSettings.ApiUrlBase + "MemberInfo/AddRange", P_Entitys);
+            ModelResult JsonResult = await DataApiRepository.PostApiUri<ModelResult>(AppSettings.ApiUrlBase + "MemberInfo/AddRange", Entitys).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
         /// 更新信息（采用PUT）
         /// </summary>
-        /// <param name="P_Entity"></param>
+        /// <param name="Entity"></param>
         /// <returns></returns>
-        public static async Task<ModelResult> UpdateInfo(ModelMember P_Entity)
+        public static async Task<ModelResult> UpdateInfo(ModelMember Entity)
         {
-            MultipartFormDataContent V_MultFormDatas = DataApiRepository.SetFormData(P_Entity);
-            ModelResult JsonResult = await DataApiRepository.PutApiUri<ModelResult>(AppSettings.ApiUrlBase + "MemberInfo", V_MultFormDatas);
+            MultipartFormDataContent V_MultFormDatas = DataApiRepository.SetFormData(Entity);
+            ModelResult JsonResult = await DataApiRepository.PutApiUri<ModelResult>(AppSettings.ApiUrlBase + "MemberInfo", V_MultFormDatas).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
         /// 删除一个实体
         /// </summary>
-        /// <param name="P_Entity"></param>
+        /// <param name="Entity"></param>
         /// <returns></returns>
-        public static async Task<ModelResult> DeletePlanInfo(ModelMember P_Entity)
+        public static async Task<ModelResult> DeletePlanInfo(ModelMember Entity)
         {
-            ModelResult JsonResult = await DataApiRepository.DeleteApiUri<ModelResult>(AppSettings.ApiUrlBase + "MemberInfo/?P_Id=" + P_Entity.Id);
+            ModelResult JsonResult = await DataApiRepository.DeleteApiUri<ModelResult>(AppSettings.ApiUrlBase + "MemberInfo/?Id=" + Entity.Id).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>

@@ -13,18 +13,21 @@ namespace Office.Work.Platform.Settings
     /// <summary>
     /// WinUpLoadFile.xaml 的交互逻辑
     /// </summary>
-    public partial class PageSettingsTools : Page
+    public partial class PageSettingsSys : Page
     {
-        public PageSettingsTools(ModelPlan P_Plan = null)
+        private PageSettingsSysVM _PageSettingsSysVM = null;
+        public PageSettingsSys()
         {
             InitializeComponent();
         }
-        private void BtnCloseScreen_Click(object sender, RoutedEventArgs e)
+        private async void Page_LoadedAsync(object sender, RoutedEventArgs e)
         {
-            CloseScreen.Close();
+            _PageSettingsSysVM = new PageSettingsSysVM();
+            await _PageSettingsSysVM.GetEntityInfoAsync();
+            this.DataContext = _PageSettingsSysVM;
         }
 
-        private void BtnLockApp_Click(object sender, RoutedEventArgs e)
+        private void BtnUpdateSettings_Click(object sender, RoutedEventArgs e)
         {
 
         }

@@ -10,7 +10,7 @@ namespace Office.Work.Platform.AppCodes
 {
     public static class CheckUpdate
     {
-        public static async System.Threading.Tasks.Task CheckAsync()
+        public static async System.Threading.Tasks.Task<bool> CheckAsync()
         {
             //读取服务器端本系统程序的信息，以便确定是否需要更新。
             List<ModelUpdateFile> ServerUpdateFiles = await DataSystemRepository.GetServerUpdateFiles();
@@ -41,23 +41,10 @@ namespace Office.Work.Platform.AppCodes
                 DataRWLocalFileRepository.SaveObjToFile<List<string>>(NeedUpdateFiles, AppSettings.LocalUpdateFileName);
                 if (File.Exists(AppSettings.LocalUpdateFileName))
                 {
-                    MessageBox.Show("系统有新的版本，本程序将自动关闭并运行更新程序！", "更新", MessageBoxButton.OK, MessageBoxImage.Information);
-                    //说明有需要升级的文件，下面开展关闭本程序并启动升级程序。
-                    //启动外部程式
-                    Application.Current.Shutdown();
-
-                    string updateProgram = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Office.Work.Platform.Update.exe");
-                    if (File.Exists(updateProgram))
-                    {
-                        string V_UpdateProgram = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Office.Work.Platform.Update.exe");
-                        System.Diagnostics.Process.Start(V_UpdateProgram);
-                    }
-                    else
-                    {
-                        MessageBox.Show("未找到更新程序,请与开发人员联系。", "更新", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
+                    return true;
                 }
             }
+            return false;
         }
     }
 }

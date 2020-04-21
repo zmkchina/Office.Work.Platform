@@ -1,14 +1,13 @@
-﻿using Office.Work.Platform.AppCodes;
-using Office.Work.Platform.Lib;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Handlers;
 using System.Threading.Tasks;
 using System.Windows;
+using Office.Work.Platform.AppCodes;
+using Office.Work.Platform.Lib;
 
 namespace Office.Work.Platform.AppDataService
 {
@@ -22,7 +21,7 @@ namespace Office.Work.Platform.AppDataService
         public static async Task<ModelResult> UpLoadFileInfo(ModelFile UpFileInfo, Stream PostFileStream, string PostFileKey, string PostFileName, ProgressMessageHandler showUploadProgress = null)
         {
             MultipartFormDataContent V_MultFormDatas = DataApiRepository.SetFormData(UpFileInfo, PostFileStream, PostFileKey, PostFileName);
-            ModelResult JsonResult = await DataApiRepository.PostApiUri<ModelResult>(AppSettings.ApiUrlBase + "FileInfo", V_MultFormDatas, showUploadProgress);
+            ModelResult JsonResult = await DataApiRepository.PostApiUri<ModelResult>(AppSettings.ApiUrlBase + "FileInfo", V_MultFormDatas, showUploadProgress).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -34,7 +33,7 @@ namespace Office.Work.Platform.AppDataService
         {
             UpFile.UpDateTime = DateTime.Now;
             MultipartFormDataContent V_MultFormDatas = DataApiRepository.SetFormData(UpFile);
-            ModelResult JsonResult = await DataApiRepository.PutApiUri<ModelResult>(AppSettings.ApiUrlBase + "FileInfo", V_MultFormDatas);
+            ModelResult JsonResult = await DataApiRepository.PutApiUri<ModelResult>(AppSettings.ApiUrlBase + "FileInfo", V_MultFormDatas).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -44,7 +43,7 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<ModelResult> DeleteFileInfo(ModelFile DelFile)
         {
-            ModelResult JsonResult = await DataApiRepository.DeleteApiUri<ModelResult>(AppSettings.ApiUrlBase + "FileInfo/?P_FileId=" + DelFile.Id + "&P_FileExtName=" + DelFile.ExtendName);
+            ModelResult JsonResult = await DataApiRepository.DeleteApiUri<ModelResult>(AppSettings.ApiUrlBase + "FileInfo/?FileId=" + DelFile.Id + "&FileExtName=" + DelFile.ExtendName).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -86,45 +85,42 @@ namespace Office.Work.Platform.AppDataService
             string tempFilePath = System.IO.Path.Combine(tempFileDir, WillDownFile.Name + "(" + WillDownFile.Id + ")" + WillDownFile.ExtendName);
             if (!File.Exists(tempFilePath) || ReDownLoad)
             {
-                HttpResponseMessage httpResponseMessage = await DataApiRepository.GetApiUri<HttpResponseMessage>(AppSettings.ApiUrlBase + @"FileDown/" + WillDownFile.Id, showDownProgress);
-                if (httpResponseMessage == null || httpResponseMessage.Content == null)
+                HttpResponseMessage httpResponseMessage = await DataApiRepository.GetApiUri<HttpResponseMessage>(AppSettings.ApiUrlBase + @"FileDown/" + WillDownFile.Id, showDownProgress).ConfigureAwait(false);
+                if (httpResponseMessage != null && httpResponseMessage.StatusCode != System.Net.HttpStatusCode.NotFound)
                 {
-                    //说明此文件读取失败，有可能是服务器上文件被删除了。
-                    return null;
-                }
-                Stream responseStream = await httpResponseMessage.Content.ReadAsStreamAsync();
-                //以上两句代码不能用下一句代替，否则进度报告出现卡顿。
-                //Stream responseStream = await DataApiRepository.GetApiUri<Stream>(AppSettings.ApiUrlBase + @"FileDown/" + WillDownFile.Id, showDownProgress);
-                if (httpResponseMessage.Content.Headers.ContentLength > 0 && responseStream != null)
-                {
-                    if (!System.IO.Directory.Exists(tempFileDir))
+                    Stream responseStream = await httpResponseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    //以上两句代码不能用下一句代替，否则进度报告出现卡顿。
+                    //Stream responseStream = await DataApiRepository.GetApiUri<Stream>(AppSettings.ApiUrlBase + @"FileDown/" + WillDownFile.Id, showDownProgress);
+                    if (responseStream != null && responseStream.Length > 0)
                     {
-                        //创建目录
-                        System.IO.Directory.CreateDirectory(tempFileDir);
+                        if (!System.IO.Directory.Exists(tempFileDir))
+                        {
+                            //创建目录
+                            System.IO.Directory.CreateDirectory(tempFileDir);
+                        }
+                        //创建一个文件流
+                        FileStream fileStream = new FileStream(tempFilePath, FileMode.Create);
+                        //await responseStream.CopyToAsync(fileStream);
+                        byte[] buffer = new byte[2048];
+                        int readLength;
+                        while ((readLength = await responseStream.ReadAsync(buffer, 0, buffer.Length)) != 0)
+                        {
+                            // 写入到文件
+                            fileStream.Write(buffer, 0, readLength);
+                        }
+                        responseStream.Close();
+                        fileStream.Close();
                     }
-                    //创建一个文件流
-                    FileStream fileStream = new FileStream(tempFilePath, FileMode.Create);
-                    //await responseStream.CopyToAsync(fileStream);
-                    byte[] buffer = new byte[2048];
-                    int readLength;
-                    while ((readLength = await responseStream.ReadAsync(buffer, 0, buffer.Length)) != 0)
-                    {
-                        // 写入到文件
-                        fileStream.Write(buffer, 0, readLength);
-                    }
-                    responseStream.Close();
-                    fileStream.Close();
-                }
-                else
-                {
-                    MessageBox.Show("下载失败，可能该文件已被从服务器上删除", "不存在", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
             if (File.Exists(tempFilePath))
             {
                 return tempFilePath;
             }
-            return null;
+            else
+            {
+                return null;
+            }
         }
 
         ///// <summary>
@@ -151,7 +147,7 @@ namespace Office.Work.Platform.AppDataService
 
             if (urlParams.Length > 0)
             {
-                FileList = await DataApiRepository.GetApiUri<IEnumerable<ModelFile>>(AppSettings.ApiUrlBase + "FileInfo/Search" + urlParams);
+                FileList = await DataApiRepository.GetApiUri<IEnumerable<ModelFile>>(AppSettings.ApiUrlBase + "FileInfo/Search" + urlParams).ConfigureAwait(false);
             }
             return FileList;
         }

@@ -15,12 +15,12 @@ namespace Office.Work.Platform.AppDataService
         /// <summary>
         /// 新增或更新一个计划（如该计划已在数据库中存在，则更新之）
         /// </summary>
-        /// <param name="P_Entity"></param>
+        /// <param name="Entity"></param>
         /// <returns></returns>
-        public static async Task<ModelResult> AddOrUpdatePlan(ModelPlan P_Entity)
+        public static async Task<ModelResult> AddOrUpdatePlan(ModelPlan Entity)
         {
-            MultipartFormDataContent V_MultFormDatas = DataApiRepository.SetFormData(P_Entity);
-            ModelResult JsonResult = await DataApiRepository.PostApiUri<ModelResult>(AppSettings.ApiUrlBase + "PlanInfo", V_MultFormDatas);
+            MultipartFormDataContent V_MultFormDatas = DataApiRepository.SetFormData(Entity);
+            ModelResult JsonResult = await DataApiRepository.PostApiUri<ModelResult>(AppSettings.ApiUrlBase + "PlanInfo", V_MultFormDatas).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -31,7 +31,7 @@ namespace Office.Work.Platform.AppDataService
         public static async Task<ModelResult> UpdatePlanInfo(ModelPlan UpdatePlan)
         {
             MultipartFormDataContent V_MultFormDatas = DataApiRepository.SetFormData(UpdatePlan);
-            ModelResult JsonResult = await DataApiRepository.PutApiUri<ModelResult>(AppSettings.ApiUrlBase + "PlanInfo", V_MultFormDatas);
+            ModelResult JsonResult = await DataApiRepository.PutApiUri<ModelResult>(AppSettings.ApiUrlBase + "PlanInfo", V_MultFormDatas).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -41,7 +41,7 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<ModelResult> DeletePlanInfo(ModelPlan DelePlan)
         {
-            ModelResult JsonResult = await DataApiRepository.DeleteApiUri<ModelResult>(AppSettings.ApiUrlBase + "PlanInfo/?P_Id=" + DelePlan.Id);
+            ModelResult JsonResult = await DataApiRepository.DeleteApiUri<ModelResult>(AppSettings.ApiUrlBase + "PlanInfo/?P_Id=" + DelePlan.Id).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -56,7 +56,7 @@ namespace Office.Work.Platform.AppDataService
 
             if (urlParams.Length > 0)
             {
-                PlansList = await DataApiRepository.GetApiUri<IEnumerable<ModelPlan>>(AppSettings.ApiUrlBase + "PlanInfo/Search" + urlParams);
+                PlansList = await DataApiRepository.GetApiUri<IEnumerable<ModelPlan>>(AppSettings.ApiUrlBase + "PlanInfo/Search" + urlParams).ConfigureAwait(false);
             }
             return PlansList;
         }

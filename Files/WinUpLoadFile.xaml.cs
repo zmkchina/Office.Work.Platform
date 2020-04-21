@@ -88,7 +88,7 @@ namespace Office.Work.Platform.Files
                 _WinUpLoadFileVM.UploadIntProgress = e.ProgressPercentage;
             };
 
-            JsonResult = await DataFileRepository.UpLoadFileInfo(_WinUpLoadFileVM.EntityFile, _WinUpLoadFileVM.UpFileInfo.OpenRead(), "P_UpLoadFile", _WinUpLoadFileVM.EntityFile.Name, progress);
+            JsonResult = await DataFileRepository.UpLoadFileInfo(_WinUpLoadFileVM.EntityFile, _WinUpLoadFileVM.UpFileInfo.OpenRead(), "UpLoadFile", _WinUpLoadFileVM.EntityFile.Name, progress);
 
             if (JsonResult.State == 0)
             {

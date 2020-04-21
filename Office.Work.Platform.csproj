@@ -4,7 +4,8 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon></ApplicationIcon>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ApplicationIcon>AppRes\Images\App.ico</ApplicationIcon>
     <StartupObject>Office.Work.Platform.App</StartupObject>
     <Version>1.0.0</Version>
     <AssemblyVersion>1.0.0.1</AssemblyVersion>
@@ -163,6 +164,9 @@
     <Compile Update="PageHome.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Settings\PageSettingsSys.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Settings\PageSettingsTools.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -188,6 +192,9 @@
 
   <ItemGroup>
     <Page Update="PageHome.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Settings\PageSettingsSys.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Settings\PageSettingsTools.xaml">

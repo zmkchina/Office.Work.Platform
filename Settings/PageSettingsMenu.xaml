@@ -40,28 +40,28 @@
                     </Setter>
                 </Style>
             </ListBox.ItemContainerStyle>
-            <ListBoxItem IsSelected="True"  MouseLeftButtonUp="ListBoxItem_MouseLeftButtonUp_0">
+            <ListBoxItem  MouseLeftButtonUp="ListBoxItem_MouseLeftButtonUp_0" IsSelected="True">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="&#xe643;" Style="{StaticResource FIcon}" FontSize="18" Margin="0,0,5,0" Foreground="Green"></TextBlock>
-                    <TextBlock  Text="系统工具" VerticalAlignment="Center"/>
+                    <TextBlock  Text="系统参数" VerticalAlignment="Center"/>
                 </StackPanel>
             </ListBoxItem>
             <ListBoxItem MouseLeftButtonUp="ListBoxItem_MouseLeftButtonUp_1">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="&#xe643;" Style="{StaticResource FIcon}" FontSize="18" Margin="0,0,5,0" Foreground="Green"></TextBlock>
-                    <TextBlock  Text="计划设置" VerticalAlignment="Center"/>
+                    <TextBlock  Text="个人中心" VerticalAlignment="Center"/>
                 </StackPanel>
             </ListBoxItem>
             <ListBoxItem MouseLeftButtonUp="ListBoxItem_MouseLeftButtonUp_2">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="&#xe643;" Style="{StaticResource FIcon}" FontSize="18" Margin="0,0,5,0" Foreground="Green"></TextBlock>
-                    <TextBlock  Text="文件设置" VerticalAlignment="Center"/>
+                    <TextBlock  Text="常用软件" VerticalAlignment="Center"/>
                 </StackPanel>
             </ListBoxItem>
             <ListBoxItem MouseLeftButtonUp="ListBoxItem_MouseLeftButtonUp_3">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="&#xe643;" Style="{StaticResource FIcon}" FontSize="18" Margin="0,0,5,0" Foreground="Green"></TextBlock>
-                    <TextBlock  Text="密码更改" VerticalAlignment="Center"/>
+                    <TextBlock  Text="实用工具" VerticalAlignment="Center"/>
                 </StackPanel>
             </ListBoxItem>
         </ListBox>

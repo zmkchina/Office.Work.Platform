@@ -7,10 +7,21 @@
       mc:Ignorable="d"  d:DesignHeight="450" d:DesignWidth="550"
       Title="计划编辑">
     <Grid TextElement.FontSize="14" Margin="1,1" >
-        <StackPanel Orientation="Vertical" Margin="20,15" Grid.ColumnSpan="2" HorizontalAlignment="Center"  >
-            <Button Content="关闭显示器" Margin="5,10,5,10" Height="30" 
+        <StackPanel Orientation="Vertical" Margin="20,15" Grid.ColumnSpan="2" HorizontalAlignment="Stretch"  >
+            <GroupBox>
+                <GroupBox.Header>
+                    <TextBlock  Text="其他工具" Margin="5"/>
+                </GroupBox.Header>
+                <WrapPanel>
+                    <Button Content="关闭显示器" Margin="5,10,5,10" Height="30" Width="120" HorizontalAlignment="Left"
                             x:Name="BtnCloseScreen"
                             Click="BtnCloseScreen_Click"/>
+                    <Button Content="锁定本软件" Margin="5,10,5,10" Height="30" Width="120" HorizontalAlignment="Left"
+                            x:Name="BtnLockApp"
+                            Click="BtnLockApp_Click"/>
+                </WrapPanel>
+            </GroupBox>
+           
         </StackPanel>
     </Grid>
 </Page>

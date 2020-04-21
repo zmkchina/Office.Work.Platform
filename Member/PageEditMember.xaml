@@ -37,21 +37,9 @@
     </Page.Resources>
     <ScrollViewer>
         <TabControl>
-            <TabItem Header="个人情况">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                    </Grid.RowDefinitions>
-                    <GroupBox Header="个人信息" Grid.Row="0" HorizontalAlignment="Center">
+            <TabItem Header="基本信息">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
+                    <GroupBox Header="个人信息" HorizontalAlignment="Center">
                         <StackPanel Orientation="Vertical">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="员工姓名" Style="{StaticResource TextblockStyle}"/>
@@ -119,6 +107,11 @@
                             </StackPanel>
                         </StackPanel>
                     </GroupBox>
+                    <Button Grid.Row="8" x:Name="btn_Save" Content="保存" Height="30" Width="100" Click="btn_Save_Click" Margin="0,20"/>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="学习情况">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
                     <GroupBox Header="学历信息" Grid.Row="2"  HorizontalAlignment="Center">
                         <StackPanel Orientation="Vertical">
                             <StackPanel Orientation="Horizontal">
@@ -169,20 +162,33 @@
                             </StackPanel>
                         </StackPanel>
                     </GroupBox>
+                    <Button Grid.Row="8" Content="保存" Height="30" Width="100" Click="btn_Save_Click" Margin="0,20"/>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="个人简历">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
                     <GroupBox Header="个人简历" Grid.Row="3" Width="660" Height="120" HorizontalAlignment="Center">
                         <TextBox Text="{Binding EntityMember.Resume}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  TextWrapping="Wrap"/>
-                    </GroupBox>
-                    <GroupBox Header="获奖情况" Grid.Row="4" Width="660" Height="120" HorizontalAlignment="Center">
-                        <TextBox Text="{Binding EntityMember.Prize}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  TextWrapping="Wrap"/>
-                    </GroupBox>
-                    <GroupBox Header="受处罚情况" Grid.Row="5" Width="660" Height="120" HorizontalAlignment="Center">
-                        <TextBox Text="{Binding EntityMember.Punish}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  TextWrapping="Wrap"/>
                     </GroupBox>
                     <GroupBox Header="其他说明（备注）" Grid.Row="7" Width="660" Height="120" HorizontalAlignment="Center">
                         <TextBox Text="{Binding EntityMember.Remarks}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  TextWrapping="Wrap"/>
                     </GroupBox>
-                    <Button Grid.Row="8" x:Name="btn_Save" Content="保存" Height="30" Width="100" Click="btn_Save_Click" Margin="0,20"/>
-                </Grid>
+                    <Button Grid.Row="8" Content="保存" Height="30" Width="100" Click="btn_Save_Click" Margin="0,20"/>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="奖惩情况">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
+                    <GroupBox Header="获奖情况" Grid.Row="4" Width="660" Height="120" HorizontalAlignment="Left" Margin="8,0,0,0">
+                        <TextBox Text="{Binding EntityMember.Prize}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  TextWrapping="Wrap"/>
+                    </GroupBox>
+                    <GroupBox Header="受处罚情况" Grid.Row="5" Width="660" Height="120" HorizontalAlignment="Left" Margin="8,0,0,0">
+                        <TextBox Text="{Binding EntityMember.Punish}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  TextWrapping="Wrap"/>
+                    </GroupBox>
+                    <GroupBox Header="其他说明（备注）" Grid.Row="7" Width="660" Height="120" HorizontalAlignment="Left" Margin="8,0,0,0">
+                        <TextBox Text="{Binding EntityMember.Remarks}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  TextWrapping="Wrap"/>
+                    </GroupBox>
+                    <Button Grid.Row="8" Content="保存" Height="30" Width="100" Click="btn_Save_Click" Margin="278,20,289,20" />
+                </StackPanel>
             </TabItem>
             <TabItem Header="社会关系" MouseLeftButtonUp="TabItem_MouseLeftButtonUp">
                 <GroupBox HorizontalAlignment="Center" VerticalAlignment="Top" Width="660" Height="400">

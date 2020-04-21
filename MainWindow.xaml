@@ -13,7 +13,7 @@
         Width="800"
         Height="600"
         Title="政工科办公信息化平台"
-        StateChanged="Window_StateChanged"  Loaded="Window_LoadedAsync">
+        Loaded="Window_LoadedAsync">
     <Window.Resources>
         <Style x:Key="ToolStyle" TargetType="Button">
             <Style.Setters>
@@ -118,25 +118,19 @@
                 <ListBoxItem MouseLeftButtonUp="ListBoxItem_MouseLeftButtonUp_1">
                     <StackPanel Orientation="Vertical">
                         <TextBlock Text="&#xe633;" Style="{StaticResource FIcon}" FontSize="25" Margin="0,0,0,5"></TextBlock>
-                        <TextBlock  Text="全部文件" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </ListBoxItem>
-                <ListBoxItem MouseLeftButtonUp="ListBoxItem_MouseLeftButtonUp_2">
-                    <StackPanel Orientation="Vertical">
-                        <TextBlock Text="&#xe633;" Style="{StaticResource FIcon}" FontSize="25" Margin="0,0,0,5"></TextBlock>
-                        <TextBlock  Text="待遇发放" VerticalAlignment="Center"/>
+                        <TextBlock  Text="计划附件" VerticalAlignment="Center"/>
                     </StackPanel>
                 </ListBoxItem>
                 <ListBoxItem MouseLeftButtonUp="ListBoxItem_MouseLeftButtonUp_3">
                     <StackPanel Orientation="Vertical">
                         <TextBlock Text="&#xe633;" Style="{StaticResource FIcon}" FontSize="25" Margin="0,0,0,5"></TextBlock>
-                        <TextBlock  Text="个人信息" VerticalAlignment="Center"/>
+                        <TextBlock  Text="人事信息" VerticalAlignment="Center"/>
                     </StackPanel>
                 </ListBoxItem>
                 <ListBoxItem MouseLeftButtonUp="ListBoxItem_MouseLeftButtonUp_4">
                     <StackPanel Orientation="Vertical">
                         <TextBlock Text="&#xe633;" Style="{StaticResource FIcon}" FontSize="25" Margin="0,0,0,5"></TextBlock>
-                        <TextBlock  Text="备忘信息" VerticalAlignment="Center"/>
+                        <TextBlock  Text="工作备忘" VerticalAlignment="Center"/>
                     </StackPanel>
                 </ListBoxItem>
                 <ListBoxItem MouseLeftButtonUp="ListBoxItem_MouseLeftButtonUp_5">

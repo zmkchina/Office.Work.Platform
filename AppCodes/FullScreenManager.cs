@@ -68,11 +68,8 @@ namespace Office.Work.Platform.AppCodes
 
             Marshal.StructureToPtr(mmi, lParam, true);
         }
-
-
         [DllImport("user32")]
         internal static extern bool GetMonitorInfo(IntPtr hMonitor, MONITORINFO lpmi);
-
         /// <summary>
         ///
         /// </summary>

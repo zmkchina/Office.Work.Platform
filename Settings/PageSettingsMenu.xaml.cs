@@ -20,16 +20,16 @@ namespace Office.Work.Platform.Settings
         }
 
         /// <summary>
-        /// 新增计划
+        /// 系统参数
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void ListBoxItem_MouseLeftButtonUp_0(object sender, MouseButtonEventArgs e)
         {
-            AppSettings.AppMainWindow.FrameContentPage.Content = new PageSettingsTools(null);
+            AppSettings.AppMainWindow.FrameContentPage.Content = new PageSettingsSys();
         }
         /// <summary>
-        /// 我的计划
+        /// 个人中心
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -37,7 +37,7 @@ namespace Office.Work.Platform.Settings
         {
         }
         /// <summary>
-        /// 全部待办
+        /// 常用软件
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -45,12 +45,13 @@ namespace Office.Work.Platform.Settings
         {
         }
         /// <summary>
-        /// 完结计划
+        /// 实用工具
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void ListBoxItem_MouseLeftButtonUp_3(object sender, MouseButtonEventArgs e)
         {
+            AppSettings.AppMainWindow.FrameContentPage.Content = new PageSettingsTools(null);
         }
     }
 }

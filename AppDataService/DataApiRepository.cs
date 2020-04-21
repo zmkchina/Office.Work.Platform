@@ -42,7 +42,7 @@ namespace Office.Work.Platform.AppDataService
         {
             IS4_AccessToken = "";
             HttpClient _Client = CreateHttpClient();
-            var disco = await _Client.GetDiscoveryDocumentAsync("http://localhost:5000");
+            var disco = await _Client.GetDiscoveryDocumentAsync("http://localhost:5000").ConfigureAwait(false);
             //发现 IS4 各类功能所在的网址和其他相关信息 
             if (disco.IsError)
             {
@@ -62,11 +62,11 @@ namespace Office.Work.Platform.AppDataService
             //ClientPassword 客户端加用户密码模式
             var tokenResponse = await _Client.RequestPasswordTokenAsync(new PasswordTokenRequest
             {
-                Address = disco.TokenEndpoint, 
-                ClientId = "WorkPlatformClient",   
+                Address = disco.TokenEndpoint,
+                ClientId = "WorkPlatformClient",
                 ClientSecret = "Work_Platform_ClientPwd",
-                Scope = "Apis",  
-                
+                Scope = "Apis",
+
                 //以下为用户与密码
                 UserName = P_UserName,
                 Password = P_Pwd
@@ -97,7 +97,7 @@ namespace Office.Work.Platform.AppDataService
             //    Console.WriteLine(JArray.Parse(content));
             //}
         }
-        
+
         /// <summary>
         /// 使用GET方法，获取服务器资源。
         /// </summary>
@@ -111,18 +111,22 @@ namespace Office.Work.Platform.AppDataService
             Object TResult = null;
             try
             {
-                HttpResponseMessage ResultResponse = await _Client.GetAsync(ApiUri);
-                if (typeof(T) == typeof(Stream))
+                HttpResponseMessage ResultResponse = await _Client.GetAsync(ApiUri).ConfigureAwait(false);
+                if (typeof(T) == typeof(HttpResponseMessage))
                 {
-                    TResult = await ResultResponse.Content.ReadAsStreamAsync();
+                    TResult = ResultResponse;
+                }
+                else if (typeof(T) == typeof(Stream))
+                {
+                    TResult = await ResultResponse.Content.ReadAsStreamAsync().ConfigureAwait(false);
                 }
                 else if (typeof(T) == typeof(byte[]))
                 {
-                    TResult = await ResultResponse.Content.ReadAsByteArrayAsync();
+                    TResult = await ResultResponse.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
                 }
                 else
                 {
-                    string ResponseString = await ResultResponse.Content.ReadAsStringAsync();
+                    string ResponseString = await ResultResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                     TResult = JsonConvert.DeserializeObject<T>(ResponseString);
                 }
             }
@@ -143,7 +147,7 @@ namespace Office.Work.Platform.AppDataService
             try
             {
 
-                HttpResponseMessage ResponseMsg = await _Client.DeleteAsync(ApiUri);
+                HttpResponseMessage ResponseMsg = await _Client.DeleteAsync(ApiUri).ConfigureAwait(false);
                 string ResponseString = ResponseMsg.Content.ReadAsStringAsync().Result;
                 TResult = JsonConvert.DeserializeObject<T>(ResponseString);
             }
@@ -171,8 +175,8 @@ namespace Office.Work.Platform.AppDataService
             Object TResult = null;
             try
             {
-                HttpResponseMessage ResponseMsg = await _Client.PostAsync(ApiUri, PostFormData);
-                string ResponseString = await ResponseMsg.Content.ReadAsStringAsync();
+                HttpResponseMessage ResponseMsg = await _Client.PostAsync(ApiUri, PostFormData).ConfigureAwait(false);
+                string ResponseString = await ResponseMsg.Content.ReadAsStringAsync().ConfigureAwait(false);
                 TResult = JsonConvert.DeserializeObject<T>(ResponseString);
             }
             catch (Exception err)
@@ -198,7 +202,7 @@ namespace Office.Work.Platform.AppDataService
             Object TResult = null;
             try
             {
-                HttpResponseMessage ResponseMsg = await _Client.PutAsync(ApiUri, PostFormData);
+                HttpResponseMessage ResponseMsg = await _Client.PutAsync(ApiUri, PostFormData).ConfigureAwait(false);
                 string ResponseString = ResponseMsg.Content.ReadAsStringAsync().Result;
                 TResult = JsonConvert.DeserializeObject<T>(ResponseString);
             }
@@ -234,7 +238,7 @@ namespace Office.Work.Platform.AppDataService
             //转为链接需要的格式
             HttpContent httpContent = new JsonContent(PostData);
             //请求
-            HttpResponseMessage ResponseMsg = await _Client.PostAsync(ApiUri, httpContent);
+            HttpResponseMessage ResponseMsg = await _Client.PostAsync(ApiUri, httpContent).ConfigureAwait(false);
             if (ResponseMsg.IsSuccessStatusCode)
             {
                 string ResponseMsgString = ResponseMsg.Content.ReadAsStringAsync().Result;
