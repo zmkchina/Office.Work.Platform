@@ -8,22 +8,22 @@ namespace Office.Work.Platform.Files
 {
     public class UC_FileInfoVM : NotificationObject
     {
-        private ModelFile _EntityFileInfo;
+        private PlanFile _EntityFileInfo;
         private double _DownIntProgress;
         private FileOperateGrant _OperateGrant;
         public UC_FileInfoVM()
         {
             OperateGrant = new FileOperateGrant();
-            UserSelectList = new ObservableCollection<ModelSelectObj<ModelUser>>();
+            UserSelectList = new ObservableCollection<SelectObj<User>>();
         }
-        public void InitPropValus(ModelFile P_File, ModelPlan P_Plan = null)
+        public void InitPropValus(PlanFile P_File, Lib.Plan P_Plan = null)
         {
             if (P_File == null) return;
             EntityFileInfo = P_File;
             FileContentTypes = AppSettings.ServerSetting.WorkContentType.Split(',', System.StringSplitOptions.RemoveEmptyEntries);
-            foreach (ModelUser item in AppSettings.SysUsers)
+            foreach (User item in AppSettings.SysUsers)
             {
-                UserSelectList.Add(new ModelSelectObj<ModelUser>(P_File.ReadGrant.Contains(item.Id), item));
+                UserSelectList.Add(new SelectObj<User>(P_File.ReadGrant.Contains(item.Id), item));
             }
             OperateGrant = new FileOperateGrant(AppSettings.LoginUser, P_File, P_Plan);
         }
@@ -35,7 +35,7 @@ namespace Office.Work.Platform.Files
         /// <summary>
         /// 文件对象
         /// </summary>
-        public ModelFile EntityFileInfo
+        public PlanFile EntityFileInfo
         {
             get { return _EntityFileInfo; }
             set { _EntityFileInfo = value; this.RaisePropertyChanged(); }
@@ -44,7 +44,7 @@ namespace Office.Work.Platform.Files
         /// <summary>
         /// 用户选择标志集合
         /// </summary>
-        public ObservableCollection<ModelSelectObj<ModelUser>> UserSelectList { get; set; }
+        public ObservableCollection<SelectObj<User>> UserSelectList { get; set; }
 
         /// <summary>
         /// 下载进度百分比
@@ -74,10 +74,10 @@ namespace Office.Work.Platform.Files
 
         private void InitUserList()
         {
-            UserSelectList = new ObservableCollection<ModelSelectObj<ModelUser>>();
-            foreach (ModelUser item in AppSettings.SysUsers)
+            UserSelectList = new ObservableCollection<SelectObj<User>>();
+            foreach (User item in AppSettings.SysUsers)
             {
-                UserSelectList.Add(new ModelSelectObj<ModelUser>
+                UserSelectList.Add(new SelectObj<User>
                 (EntityFileInfo.ReadGrant != null ? EntityFileInfo.ReadGrant.Contains(item.Id) : false,
                  item
                 ));
@@ -102,7 +102,7 @@ namespace Office.Work.Platform.Files
             {
                 CanDelete = CanRead = CanUpdate = "Collapsed";
             }
-            public FileOperateGrant(ModelUser P_LoginUser, ModelFile P_CurFile, ModelPlan P_OwnerPlan)
+            public FileOperateGrant(User P_LoginUser, PlanFile P_CurFile, Lib.Plan P_OwnerPlan)
             {
                 CanDelete = CanRead = CanUpdate = "Collapsed";
                 if (P_LoginUser.Post.Equals("SysAdmin"))

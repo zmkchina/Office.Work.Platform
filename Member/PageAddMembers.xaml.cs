@@ -30,7 +30,7 @@ namespace Office.Work.Platform.Member
 
         private async void BtnSelectFile_Click(object sender, RoutedEventArgs e)
         {
-            ModelResult actResult = new ModelResult();
+            ExcuteResult actResult = new ExcuteResult();
             // 在WPF中， OpenFileDialog位于Microsoft.Win32名称空间
             Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog
             {
@@ -46,12 +46,12 @@ namespace Office.Work.Platform.Member
 
                     if (UserTable != null && UserTable.Rows.Count > 0)
                     {
-                        List<ModelMember> memberList = new List<ModelMember>();
-                        ModelMember tempMember = new ModelMember();
+                        List<Lib.Member> memberList = new List<Lib.Member>();
+                        Lib.Member tempMember = new Lib.Member();
                         PropertyInfo[] Attri = tempMember.GetType().GetProperties();
                         for (int i = 0; i < UserTable.Rows.Count; i++)
                         {
-                            tempMember = new ModelMember();
+                            tempMember = new Lib.Member();
                             foreach (PropertyInfo item in Attri)
                             {
                                 if (UserTable.Rows[i][item.Name] != null)

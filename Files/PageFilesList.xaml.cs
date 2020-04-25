@@ -26,7 +26,6 @@ namespace Office.Work.Platform.Files
                 //设置查询条件类
 
                 _PageFilesListVM = new PageFilesListVM();
-                _PageFilesListVM.mSearchFile.OwnerType = _FileOwnerType;
                 await _PageFilesListVM.GetFilesAsync();
                 DataContext = _PageFilesListVM;
             }
@@ -42,7 +41,7 @@ namespace Office.Work.Platform.Files
 
         private void ListBox_FileList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            this.UCFileInfo.Init_FileInfo((ModelFile)LB_FileList.SelectedItem, null, (DelFile) =>
+            this.UCFileInfo.Init_FileInfo((PlanFile)LB_FileList.SelectedItem, null, (DelFile) =>
              {
                  _PageFilesListVM.EntityFiles.Remove(DelFile);
              });
@@ -52,7 +51,7 @@ namespace Office.Work.Platform.Files
             string SearchNoValue = tb_search.Text.Trim().Length > 0 ? tb_search.Text.Trim() : null;
 
             //设置查询条件类
-            _PageFilesListVM.mSearchFile.KeysInMultiple = SearchNoValue;
+            _PageFilesListVM.mSearchFile.SearchFromNameDesc = SearchNoValue;
             await _PageFilesListVM.GetFilesAsync();
             DataContext = _PageFilesListVM;
         }

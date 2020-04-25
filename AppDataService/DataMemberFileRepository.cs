@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
@@ -11,17 +10,17 @@ using Office.Work.Platform.Lib;
 
 namespace Office.Work.Platform.AppDataService
 {
-    public static class DataFileRepository
+    public static class DataMemberFileRepository
     {
         /// <summary>
         /// 上传文件信息
         /// </summary>
         /// <param name="WillFileInfo"></param>
         /// <returns></returns>
-        public static async Task<ModelResult> UpLoadFileInfo(ModelFile UpFileInfo, Stream PostFileStream, string PostFileKey, string PostFileName, ProgressMessageHandler showUploadProgress = null)
+        public static async Task<ExcuteResult> UpLoadFileInfo(MemberFile UpFileInfo, Stream PostFileStream, string PostFileKey, string PostFileName, ProgressMessageHandler showUploadProgress = null)
         {
             MultipartFormDataContent V_MultFormDatas = DataApiRepository.SetFormData(UpFileInfo, PostFileStream, PostFileKey, PostFileName);
-            ModelResult JsonResult = await DataApiRepository.PostApiUri<ModelResult>(AppSettings.ApiUrlBase + "FileInfo", V_MultFormDatas, showUploadProgress).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.PostApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "FileInfo", V_MultFormDatas, showUploadProgress).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -29,11 +28,11 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="UpFile">预更新文件信息</param>
         /// <returns></returns>
-        public static async Task<ModelResult> UpdateFileInfo(ModelFile UpFile)
+        public static async Task<ExcuteResult> UpdateFileInfo(MemberFile UpFile)
         {
             UpFile.UpDateTime = DateTime.Now;
             MultipartFormDataContent V_MultFormDatas = DataApiRepository.SetFormData(UpFile);
-            ModelResult JsonResult = await DataApiRepository.PutApiUri<ModelResult>(AppSettings.ApiUrlBase + "FileInfo", V_MultFormDatas).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.PutApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "FileInfo", V_MultFormDatas).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -41,9 +40,9 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="DelFile">预删除的文件</param>
         /// <returns></returns>
-        public static async Task<ModelResult> DeleteFileInfo(ModelFile DelFile)
+        public static async Task<ExcuteResult> DeleteFileInfo(MemberFile DelFile)
         {
-            ModelResult JsonResult = await DataApiRepository.DeleteApiUri<ModelResult>(AppSettings.ApiUrlBase + "FileInfo/?FileId=" + DelFile.Id + "&FileExtName=" + DelFile.ExtendName).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.DeleteApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "FileInfo/?FileId=" + DelFile.Id + "&FileExtName=" + DelFile.ExtendName).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -77,10 +76,10 @@ namespace Office.Work.Platform.AppDataService
         /// <param name="ReDownLoad">是否重新下载，默认为false</param>
         /// <param name="showDownProgress">显示下载进度的委托方法,可为空</param>
         /// <returns>返回下载成功的文件目录（包括路径）</returns>
-        public static async Task<string> DownloadFile(ModelFile WillDownFile, bool ReDownLoad = false, ProgressMessageHandler showDownProgress = null)
+        public static async Task<string> DownloadFile(MemberFile WillDownFile, bool ReDownLoad = false, ProgressMessageHandler showDownProgress = null)
         {
             //合成目录
-            string tempFileDir = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DownFiles", WillDownFile.OwnerType);
+            string tempFileDir = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DownFiles", "MemberFiles");
             //合成目录+文件
             string tempFilePath = System.IO.Path.Combine(tempFileDir, WillDownFile.Name + "(" + WillDownFile.Id + ")" + WillDownFile.ExtendName);
             if (!File.Exists(tempFilePath) || ReDownLoad)
@@ -121,35 +120,6 @@ namespace Office.Work.Platform.AppDataService
             {
                 return null;
             }
-        }
-
-        ///// <summary>
-        ///// 读取所有文件列表
-        ///// </summary>
-        ///// <returns></returns>
-        //public static async Task<List<ModelFile>> ReadFiles()
-        //{
-        //    List<ModelFile> FileList = await DataApiRepository.GetApiUri<List<ModelFile>>(AppSettings.ApiUrlBase + "FileInfo");
-        //    return FileList;
-        //}
-        /// <summary>
-        /// 读取指定类型、指定宿主的文件列表。比如：读取“计划附件”编号为“201999999”的文件列表
-        /// 示例：ReadPlanFiles("计划附件","201999999");
-        /// </summary>
-        /// <param name="mSearchFile">查询条件类的实例</param>
-        /// <returns></returns>
-        public static async Task<IEnumerable<ModelFile>> ReadFiles(MSearchFile mSearchFile)
-        {
-            mSearchFile.CanReadUserId = AppSettings.LoginUser.Id;
-            IEnumerable<ModelFile> FileList = null;
-            //创建查询url参数
-            string urlParams = DataApiRepository.CreateUrlParams(mSearchFile);
-
-            if (urlParams.Length > 0)
-            {
-                FileList = await DataApiRepository.GetApiUri<IEnumerable<ModelFile>>(AppSettings.ApiUrlBase + "FileInfo/Search" + urlParams).ConfigureAwait(false);
-            }
-            return FileList;
         }
     }
 }

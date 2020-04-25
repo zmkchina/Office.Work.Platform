@@ -1,12 +1,8 @@
-﻿using Office.Work.Platform.AppCodes;
-using Office.Work.Platform.Lib;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
+using Office.Work.Platform.AppCodes;
+using Office.Work.Platform.Lib;
 
 namespace Office.Work.Platform.AppDataService
 {
@@ -17,10 +13,10 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="Entity"></param>
         /// <returns></returns>
-        public static async Task<ModelResult> AddOrUpdatePlan(ModelPlan Entity)
+        public static async Task<ExcuteResult> AddOrUpdatePlan(Lib.Plan Entity)
         {
             MultipartFormDataContent V_MultFormDatas = DataApiRepository.SetFormData(Entity);
-            ModelResult JsonResult = await DataApiRepository.PostApiUri<ModelResult>(AppSettings.ApiUrlBase + "PlanInfo", V_MultFormDatas).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.PostApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "Plan", V_MultFormDatas).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -28,10 +24,10 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="UpdatePlan"></param>
         /// <returns></returns>
-        public static async Task<ModelResult> UpdatePlanInfo(ModelPlan UpdatePlan)
+        public static async Task<ExcuteResult> UpdatePlanInfo(Lib.Plan UpdatePlan)
         {
             MultipartFormDataContent V_MultFormDatas = DataApiRepository.SetFormData(UpdatePlan);
-            ModelResult JsonResult = await DataApiRepository.PutApiUri<ModelResult>(AppSettings.ApiUrlBase + "PlanInfo", V_MultFormDatas).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.PutApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "Plan", V_MultFormDatas).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -39,9 +35,9 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="DelePlan"></param>
         /// <returns></returns>
-        public static async Task<ModelResult> DeletePlanInfo(ModelPlan DelePlan)
+        public static async Task<ExcuteResult> DeletePlanInfo(Lib.Plan DelePlan)
         {
-            ModelResult JsonResult = await DataApiRepository.DeleteApiUri<ModelResult>(AppSettings.ApiUrlBase + "PlanInfo/?P_Id=" + DelePlan.Id).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.DeleteApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "Plan/?P_Id=" + DelePlan.Id).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -49,14 +45,14 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="mSearchPlan">查询条件类的实例</param>
         /// <returns></returns>
-        public static async Task<IEnumerable<ModelPlan>> ReadPlans(MSearchPlan mSearchPlan)
+        public static async Task<IEnumerable<Lib.Plan>> ReadPlans(PlanSearch mSearchPlan)
         {
-            IEnumerable<ModelPlan> PlansList=null;
+            IEnumerable<Lib.Plan> PlansList =null;
             string urlParams = DataApiRepository.CreateUrlParams(mSearchPlan);
 
             if (urlParams.Length > 0)
             {
-                PlansList = await DataApiRepository.GetApiUri<IEnumerable<ModelPlan>>(AppSettings.ApiUrlBase + "PlanInfo/Search" + urlParams).ConfigureAwait(false);
+                PlansList = await DataApiRepository.GetApiUri<IEnumerable<Lib.Plan>>(AppSettings.ApiUrlBase + "Plan/Search" + urlParams).ConfigureAwait(false);
             }
             return PlansList;
         }

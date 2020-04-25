@@ -76,6 +76,7 @@
     <None Remove="AppRes\Images\wanchenjidu.png" />
     <None Remove="AppRes\Images\wcqk.png" />
     <None Remove="AppRes\Images\writepaper.png" />
+    <None Remove="AppRes\Window\barbackground.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -150,6 +151,7 @@
     <Resource Include="AppRes\Images\wanchenjidu.png" />
     <Resource Include="AppRes\Images\wcqk.png" />
     <Resource Include="AppRes\Images\writepaper.png" />
+    <Resource Include="AppRes\Window\barbackground.png" />
   </ItemGroup>
 
   <ItemGroup>

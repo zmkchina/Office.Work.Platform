@@ -1,5 +1,5 @@
 ﻿using System;
-using System.ComponentModel;
+using System.Net.Http.Handlers;
 using System.Windows;
 using System.Windows.Controls;
 using Office.Work.Platform.AppCodes;
@@ -14,19 +14,18 @@ namespace Office.Work.Platform.Plan
     /// </summary>
     public partial class PageEditPlan : Page
     {
-        private readonly ModelPlan _CurPlan;
+        private readonly Lib.Plan _CurPlan;
         private PageEditPlanVM _PageEditPlanVM = null;
-        public PageEditPlan(ModelPlan P_Plan = null)
+        public PageEditPlan(Lib.Plan P_Plan = null)
         {
             InitializeComponent();
-            col_fileInfo.Width = new GridLength(0);
             _CurPlan = P_Plan;
         }
-        private async void Page_LoadedAsync(object sender, RoutedEventArgs e)
+        private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             _PageEditPlanVM = new PageEditPlanVM();
-            await _PageEditPlanVM.InitPropValueAsync(_CurPlan);
-            this.DataContext = _PageEditPlanVM;
+            _PageEditPlanVM.InitPropValueAsync(_CurPlan);
+            DataContext = _PageEditPlanVM;
         }
         /// <summary>
         /// 保存新增的计划
@@ -44,7 +43,6 @@ namespace Office.Work.Platform.Plan
             }
             _PageEditPlanVM.EntityPlan.Helpers = _PageEditPlanVM.GetSelectUserIds(_PageEditPlanVM.UserHelperSelectList);
             _PageEditPlanVM.EntityPlan.ReadGrant = _PageEditPlanVM.GetSelectUserIds(_PageEditPlanVM.UserGrantSelectList);
-
             if (!_PageEditPlanVM.EntityPlan.ReadGrant.Contains(AppSettings.LoginUser.Id))
             {
                 if (MessageBox.Show("你本人没有读取该计划的权限，确认？", "警告", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.No)
@@ -53,12 +51,28 @@ namespace Office.Work.Platform.Plan
                     return;
                 }
             }
-
-            ModelResult JsonResult = await DataPlanRepository.AddOrUpdatePlan(_PageEditPlanVM.EntityPlan);
+            //保存计划
+            ExcuteResult JsonResult = await DataPlanRepository.AddOrUpdatePlan(_PageEditPlanVM.EntityPlan);
 
             if (JsonResult.State == 0)
             {
-                _PageEditPlanVM.StrPlanSaved = "Visible";
+
+                foreach (PlanFile item in _PageEditPlanVM.EntityPlan.Files)
+                {
+                    if (item.UpIntProgress == 0)//只上传未上传过的文件。
+                    {
+                        ProgressMessageHandler UpProgress = new System.Net.Http.Handlers.ProgressMessageHandler();
+                        UpProgress.HttpSendProgress += (object sender, System.Net.Http.Handlers.HttpProgressEventArgs e) =>
+                        {
+                            item.UpIntProgress = e.ProgressPercentage;
+                        };
+                        ExcuteResult result = await DataPlanFileRepository.UpLoadFileInfo(item, item.FileInfo.OpenRead(), "planfile", "pf", UpProgress);
+                        if (result.State != 0)
+                        {
+                            item.UpIntProgress = 0;
+                        }
+                    }
+                }
                 MessageBox.Show(JsonResult.Msg, "消息", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
@@ -66,17 +80,6 @@ namespace Office.Work.Platform.Plan
                 MessageBox.Show(JsonResult.Msg, "消息", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             BtnAddPlan.IsEnabled = true;
-        }
-        private void BtnUpFile_Click(object sender, RoutedEventArgs e)
-        {
-            WinUpLoadFile winUpLoadFile = new WinUpLoadFile((upFile) =>
-            {
-                _PageEditPlanVM.UploadFiles.Add(upFile); LB_FileList.Items.Refresh();
-            },
-            _PageEditPlanVM.EntityPlan.Id,
-            "计划附件",
-            _PageEditPlanVM.EntityPlan.PlanType);
-            winUpLoadFile.ShowDialog();
         }
         /// <summary>
         /// 继续新增计划
@@ -86,25 +89,57 @@ namespace Office.Work.Platform.Plan
         private void BtnAddContinue_Click(object sender, RoutedEventArgs e)
         {
             _PageEditPlanVM = new PageEditPlanVM();
-            _ = _PageEditPlanVM.InitPropValueAsync();
+            _PageEditPlanVM.InitPropValueAsync(null);
             DataContext = _PageEditPlanVM;
         }
 
-        private void LB_FileList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //上传文件到内存中。
+        private void upFiles_PreviewMouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            this.UCFileInfo.Init_FileInfo((ModelFile)LB_FileList.SelectedItem, _PageEditPlanVM.EntityPlan, (DelFile) =>
-             {
-                 _PageEditPlanVM.UploadFiles.Remove(DelFile);
-                 col_fileInfo.Width = new GridLength(0);
-                 col_fileInfo.MinWidth = 0d;
-             });
-            if (col_fileInfo.Width.Value == 0)
+            e.Handled = true;
+            System.IO.FileInfo theFile = FileOperation.SelectFile();
+            if (theFile != null)
             {
-                col_fileInfo.Width = new GridLength(1, GridUnitType.Star);
-                col_fileInfo.MinWidth = 200d;
+                _PageEditPlanVM.EntityPlan.Files.Add(new PlanFile()
+                {
+                    Id = DateTime.Now.ToString("yyyyMMddHHmmssfff"),
+                    Name = theFile.Name.Substring(0, theFile.Name.LastIndexOf('.')),
+                    UserId = AppSettings.LoginUser.Id,
+                    Length = theFile.Length,
+                    ExtendName = theFile.Extension,
+                    PlanId = _PageEditPlanVM.EntityPlan.Id,
+                    FileInfo = theFile,
+                    UpIntProgress = 0
+                });
             }
         }
-
-
+        //打开选定的文件
+        private void openFile_PreviewMouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+            TextBlock tb = sender as TextBlock;
+            PlanFile pf = tb.DataContext as PlanFile;
+            FileOperation.OpenFile(pf.FileInfo);
+        }
+        //删除选定的文件
+        private async void deleFile_PreviewMouseLeftButtonUpAsync(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+            e.Handled = true;
+            Image img = sender as Image;
+            PlanFile pf = img.DataContext as PlanFile;
+            if (pf.UpIntProgress == 100)//说明该文件已经上传到了服务器，需删除之
+            {
+                ExcuteResult excuteResult = await DataPlanFileRepository.DeleteFileInfo(pf);
+                if (excuteResult.State == 0)
+                {
+                    _PageEditPlanVM.EntityPlan.Files.Remove(pf);
+                }
+            }
+            else
+            {
+                _PageEditPlanVM.EntityPlan.Files.Remove(pf);
+            }
+        }
     }
 }

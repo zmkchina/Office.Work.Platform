@@ -15,11 +15,11 @@ namespace Office.Work.Platform.Member
     {
 
 
-        public PageEditMemberVM(ModelMember P_EntityMember)
+        public PageEditMemberVM(Lib.Member P_EntityMember)
         {
             if (P_EntityMember == null)
             {
-                EntityMember = new ModelMember();
+                EntityMember = new Lib.Member();
             }
             else
             {
@@ -35,7 +35,7 @@ namespace Office.Work.Platform.Member
         }
 
         #region "属性"
-        public ModelMember EntityMember { get; set; }
+        public Lib.Member EntityMember { get; set; }
         public string[] JobGrades { get; private set; }
         public string[] DepartmentNames { get; private set; }
         public string[] PostNames { get; private set; }
@@ -44,12 +44,12 @@ namespace Office.Work.Platform.Member
         /// <summary>
         /// 家庭成员集合
         /// </summary>
-        public ObservableCollection<ModelMemberFamily> MemberFamily { get; set; }
+        public ObservableCollection<MemberFamily> MemberFamily { get; set; }
         #endregion
 
 
         #region "方法"
-        public async Task<ModelResult> AddOrUpdate()
+        public async Task<ExcuteResult> AddOrUpdate()
         {
             return await DataMemberRepository.AddOrUpdate(EntityMember);
 

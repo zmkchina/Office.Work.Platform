@@ -211,6 +211,69 @@
                     </ListBox>
                 </GroupBox>
             </TabItem>
+            <TabItem Header="月度工资" MouseLeftButtonUp="TabItem_MouseLeftButtonUp">
+                <GroupBox HorizontalAlignment="Center" VerticalAlignment="Top" Width="660" Height="400">
+                    <GroupBox.Header>
+                        <Button Content="月度工资" Background="Transparent" Click="btn_AddRelation_Click"/>
+                    </GroupBox.Header>
+                    <ListBox ItemsSource="{Binding MemberFamily}"  Margin="5"  >
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid VerticalAlignment="Center" HorizontalAlignment="Left">
+                                    <TextBlock  Grid.Column="0" TextWrapping="Wrap" Text="{Binding Relation}"/>
+                                    <TextBlock  Grid.Column="1" TextWrapping="Wrap" Text="{Binding Name}"/>
+                                    <DatePicker Grid.Column="2" SelectedDate="{Binding Birthday}"  Style="{StaticResource DatePickerStyle}"/>
+                                    <TextBlock  Grid.Column="3" TextWrapping="Wrap" Text="{Binding Organization}"/>
+                                    <TextBlock  Grid.Column="4" TextWrapping="Wrap" Text="{Binding Post}"/>
+                                    <TextBlock  Grid.Column="5" TextWrapping="Wrap" Text="{Binding Remarks}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </GroupBox>
+            </TabItem>
+            <TabItem Header="年终绩效及奖金" MouseLeftButtonUp="TabItem_MouseLeftButtonUp">
+                <GroupBox HorizontalAlignment="Center" VerticalAlignment="Top" Width="660" Height="400">
+                    <GroupBox.Header>
+                        <Button Content="年终绩效及奖金" Background="Transparent" Click="btn_AddRelation_Click"/>
+                    </GroupBox.Header>
+                    <ListBox ItemsSource="{Binding MemberFamily}"  Margin="5"  >
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid VerticalAlignment="Center" HorizontalAlignment="Left">
+                                    <TextBlock  Grid.Column="0" TextWrapping="Wrap" Text="{Binding Relation}"/>
+                                    <TextBlock  Grid.Column="1" TextWrapping="Wrap" Text="{Binding Name}"/>
+                                    <DatePicker Grid.Column="2" SelectedDate="{Binding Birthday}"  Style="{StaticResource DatePickerStyle}"/>
+                                    <TextBlock  Grid.Column="3" TextWrapping="Wrap" Text="{Binding Organization}"/>
+                                    <TextBlock  Grid.Column="4" TextWrapping="Wrap" Text="{Binding Post}"/>
+                                    <TextBlock  Grid.Column="5" TextWrapping="Wrap" Text="{Binding Remarks}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </GroupBox>
+            </TabItem>
+            <TabItem Header="月度社保" MouseLeftButtonUp="TabItem_MouseLeftButtonUp">
+                <GroupBox HorizontalAlignment="Center" VerticalAlignment="Top" Width="660" Height="400">
+                    <GroupBox.Header>
+                        <Button Content="月度社保" Background="Transparent" Click="btn_AddRelation_Click"/>
+                    </GroupBox.Header>
+                    <ListBox ItemsSource="{Binding MemberFamily}"  Margin="5"  >
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid VerticalAlignment="Center" HorizontalAlignment="Left">
+                                    <TextBlock  Grid.Column="0" TextWrapping="Wrap" Text="{Binding Relation}"/>
+                                    <TextBlock  Grid.Column="1" TextWrapping="Wrap" Text="{Binding Name}"/>
+                                    <DatePicker Grid.Column="2" SelectedDate="{Binding Birthday}"  Style="{StaticResource DatePickerStyle}"/>
+                                    <TextBlock  Grid.Column="3" TextWrapping="Wrap" Text="{Binding Organization}"/>
+                                    <TextBlock  Grid.Column="4" TextWrapping="Wrap" Text="{Binding Post}"/>
+                                    <TextBlock  Grid.Column="5" TextWrapping="Wrap" Text="{Binding Remarks}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </GroupBox>
+            </TabItem>
         </TabControl>
     </ScrollViewer>
 </Page>

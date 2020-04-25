@@ -13,13 +13,13 @@ namespace Office.Work.Platform.AppCodes
         public static async System.Threading.Tasks.Task<bool> CheckAsync()
         {
             //读取服务器端本系统程序的信息，以便确定是否需要更新。
-            List<ModelUpdateFile> ServerUpdateFiles = await DataSystemRepository.GetServerUpdateFiles();
+            List<UpdateFile> ServerUpdateFiles = await DataSystemRepository.GetServerUpdateFiles();
             DataRWLocalFileRepository.DeleLocalFile(AppSettings.LocalUpdateFileName);//删除本地含有需要更新文件名称的文件
                                                                                      //检查程序是否需要更新
             List<string> NeedUpdateFiles = new List<string>();
             if (ServerUpdateFiles != null && ServerUpdateFiles.Count > 0)
             {
-                foreach (ModelUpdateFile item in ServerUpdateFiles)
+                foreach (UpdateFile item in ServerUpdateFiles)
                 {
                     string localFileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, item.FileName);
                     if (File.Exists(localFileName))

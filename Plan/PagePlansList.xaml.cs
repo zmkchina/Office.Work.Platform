@@ -19,7 +19,6 @@ namespace Office.Work.Platform.Plan
             InitializeComponent();
             this.UCPlanInfo.Visibility = Visibility.Collapsed;
             col_panInfo.Width = new GridLength(0);
-
             _SearchPlanType = SearchPlanType;
 
         }
@@ -35,13 +34,13 @@ namespace Office.Work.Platform.Plan
                 {
                     case "MyNoFinishPlans":
                         _PagePlansListVM.mSearchPlan.CreateUserId = AppSettings.LoginUser.Id;
-                        _PagePlansListVM.mSearchPlan.CurrectState = "等待执行,正在实施";
+                        _PagePlansListVM.mSearchPlan.CurrectState = PlanStatus.WaitBegin + "," + PlanStatus.Running;
                         break;
                     case "AllNoFinishPlans":
-                        _PagePlansListVM.mSearchPlan.CurrectState = "等待执行,正在实施";
+                        _PagePlansListVM.mSearchPlan.CurrectState = PlanStatus.WaitBegin + "," + PlanStatus.Running;
                         break;
                     case "AllFinihPlans":
-                        _PagePlansListVM.mSearchPlan.CurrectState = "已经完成";
+                        _PagePlansListVM.mSearchPlan.CurrectState = PlanStatus.Finished;
                         break;
                     case "AllPlans":
                         break;
@@ -49,29 +48,42 @@ namespace Office.Work.Platform.Plan
                 btn_Refrash_Click(null, null);
             }
         }
+        /// <summary>
+        /// 选中一个计划，进行进一步操作。
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ListBox_FileList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _ = this.UCPlanInfo.Init_PlanInfoAsync(this.LB_PlanList.SelectedItem as ModelPlan, (thePlan) =>
-              {
-                  _PagePlansListVM.EntityPlans.Remove(thePlan);
-                  col_panInfo.Width = new GridLength(0);
-                  col_panInfo.MinWidth = 0d;
-              });
-            this.UCPlanInfo.Visibility = Visibility.Visible;
-
-            if (col_panInfo.Width.Value == 0)
+            if (this.LB_PlanList.SelectedItem is Lib.Plan SelectPlan)
             {
-                col_panInfo.Width = new GridLength(1, GridUnitType.Star);
-                col_panInfo.MinWidth = 200d;
+                UCPlanInfo.Init_PlanInfo(SelectPlan, (thePlan) =>
+                   {
+                       _PagePlansListVM.EntityPlans.Remove(thePlan);
+                       col_panInfo.Width = new GridLength(0);
+                       col_panInfo.MinWidth = 0d;
+                   });
+                UCPlanInfo.Visibility = Visibility.Visible;
+
+                if (col_panInfo.Width.Value == 0)
+                {
+                    col_panInfo.Width = new GridLength(1, GridUnitType.Star);
+                    col_panInfo.MinWidth = 200d;
+                }
             }
         }
-        private async void btn_Refrash_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// 查询计划
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btn_Refrash_Click(object sender, RoutedEventArgs e)
         {
             string SearchKeys = tb_SearchKeys.Text.Trim().Length > 0 ? tb_SearchKeys.Text.Trim() : null;
             //设置查询条件类
             _PagePlansListVM.mSearchPlan.KeysInMultiple = SearchKeys;
 
-            await _PagePlansListVM.GetPlansAsync();
+            _PagePlansListVM.GetPlansAsync();
             DataContext = _PagePlansListVM;
         }
     }

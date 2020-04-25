@@ -15,7 +15,7 @@ namespace Office.Work.Platform.Settings
     /// </summary>
     public partial class PageSettingsTools : Page
     {
-        public PageSettingsTools(ModelPlan P_Plan = null)
+        public PageSettingsTools(Lib.Plan P_Plan = null)
         {
             InitializeComponent();
         }

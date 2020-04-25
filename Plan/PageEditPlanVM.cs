@@ -1,103 +1,82 @@
-﻿using Office.Work.Platform.AppCodes;
-using Office.Work.Platform.AppDataService;
-using Office.Work.Platform.Lib;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Threading;
+using Office.Work.Platform.AppCodes;
+using Office.Work.Platform.AppDataService;
+using Office.Work.Platform.Lib;
 
 namespace Office.Work.Platform.Plan
 {
     public class PageEditPlanVM : NotificationObject
     {
-        private string _StrPlanSaved = "Visibled";
-
-        public PageEditPlanVM()
+        public async void InitPropValueAsync(Lib.Plan NeedEditPlan = null)
         {
-          
-        }
-
-        public async System.Threading.Tasks.Task InitPropValueAsync(ModelPlan NeedEditPlan = null)
-        {
-            PlayStateTypes = AppSettings.ServerSetting.PlanStateType.Split(',', System.StringSplitOptions.RemoveEmptyEntries);
-            WorkContentTypes = AppSettings.ServerSetting.WorkContentType.Split(',', System.StringSplitOptions.RemoveEmptyEntries);
-            UploadFiles = new ObservableCollection<ModelFile>();
             if (NeedEditPlan != null)
             {
                 EntityPlan = NeedEditPlan;
                 //设置查询条件类
-                MSearchFile mSearchFile = new MSearchFile { OwnerType = "计划附件", OwnerId = EntityPlan.Id };
-                IEnumerable<ModelFile> UpFiles = await DataFileRepository.ReadFiles(mSearchFile);
+                PlanFileSearch mSearchFile = new PlanFileSearch();
+                mSearchFile.UserId = AppSettings.LoginUser.Id;
+                mSearchFile.PlanId = EntityPlan.Id;
+                IEnumerable<PlanFile> UpFiles = await DataPlanFileRepository.ReadFiles(mSearchFile);
                 UpFiles.ToList().ForEach(e =>
                 {
-                    UploadFiles.Add(e);
+                    e.UpIntProgress = 100;
+                    EntityPlan.Files.Add(e);
                 });
+
             }
             else
             {
-                EntityPlan = new ModelPlan
+                EntityPlan = new Lib.Plan()
                 {
-                    Id = DateTime.Now.ToString("yyyyMMddHHmmssffff"),
+                    Id = DateTime.Now.ToString("yyyyMMddHHmmssfff"),
                     CreateUserId = AppSettings.LoginUser.Id,
                     ResponsiblePerson = AppSettings.LoginUser.Id,
                     Department = AppSettings.LoginUser.Department,
                     BeginDate = DateTime.Now,
                     EndDate = DateTime.Now.AddDays(10),
                     FinishNote = "",
-                    CurrectState = PlayStateTypes[0]
+                    CurrectState = PlanStatus.WaitBegin,
+                    ReadGrant = "all"
                 };
-                StrPlanSaved = "Collapsed";
             }
             InitSelectUserList();
         }
         #region "属性"
-        public string[] WorkContentTypes { get; set; }
-        public string[] PlayStateTypes { get; set; }
-        public ModelPlan EntityPlan { get; set; }
-        /// <summary>
-        /// 属于该计划的上传文件集合
-        /// </summary>
-        public ObservableCollection<ModelFile> UploadFiles { get; set; }
+        public string[] WorkContentTypes { get { return AppSettings.ServerSetting.WorkContentType.Split(',', System.StringSplitOptions.RemoveEmptyEntries); } }
+        public string[] PlanStateTypes { get { return PlanStatus.PlanStatusArr; } }
+        public Lib.Plan EntityPlan { get; set; }
 
         /// <summary>
         /// 有权读取该计划的用户选择
         /// </summary>
-        public ObservableCollection<ModelSelectObj<ModelUser>> UserGrantSelectList { get; set; }
+        public ObservableCollection<SelectObj<User>> UserGrantSelectList { get; set; }
         /// <summary>
         /// 该计划的协助用户选择标志
         /// </summary>
-        public ObservableCollection<ModelSelectObj<ModelUser>> UserHelperSelectList { get; set; }
-        /// <summary>
-        /// 计划是否已保存了。
-        /// </summary>
-        public string StrPlanSaved
-        {
-            get { return _StrPlanSaved; }
-            set { _StrPlanSaved = value; this.RaisePropertyChanged(); }
-        }
+        public ObservableCollection<SelectObj<User>> UserHelperSelectList { get; set; }
         #endregion
 
 
         #region "方法"
         public void InitSelectUserList()
         {
-            UserGrantSelectList = new ObservableCollection<ModelSelectObj<ModelUser>>();
-            UserHelperSelectList = new ObservableCollection<ModelSelectObj<ModelUser>>();
-            foreach (ModelUser item in AppSettings.SysUsers)
+            UserGrantSelectList = new ObservableCollection<SelectObj<User>>();
+            UserHelperSelectList = new ObservableCollection<SelectObj<User>>();
+            foreach (User item in AppSettings.SysUsers.Where(e => !e.Id.Equals("admin",StringComparison.Ordinal)).OrderBy(x => x.OrderIndex))
             {
-                UserGrantSelectList.Add(new ModelSelectObj<ModelUser>(EntityPlan.ReadGrant != null && EntityPlan.ReadGrant.Contains(item.Id), item));
-                UserHelperSelectList.Add(new ModelSelectObj<ModelUser>(EntityPlan.Helpers != null && EntityPlan.Helpers.Contains(item.Id), item));
+                UserGrantSelectList.Add(new SelectObj<User>(EntityPlan.ReadGrant != null && (EntityPlan.ReadGrant.Contains(item.Id) || EntityPlan.ReadGrant.Equals("all", StringComparison.Ordinal)), item));
+                UserHelperSelectList.Add(new SelectObj<User>(EntityPlan.Helpers != null && (EntityPlan.Helpers.Contains(item.Id) || EntityPlan.Helpers.Equals("all", StringComparison.Ordinal)), item));
             }
         }
-        public string GetSelectUserIds(ObservableCollection<ModelSelectObj<ModelUser>> UserSelectList)
+        public string GetSelectUserIds(ObservableCollection<SelectObj<User>> UserSelectList)
         {
             List<string> SelectIds = UserSelectList.Where(x => x.IsSelect).Select(y => y.Obj.Id).ToList();
 
             return string.Join(",", SelectIds.ToArray());
         }
-
-
         #endregion
     }
 }

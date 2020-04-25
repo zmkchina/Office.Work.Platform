@@ -14,10 +14,10 @@ namespace Office.Work.Platform.Plan
         public PagePlansListVM()
         {
             FileContentTypes = AppSettings.ServerSetting.WorkContentType.Split(',', System.StringSplitOptions.RemoveEmptyEntries);
-            mSearchPlan = new MSearchPlan();
-            EntityPlans = new ObservableCollection<ModelPlan>();
+            mSearchPlan = new PlanSearch();
+            EntityPlans = new ObservableCollection<Lib.Plan>();
         }
-        public async Task GetPlansAsync()
+        public async void GetPlansAsync()
         {
             EntityPlans.Clear();
             var plans = await DataPlanRepository.ReadPlans(mSearchPlan);
@@ -30,9 +30,9 @@ namespace Office.Work.Platform.Plan
         /// <summary>
         /// 查询到的计划列表
         /// </summary>
-        public ObservableCollection<ModelPlan> EntityPlans { get; set; }
+        public ObservableCollection<Lib.Plan> EntityPlans { get; set; }
 
-        public MSearchPlan mSearchPlan { get; set; }
+        public PlanSearch mSearchPlan { get; set; }
 
         #region "方法"
 

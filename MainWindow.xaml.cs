@@ -22,13 +22,13 @@ namespace Office.Work.Platform
     /// </summary>
     public partial class MainWindow : Window
     {
+        public readonly NotifyIcon notifyIcon;
         private readonly PagePlanMenu _PagePlanMenu = null;
         private readonly PageNodeMenu _PageNodeMenu = null;
         private readonly PageFileMenu _PageFileMenu = null;
         private readonly PagePlayMenu _PagePlayMenu = null;
         private readonly PageMemberMenu _PageMemberMenu = null;
         private readonly PageSettingsMenu _PageSettingsMenu = null;
-        private readonly NotifyIcon notifyIcon;
 
         public MainWindow()
         {

@@ -16,17 +16,17 @@ namespace Office.Work.Platform.Member
     {
 
         public string[] FileContentTypes => AppSettings.ServerSetting.WorkContentType.Split(',', System.StringSplitOptions.RemoveEmptyEntries);
-        public ObservableCollection<ModelMember> EntityList { get; set; }
+        public ObservableCollection<Lib.Member> EntityList { get; set; }
 
-        public MSearchMember mSearchMember { get; set; }
+        public MemberSearch mSearchMember { get; set; }
         #region "方法"
         /// <summary>
         /// 构造函数
         /// </summary>
         public PageMemberListVM()
         {
-            EntityList = new ObservableCollection<ModelMember>();
-            mSearchMember = new MSearchMember();
+            EntityList = new ObservableCollection<Lib.Member>();
+            mSearchMember = new MemberSearch();
         }
 
         #endregion

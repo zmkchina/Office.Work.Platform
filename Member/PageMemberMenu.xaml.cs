@@ -38,7 +38,8 @@ namespace Office.Work.Platform.Member
         //员工列表
         private void ListBoxItem_MouseLeftButtonUp_1(object sender, MouseButtonEventArgs e)
         {
-
+            PageMemberList pageMemberList = new PageMemberList(null);
+            AppSettings.AppMainWindow.FrameContentPage.Content = pageMemberList;
         }
         //批量新增
         private void ListBoxItem_MouseLeftButtonUp_2(object sender, MouseButtonEventArgs e)

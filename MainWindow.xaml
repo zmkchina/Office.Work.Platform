@@ -12,7 +12,7 @@
         ResizeMode="CanResizeWithGrip"
         Width="800"
         Height="600"
-        Title="政工科办公信息化平台"
+        Title="办公信息化平台"
         Loaded="Window_LoadedAsync">
     <Window.Resources>
         <Style x:Key="ToolStyle" TargetType="Button">
@@ -34,7 +34,6 @@
             </Style.Triggers>
         </Style>
     </Window.Resources>
-
     <Grid x:Name="MainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
@@ -42,36 +41,40 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0"  Background="#FFC62F2F" HorizontalAlignment="Stretch" 
+        <DockPanel Grid.Row="0" 
               MouseMove="Grid_MouseMove" 
               MouseLeftButtonDown="Grid_MouseLeftButtonDown" 
-              TextElement.Foreground="White">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="&#xe64d;" Style="{StaticResource FIcon}" Foreground="White" FontSize="25" VerticalAlignment="Center" Margin="6,0,5,0"></TextBlock>
+              TextElement.Foreground="Black">
+            <DockPanel.Background>
+                <ImageBrush ImageSource="/AppRes/Window/barbackground.png"/>
+            </DockPanel.Background>
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                <TextBlock Text="&#xe64d;" Style="{StaticResource FIcon}" FontSize="25" VerticalAlignment="Center" Margin="6,0,5,0"></TextBlock>
                 <TextBlock Text="办公信息化平台 VER:1.0" 
                        VerticalAlignment="Center" 
                        FontSize="16"/>
             </StackPanel>
             <StackPanel VerticalAlignment="Center" 
-                        Orientation="Horizontal"  
                         HorizontalAlignment="Right"
-                        PreviewMouseLeftButtonUp="WinState_MouseLeftButtonUp"
+                        Orientation="Horizontal"  
+                        DockPanel.Dock="Right"
+                        PreviewMouseLeftButtonUp="WinState_MouseLeftButtonUp" 
                         >
                 <Button Content="➖" Padding="3" Background="Transparent"
                         BorderBrush="Transparent" Cursor="Hand" 
                         Margin="10,8,0,0" Tag="tbWinMin" 
-                        TextElement.Foreground="White"/>
+                        />
                 <Button Content="🔲" Padding="3" Background="Transparent"
                         BorderBrush="Transparent" Cursor="Hand" 
                         Margin="10,8,0,0" Tag="tbWinMax" 
-                        TextElement.Foreground="White"/>
+                        />
                 <Button Content="❌" Padding="3" Background="Transparent"
                         BorderBrush="Transparent" Cursor="Hand" 
                         Margin="10,8,15,0" Tag="tbWinCose" 
-                        TextElement.Foreground="White"/>
+                        />
             </StackPanel>
-        </Grid>
-        <Grid Grid.Row="1"  Background="#FFEEF0F6" HorizontalAlignment="Stretch" ShowGridLines="True">
+        </DockPanel>
+        <Grid Grid.Row="1"  Background="#EFEFEFEE" HorizontalAlignment="Stretch" ShowGridLines="True">
             <ListBox FontSize="12">
                 <ListBox.Template>
                     <ControlTemplate TargetType="{x:Type ListBox}">
@@ -157,8 +160,8 @@
             </Frame>
         </Grid>
         <StatusBar Grid.Row="3" VerticalAlignment="Center" Margin="0" Padding="0" Height="30">
-            <StatusBarItem Background="#00688B">
-                <TextBlock Name="lblCursorPosition"  Text="就绪" Foreground="White" FontSize="14" Margin="15,0,0,0"/>
+            <StatusBarItem Background="#FFEEF0F6">
+                <TextBlock Name="lblCursorPosition"  Text="就绪" FontSize="14" Margin="15,0,0,0"/>
             </StatusBarItem>
         </StatusBar>
     </Grid>

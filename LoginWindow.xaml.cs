@@ -19,7 +19,7 @@ namespace Office.Work.Platform
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             //读取本地设置
-            AppSettings.LocalSetting = DataRWLocalFileRepository.ReadObjFromFile<ModelSettingLocal>(AppSettings.LocalSettingFileName);
+            AppSettings.LocalSetting = DataRWLocalFileRepository.ReadObjFromFile<SettingLocal>(AppSettings.LocalSettingFileName);
             Text_UserId.Text = AppSettings.LocalSetting.LoginUserId;
             DataContext = AppSettings.LocalSetting;
             Text_UserPwd.Focus();
@@ -38,10 +38,10 @@ namespace Office.Work.Platform
             //请求token
             await  DataApiRepository.GetAccessToken(V_UserId, V_UserPwd);
             //从服务器读取指定的用户并在服务器上登陆
-            ModelUser LoginUser =await DataApiRepository.GetApiUri<ModelUser>(AppSettings.ApiUrlBase + "User/" + V_UserId);
+            User LoginUser =await DataApiRepository.GetApiUri<User>(AppSettings.ApiUrlBase + "User/" + V_UserId);
             if (LoginUser != null && LoginUser.PassWord.Equals(V_UserPwd))
             {
-                DataRWLocalFileRepository.SaveObjToFile<ModelSettingLocal>(AppSettings.LocalSetting, AppSettings.LocalSettingFileName);
+                DataRWLocalFileRepository.SaveObjToFile<SettingLocal>(AppSettings.LocalSetting, AppSettings.LocalSettingFileName);
                 AppSettings.LoginUser = LoginUser;
                 MainWindow mainWindow = new MainWindow();
                 mainWindow.Show();

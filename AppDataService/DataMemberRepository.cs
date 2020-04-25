@@ -17,10 +17,10 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="Entity"></param>
         /// <returns></returns>
-        public static async Task<ModelResult> AddOrUpdate(ModelMember Entity)
+        public static async Task<ExcuteResult> AddOrUpdate(Lib.Member Entity)
         {
             MultipartFormDataContent V_MultFormDatas = DataApiRepository.SetFormData(Entity);
-            ModelResult JsonResult = await DataApiRepository.PostApiUri<ModelResult>(AppSettings.ApiUrlBase + "MemberInfo", V_MultFormDatas).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.PostApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "MemberInfo", V_MultFormDatas).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -28,9 +28,9 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="P_Entity"></param>
         /// <returns></returns>
-        public static async Task<ModelResult> AddRange(List<ModelMember> Entitys)
+        public static async Task<ExcuteResult> AddRange(List<Lib.Member> Entitys)
         {
-            ModelResult JsonResult = await DataApiRepository.PostApiUri<ModelResult>(AppSettings.ApiUrlBase + "MemberInfo/AddRange", Entitys).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.PostApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "MemberInfo/AddRange", Entitys).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -38,10 +38,10 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="Entity"></param>
         /// <returns></returns>
-        public static async Task<ModelResult> UpdateInfo(ModelMember Entity)
+        public static async Task<ExcuteResult> UpdateInfo(Lib.Member Entity)
         {
             MultipartFormDataContent V_MultFormDatas = DataApiRepository.SetFormData(Entity);
-            ModelResult JsonResult = await DataApiRepository.PutApiUri<ModelResult>(AppSettings.ApiUrlBase + "MemberInfo", V_MultFormDatas).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.PutApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "MemberInfo", V_MultFormDatas).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -49,9 +49,9 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="Entity"></param>
         /// <returns></returns>
-        public static async Task<ModelResult> DeletePlanInfo(ModelMember Entity)
+        public static async Task<ExcuteResult> DeletePlanInfo(Lib.Member Entity)
         {
-            ModelResult JsonResult = await DataApiRepository.DeleteApiUri<ModelResult>(AppSettings.ApiUrlBase + "MemberInfo/?Id=" + Entity.Id).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.DeleteApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "MemberInfo/?Id=" + Entity.Id).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -59,14 +59,14 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="mSearchMember">查询条件类的实例</param>
         /// <returns></returns>
-        public static async Task<ObservableCollection<ModelMember>> ReadMembers(MSearchMember mSearchMember)
+        public static async Task<ObservableCollection<Lib.Member>> ReadMembers(MemberSearch mSearchMember)
         {
-            ObservableCollection<ModelMember> MemberList = new ObservableCollection<ModelMember>();
+            ObservableCollection<Lib.Member> MemberList = new ObservableCollection<Lib.Member>();
             string urlParams = DataApiRepository.CreateUrlParams(mSearchMember);
 
             if (urlParams.Length > 0)
             {
-                MemberList = await DataApiRepository.GetApiUri<ObservableCollection<ModelMember>>(AppSettings.ApiUrlBase + "MemberInfo/Search" + urlParams);
+                MemberList = await DataApiRepository.GetApiUri<ObservableCollection<Lib.Member>>(AppSettings.ApiUrlBase + "MemberInfo/Search" + urlParams);
             }
             return MemberList;
         }

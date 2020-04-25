@@ -17,7 +17,7 @@ namespace Office.Work.Platform.Files
     {
 
         public string[] FileContentTypes => AppSettings.ServerSetting.WorkContentType.Split(',', System.StringSplitOptions.RemoveEmptyEntries);
-        public ModelSettingServer EntitySettingServer { get; set; }
+        public SettingServer EntitySettingServer { get; set; }
 
         #region "方法"
         /// <summary>

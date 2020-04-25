@@ -13,9 +13,9 @@ namespace Office.Work.Platform.Files
     public partial class WinUpLoadFile : Window
     {
         private WinUpLoadFileVM _WinUpLoadFileVM = null;
-        private readonly Action<ModelFile> _CallBackFunc;
+        private readonly Action<PlanFile> _CallBackFunc;
 
-        public WinUpLoadFile(Action<ModelFile> P_CallBackFunc, string P_OnerId = "0000", string P_OwnerType = "普通文件", string P_ContentType = null)
+        public WinUpLoadFile(Action<PlanFile> P_CallBackFunc, string P_OnerId = "0000", string P_OwnerType = "普通文件", string P_ContentType = null)
         {
             InitializeComponent();
             _WinUpLoadFileVM = new WinUpLoadFileVM(P_OnerId, P_OwnerType, P_ContentType);
@@ -61,13 +61,8 @@ namespace Office.Work.Platform.Files
         private async void BtnUploadFile_Click(object sender, RoutedEventArgs e)
         {
             BtnUploadFile.IsEnabled = false;
-            ModelResult JsonResult = new ModelResult();
-            if (_WinUpLoadFileVM.EntityFile.ContentType == null)
-            {
-                MessageBox.Show("请选择文件内容类型！", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
-                BtnUploadFile.IsEnabled = true;
-                return;
-            }
+            ExcuteResult JsonResult = new ExcuteResult();
+          
             _WinUpLoadFileVM.EntityFile.ReadGrant = _WinUpLoadFileVM.GetSelectUserIds();
 
             if (!_WinUpLoadFileVM.EntityFile.ReadGrant.Contains(AppSettings.LoginUser.Id))
@@ -88,7 +83,7 @@ namespace Office.Work.Platform.Files
                 _WinUpLoadFileVM.UploadIntProgress = e.ProgressPercentage;
             };
 
-            JsonResult = await DataFileRepository.UpLoadFileInfo(_WinUpLoadFileVM.EntityFile, _WinUpLoadFileVM.UpFileInfo.OpenRead(), "UpLoadFile", _WinUpLoadFileVM.EntityFile.Name, progress);
+            JsonResult = await DataPlanFileRepository.UpLoadFileInfo(_WinUpLoadFileVM.EntityFile, _WinUpLoadFileVM.UpFileInfo.OpenRead(), "UpLoadFile", _WinUpLoadFileVM.EntityFile.Name, progress);
 
             if (JsonResult.State == 0)
             {

@@ -14,7 +14,7 @@ namespace Office.Work.Platform.Files
     public partial class UC_FileInfo : UserControl
     {
         private UC_FileInfoVM _UC_FileInfoVM;
-        private Action<ModelFile> _DelFileCallBackFun = null;
+        private Action<PlanFile> _DelFileCallBackFun = null;
         public UC_FileInfo()
         {
             InitializeComponent();
@@ -34,7 +34,7 @@ namespace Office.Work.Platform.Files
         /// </summary>
         /// <param name="P_File">待修改、删除的文件对象</param>
         /// <param name="P_DelFileCallBackFun">删除文件后回调的函数</param>
-        public void Init_FileInfo(ModelFile P_File, ModelPlan P_Plan=null, Action<ModelFile> P_DelFileCallBackFun = null)
+        public void Init_FileInfo(PlanFile P_File, Lib.Plan P_Plan=null, Action<PlanFile> P_DelFileCallBackFun = null)
         {
             _UC_FileInfoVM = new UC_FileInfoVM();
             _UC_FileInfoVM.InitPropValus(P_File, P_Plan);
@@ -50,7 +50,7 @@ namespace Office.Work.Platform.Files
             {
                 _UC_FileInfoVM.DownIntProgress = e.ProgressPercentage;// (double)(e.BytesTransferred / e.TotalBytes) * 100;
             };
-            string theDownFileName = await DataFileRepository.DownloadFile(_UC_FileInfoVM.EntityFileInfo, false, progress);
+            string theDownFileName = await DataPlanFileRepository.DownloadFile(_UC_FileInfoVM.EntityFileInfo, false, progress);
             if (theDownFileName == null)
             {
                 MessageBox.Show("文件下载失败,可能已被删除！", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -58,14 +58,14 @@ namespace Office.Work.Platform.Files
                 return;
             }
             _UC_FileInfoVM.DownIntProgress = 100;
-            DataFileRepository.OpenFileInfo(theDownFileName);
+            DataPlanFileRepository.OpenFileInfo(theDownFileName);
             V_Button.IsEnabled = true;
         }
         private async void btn_SaveChange(object sender, RoutedEventArgs e)
         {
             _UC_FileInfoVM.EntityFileInfo.ReadGrant = _UC_FileInfoVM.GetSelectUserIds();
 
-            ModelResult JsonResult = await DataFileRepository.UpdateFileInfo(_UC_FileInfoVM.EntityFileInfo);
+            ExcuteResult JsonResult = await DataPlanFileRepository.UpdateFileInfo(_UC_FileInfoVM.EntityFileInfo);
             if (JsonResult.State == 0)
             {
                 AppSettings.AppMainWindow.lblCursorPosition.Text = JsonResult.Msg;
@@ -78,7 +78,7 @@ namespace Office.Work.Platform.Files
         }
         private async void btn_DeleFile(object sender, RoutedEventArgs e)
         {
-            ModelResult JsonResult = await DataFileRepository.DeleteFileInfo(_UC_FileInfoVM.EntityFileInfo);
+            ExcuteResult JsonResult = await DataPlanFileRepository.DeleteFileInfo(_UC_FileInfoVM.EntityFileInfo);
             if (JsonResult.State == 0)
             {
                 if (_DelFileCallBackFun != null) _DelFileCallBackFun(_UC_FileInfoVM.EntityFileInfo);

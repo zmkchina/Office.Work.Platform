@@ -21,7 +21,7 @@ namespace Office.Work.Platform.Member
     {
         private PageEditMemberVM _PageEditMemberVM;
 
-        public PageEditMember(ModelMember P_Member)
+        public PageEditMember(Lib.Member P_Member)
         {
             InitializeComponent();
             _PageEditMemberVM = new PageEditMemberVM(P_Member);
@@ -34,7 +34,7 @@ namespace Office.Work.Platform.Member
 
         private async void btn_Save_Click(object sender, RoutedEventArgs e)
         {
-            ModelResult runResult = await _PageEditMemberVM.AddOrUpdate();
+            ExcuteResult runResult = await _PageEditMemberVM.AddOrUpdate();
             if (runResult.State == 0)
             {
                 MessageBox.Show("保存成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);

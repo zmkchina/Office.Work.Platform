@@ -8,19 +8,19 @@ namespace Office.Work.Platform.AppCodes
         /// <summary>
         /// 系统所有用户对象列表
         /// </summary>
-        public static List<ModelUser> SysUsers { get; set; }
+        public static List<User> SysUsers { get; set; }
         /// <summary>
         /// 系统当前登陆的用户对象
         /// </summary>
-        public static ModelUser LoginUser { get; set; }
+        public static User LoginUser { get; set; }
         /// <summary>
         /// 系统本地设置类对象
         /// </summary>
-        public static ModelSettingLocal LocalSetting { get; set; }
+        public static SettingLocal LocalSetting { get; set; }
         /// <summary>
         /// 系统服务器端设置类的对象
         /// </summary>
-        public static ModelSettingServer ServerSetting { get; set; }
+        public static SettingServer ServerSetting { get; set; }
         /// <summary>
         /// 系统主窗口对象
         /// </summary>
@@ -37,7 +37,8 @@ namespace Office.Work.Platform.AppCodes
         /// 请求API的基础路径
         /// </summary>
         //public static string ApiUrlBase = @"http://Localhost/Api/";
-         public static string ApiUrlBase = @"http://Localhost:5000/Api/";
+        public static string ApiUrlBase = @"http://Localhost:5000/Api/";
         //public static string ApiUrlBase = @"http://172.16.0.9/Api/";
+
     }
 }

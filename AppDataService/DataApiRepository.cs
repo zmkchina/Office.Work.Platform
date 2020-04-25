@@ -107,36 +107,25 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<T> GetApiUri<T>(string ApiUri, ProgressMessageHandler processMessageHander = null)
         {
-            HttpClient _Client = CreateHttpClient(processMessageHander);
+            using HttpClient _Client = CreateHttpClient(processMessageHander);
             Object TResult = null;
-            try
+            HttpResponseMessage ResultResponse = await _Client.GetAsync(ApiUri).ConfigureAwait(false);
+            if (typeof(T) == typeof(HttpResponseMessage))
             {
-                HttpResponseMessage ResultResponse = await _Client.GetAsync(ApiUri).ConfigureAwait(false);
-                if (typeof(T) == typeof(HttpResponseMessage))
-                {
-                    TResult = ResultResponse;
-                }
-                else if (typeof(T) == typeof(Stream))
-                {
-                    TResult = await ResultResponse.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                }
-                else if (typeof(T) == typeof(byte[]))
-                {
-                    TResult = await ResultResponse.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
-                }
-                else
-                {
-                    string ResponseString = await ResultResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    TResult = JsonConvert.DeserializeObject<T>(ResponseString);
-                }
+                TResult = ResultResponse;
             }
-            catch (Exception err)
+            else if (typeof(T) == typeof(Stream))
             {
-                MessageBox.Show(err.Message, "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                TResult = await ResultResponse.Content.ReadAsStreamAsync().ConfigureAwait(false);
             }
-            finally
+            else if (typeof(T) == typeof(byte[]))
             {
-                _Client?.Dispose();
+                TResult = await ResultResponse.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
+            }
+            else
+            {
+                string ResponseString = await ResultResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                TResult = JsonConvert.DeserializeObject<T>(ResponseString);
             }
             return (T)TResult;
         }
@@ -280,7 +269,18 @@ namespace Office.Work.Platform.AppDataService
             }
             if (PostFileStream != null)
             {
-                V_MultFormDatas.Add(new StreamContent(PostFileStream), PostFileKey, PostFileName);
+                if (PostFileKey == null)
+                {
+                    V_MultFormDatas.Add(new StreamContent (PostFileStream));
+                }
+                else if (PostFileName == null)
+                {
+                    V_MultFormDatas.Add(new StreamContent(PostFileStream), PostFileKey);
+                }
+                else
+                {
+                    V_MultFormDatas.Add(new StreamContent(PostFileStream), PostFileKey, PostFileName);
+                }
             }
             return V_MultFormDatas;
         }

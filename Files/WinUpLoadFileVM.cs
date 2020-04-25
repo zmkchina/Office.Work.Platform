@@ -11,19 +11,15 @@ namespace Office.Work.Platform.Files
     {
         private string _SelectFilePath;
         private bool _SelectFileBool;
-        private List<ModelSelectObj<ModelUser>> _UserSelectList;
+        private List<SelectObj<User>> _UserSelectList;
         private double _UploadIntProgress;
 
         public WinUpLoadFileVM(string P_OnerId = "0000", string P_OwnerType = "其他文件", string P_ContentType = null)
         {
-            EntityFile = new ModelFile
+            EntityFile = new PlanFile
             {
-                Id = DateTime.Now.ToString("yyyyMMddHHmmssffff"),
                 Name = "输入文件名称",
                 Describe = "请输入文件描述，尽量包含搜索关键字",
-                OwnerId = P_OnerId,
-                OwnerType = P_OwnerType,
-                ContentType = P_ContentType,
                 UserId = AppSettings.LoginUser.Id,
                 ReadGrant = AppSettings.LoginUser.Id
             };
@@ -32,7 +28,7 @@ namespace Office.Work.Platform.Files
             FileContentTypes = AppSettings.ServerSetting.WorkContentType.Split(',', System.StringSplitOptions.RemoveEmptyEntries);
         }
         public string[] FileContentTypes { get; set; }
-        public ModelFile EntityFile { get; set; }
+        public PlanFile EntityFile { get; set; }
         /// <summary>
         /// 上传文件的信息
         /// </summary>
@@ -40,7 +36,7 @@ namespace Office.Work.Platform.Files
         /// <summary>
         /// 用户选择标志集合
         /// </summary>
-        public List<ModelSelectObj<ModelUser>> UserSelectList
+        public List<SelectObj<User>> UserSelectList
         {
             get { return _UserSelectList; }
             set { _UserSelectList = value; this.RaisePropertyChanged(); }
@@ -66,11 +62,11 @@ namespace Office.Work.Platform.Files
         }
         public void InitUserList()
         {
-            UserSelectList = new List<ModelSelectObj<ModelUser>>();
-            foreach (ModelUser item in AppSettings.SysUsers)
+            UserSelectList = new List<SelectObj<User>>();
+            foreach (User item in AppSettings.SysUsers)
             {
 
-                UserSelectList.Add(new ModelSelectObj<ModelUser>(true, item));
+                UserSelectList.Add(new SelectObj<User>(true, item));
             }
         }
         public string GetSelectUserIds()
