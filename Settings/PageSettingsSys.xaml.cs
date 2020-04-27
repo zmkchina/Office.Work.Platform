@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Office.Work.Platform.AppCodes;
 using Office.Work.Platform.AppDataService;
-using Office.Work.Platform.Files;
+using Office.Work.Platform.PlanFiles;
 using Office.Work.Platform.Lib;
 
 namespace Office.Work.Platform.Settings

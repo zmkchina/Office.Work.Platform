@@ -11,7 +11,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Office.Work.Platform.Files
+namespace Office.Work.Platform.PlanFiles
 {
     public class PageSettingsSysVM : NotificationObject
     {

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Office.Work.Platform.AppCodes
@@ -9,7 +7,7 @@ namespace Office.Work.Platform.AppCodes
     public static class CloseScreen
     {
         [DllImport("user32.dll")]
-        public static extern int SendMessage(IntPtr hWnd, uint Msg, int wParam, int lParam);
+        private static extern int SendMessage(IntPtr hWnd, uint Msg, int wParam, int lParam);
         private static readonly IntPtr HWND_BROADCAST = new IntPtr(0xffff);
         private const uint WM_SYSCOMMAND = 0x0112;
         private const int SC_MONITORPOWER = 0xf170;
@@ -19,7 +17,7 @@ namespace Office.Work.Platform.AppCodes
             Task.Run(() =>
             {
                 System.Threading.Thread.Sleep(1000);
-                _ = SendMessage(HWND_BROADCAST, WM_SYSCOMMAND, SC_MONITORPOWER, 2);
+                SendMessage(HWND_BROADCAST, WM_SYSCOMMAND, SC_MONITORPOWER, 2);
             });
         }
     }

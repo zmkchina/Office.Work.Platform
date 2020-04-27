@@ -57,7 +57,7 @@ namespace Office.Work.Platform.Plan
         {
             if (this.LB_PlanList.SelectedItem is Lib.Plan SelectPlan)
             {
-                UCPlanInfo.Init_PlanInfo(SelectPlan, (thePlan) =>
+                UCPlanInfo.Init_PlanInfoAsync(SelectPlan, (thePlan) =>
                    {
                        _PagePlansListVM.EntityPlans.Remove(thePlan);
                        col_panInfo.Width = new GridLength(0);

@@ -11,6 +11,7 @@
         AllowsTransparency="True"
         Background="Transparent"
         WindowStartupLocation="CenterScreen" 
+        ShowInTaskbar="False"
         ForceCursor="True"
         ResizeMode="NoResize" 
         Loaded="Window_Loaded">

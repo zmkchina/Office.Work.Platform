@@ -13,7 +13,7 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="Entity"></param>
         /// <returns></returns>
-        public static async Task<ExcuteResult> AddOrUpdatePlan(Lib.Plan Entity)
+        public static async Task<ExcuteResult> AddNewPlan(Lib.Plan Entity)
         {
             MultipartFormDataContent V_MultFormDatas = DataApiRepository.SetFormData(Entity);
             ExcuteResult JsonResult = await DataApiRepository.PostApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "Plan", V_MultFormDatas).ConfigureAwait(false);
@@ -24,7 +24,7 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="UpdatePlan"></param>
         /// <returns></returns>
-        public static async Task<ExcuteResult> UpdatePlanInfo(Lib.Plan UpdatePlan)
+        public static async Task<ExcuteResult> UpdatePlan(Lib.Plan UpdatePlan)
         {
             MultipartFormDataContent V_MultFormDatas = DataApiRepository.SetFormData(UpdatePlan);
             ExcuteResult JsonResult = await DataApiRepository.PutApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "Plan", V_MultFormDatas).ConfigureAwait(false);
@@ -35,9 +35,9 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="DelePlan"></param>
         /// <returns></returns>
-        public static async Task<ExcuteResult> DeletePlanInfo(Lib.Plan DelePlan)
+        public static async Task<ExcuteResult> DeletePlan(Lib.Plan DelePlan)
         {
-            ExcuteResult JsonResult = await DataApiRepository.DeleteApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "Plan/?P_Id=" + DelePlan.Id).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.DeleteApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "Plan/" + DelePlan.Id).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>

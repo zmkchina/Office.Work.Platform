@@ -5,8 +5,8 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Office.Work.Platform.Member"
       mc:Ignorable="d" 
-      d:DesignHeight="1200" d:DesignWidth="700"
-      Title="PageEditMember" Loaded="Page_Loaded">
+      d:DesignHeight="600" d:DesignWidth="500" Loaded="Page_Loaded"
+      Title="PageEditMember">
     <Page.Resources>
         <Style x:Key="TextblockStyle" TargetType="TextBlock">
             <Setter Property="TextAlignment" Value="Right"/>
@@ -34,246 +34,46 @@
             <Setter Property="Margin" Value="5"/>
             <Setter Property="Width" Value="180"/>
         </Style>
+        <Style x:Key="TabItemStyle" TargetType="TabItem">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="Width" Value="90"/>
+            <Setter Property="Margin" Value="2,0,2,5"/>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="Green"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Page.Resources>
-    <ScrollViewer>
-        <TabControl>
-            <TabItem Header="基本信息">
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
-                    <GroupBox Header="个人信息" HorizontalAlignment="Center">
-                        <StackPanel Orientation="Vertical">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="员工姓名" Style="{StaticResource TextblockStyle}"/>
-                                <TextBox Text="{Binding EntityMember.Name}" Style="{StaticResource TextboxStyle}"/>
-                                <TextBlock Text="身份证号" Style="{StaticResource TextblockStyle}"/>
-                                <TextBox Text="{Binding EntityMember.Id}" Style="{StaticResource TextboxStyle}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="性别" Style="{StaticResource TextblockStyle}"/>
-                                <ComboBox Text="{Binding EntityMember.Sex}" Style="{StaticResource ComboBoxStyle}">
-                                    <ComboBoxItem IsSelected="True">男</ComboBoxItem>
-                                    <ComboBoxItem>女</ComboBoxItem>
-                                </ComboBox>
-                                <TextBlock Text="出生年月" Style="{StaticResource TextblockStyle}"/>
-                                <DatePicker SelectedDate="{Binding EntityMember.Birthday}" Style="{StaticResource DatePickerStyle}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="政治面貌" Style="{StaticResource TextblockStyle}"/>
-                                <TextBox Text="{Binding EntityMember.PoliticalStatus}" Style="{StaticResource TextboxStyle}"/>
-                                <TextBlock Text="入党时间" Style="{StaticResource TextblockStyle}"/>
-                                <DatePicker SelectedDate="{Binding EntityMember.JoinCPC}"  Style="{StaticResource DatePickerStyle}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="固定电话" Style="{StaticResource TextblockStyle}"/>
-                                <TextBox Text="{Binding EntityMember.FixPhoneCode}" Style="{StaticResource TextboxStyle}"/>
-                                <TextBlock Text="移动电话" Style="{StaticResource TextblockStyle}"/>
-                                <TextBox Text="{Binding EntityMember.MobileCode}" Style="{StaticResource TextboxStyle}"/>
-                            </StackPanel>
-                        </StackPanel>
-                    </GroupBox>
-                    <GroupBox Header="工作信息" Grid.Row="1"  HorizontalAlignment="Center">
-                        <StackPanel Orientation="Vertical">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="单位名称" Style="{StaticResource TextblockStyle}"/>
-                                <ComboBox ItemsSource="{Binding UnitNames}" Text="{Binding EntityMember.UnitName}" Style="{StaticResource ComboBoxStyle}" Width="505"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="参加工作时间" Style="{StaticResource TextblockStyle}"/>
-                                <DatePicker SelectedDate="{Binding EntityMember.BeginWork}"  Style="{StaticResource DatePickerStyle}"/>
-                                <TextBlock Text="进入本单位时间" Style="{StaticResource TextblockStyle}"/>
-                                <DatePicker SelectedDate="{Binding EntityMember.EnterOrganization}"  Style="{StaticResource DatePickerStyle}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="所在部门" Style="{StaticResource TextblockStyle}"/>
-                                <ComboBox ItemsSource="{Binding DepartmentNames}" Text="{Binding EntityMember.Department}" Style="{StaticResource ComboBoxStyle}"/>
-                                <TextBlock Text="职务" Style="{StaticResource TextblockStyle}"/>
-                                <ComboBox ItemsSource="{Binding PostNames}" Text="{Binding EntityMember.Post}" Style="{StaticResource ComboBoxStyle}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="技术职称" Style="{StaticResource TextblockStyle}"/>
-                                <TextBox Text="{Binding EntityMember.TechnicalTitle}" Style="{StaticResource TextboxStyle}"/>
-                                <TextBlock Text="已聘技术职称" Style="{StaticResource TextblockStyle}"/>
-                                <TextBox Text="{Binding EntityMember.EmployTitle}" Style="{StaticResource TextboxStyle}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="岗位性质" Style="{StaticResource TextblockStyle}"/>
-                                <ComboBox Text="{Binding EntityMember.Job}" Style="{StaticResource ComboBoxStyle}">
-                                    <ComboBoxItem IsSelected="True">专技岗</ComboBoxItem>
-                                    <ComboBoxItem>管理岗</ComboBoxItem>
-                                    <ComboBoxItem>工勤岗</ComboBoxItem>
-                                    <ComboBoxItem>双肩挑</ComboBoxItem>
-                                </ComboBox>
-                                <TextBlock Text="岗位级别" Style="{StaticResource TextblockStyle}"/>
-                                <ComboBox ItemsSource="{Binding JobGrades}" Text="{Binding EntityMember.JobGrade}" Style="{StaticResource ComboBoxStyle}"/>
-                            </StackPanel>
-                        </StackPanel>
-                    </GroupBox>
-                    <Button Grid.Row="8" x:Name="btn_Save" Content="保存" Height="30" Width="100" Click="btn_Save_Click" Margin="0,20"/>
-                </StackPanel>
-            </TabItem>
-            <TabItem Header="学习情况">
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
-                    <GroupBox Header="学历信息" Grid.Row="2"  HorizontalAlignment="Center">
-                        <StackPanel Orientation="Vertical">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="全日制学历" Style="{StaticResource TextblockStyle}"/>
-                                <ComboBox Text="{Binding EntityMember.EducationDays}" Style="{StaticResource ComboBoxStyle}">
-                                    <ComboBoxItem IsSelected="True">硕士</ComboBoxItem>
-                                    <ComboBoxItem>研究生</ComboBoxItem>
-                                    <ComboBoxItem>大学本科</ComboBoxItem>
-                                    <ComboBoxItem>大学专科</ComboBoxItem>
-                                    <ComboBoxItem>高中</ComboBoxItem>
-                                    <ComboBoxItem>中专及以下</ComboBoxItem>
-                                </ComboBox>
-                                <TextBlock Text="全日制毕业学校" Style="{StaticResource TextblockStyle}"/>
-                                <TextBox Text="{Binding EntityMember.GraduationSchoolDays}" Style="{StaticResource TextboxStyle}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="全日制所学专业" Style="{StaticResource TextblockStyle}"/>
-                                <TextBox Text="{Binding EntityMember.MajorDays}" Style="{StaticResource TextboxStyle}"/>
-                                <TextBlock Text="全日制毕业时间" Style="{StaticResource TextblockStyle}"/>
-                                <DatePicker SelectedDate="{Binding EntityMember.GraduationDateDays}"  Style="{StaticResource DatePickerStyle}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="最高学历" Style="{StaticResource TextblockStyle}"/>
-                                <ComboBox Text="{Binding EntityMember.EducationTop}" Style="{StaticResource ComboBoxStyle}">
-                                    <ComboBoxItem IsSelected="True">硕士</ComboBoxItem>
-                                    <ComboBoxItem>研究生</ComboBoxItem>
-                                    <ComboBoxItem>大学本科</ComboBoxItem>
-                                    <ComboBoxItem>大学专科</ComboBoxItem>
-                                    <ComboBoxItem>高中</ComboBoxItem>
-                                    <ComboBoxItem>中专及以下</ComboBoxItem>
-                                </ComboBox>
-                                <TextBlock Text="最高学历毕业学校" Style="{StaticResource TextblockStyle}"/>
-                                <TextBox Text="{Binding EntityMember.GraduationSchoolTop}" Style="{StaticResource TextboxStyle}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="最高学历所学专业" Style="{StaticResource TextblockStyle}"/>
-                                <TextBox Text="{Binding EntityMember.MajorTop}" Style="{StaticResource TextboxStyle}"/>
-                                <TextBlock Text="最高学历毕业时间" Style="{StaticResource TextblockStyle}"/>
-                                <DatePicker SelectedDate="{Binding EntityMember.GraduationDateTop}"  Style="{StaticResource DatePickerStyle}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="最高学位" Style="{StaticResource TextblockStyle}"/>
-                                <ComboBox Text="{Binding EntityMember.DegreeTop}" Style="{StaticResource ComboBoxStyle}">
-                                    <ComboBoxItem IsSelected="True">硕士</ComboBoxItem>
-                                    <ComboBoxItem>研究生</ComboBoxItem>
-                                    <ComboBoxItem>学士</ComboBoxItem>
-                                </ComboBox>
-                            </StackPanel>
-                        </StackPanel>
-                    </GroupBox>
-                    <Button Grid.Row="8" Content="保存" Height="30" Width="100" Click="btn_Save_Click" Margin="0,20"/>
-                </StackPanel>
-            </TabItem>
-            <TabItem Header="个人简历">
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
-                    <GroupBox Header="个人简历" Grid.Row="3" Width="660" Height="120" HorizontalAlignment="Center">
-                        <TextBox Text="{Binding EntityMember.Resume}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  TextWrapping="Wrap"/>
-                    </GroupBox>
-                    <GroupBox Header="其他说明（备注）" Grid.Row="7" Width="660" Height="120" HorizontalAlignment="Center">
-                        <TextBox Text="{Binding EntityMember.Remarks}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  TextWrapping="Wrap"/>
-                    </GroupBox>
-                    <Button Grid.Row="8" Content="保存" Height="30" Width="100" Click="btn_Save_Click" Margin="0,20"/>
-                </StackPanel>
-            </TabItem>
-            <TabItem Header="奖惩情况">
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
-                    <GroupBox Header="获奖情况" Grid.Row="4" Width="660" Height="120" HorizontalAlignment="Left" Margin="8,0,0,0">
-                        <TextBox Text="{Binding EntityMember.Prize}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  TextWrapping="Wrap"/>
-                    </GroupBox>
-                    <GroupBox Header="受处罚情况" Grid.Row="5" Width="660" Height="120" HorizontalAlignment="Left" Margin="8,0,0,0">
-                        <TextBox Text="{Binding EntityMember.Punish}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  TextWrapping="Wrap"/>
-                    </GroupBox>
-                    <GroupBox Header="其他说明（备注）" Grid.Row="7" Width="660" Height="120" HorizontalAlignment="Left" Margin="8,0,0,0">
-                        <TextBox Text="{Binding EntityMember.Remarks}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  TextWrapping="Wrap"/>
-                    </GroupBox>
-                    <Button Grid.Row="8" Content="保存" Height="30" Width="100" Click="btn_Save_Click" Margin="278,20,289,20" />
-                </StackPanel>
-            </TabItem>
-            <TabItem Header="社会关系" MouseLeftButtonUp="TabItem_MouseLeftButtonUp">
-                <GroupBox HorizontalAlignment="Center" VerticalAlignment="Top" Width="660" Height="400">
-                    <GroupBox.Header>
-                        <Button x:Name="btn_AddRelation" Content="添加社会关系" Background="Transparent" Click="btn_AddRelation_Click"/>
-                    </GroupBox.Header>
-                    <ListBox ItemsSource="{Binding MemberFamily}"  Margin="5"  >
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <Grid VerticalAlignment="Center" HorizontalAlignment="Left">
-                                    <TextBlock  Grid.Column="0" TextWrapping="Wrap" Text="{Binding Relation}"/>
-                                    <TextBlock  Grid.Column="1" TextWrapping="Wrap" Text="{Binding Name}"/>
-                                    <DatePicker Grid.Column="2" SelectedDate="{Binding Birthday}"  Style="{StaticResource DatePickerStyle}"/>
-                                    <TextBlock  Grid.Column="3" TextWrapping="Wrap" Text="{Binding Organization}"/>
-                                    <TextBlock  Grid.Column="4" TextWrapping="Wrap" Text="{Binding Post}"/>
-                                    <TextBlock  Grid.Column="5" TextWrapping="Wrap" Text="{Binding Remarks}"/>
-                                </Grid>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </GroupBox>
-            </TabItem>
-            <TabItem Header="月度工资" MouseLeftButtonUp="TabItem_MouseLeftButtonUp">
-                <GroupBox HorizontalAlignment="Center" VerticalAlignment="Top" Width="660" Height="400">
-                    <GroupBox.Header>
-                        <Button Content="月度工资" Background="Transparent" Click="btn_AddRelation_Click"/>
-                    </GroupBox.Header>
-                    <ListBox ItemsSource="{Binding MemberFamily}"  Margin="5"  >
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <Grid VerticalAlignment="Center" HorizontalAlignment="Left">
-                                    <TextBlock  Grid.Column="0" TextWrapping="Wrap" Text="{Binding Relation}"/>
-                                    <TextBlock  Grid.Column="1" TextWrapping="Wrap" Text="{Binding Name}"/>
-                                    <DatePicker Grid.Column="2" SelectedDate="{Binding Birthday}"  Style="{StaticResource DatePickerStyle}"/>
-                                    <TextBlock  Grid.Column="3" TextWrapping="Wrap" Text="{Binding Organization}"/>
-                                    <TextBlock  Grid.Column="4" TextWrapping="Wrap" Text="{Binding Post}"/>
-                                    <TextBlock  Grid.Column="5" TextWrapping="Wrap" Text="{Binding Remarks}"/>
-                                </Grid>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </GroupBox>
-            </TabItem>
-            <TabItem Header="年终绩效及奖金" MouseLeftButtonUp="TabItem_MouseLeftButtonUp">
-                <GroupBox HorizontalAlignment="Center" VerticalAlignment="Top" Width="660" Height="400">
-                    <GroupBox.Header>
-                        <Button Content="年终绩效及奖金" Background="Transparent" Click="btn_AddRelation_Click"/>
-                    </GroupBox.Header>
-                    <ListBox ItemsSource="{Binding MemberFamily}"  Margin="5"  >
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <Grid VerticalAlignment="Center" HorizontalAlignment="Left">
-                                    <TextBlock  Grid.Column="0" TextWrapping="Wrap" Text="{Binding Relation}"/>
-                                    <TextBlock  Grid.Column="1" TextWrapping="Wrap" Text="{Binding Name}"/>
-                                    <DatePicker Grid.Column="2" SelectedDate="{Binding Birthday}"  Style="{StaticResource DatePickerStyle}"/>
-                                    <TextBlock  Grid.Column="3" TextWrapping="Wrap" Text="{Binding Organization}"/>
-                                    <TextBlock  Grid.Column="4" TextWrapping="Wrap" Text="{Binding Post}"/>
-                                    <TextBlock  Grid.Column="5" TextWrapping="Wrap" Text="{Binding Remarks}"/>
-                                </Grid>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </GroupBox>
-            </TabItem>
-            <TabItem Header="月度社保" MouseLeftButtonUp="TabItem_MouseLeftButtonUp">
-                <GroupBox HorizontalAlignment="Center" VerticalAlignment="Top" Width="660" Height="400">
-                    <GroupBox.Header>
-                        <Button Content="月度社保" Background="Transparent" Click="btn_AddRelation_Click"/>
-                    </GroupBox.Header>
-                    <ListBox ItemsSource="{Binding MemberFamily}"  Margin="5"  >
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <Grid VerticalAlignment="Center" HorizontalAlignment="Left">
-                                    <TextBlock  Grid.Column="0" TextWrapping="Wrap" Text="{Binding Relation}"/>
-                                    <TextBlock  Grid.Column="1" TextWrapping="Wrap" Text="{Binding Name}"/>
-                                    <DatePicker Grid.Column="2" SelectedDate="{Binding Birthday}"  Style="{StaticResource DatePickerStyle}"/>
-                                    <TextBlock  Grid.Column="3" TextWrapping="Wrap" Text="{Binding Organization}"/>
-                                    <TextBlock  Grid.Column="4" TextWrapping="Wrap" Text="{Binding Post}"/>
-                                    <TextBlock  Grid.Column="5" TextWrapping="Wrap" Text="{Binding Remarks}"/>
-                                </Grid>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </GroupBox>
-            </TabItem>
-        </TabControl>
-    </ScrollViewer>
+    <TabControl x:Name="Person_TabControl" Margin="2" TabStripPlacement="Right" >
+        <TabItem Header="基本信息"  Style="{StaticResource TabItemStyle}" >
+            <local:UC_BasicInfo x:Name="UCBasicInfo"/>
+        </TabItem>
+        <TabItem Header="工作信息"  Style="{StaticResource TabItemStyle}">
+            <local:UC_WorkInfo x:Name="UCWorkInfo"/>
+        </TabItem>
+        <TabItem Header="教育信息" Style="{StaticResource TabItemStyle}">
+            
+        </TabItem>
+        <TabItem Header="个人简历" Style="{StaticResource TabItemStyle}">
+            
+        </TabItem>
+        <TabItem Header="奖惩情况" Style="{StaticResource TabItemStyle}">
+          
+        </TabItem>
+        <TabItem Header="社会关系" Style="{StaticResource TabItemStyle}">
+        </TabItem>
+        <TabItem Header="月度待遇" Style="{StaticResource TabItemStyle}">
+            
+        </TabItem>
+        <TabItem Header="补充待遇" Style="{StaticResource TabItemStyle}">
+
+        </TabItem>
+        <TabItem Header="考勤信息" Style="{StaticResource TabItemStyle}">
+
+        </TabItem>
+        <TabItem Header="其他说明" Style="{StaticResource TabItemStyle}">
+        </TabItem>
+    </TabControl>
 </Page>

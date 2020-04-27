@@ -1,10 +1,11 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
+using Office.Work.Platform.AppCodes;
 using Office.Work.Platform.AppDataService;
 using Office.Work.Platform.Lib;
 
-namespace Office.Work.Platform.Files
+namespace Office.Work.Platform.PlanFiles
 {
     /// <summary>
     /// PageFilesList.xaml 的交互逻辑
@@ -12,36 +13,26 @@ namespace Office.Work.Platform.Files
     public partial class PageFilesList : Page
     {
         private PageFilesListVM _PageFilesListVM;
-        private string _FileOwnerType;
+        private PlanFileSearch _mSearchFile;
 
         public PageFilesList(string FileOwnerType = null)
         {
             InitializeComponent();
-            _FileOwnerType = FileOwnerType;
+            _PageFilesListVM = new PageFilesListVM();
+            _mSearchFile = new PlanFileSearch();
+            _mSearchFile.UserId = AppSettings.LoginUser.Id;
+            _mSearchFile.ContentType = FileOwnerType;
         }
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            if (_PageFilesListVM == null)
-            {
-                //设置查询条件类
-
-                _PageFilesListVM = new PageFilesListVM();
-                await _PageFilesListVM.GetFilesAsync();
-                DataContext = _PageFilesListVM;
-            }
-        }
-        private void btn_UploadFile_Click(object sender, RoutedEventArgs e)
-        {
-            WinUpLoadFile winUpLoadFile = new WinUpLoadFile((upFile) =>
-            {
-                _PageFilesListVM.EntityFiles.Add(upFile); LB_FileList.Items.Refresh();
-            });
-            winUpLoadFile.ShowDialog();
+            //设置查询条件类
+            await _PageFilesListVM.GetFilesAsync(_mSearchFile);
+            DataContext = _PageFilesListVM;
         }
 
         private void ListBox_FileList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            this.UCFileInfo.Init_FileInfo((PlanFile)LB_FileList.SelectedItem, null, (DelFile) =>
+            this.UCFileInfo.Init_FileInfo((PlanFile)LB_FileList.SelectedItem, (DelFile) =>
              {
                  _PageFilesListVM.EntityFiles.Remove(DelFile);
              });
@@ -49,10 +40,8 @@ namespace Office.Work.Platform.Files
         private async void btn_Refrash_Click(object sender, RoutedEventArgs e)
         {
             string SearchNoValue = tb_search.Text.Trim().Length > 0 ? tb_search.Text.Trim() : null;
-
-            //设置查询条件类
-            _PageFilesListVM.mSearchFile.SearchFromNameDesc = SearchNoValue;
-            await _PageFilesListVM.GetFilesAsync();
+            _mSearchFile.SearchFromNameDesc= SearchNoValue;
+            await _PageFilesListVM.GetFilesAsync(_mSearchFile);
             DataContext = _PageFilesListVM;
         }
     }

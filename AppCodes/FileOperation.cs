@@ -3,10 +3,14 @@ using System.Diagnostics;
 using System.Net.Http.Handlers;
 using System.Windows;
 
-namespace Office.Work.Platform.Files
+namespace Office.Work.Platform.AppCodes
 {
     public static class FileOperation
     {
+        /// <summary>
+        /// 打开系统对话框选择一个文件。
+        /// </summary>
+        /// <returns></returns>
         public static System.IO.FileInfo SelectFile()
         {
             System.IO.FileInfo theFile = null;
@@ -34,13 +38,17 @@ namespace Office.Work.Platform.Files
             }
             return theFile;
         }
-        public static void OpenFile(System.IO.FileInfo theFile)
+        /// <summary>
+        /// 用默认程序打开指定路径、文件名的文件。
+        /// </summary>
+        /// <param name="FileFullPathName"></param>
+        public static void UseDefaultAppOpenFile(string FileFullPathName)
         {
             ProgressMessageHandler progress = new System.Net.Http.Handlers.ProgressMessageHandler();
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
                 UseShellExecute = true,
-                FileName = theFile.FullName
+                FileName = FileFullPathName
             };
             Process.Start(startInfo);
         }

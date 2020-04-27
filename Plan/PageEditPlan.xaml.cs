@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http.Handlers;
 using System.Windows;
 using System.Windows.Controls;
 using Office.Work.Platform.AppCodes;
 using Office.Work.Platform.AppDataService;
-using Office.Work.Platform.Files;
 using Office.Work.Platform.Lib;
 
 namespace Office.Work.Platform.Plan
@@ -14,18 +15,17 @@ namespace Office.Work.Platform.Plan
     /// </summary>
     public partial class PageEditPlan : Page
     {
-        private readonly Lib.Plan _CurPlan;
         private PageEditPlanVM _PageEditPlanVM = null;
         public PageEditPlan(Lib.Plan P_Plan = null)
         {
             InitializeComponent();
-            _CurPlan = P_Plan;
+            _PageEditPlanVM = new PageEditPlanVM(P_Plan);
         }
-        private void Page_Loaded(object sender, RoutedEventArgs e)
+        private async void Page_LoadedAsync(object sender, RoutedEventArgs e)
         {
-            _PageEditPlanVM = new PageEditPlanVM();
-            _PageEditPlanVM.InitPropValueAsync(_CurPlan);
+            await _PageEditPlanVM.InitPropValueAsync();
             DataContext = _PageEditPlanVM;
+            this.TBPlanCaption.Focus();
         }
         /// <summary>
         /// 保存新增的计划
@@ -35,14 +35,27 @@ namespace Office.Work.Platform.Plan
         private async void BtnAddPlan_Click(object sender, RoutedEventArgs e)
         {
             BtnAddPlan.IsEnabled = false;
-            if (_PageEditPlanVM.EntityPlan.PlanType == null)
+
+            if (!_PageEditPlanVM.EntityPlan.ModelIsValid())
             {
-                MessageBox.Show("请选择计划类型！", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("输入输入不正确，请完善或更正相关数据！", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
                 BtnAddPlan.IsEnabled = true;
                 return;
             }
+            _PageEditPlanVM.EntityPlan.CurrectState = string.IsNullOrWhiteSpace(_PageEditPlanVM.EntityPlan.CurrectState) ? PlanStatus.WaitBegin : PlanStatus.Running;
+
             _PageEditPlanVM.EntityPlan.Helpers = _PageEditPlanVM.GetSelectUserIds(_PageEditPlanVM.UserHelperSelectList);
+
+            List<SelectObj<User>> NeedAddUsers = _PageEditPlanVM.UserHelperSelectList.Where(x => x.IsSelect && !_PageEditPlanVM.UserGrantSelectList.Where(y => y.IsSelect).Contains(x)).ToList();
+
+            NeedAddUsers.ForEach(x =>
+            {
+                _PageEditPlanVM.UserGrantSelectList.Where(y => y.Obj.Id.Equals(x.Obj.Id, StringComparison.Ordinal)).FirstOrDefault().IsSelect = true;
+            });
+
             _PageEditPlanVM.EntityPlan.ReadGrant = _PageEditPlanVM.GetSelectUserIds(_PageEditPlanVM.UserGrantSelectList);
+
+
             if (!_PageEditPlanVM.EntityPlan.ReadGrant.Contains(AppSettings.LoginUser.Id))
             {
                 if (MessageBox.Show("你本人没有读取该计划的权限，确认？", "警告", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.No)
@@ -51,12 +64,21 @@ namespace Office.Work.Platform.Plan
                     return;
                 }
             }
-            //保存计划
-            ExcuteResult JsonResult = await DataPlanRepository.AddOrUpdatePlan(_PageEditPlanVM.EntityPlan);
+            ExcuteResult JsonResult = new ExcuteResult();
+            if (_PageEditPlanVM.IsEditFlag)
+            {
+                //更新计划
+                JsonResult = await DataPlanRepository.UpdatePlan(_PageEditPlanVM.EntityPlan);
 
+            }
+            else
+            {
+                //新增计划
+                JsonResult = await DataPlanRepository.AddNewPlan(_PageEditPlanVM.EntityPlan);
+            }
             if (JsonResult.State == 0)
             {
-
+                _PageEditPlanVM.IsEditFlag = true;
                 foreach (PlanFile item in _PageEditPlanVM.EntityPlan.Files)
                 {
                     if (item.UpIntProgress == 0)//只上传未上传过的文件。
@@ -86,10 +108,10 @@ namespace Office.Work.Platform.Plan
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void BtnAddContinue_Click(object sender, RoutedEventArgs e)
+        private async void BtnAddContinue_ClickAsync(object sender, RoutedEventArgs e)
         {
-            _PageEditPlanVM = new PageEditPlanVM();
-            _PageEditPlanVM.InitPropValueAsync(null);
+            _PageEditPlanVM = new PageEditPlanVM(null);
+            await _PageEditPlanVM.InitPropValueAsync();
             DataContext = _PageEditPlanVM;
         }
 
@@ -109,17 +131,41 @@ namespace Office.Work.Platform.Plan
                     ExtendName = theFile.Extension,
                     PlanId = _PageEditPlanVM.EntityPlan.Id,
                     FileInfo = theFile,
-                    UpIntProgress = 0
+                    UpIntProgress = 0,
+                    DownIntProgress = 100
                 });
             }
         }
         //打开选定的文件
-        private void openFile_PreviewMouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private async void openFile_PreviewMouseLeftButtonUpAsync(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             e.Handled = true;
             TextBlock tb = sender as TextBlock;
-            PlanFile pf = tb.DataContext as PlanFile;
-            FileOperation.OpenFile(pf.FileInfo);
+            PlanFile SelectFile = tb.DataContext as PlanFile;
+            if (SelectFile.FileInfo != null && System.IO.File.Exists(SelectFile.FileInfo.FullName))
+            {
+                FileOperation.UseDefaultAppOpenFile(SelectFile.FileInfo.FullName);
+                return;
+            }
+            //否则下载该文件（在编辑已有计划时可能会有此操作）
+            ProgressMessageHandler progress = new ProgressMessageHandler();
+
+            progress.HttpReceiveProgress += (object sender, HttpProgressEventArgs e) =>
+            {
+                SelectFile.DownIntProgress = e.ProgressPercentage;
+            };
+
+            string theDownFileName = await DataPlanFileRepository.DownloadFile(SelectFile, false, progress);
+            if (theDownFileName != null)
+            {
+                SelectFile.DownIntProgress = 100;
+                FileOperation.UseDefaultAppOpenFile(theDownFileName);
+            }
+            else
+            {
+                MessageBox.Show("文件下载失败，可能该文件已被删除！", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+
         }
         //删除选定的文件
         private async void deleFile_PreviewMouseLeftButtonUpAsync(object sender, System.Windows.Input.MouseButtonEventArgs e)

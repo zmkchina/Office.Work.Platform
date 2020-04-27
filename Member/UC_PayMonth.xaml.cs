@@ -8,6 +8,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Office.Work.Platform.AppDataService;
 using Office.Work.Platform.Lib;
@@ -15,12 +16,12 @@ using Office.Work.Platform.Lib;
 namespace Office.Work.Platform.Member
 {
     /// <summary>
-    /// WinEditFamily.xaml 的交互逻辑
+    /// UC_PayTemp.xaml 的交互逻辑
     /// </summary>
-    public partial class WinEditFamily : Window
+    public partial class UC_PayMonth : UserControl
     {
         private PageEditMemberVM _CurMemberVM;
-        public WinEditFamily()
+        public UC_PayMonth()
         {
             InitializeComponent();
         }
@@ -35,14 +36,9 @@ namespace Office.Work.Platform.Member
             MessageBox.Show(excuteResult.Msg);
         }
 
-        private void btn_Cancel_Click(object sender, RoutedEventArgs e)
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-
-        }
-
-        private void btn_Save_Click(object sender, RoutedEventArgs e)
-        {
-
+            //await _UC_PayTempVM.Init_PayTempVMAsync(null)
         }
     }
 }

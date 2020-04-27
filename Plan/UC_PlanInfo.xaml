@@ -14,13 +14,13 @@
             <GroupBox>
                 <GroupBox.Header>
                     <StackPanel Orientation="Horizontal">
-                        <Image Width="24"  VerticalAlignment="Center" Source="{Binding Path=EntityPlan.PlanStateImage}"/>
+                        <Image Width="24" VerticalAlignment="Center"  Source="{Binding Path=CurPlan.CurrectState,Converter={StaticResource PlanStateToImgeUri}}"/>
                         <Label Foreground="#777777">计划标题</Label>
                     </StackPanel>
                 </GroupBox.Header>
                 <TextBlock   MinHeight="30" TextBlock.LineHeight="22"
                              TextWrapping="Wrap"
-                             Text="{Binding EntityPlan.Caption}"
+                             Text="{Binding CurPlan.Caption}"
                              VerticalAlignment="Center" 
                              Margin="5">
                 </TextBlock>
@@ -34,7 +34,7 @@
                 </GroupBox.Header>
                 <TextBlock   MinHeight="30" TextBlock.LineHeight="22"
                              TextWrapping="Wrap" 
-                             Text="{Binding EntityPlan.Content}"
+                             Text="{Binding CurPlan.Content}"
                              VerticalAlignment="Center" 
                              Margin="5">
                 </TextBlock>
@@ -51,22 +51,22 @@
                          BorderThickness="1"
                          MinHeight="50" TextBlock.LineHeight="22"
                          TextWrapping="Wrap" 
-                         Text="{Binding EntityPlan.FinishNote}"
+                         Text="{Binding CurPlan.FinishNote}"
                          VerticalAlignment="Center" 
                          Margin="5">
                 </TextBox>
             </GroupBox>
             <GroupBox>
                 <GroupBox.Header>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Width="24" VerticalAlignment="Center" Source="/Office.Work.Platform;component/AppRes/Images/FileAdd.png"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Width="24" VerticalAlignment="Center" Source="/Office.Work.Platform;component/AppRes/Images/FileAdd.png"/>
                         <Button BorderBrush="Transparent" ToolTip="点击添加附件..."  Visibility="{Binding Path=OperateGrant.CanUpFile}"
-                            Background="Transparent" Margin="0,5,0,5" HorizontalAlignment="Left" Click="BtnUpFile_Click">
+                            Background="Transparent" Margin="0,5,0,5" HorizontalAlignment="Left" Click="BtnUpFile_ClickAsync">
                             <Label Foreground="#777777">计划附件:</Label>
                         </Button>
                     </StackPanel>
                 </GroupBox.Header>
-                <ListBox x:Name="LB_FileList" ItemsSource="{Binding UploadFiles}" Background="Transparent"
+                <ListBox x:Name="LB_FileList" ItemsSource="{Binding CurPlan.Files}" Background="Transparent"
                          MinHeight="20"
                          HorizontalAlignment="Stretch"
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -79,7 +79,7 @@
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                     <ColumnDefinition Width="30"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                                <Image Width="30" MaxHeight="30"  Grid.Column="0" VerticalAlignment="Center"  Source="{Binding Path=FileTypeImageUri}"></Image>
+                                <Image Width="20" Margin="2,5,8,5" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="{Binding Path=ExtendName,Converter={StaticResource ExtentNameToImgeUri}}"/>
                                 <TextBlock Grid.Column="1"
                                            Margin="5"
                                            ToolTip="{Binding UpDateTime}"
@@ -89,7 +89,9 @@
                                            VerticalAlignment="Center"                                              
                                            MouseLeftButtonUp="TB_OpenFile_MouseLeftButtonUp">
                                     <Run Text="{Binding Name}"/>
-                                    <Run Text="{Binding Path=DownIntProgress,StringFormat=(已下载{0:F0}%)}"/>
+                                    <Run Text="{Binding ExtendName}"/>
+                                    <Run Text="{Binding Path=UpIntProgress,StringFormat=(上传{0:F0}%)}"/>
+                                    <Run Text="{Binding Path=DownIntProgress,StringFormat=(下载{0:F0}%)}"/>
                                     <TextBlock.ContextMenu>
                                         <ContextMenu>
                                             <MenuItem Header="重新命名"  Tag="{Binding Id}" Click="MenuItem_ReName_Click"/>
@@ -143,27 +145,27 @@
                     <StackPanel Orientation="Vertical" Margin="5,2,0,5">
                         <StackPanel Orientation="Horizontal" Margin="5,0,0,0">
                             <TextBlock Text="计划类型："   Margin="5"/>
-                            <TextBlock Text="{Binding Path=EntityPlan.PlanType}"  Margin="5"/>
+                            <TextBlock Text="{Binding Path=CurPlan.PlanType}"  Margin="5"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="5,0,0,0">
                             <TextBlock Text="责任人员："   Margin="5"/>
-                            <TextBlock Text="{Binding Path=EntityPlan.ResponsiblePerson}"  Margin="5"/>
+                            <TextBlock Text="{Binding Path=CurPlanResponsibleName}"  Margin="5"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal"  Margin="5,2,0,0">
                             <TextBlock Text="协助人员：" Margin="5"/>
-                            <TextBlock Text="{Binding Path=EntityPlan.Helpers}"  Margin="5"/>
+                            <TextBlock Text="{Binding Path=CurPlanHelperNames}"  Margin="5"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="5,0,0,0">
                             <TextBlock Text="创建人员："  Margin="5"/>
-                            <TextBlock Text="{Binding Path=EntityPlan.CreateUserId}"  Margin="5"/>
+                            <TextBlock Text="{Binding Path=CurPlanCreateUserName}"  Margin="5"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="5,0,0,0">
                             <TextBlock Text="开始日期："  Margin="5"/>
-                            <TextBlock Text="{Binding Path=EntityPlan.BeginDate}"  Margin="5"/>
+                            <TextBlock Text="{Binding Path=CurPlan.BeginDate}"  Margin="5"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="5,0,0,0">
                             <TextBlock Text="结束日期："  Margin="5"/>
-                            <TextBlock Text="{Binding Path=EntityPlan.EndDate}" Margin="5"/>
+                            <TextBlock Text="{Binding Path=CurPlan.EndDate}" Margin="5"/>
                         </StackPanel>
                     </StackPanel>
                 </Expander.Content>

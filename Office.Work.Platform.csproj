@@ -64,6 +64,7 @@
     <None Remove="AppRes\Images\ManyFiles.png" />
     <None Remove="AppRes\Images\mubiao.png" />
     <None Remove="AppRes\Images\MyTasks.png" />
+    <None Remove="AppRes\Images\PhotoImg.png" />
     <None Remove="AppRes\Images\PlanAction.png" />
     <None Remove="AppRes\Images\PlanFinish.png" />
     <None Remove="AppRes\Images\PlanHandle.png" />
@@ -73,6 +74,7 @@
     <None Remove="AppRes\Images\Setting.png" />
     <None Remove="AppRes\Images\ShuXing.png" />
     <None Remove="AppRes\Images\user.png" />
+    <None Remove="AppRes\Images\video.png" />
     <None Remove="AppRes\Images\wanchenjidu.png" />
     <None Remove="AppRes\Images\wcqk.png" />
     <None Remove="AppRes\Images\writepaper.png" />
@@ -125,7 +127,6 @@
     <Resource Include="AppRes\Images\AllTasks.png" />
     <Resource Include="AppRes\Images\App.ico" />
     <Resource Include="AppRes\Images\CarTea.png" />
-    <Resource Include="AppRes\Images\DefaultImg.png" />
     <Resource Include="AppRes\Images\delete.png" />
     <Resource Include="AppRes\Images\DocExcel.png" />
     <Resource Include="AppRes\Images\DocImg.png" />
@@ -139,6 +140,7 @@
     <Resource Include="AppRes\Images\ManyFiles.png" />
     <Resource Include="AppRes\Images\mubiao.png" />
     <Resource Include="AppRes\Images\MyTasks.png" />
+    <Resource Include="AppRes\Images\PhotoImg.png" />
     <Resource Include="AppRes\Images\PlanAction.png" />
     <Resource Include="AppRes\Images\PlanFinish.png" />
     <Resource Include="AppRes\Images\PlanHandle.png" />
@@ -148,6 +150,7 @@
     <Resource Include="AppRes\Images\Setting.png" />
     <Resource Include="AppRes\Images\ShuXing.png" />
     <Resource Include="AppRes\Images\user.png" />
+    <Resource Include="AppRes\Images\video.png" />
     <Resource Include="AppRes\Images\wanchenjidu.png" />
     <Resource Include="AppRes\Images\wcqk.png" />
     <Resource Include="AppRes\Images\writepaper.png" />
@@ -163,6 +166,33 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Member\UC_EduInfo.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Member\PayMonthUnofficial.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Member\UC_PayMonth.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Member\UC_Attendance.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Member\UC_PrizePunishInfo.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Member\UC_FamilyInfo.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Member\UC_RemarkInfo.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Member\UC_ResumeInfo.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Member\UC_WorkInfo.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="PageHome.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -193,6 +223,33 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="Member\UC_EduInfo.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Member\PayMonthUnofficial.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Member\UC_PayMonth.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Member\UC_Attendance.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Member\UC_PrizePunishInfo.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Member\UC_FamilyInfo.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Member\UC_RemarkInfo.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Member\UC_ResumeInfo.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Member\UC_WorkInfo.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="PageHome.xaml">
       <SubType>Designer</SubType>
     </Page>

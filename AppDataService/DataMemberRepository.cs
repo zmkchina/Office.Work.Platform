@@ -17,10 +17,10 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="Entity"></param>
         /// <returns></returns>
-        public static async Task<ExcuteResult> AddOrUpdate(Lib.Member Entity)
+        public static async Task<ExcuteResult> AddMember(Lib.Member Entity)
         {
             MultipartFormDataContent V_MultFormDatas = DataApiRepository.SetFormData(Entity);
-            ExcuteResult JsonResult = await DataApiRepository.PostApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "MemberInfo", V_MultFormDatas).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.PostApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "Member", V_MultFormDatas).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -28,9 +28,9 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="P_Entity"></param>
         /// <returns></returns>
-        public static async Task<ExcuteResult> AddRange(List<Lib.Member> Entitys)
+        public static async Task<ExcuteResult> AddMembers(List<Lib.Member> Entitys)
         {
-            ExcuteResult JsonResult = await DataApiRepository.PostApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "MemberInfo/AddRange", Entitys).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.PostApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "Member/AddRange", Entitys).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -38,10 +38,10 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="Entity"></param>
         /// <returns></returns>
-        public static async Task<ExcuteResult> UpdateInfo(Lib.Member Entity)
+        public static async Task<ExcuteResult> UpdateMember(Lib.Member Entity)
         {
             MultipartFormDataContent V_MultFormDatas = DataApiRepository.SetFormData(Entity);
-            ExcuteResult JsonResult = await DataApiRepository.PutApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "MemberInfo", V_MultFormDatas).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.PutApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "Member", V_MultFormDatas).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -49,9 +49,9 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="Entity"></param>
         /// <returns></returns>
-        public static async Task<ExcuteResult> DeletePlanInfo(Lib.Member Entity)
+        public static async Task<ExcuteResult> DeleteMember(Lib.Member Entity)
         {
-            ExcuteResult JsonResult = await DataApiRepository.DeleteApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "MemberInfo/?Id=" + Entity.Id).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.DeleteApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "Member/?Id=" + Entity.Id).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -66,7 +66,7 @@ namespace Office.Work.Platform.AppDataService
 
             if (urlParams.Length > 0)
             {
-                MemberList = await DataApiRepository.GetApiUri<ObservableCollection<Lib.Member>>(AppSettings.ApiUrlBase + "MemberInfo/Search" + urlParams);
+                MemberList = await DataApiRepository.GetApiUri<ObservableCollection<Lib.Member>>(AppSettings.ApiUrlBase + "Member/Search" + urlParams);
             }
             return MemberList;
         }

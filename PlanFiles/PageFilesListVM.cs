@@ -5,32 +5,24 @@ using Office.Work.Platform.AppCodes;
 using Office.Work.Platform.AppDataService;
 using Office.Work.Platform.Lib;
 
-namespace Office.Work.Platform.Files
+namespace Office.Work.Platform.PlanFiles
 {
     public class PageFilesListVM : NotificationObject
     {
 
-        public string[] FileContentTypes => AppSettings.ServerSetting.WorkContentType.Split(',', System.StringSplitOptions.RemoveEmptyEntries);
         public ObservableCollection<PlanFile> EntityFiles { get; set; }
-
-        public PlanFileSearch mSearchFile { get; set; }
-        #region "方法"
-        /// <summary>
-        /// 构造函数
-        /// </summary>
         public PageFilesListVM()
         {
             EntityFiles = new ObservableCollection<PlanFile>();
-            mSearchFile = new PlanFileSearch();
         }
-        public async Task GetFilesAsync()
+        public async Task GetFilesAsync(PlanFileSearch mSearchFile)
         {
+            EntityFiles.Clear();
             var files = await DataPlanFileRepository.ReadFiles(mSearchFile);
             files.ToList().ForEach(e =>
             {
                 EntityFiles.Add(e);
             });
         }
-        #endregion
     }
 }

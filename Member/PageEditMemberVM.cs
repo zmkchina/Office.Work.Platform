@@ -1,29 +1,26 @@
-﻿using Office.Work.Platform.AppCodes;
+﻿using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using Office.Work.Platform.AppCodes;
 using Office.Work.Platform.AppDataService;
 using Office.Work.Platform.Lib;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
 
 namespace Office.Work.Platform.Member
 {
     public class PageEditMemberVM : NotificationObject
     {
+        private bool _isEditFlag;
 
-
-        public PageEditMemberVM(Lib.Member P_EntityMember)
+        public PageEditMemberVM(Lib.Member PMember)
         {
-            if (P_EntityMember == null)
+            if (PMember == null)
             {
+                isEditFlag = false;
                 EntityMember = new Lib.Member();
             }
             else
             {
-                EntityMember = P_EntityMember;
+                isEditFlag = true;
+                EntityMember = PMember;
             }
             JobGrades = new string[] { "管理4级", "管理5级", "管理6级", "管理7级", "管理8级", "管理9级", "管理9级", "管理10级",
                 "专技3级", "专技4级", "专技5级", "专技6级", "专技7级", "专技8级", "专技9级", "专技10级", "专技11级", "专技12级", "专技13级",
@@ -35,6 +32,17 @@ namespace Office.Work.Platform.Member
         }
 
         #region "属性"
+        public bool isEditFlag
+        {
+            get
+            {
+                return _isEditFlag;
+            }
+            set
+            {
+                _isEditFlag = value; RaisePropertyChanged();
+            }
+        }
         public Lib.Member EntityMember { get; set; }
         public string[] JobGrades { get; private set; }
         public string[] DepartmentNames { get; private set; }
@@ -49,11 +57,7 @@ namespace Office.Work.Platform.Member
 
 
         #region "方法"
-        public async Task<ExcuteResult> AddOrUpdate()
-        {
-            return await DataMemberRepository.AddOrUpdate(EntityMember);
 
-        }
         #endregion
     }
 }

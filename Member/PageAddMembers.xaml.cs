@@ -84,7 +84,7 @@ namespace Office.Work.Platform.Member
                                 memberList.Add(tempMember);
                             }
                         }
-                        actResult = await DataMemberRepository.AddRange(memberList);
+                        actResult = await DataMemberRepository.AddMembers(memberList);
                     }
                     MessageBox.Show(actResult.Msg);
                 }

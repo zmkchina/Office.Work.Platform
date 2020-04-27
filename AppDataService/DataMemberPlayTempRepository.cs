@@ -11,8 +11,26 @@ using Office.Work.Platform.Lib;
 
 namespace Office.Work.Platform.AppDataService
 {
-    public static class DataPlanFileRepository
+    public static class DataMemberPlayTempRepository
     {
+        /// <summary>
+        /// 读取指定类型、指定宿主的文件列表。比如：读取“计划附件”编号为“201999999”的文件列表
+        /// 示例：ReadPlanFiles("计划附件","201999999");
+        /// </summary>
+        /// <param name="mSearchFile">查询条件类的实例</param>
+        /// <returns></returns>
+        public static async Task<IEnumerable<MemberPayTemp>> ReadPayTemps(MemberPayTempSearch mSearchPayTemp)
+        {
+            IEnumerable<MemberPayTemp> PayTempList = null;
+            //创建查询url参数
+            string urlParams = DataApiRepository.CreateUrlParams(mSearchPayTemp);
+
+            if (urlParams.Length > 0)
+            {
+                PayTempList = await DataApiRepository.GetApiUri<IEnumerable<MemberPayTemp>>(AppSettings.ApiUrlBase + "MemberPayTemp/Search" + urlParams).ConfigureAwait(false);
+            }
+            return PayTempList;
+        }
         /// <summary>
         /// 上传计划附件
         /// </summary>

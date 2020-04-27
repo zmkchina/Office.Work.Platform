@@ -1,11 +1,8 @@
-﻿using Office.Work.Platform.AppCodes;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Office.Work.Platform.AppCodes;
 using Office.Work.Platform.AppDataService;
 using Office.Work.Platform.Lib;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Office.Work.Platform.Plan
 {
@@ -16,27 +13,60 @@ namespace Office.Work.Platform.Plan
         public UC_PlanInfoVM()
         {
         }
-        public async void Init_PlanInfoVMAsync(Lib.Plan P_Entity)
+        public async System.Threading.Tasks.Task Init_PlanInfoVMAsync(Lib.Plan P_Entity)
         {
-            UploadFiles = new ObservableCollection<PlanFile>();
-            EntityPlan = P_Entity;
+            CurPlan = P_Entity;
             OperateGrant = new PlanOperateGrant(AppSettings.LoginUser, P_Entity);
-            //设置查询条件类
-            PlanFileSearch mSearchFile = new PlanFileSearch() { PlanId=P_Entity.Id,UserId=AppSettings.LoginUser.Id};
-            IEnumerable<PlanFile> UpFiles = await DataPlanFileRepository.ReadFiles(mSearchFile);
-            UpFiles.ToList().ForEach(e =>
+
+            if (CurPlan.Files.Count < 1)
             {
-                UploadFiles.Add(e);
-            });
+                //如果该计划的附件文件没有读取则读取之。
+                PlanFileSearch mSearchFile = new PlanFileSearch() { PlanId = P_Entity.Id, UserId = AppSettings.LoginUser.Id };
+                IEnumerable<PlanFile> UpFiles = await DataPlanFileRepository.ReadFiles(mSearchFile);
+                UpFiles.ToList().ForEach(e =>
+                {
+                    e.UpIntProgress = 100;
+                    CurPlan.Files.Add(e);
+                });
+            }
+            if (CurPlan.CreateUserId != null)
+            {
+                CurPlanCreateUserName = AppSettings.SysUsers.Where(e => CurPlan.CreateUserId.Equals(e.Id, System.StringComparison.Ordinal)).Select(x => x.Name).FirstOrDefault()?.Trim();
+            }
+            if (CurPlan.ResponsiblePerson != null)
+            {
+                CurPlanResponsibleName = AppSettings.SysUsers.Where(e => CurPlan.ResponsiblePerson.Equals(e.Id, System.StringComparison.Ordinal)).Select(x => x.Name).FirstOrDefault()?.Trim();
+            }
+            if (CurPlan.ReadGrant != null)
+            {
+                CurPlanHasGrantNames = string.Join(",", AppSettings.SysUsers.Where(e => CurPlan.ReadGrant.Contains(e.Id, System.StringComparison.Ordinal)).Select(x => x.Name)?.ToArray());
+            }
+            if (CurPlan.Helpers != null)
+            {
+                CurPlanHelperNames = string.Join(",", AppSettings.SysUsers.Where(e => CurPlan.Helpers.Contains(e.Id, System.StringComparison.Ordinal)).Select(x => x.Name)?.ToArray());
+            }
         }
         /// <summary>
         /// 当前所选计划信息
         /// </summary>
-        public Lib.Plan EntityPlan { get; set; }
+        public Lib.Plan CurPlan { get; set; }
+
         /// <summary>
-        /// 上传的文件集合
+        /// 计划创建者的姓名（中文）。
         /// </summary>
-        public ObservableCollection<PlanFile> UploadFiles { get; set; }
+        public string CurPlanCreateUserName { get; set; }
+        /// <summary>
+        /// 计划责任者的姓名（中文）。
+        /// </summary>
+        public string CurPlanResponsibleName { get; set; }
+        /// <summary>
+        ///计划协助人员姓名列表（中文）
+        /// </summary>
+        public string CurPlanHelperNames { get; set; }
+        /// <summary>
+        /// 计划有限读取人员的姓名列表（中文）。
+        /// </summary>
+        public string CurPlanHasGrantNames { get; set; }
 
         /// <summary>
         /// 用户对此计划的操作权限类对象。

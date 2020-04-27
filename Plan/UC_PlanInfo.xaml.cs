@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net.Http.Handlers;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Office.Work.Platform.AppCodes;
 using Office.Work.Platform.AppDataService;
-using Office.Work.Platform.Files;
+using Office.Work.Platform.PlanFiles;
 using Office.Work.Platform.Lib;
 
 namespace Office.Work.Platform.Plan
@@ -23,12 +23,12 @@ namespace Office.Work.Platform.Plan
         }
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-
+            
         }
-        public void Init_PlanInfo(Lib.Plan P_Entity, Action<Lib.Plan> P_CallBack = null)
+        public async void Init_PlanInfoAsync(Lib.Plan P_Entity, Action<Lib.Plan> P_CallBack = null)
         {
             _UCPlanInfoVM = new UC_PlanInfoVM();
-            _UCPlanInfoVM.Init_PlanInfoVMAsync(P_Entity);
+            await _UCPlanInfoVM.Init_PlanInfoVMAsync(P_Entity);
             _CallBack = P_CallBack;
             DataContext = _UCPlanInfoVM;
         }
@@ -39,7 +39,7 @@ namespace Office.Work.Platform.Plan
         /// <param name="e"></param>
         private void btn_EditPlan(object sender, RoutedEventArgs e)
         {
-            AppSettings.AppMainWindow.FrameContentPage.Content = new PageEditPlan(_UCPlanInfoVM.EntityPlan);
+            AppSettings.AppMainWindow.FrameContentPage.Content = new PageEditPlan(_UCPlanInfoVM.CurPlan);
         }
         /// <summary>
         /// 删除当前计划
@@ -48,15 +48,15 @@ namespace Office.Work.Platform.Plan
         /// <param name="e"></param>
         private async void btn_DelePlan(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("删除计划《" + _UCPlanInfoVM.EntityPlan.Caption + "》？", "确认", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+            if (MessageBox.Show("删除计划《" + _UCPlanInfoVM.CurPlan.Caption + "》？", "确认", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
             {
                 return;
             }
-            ExcuteResult JsonResult = await DataPlanRepository.DeletePlanInfo(_UCPlanInfoVM.EntityPlan);
+            ExcuteResult JsonResult = await DataPlanRepository.DeletePlan(_UCPlanInfoVM.CurPlan);
             if (JsonResult.State == 0)
             {
                 AppSettings.AppMainWindow.lblCursorPosition.Text = JsonResult.Msg;
-                _CallBack(_UCPlanInfoVM.EntityPlan);
+                _CallBack(_UCPlanInfoVM.CurPlan);
                 //MessageBox.Show(JsonResult.Msg, "消息", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
@@ -64,15 +64,40 @@ namespace Office.Work.Platform.Plan
                 MessageBox.Show(JsonResult.Msg, "消息", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
-
-        private void BtnUpFile_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// 上传文件到服务器
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void BtnUpFile_ClickAsync(object sender, RoutedEventArgs e)
         {
-            WinUpLoadFile winUpLoadFile = new WinUpLoadFile((UpFile) =>
+            e.Handled = true;
+            System.IO.FileInfo theFile = FileOperation.SelectFile();
+            if (theFile != null)
             {
-                _UCPlanInfoVM.UploadFiles.Add(UpFile);
-            },
-            _UCPlanInfoVM.EntityPlan.Id, "计划附件", _UCPlanInfoVM.EntityPlan.PlanType);
-            winUpLoadFile.ShowDialog();
+                PlanFile newFile = new PlanFile()
+                {
+                    Id = DateTime.Now.ToString("yyyyMMddHHmmssfff"),
+                    Name = theFile.Name.Substring(0, theFile.Name.LastIndexOf('.')),
+                    UserId = AppSettings.LoginUser.Id,
+                    Length = theFile.Length,
+                    ExtendName = theFile.Extension,
+                    PlanId = _UCPlanInfoVM.CurPlan.Id,
+                    FileInfo = theFile,
+                    UpIntProgress = 0
+                };
+                _UCPlanInfoVM.CurPlan.Files.Add(newFile);
+                ProgressMessageHandler UpProgress = new ProgressMessageHandler();
+                UpProgress.HttpSendProgress += (object sender, HttpProgressEventArgs e) =>
+                {
+                    newFile.UpIntProgress = e.ProgressPercentage;
+                };
+                ExcuteResult result = await DataPlanFileRepository.UpLoadFileInfo(newFile, newFile.FileInfo.OpenRead(), "planfile", "pf", UpProgress);
+                if (result.State != 0)
+                {
+                    newFile.UpIntProgress = 0;
+                }
+            }
         }
 
         private void MenuItem_ReName_Click(object sender, RoutedEventArgs e)
@@ -94,7 +119,11 @@ namespace Office.Work.Platform.Plan
         {
 
         }
-
+        /// <summary>
+        /// 从服务器删除文件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void Image_Delete_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             PlanFile SelectFile = LB_FileList.SelectedItem as PlanFile;
@@ -105,7 +134,7 @@ namespace Office.Work.Platform.Plan
             ExcuteResult delResult = await DataPlanFileRepository.DeleteFileInfo(SelectFile);
             if (delResult.State == 0)
             {
-                _UCPlanInfoVM.UploadFiles.Remove(SelectFile);
+                _UCPlanInfoVM.CurPlan.Files.Remove(SelectFile);
             }
         }
         /// <summary>
@@ -119,9 +148,9 @@ namespace Office.Work.Platform.Plan
             curTextBlock.IsEnabled = false;
             PlanFile SelectFile = LB_FileList.SelectedItem as PlanFile;
 
-            ProgressMessageHandler progress = new System.Net.Http.Handlers.ProgressMessageHandler();
+            ProgressMessageHandler progress = new ProgressMessageHandler();
 
-            progress.HttpReceiveProgress += (object sender, System.Net.Http.Handlers.HttpProgressEventArgs e) =>
+            progress.HttpReceiveProgress += (object sender, HttpProgressEventArgs e) =>
             {
                 SelectFile.DownIntProgress = e.ProgressPercentage;
             };
@@ -130,7 +159,7 @@ namespace Office.Work.Platform.Plan
             if (theDownFileName != null)
             {
                 SelectFile.DownIntProgress = 100;
-                DataMemberFileRepository.OpenFileInfo(theDownFileName);
+                FileOperation.UseDefaultAppOpenFile(theDownFileName);
             }
             else
             {
@@ -145,8 +174,8 @@ namespace Office.Work.Platform.Plan
         /// <param name="e"></param>
         private async void btn_UpdatePlan(object sender, RoutedEventArgs e)
         {
-            _UCPlanInfoVM.EntityPlan.CurrectState = "正在实施";
-            ExcuteResult JsonResult = await DataPlanRepository.UpdatePlanInfo(_UCPlanInfoVM.EntityPlan);
+            _UCPlanInfoVM.CurPlan.CurrectState = PlanStatus.Running;
+            ExcuteResult JsonResult = await DataPlanRepository.UpdatePlan(_UCPlanInfoVM.CurPlan);
             if (JsonResult.State == 0)
             {
                 //AppSettings.AppMainWindow.lblCursorPosition.Text = JsonResult.Msg;
@@ -164,14 +193,14 @@ namespace Office.Work.Platform.Plan
         /// <param name="e"></param>
         private async void btn_FinishPlan(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(_UCPlanInfoVM.EntityPlan.FinishNote))
+            if (string.IsNullOrWhiteSpace(_UCPlanInfoVM.CurPlan.FinishNote))
             {
                 //MessageBox.Show("请输入完成情况！", "消息", MessageBoxButton.OK, MessageBoxImage.Warning);
                 Text_FinishNote.Focus();
                 return;
             }
-            _UCPlanInfoVM.EntityPlan.CurrectState = "已经完成";
-            ExcuteResult JsonResult = await DataPlanRepository.UpdatePlanInfo(_UCPlanInfoVM.EntityPlan);
+            _UCPlanInfoVM.CurPlan.CurrectState = PlanStatus.Finished;
+            ExcuteResult JsonResult = await DataPlanRepository.UpdatePlan(_UCPlanInfoVM.CurPlan);
             if (JsonResult.State == 0)
             {
                 AppSettings.AppMainWindow.lblCursorPosition.Text = JsonResult.Msg;
@@ -189,8 +218,8 @@ namespace Office.Work.Platform.Plan
         /// <param name="e"></param>
         private async void btn_ResetPlan(object sender, RoutedEventArgs e)
         {
-            _UCPlanInfoVM.EntityPlan.CurrectState = "正在实施";
-            ExcuteResult JsonResult = await DataPlanRepository.UpdatePlanInfo(_UCPlanInfoVM.EntityPlan);
+            _UCPlanInfoVM.CurPlan.CurrectState = PlanStatus.Running;
+            ExcuteResult JsonResult = await DataPlanRepository.UpdatePlan(_UCPlanInfoVM.CurPlan);
             if (JsonResult.State == 0)
             {
                 AppSettings.AppMainWindow.lblCursorPosition.Text = JsonResult.Msg;

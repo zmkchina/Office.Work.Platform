@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using Office.Work.Platform.AppCodes;
 using Office.Work.Platform.AppDataService;
 using Office.Work.Platform.Lib;
@@ -10,12 +11,17 @@ namespace Office.Work.Platform.Plan
 {
     public class PageEditPlanVM : NotificationObject
     {
-        public async void InitPropValueAsync(Lib.Plan NeedEditPlan = null)
+        public PageEditPlanVM(Lib.Plan CurPlan)
         {
-            if (NeedEditPlan != null)
+            EntityPlan = CurPlan;
+        }
+        public async Task InitPropValueAsync()
+        {
+            if (EntityPlan != null)
             {
-                EntityPlan = NeedEditPlan;
+                IsEditFlag = true;
                 //设置查询条件类
+                EntityPlan.Files.Clear();
                 PlanFileSearch mSearchFile = new PlanFileSearch();
                 mSearchFile.UserId = AppSettings.LoginUser.Id;
                 mSearchFile.PlanId = EntityPlan.Id;
@@ -29,6 +35,7 @@ namespace Office.Work.Platform.Plan
             }
             else
             {
+                IsEditFlag = false;
                 EntityPlan = new Lib.Plan()
                 {
                     Id = DateTime.Now.ToString("yyyyMMddHHmmssfff"),
@@ -47,6 +54,10 @@ namespace Office.Work.Platform.Plan
         #region "属性"
         public string[] WorkContentTypes { get { return AppSettings.ServerSetting.WorkContentType.Split(',', System.StringSplitOptions.RemoveEmptyEntries); } }
         public string[] PlanStateTypes { get { return PlanStatus.PlanStatusArr; } }
+        /// <summary>
+        /// 是编辑还是新增一个计划。
+        /// </summary>
+        public bool IsEditFlag { get; set; }
         public Lib.Plan EntityPlan { get; set; }
 
         /// <summary>
@@ -65,7 +76,7 @@ namespace Office.Work.Platform.Plan
         {
             UserGrantSelectList = new ObservableCollection<SelectObj<User>>();
             UserHelperSelectList = new ObservableCollection<SelectObj<User>>();
-            foreach (User item in AppSettings.SysUsers.Where(e => !e.Id.Equals("admin",StringComparison.Ordinal)).OrderBy(x => x.OrderIndex))
+            foreach (User item in AppSettings.SysUsers.Where(e => !e.Id.Equals("admin", StringComparison.Ordinal)).OrderBy(x => x.OrderIndex))
             {
                 UserGrantSelectList.Add(new SelectObj<User>(EntityPlan.ReadGrant != null && (EntityPlan.ReadGrant.Contains(item.Id) || EntityPlan.ReadGrant.Equals("all", StringComparison.Ordinal)), item));
                 UserHelperSelectList.Add(new SelectObj<User>(EntityPlan.Helpers != null && (EntityPlan.Helpers.Contains(item.Id) || EntityPlan.Helpers.Equals("all", StringComparison.Ordinal)), item));
