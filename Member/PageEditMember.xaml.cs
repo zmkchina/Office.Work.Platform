@@ -26,7 +26,7 @@ namespace Office.Work.Platform.Member
             if (_PageEditMemberVM.EntityMember != null)
             {
                 //读取文件信息
-                InitUcControlFiles(true);
+                InitUcControlFilesAsync(true);
             }
             DataContext = _PageEditMemberVM;
         }
@@ -47,12 +47,12 @@ namespace Office.Work.Platform.Member
             var members = await DataMemberRepository.ReadMembers(msearch);
             if (members.Count > 0)  //数据表中已存在该记录。
             {
-                //读取文件信息
-                InitUcControlFiles(true);
 
                 _PageEditMemberVM.isEditFlag = true;
                 _PageEditMemberVM = new PageEditMemberVM(members[0]);
                 DataContext = _PageEditMemberVM;
+                //读取文件信息
+                InitUcControlFilesAsync(true);
             }
             else
             {
@@ -65,26 +65,28 @@ namespace Office.Work.Platform.Member
             e.Handled = true;
             if (e.Source is TabItem)
             {
-                InitUcControlFiles(true);
+                InitUcControlFilesAsync(true);
             }
         }
 
-        private void InitUcControlFiles(bool isRead = true)
+        private async void InitUcControlFilesAsync(bool isRead = true)
         {
             if (_PageEditMemberVM.isEditFlag && Person_TabControl.SelectedItem is TabItem tb && !string.IsNullOrWhiteSpace(_PageEditMemberVM.EntityMember.Id))
             {
                 switch (tb.Header)
                 {
                     case "基本信息":
-                        UcBasicFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember.Id, "基本信息", null, isRead);
+                        await UcBasicFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember.Id, "基本信息", null, isRead);
                         break;
                     case "工作信息":
-                        UcWorkFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember.Id, "工作信息", null, isRead);
+                        await UcWorkFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember.Id, "工作信息", null, isRead);
                         break;
                     case "教育信息":
-                        UcEduFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember.Id, "教育信息", null, isRead);
+                        await UcEduFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember.Id, "教育信息", null, isRead);
                         break;
                     case "个人简历":
+                        UcResume.initControlAsync(_PageEditMemberVM.EntityMember);
+                        await UcResumeFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember.Id, "个人简历", null, isRead);
                         break;
                     case "奖惩情况":
                         break;
@@ -92,19 +94,19 @@ namespace Office.Work.Platform.Member
                         break;
                     case "在编月待遇":
                         UcPayMonth.initControlAsync(_PageEditMemberVM.EntityMember);
-                        UcPayMonthFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember.Id, "在编月待遇", null, isRead);
+                        await UcPayMonthFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember.Id, "在编月待遇", null, isRead);
                         break;
                     case "编外月待遇":
                         UcPayMonthUnofficial.initControlAsync(_PageEditMemberVM.EntityMember);
-                        UcPayMonthUnofficialFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember.Id, "编外月待遇", null, isRead);
+                        await UcPayMonthUnofficialFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember.Id, "编外月待遇", null, isRead);
                         break;
                     case "月度社保":
                         UcPayMonthInsurance.initControlAsync(_PageEditMemberVM.EntityMember);
-                        UcPayMonthInsuranceFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember.Id, "月度社保", null, isRead);
+                        await UcPayMonthInsuranceFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember.Id, "月度社保", null, isRead);
                         break;
                     case "补充待遇":
                         UcPayTemp.initControlAsync(_PageEditMemberVM.EntityMember);
-                        UcPayTempFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember.Id, "补充待遇", null, isRead);
+                        await UcPayTempFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember.Id, "补充待遇", null, isRead);
                         break;
                     case "考勤信息":
                         break;
@@ -145,7 +147,7 @@ namespace Office.Work.Platform.Member
                     //保存成功表示可以进行编辑了，即其他控件可以保存了。
                     _PageEditMemberVM.isEditFlag = true;
                     //只传递两个字段信息，不实际读取（因为此时没有必要读取）
-                    InitUcControlFiles(false);
+                    InitUcControlFilesAsync(false);
                 }
             }
             MessageBox.Show(excuteResult.Msg);

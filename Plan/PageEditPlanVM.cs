@@ -38,7 +38,6 @@ namespace Office.Work.Platform.Plan
                 IsEditFlag = false;
                 EntityPlan = new Lib.Plan()
                 {
-                    Id = DateTime.Now.ToString("yyyyMMddHHmmssfff"),
                     CreateUserId = AppSettings.LoginUser.Id,
                     ResponsiblePerson = AppSettings.LoginUser.Id,
                     Department = AppSettings.LoginUser.Department,

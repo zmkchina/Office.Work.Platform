@@ -15,13 +15,17 @@
             <Setter Property="Width" Value="180"/>
         </Style>
     </UserControl.Resources>
-    <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="0,5">
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,10">
             <TextBox Text="{Binding SearchValues}" Style="{StaticResource TextboxStyle}"/>
             <Button Click="btn_search_ClickAsync" Content="查询" Width="60" Margin="2,0,10,0"/>
             <Button Click="BtnUpFile_ClickAsync" Content="上传" Width="60" Margin="2,0,0,0"/>
         </StackPanel>
-        <ListBox x:Name="LB_FileList" ItemsSource="{Binding MFiles}" Background="Transparent"
+        <ListBox Grid.Row="1"  x:Name="LB_FileList" ItemsSource="{Binding MFiles}" Background="Transparent"
                          MinHeight="20"
                          HorizontalAlignment="Stretch"
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -82,5 +86,5 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-    </StackPanel>
+    </Grid>
 </UserControl>

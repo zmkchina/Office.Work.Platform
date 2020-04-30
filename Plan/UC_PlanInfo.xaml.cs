@@ -77,7 +77,6 @@ namespace Office.Work.Platform.Plan
             {
                 PlanFile newFile = new PlanFile()
                 {
-                    Id = DateTime.Now.ToString("yyyyMMddHHmmssfff"),
                     Name = theFile.Name.Substring(0, theFile.Name.LastIndexOf('.')),
                     UserId = AppSettings.LoginUser.Id,
                     Length = theFile.Length,

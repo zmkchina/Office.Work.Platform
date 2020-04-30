@@ -1,4 +1,4 @@
-﻿<Window x:Class="Office.Work.Platform.MemberUc.UC_PayTempWin"
+﻿<Window x:Class="Office.Work.Platform.MemberUc.UC_ResumeWin"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -11,7 +11,7 @@
         ResizeMode="CanResizeWithGrip"
         WindowStyle="None"
         AllowsTransparency="True" BorderBrush="LightBlue" BorderThickness="1" Background="AliceBlue"
-        Title="职工补充待遇发放" Width="450" Height="350">
+        Title="职工个人简历" Width="450" Height="360">
     <Window.Resources>
         <Style x:Key="GroupBoxStyle" TargetType="GroupBox">
             <Setter Property="Padding" Value="2,5"/>
@@ -55,19 +55,24 @@
     </Window.Resources>
     <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top">
         <Border Height="30" Background="DodgerBlue" MouseMove="Border_MouseMove" Cursor="Hand">
-            <TextBlock Text="职工补充待遇发放" VerticalAlignment="Center" Foreground="White" Padding="5,0,0,0"/>
+            <TextBlock Text="职工个人简历" VerticalAlignment="Center" Foreground="White" Padding="5,0,0,0"/>
         </Border>
         <StackPanel Orientation="Vertical"  Margin="10,15" HorizontalAlignment="Stretch">
             <StackPanel Orientation="Horizontal">
-                <GroupBox Header="类别" Style="{StaticResource GroupBoxStyle}">
-                    <ComboBox ItemsSource="{Binding TypeNameList}" Text="{Binding TypeName}" Style="{StaticResource ComboBoxStyle}"/>
+                <GroupBox Header="开始日期" Style="{StaticResource GroupBoxStyle}">
+                    <DatePicker Style="{StaticResource DatePickerStyle}"
+                        SelectedDate="{Binding BeginDate}" 
+                        AppCodes:DatePickerCalendar.IsMonthYear="True"/>
+                </GroupBox>
+                <GroupBox Header="结束日期" Style="{StaticResource GroupBoxStyle}">
+                    <DatePicker Style="{StaticResource DatePickerStyle}"
+                        SelectedDate="{Binding EndDate}" 
+                        AppCodes:DatePickerCalendar.IsMonthYear="True"/>
                 </GroupBox>
             </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <GroupBox Header="金额" Style="{StaticResource GroupBoxStyle}">
-                    <TextBox Text="{Binding Amount}" Style="{StaticResource TextboxStyle}"/>
-                </GroupBox>
-            </StackPanel>
+            <GroupBox Header="工作或学习内容" >
+                <TextBox Text="{Binding Content}"  HorizontalAlignment="Stretch" Height="50" FontSize="16" Margin="5" TextWrapping="Wrap"/>
+            </GroupBox>
             <GroupBox Header="备注信息" >
                 <TextBox Text="{Binding Remark}"  HorizontalAlignment="Stretch" Height="50" FontSize="16" Margin="5" TextWrapping="Wrap"/>
             </GroupBox>

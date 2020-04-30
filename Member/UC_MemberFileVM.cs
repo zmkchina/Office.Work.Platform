@@ -13,7 +13,7 @@ namespace Office.Work.Platform.Member
         {
             MFiles = new ObservableCollection<MemberFile>();
         }
-        public async void Init_MemberFileVMAsync(string MemberId, string FileType, string OtherRecordId = null, bool ReadFlag = true)
+        public async System.Threading.Tasks.Task Init_MemberFileVMAsync(string MemberId, string FileType, string OtherRecordId = null, bool ReadFlag = true)
         {
             this.MemberId = MemberId;
             this.FileType = FileType;

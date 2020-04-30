@@ -80,7 +80,7 @@
         </StackPanel>
         <DataGrid x:Name="RecordDataGrid" ItemsSource="{Binding PayTemps}" >
             <DataGrid.Columns>
-                <DataGridTextColumn Header="类别" Binding="{Binding PayName}"/>
+                <DataGridTextColumn Header="类别" Binding="{Binding TypeName}"/>
                 <DataGridTextColumn Header="金额" Width="150" Binding="{Binding Amount}"/>
                 <DataGridTextColumn Header="日期" Width="120" Binding="{Binding UpDateTime,StringFormat= {}{0:yyyy/MM/dd}}"/>
                 <DataGridTextColumn Header="说明" Binding="{Binding Remark}"/>

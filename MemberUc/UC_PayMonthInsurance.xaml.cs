@@ -42,35 +42,35 @@ namespace Office.Work.Platform.MemberUc
         /// <param name="e"></param>
         private async void BtnAddClickAsync(object sender, RoutedEventArgs e)
         {
-            Lib.MemberPayMonthInsurance NewPayMonth = new Lib.MemberPayMonthInsurance()
+            Lib.MemberPayMonthInsurance NewRecord = new Lib.MemberPayMonthInsurance()
             {
-                Id = DateTime.Now.ToString("yyyyMMddHHmmssfff"),
                 MemberId = _UCPayMonthInsuranceVM.CurMember.Id,
                 UserId = AppSettings.LoginUser.Id
             };
 
-            UC_PayMonthInsuranceWin AddWin = new UC_PayMonthInsuranceWin(NewPayMonth);
+            UC_PayMonthInsuranceWin AddWin = new UC_PayMonthInsuranceWin(NewRecord);
             AddWin.Owner = AppSettings.AppMainWindow;
 
             if (AddWin.ShowDialog().Value)
             {
                 IEnumerable<MemberPayMonthInsurance> MemberPlayMonths = await DataMemberPayMonthInsuranceRepository.GetRecords(new MemberPayMonthInsuranceSearch()
                 {
-                    MemberId = NewPayMonth.MemberId,
-                    PayYear = NewPayMonth.PayYear,
-                    PayMonth = NewPayMonth.PayMonth,
-                    UserId = NewPayMonth.UserId
+                    MemberId = NewRecord.MemberId,
+                    PayYear = NewRecord.PayYear,
+                    PayMonth = NewRecord.PayMonth,
+                    UserId = NewRecord.UserId
                 });
                 if (MemberPlayMonths.Count() > 0)
                 {
-                    MessageBox.Show($"该工作人员 {NewPayMonth.PayYear} 年 {NewPayMonth.PayMonth} 月份待遇已发放，无法新增。", "失败");
+                    MessageBox.Show($"该工作人员 {NewRecord.PayYear} 年 {NewRecord.PayMonth} 月份待遇已发放，无法新增。", "失败");
                     return;
                 }
 
-                ExcuteResult excuteResult = await DataMemberPayMonthInsuranceRepository.AddRecord(NewPayMonth);
+                ExcuteResult excuteResult = await DataMemberPayMonthInsuranceRepository.AddRecord(NewRecord);
                 if (excuteResult.State == 0)
                 {
-                    _UCPayMonthInsuranceVM.PayMonthInsurances.Add(NewPayMonth);
+                    NewRecord.Id = excuteResult.Tag;
+                    _UCPayMonthInsuranceVM.PayMonthInsurances.Add(NewRecord);
                 }
                 else
                 { MessageBox.Show(excuteResult.Msg, "失败"); }

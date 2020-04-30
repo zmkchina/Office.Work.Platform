@@ -43,28 +43,28 @@ namespace Office.Work.Platform.MemberUc
         /// <param name="e"></param>
         private async void BtnAddClickAsync(object sender, RoutedEventArgs e)
         {
-            Lib.MemberPayTemp NewPayTemp = new Lib.MemberPayTemp()
+            Lib.MemberPayTemp NewRecord = new Lib.MemberPayTemp()
             {
-                Id = DateTime.Now.ToString("yyyyMMddHHmmssfff"),
                 MemberId = _UCPayTempVM.CurMember.Id,
                 UserId = AppSettings.LoginUser.Id
             };
 
-            UC_PayTempWin AddWin = new UC_PayTempWin(NewPayTemp);
+            UC_PayTempWin AddWin = new UC_PayTempWin(NewRecord);
             AddWin.Owner = AppSettings.AppMainWindow;
 
             if (AddWin.ShowDialog().Value)
             {
                 IEnumerable<MemberPayTemp> MemberPlayMonths = await DataMemberPayTempRepository.GetRecords(new MemberPayTempSearch()
                 {
-                    MemberId = NewPayTemp.MemberId,
-                    UserId = NewPayTemp.UserId
+                    MemberId = NewRecord.MemberId,
+                    UserId = NewRecord.UserId
                 });
 
-                ExcuteResult excuteResult = await DataMemberPayTempRepository.AddRecord(NewPayTemp);
+                ExcuteResult excuteResult = await DataMemberPayTempRepository.AddRecord(NewRecord);
                 if (excuteResult.State == 0)
                 {
-                    _UCPayTempVM.PayTemps.Add(NewPayTemp);
+                    NewRecord.Id = excuteResult.Tag;
+                    _UCPayTempVM.PayTemps.Add(NewRecord);
                 }
                 else
                 { MessageBox.Show(excuteResult.Msg, "失败"); }
@@ -79,7 +79,7 @@ namespace Office.Work.Platform.MemberUc
         {
             if (RecordDataGrid.SelectedItem is Lib.MemberPayTemp SelectedRec)
             {
-                if (MessageBox.Show($"确认要删除名为 {SelectedRec.PayName} 的补充待遇记录吗？", "确认", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                if (MessageBox.Show($"确认要删除名为 {SelectedRec.TypeName} 的补充待遇记录吗？", "确认", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     ExcuteResult excuteResult = await DataMemberPayTempRepository.DeleteRecord(SelectedRec);
                     if (excuteResult.State == 0)

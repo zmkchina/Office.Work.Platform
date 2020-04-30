@@ -19,9 +19,9 @@ namespace Office.Work.Platform.Member
             InitializeComponent();
             _UCMemberFileVM = new UC_MemberFileVM();
         }
-        public void InitFileDatasAsync(string MemberId, string FileType, string OtherRecordId = null, bool ReadFlag = true)
+        public async System.Threading.Tasks.Task InitFileDatasAsync(string MemberId, string FileType, string OtherRecordId = null, bool ReadFlag = true)
         {
-            _UCMemberFileVM.Init_MemberFileVMAsync(MemberId, FileType, OtherRecordId, ReadFlag);
+           await _UCMemberFileVM.Init_MemberFileVMAsync(MemberId, FileType, OtherRecordId, ReadFlag);
             DataContext = _UCMemberFileVM;
 
         }
@@ -51,7 +51,6 @@ namespace Office.Work.Platform.Member
             {
                 MemberFile newFile = new MemberFile()
                 {
-                    Id = DateTime.Now.ToString("yyyyMMddHHmmssfff"),
                     Name = theFile.Name.Substring(0, theFile.Name.LastIndexOf('.')),
                     UserId = AppSettings.LoginUser.Id,
                     Length = theFile.Length,
@@ -73,6 +72,7 @@ namespace Office.Work.Platform.Member
                 }
                 if (result.State == 0)
                 {
+                    newFile.Id = result.Tag;
                     _UCMemberFileVM.MFiles.Add(newFile);
                 }
             }

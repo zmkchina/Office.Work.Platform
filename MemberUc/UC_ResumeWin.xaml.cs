@@ -7,22 +7,17 @@ namespace Office.Work.Platform.MemberUc
     /// 此类用于新增或编辑月度待遇发放记录。
     /// 此窗体作为对话框使用，当DialogResult不被设为true时，将始终为false
     /// </summary>
-    public partial class UC_PayTempWin : Window
+    public partial class UC_ResumeWin : Window
     {
-        public Lib.MemberPayTemp _CurRecord { get; set; }
-        public UC_PayTempWin(Lib.MemberPayTemp PRecord)
+        public Lib.MemberResume _CurRecord { get; set; }
+        public UC_ResumeWin(Lib.MemberResume ParamRecord)
         {
             InitializeComponent();
-            _CurRecord = PRecord;
-            DataContext = PRecord;
+            _CurRecord = ParamRecord;
+            DataContext = ParamRecord;
         }
         private void BtnSaveClickAsync(object sender, RoutedEventArgs e)
         {
-            if (_CurRecord.Remark == null || _CurRecord.TypeName == null)
-            {
-                MessageBox.Show("数据输入不正确，类型及备注均必须输入！", "缺少数据", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
             DialogResult = true;
             _CurRecord.UpDateTime = DateTime.Now;
             this.Close();

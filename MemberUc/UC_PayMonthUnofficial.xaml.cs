@@ -42,35 +42,35 @@ namespace Office.Work.Platform.MemberUc
         /// <param name="e"></param>
         private async void BtnAddClickAsync(object sender, RoutedEventArgs e)
         {
-            Lib.MemberPayMonthUnofficial NewPayMonthUnofficial = new Lib.MemberPayMonthUnofficial()
+            Lib.MemberPayMonthUnofficial NewRecord = new Lib.MemberPayMonthUnofficial()
             {
-                Id = DateTime.Now.ToString("yyyyMMddHHmmssfff"),
                 MemberId = _UCPayMonthUnofficialVM.CurMember.Id,
                 UserId = AppSettings.LoginUser.Id
             };
 
-            UC_PayMonthUnofficialWin AddWin = new UC_PayMonthUnofficialWin(NewPayMonthUnofficial);
+            UC_PayMonthUnofficialWin AddWin = new UC_PayMonthUnofficialWin(NewRecord);
             AddWin.Owner = AppSettings.AppMainWindow;
 
             if (AddWin.ShowDialog().Value)
             {
                 IEnumerable<MemberPayMonthUnofficial> MemberPayMonthUnofficials = await DataMemberPayMonthUnofficialRepository.GetRecords(new MemberPayMonthUnofficialSearch()
                 {
-                    MemberId = NewPayMonthUnofficial.MemberId,
-                    PayYear = NewPayMonthUnofficial.PayYear,
-                    PayMonth = NewPayMonthUnofficial.PayMonth,
-                    UserId = NewPayMonthUnofficial.UserId
+                    MemberId = NewRecord.MemberId,
+                    PayYear = NewRecord.PayYear,
+                    PayMonth = NewRecord.PayMonth,
+                    UserId = NewRecord.UserId
                 });
                 if (MemberPayMonthUnofficials.Count() > 0)
                 {
-                    MessageBox.Show($"该工作人员 {NewPayMonthUnofficial.PayYear} 年 {NewPayMonthUnofficial.PayMonth} 月份待遇已发放，无法新增。", "失败");
+                    MessageBox.Show($"该工作人员 {NewRecord.PayYear} 年 {NewRecord.PayMonth} 月份待遇已发放，无法新增。", "失败");
                     return;
                 }
 
-                ExcuteResult excuteResult = await DataMemberPayMonthUnofficialRepository.AddRecord(NewPayMonthUnofficial);
+                ExcuteResult excuteResult = await DataMemberPayMonthUnofficialRepository.AddRecord(NewRecord);
                 if (excuteResult.State == 0)
                 {
-                    _UCPayMonthUnofficialVM.PayMonthUnofficials.Add(NewPayMonthUnofficial);
+                    NewRecord.Id = excuteResult.Tag;
+                    _UCPayMonthUnofficialVM.PayMonthUnofficials.Add(NewRecord);
                 }
                 else
                 { MessageBox.Show(excuteResult.Msg, "失败"); }

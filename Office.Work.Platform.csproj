@@ -178,28 +178,16 @@
     <Compile Update="MemberUc\UC_PayMonthInsuranceWin.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="MemberUc\UC_ResumeWin.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="MemberUc\UC_PayTempWin.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Member\UC_MemberFile.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Member\PayMonthUnofficial.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="MemberUc\UC_PayMonth.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Member\UC_Attendance.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Member\UC_PrizePunishInfo.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Member\UC_FamilyInfo.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Member\UC_RemarkInfo.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="MemberUc\UC_Resume.xaml.cs">
@@ -247,28 +235,16 @@
     <Page Update="MemberUc\UC_PayMonthInsuranceWin.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="MemberUc\UC_ResumeWin.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="MemberUc\UC_PayTempWin.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Member\UC_MemberFile.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Member\PayMonthUnofficial.xaml">
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="MemberUc\UC_PayMonth.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Member\UC_Attendance.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Member\UC_PrizePunishInfo.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Member\UC_FamilyInfo.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Member\UC_RemarkInfo.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="MemberUc\UC_Resume.xaml">
