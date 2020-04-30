@@ -13,7 +13,23 @@ namespace Office.Work.Platform.AppDataService
     public static class DataMemberRepository
     {
         /// <summary>
-        /// 新增或更新信息（如该信息已在数据库中存在，则更新之）
+        /// 查询满足指定条件的计划信息
+        /// </summary>
+        /// <param name="mSearchMember">查询条件类的实例</param>
+        /// <returns></returns>
+        public static async Task<List<Lib.Member>> ReadMembers(MemberSearch mSearchMember)
+        {
+            List<Lib.Member> MemberList = new List<Lib.Member>();
+            string urlParams = DataApiRepository.CreateUrlParams(mSearchMember);
+
+            if (urlParams.Length > 0)
+            {
+                MemberList = await DataApiRepository.GetApiUri<List<Lib.Member>>(AppSettings.ApiUrlBase + "Member/Search" + urlParams);
+            }
+            return MemberList;
+        }
+        /// <summary>
+        /// 单个新增数据
         /// </summary>
         /// <param name="Entity"></param>
         /// <returns></returns>
@@ -24,7 +40,7 @@ namespace Office.Work.Platform.AppDataService
             return JsonResult;
         }
         /// <summary>
-        /// 新增或更新信息（如该信息已在数据库中存在，则更新之）
+        /// 批量新增数据
         /// </summary>
         /// <param name="P_Entity"></param>
         /// <returns></returns>
@@ -53,22 +69,6 @@ namespace Office.Work.Platform.AppDataService
         {
             ExcuteResult JsonResult = await DataApiRepository.DeleteApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "Member/?Id=" + Entity.Id).ConfigureAwait(false);
             return JsonResult;
-        }
-        /// <summary>
-        /// 读取满足指定条件的计划信息
-        /// </summary>
-        /// <param name="mSearchMember">查询条件类的实例</param>
-        /// <returns></returns>
-        public static async Task<ObservableCollection<Lib.Member>> ReadMembers(MemberSearch mSearchMember)
-        {
-            ObservableCollection<Lib.Member> MemberList = new ObservableCollection<Lib.Member>();
-            string urlParams = DataApiRepository.CreateUrlParams(mSearchMember);
-
-            if (urlParams.Length > 0)
-            {
-                MemberList = await DataApiRepository.GetApiUri<ObservableCollection<Lib.Member>>(AppSettings.ApiUrlBase + "Member/Search" + urlParams);
-            }
-            return MemberList;
-        }
+        }        
     }
 }

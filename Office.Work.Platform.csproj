@@ -166,13 +166,28 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Member\UC_EduInfo.xaml.cs">
+    <Compile Update="MemberUc\UC_PayMonthUnofficial.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="MemberUc\UC_PayMonthInsurance.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="MemberUc\UC_PayMonthUnofficialWin.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="MemberUc\UC_PayMonthInsuranceWin.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="MemberUc\UC_PayTempWin.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Member\UC_MemberFile.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Member\PayMonthUnofficial.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Member\UC_PayMonth.xaml.cs">
+    <Compile Update="MemberUc\UC_PayMonth.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Member\UC_Attendance.xaml.cs">
@@ -187,10 +202,7 @@
     <Compile Update="Member\UC_RemarkInfo.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Member\UC_ResumeInfo.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Member\UC_WorkInfo.xaml.cs">
+    <Compile Update="MemberUc\UC_Resume.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="PageHome.xaml.cs">
@@ -223,13 +235,28 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="Member\UC_EduInfo.xaml">
+    <Page Update="MemberUc\UC_PayMonthUnofficial.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="MemberUc\UC_PayMonthInsurance.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="MemberUc\UC_PayMonthUnofficialWin.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="MemberUc\UC_PayMonthInsuranceWin.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="MemberUc\UC_PayTempWin.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Member\UC_MemberFile.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Member\PayMonthUnofficial.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Member\UC_PayMonth.xaml">
+    <Page Update="MemberUc\UC_PayMonth.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Member\UC_Attendance.xaml">
@@ -244,10 +271,7 @@
     <Page Update="Member\UC_RemarkInfo.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Member\UC_ResumeInfo.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Member\UC_WorkInfo.xaml">
+    <Page Update="MemberUc\UC_Resume.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="PageHome.xaml">

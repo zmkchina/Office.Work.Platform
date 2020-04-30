@@ -27,9 +27,8 @@ namespace Office.Work.Platform.Member
 
         private void ListBoxItem_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-
         }
-        //新增员工
+        //新增/编辑员工
         private void ListBoxItem_MouseLeftButtonUp_0(object sender, MouseButtonEventArgs e)
         {
             PageEditMember pageEditMember = new PageEditMember(null);
@@ -38,7 +37,7 @@ namespace Office.Work.Platform.Member
         //员工列表
         private void ListBoxItem_MouseLeftButtonUp_1(object sender, MouseButtonEventArgs e)
         {
-            PageMemberList pageMemberList = new PageMemberList(null);
+            PageMemberList pageMemberList = new PageMemberList();
             AppSettings.AppMainWindow.FrameContentPage.Content = pageMemberList;
         }
         //批量新增
@@ -46,6 +45,11 @@ namespace Office.Work.Platform.Member
         {
             PageAddMembers pageAddMembers = new PageAddMembers();
             AppSettings.AppMainWindow.FrameContentPage.Content = pageAddMembers;
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            ListBoxItem_MouseLeftButtonUp_1(null, null);
         }
     }
 }

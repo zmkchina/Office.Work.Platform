@@ -87,7 +87,7 @@
                                            TextWrapping="Wrap"
                                            Cursor="Hand" 
                                            VerticalAlignment="Center"                                              
-                                           MouseLeftButtonUp="TB_OpenFile_MouseLeftButtonUp">
+                                           MouseLeftButtonUp="TB_OpenFile_MouseLeftButtonUpAsync">
                                     <Run Text="{Binding Name}"/>
                                     <Run Text="{Binding ExtendName}"/>
                                     <Run Text="{Binding Path=UpIntProgress,StringFormat=(上传{0:F0}%)}"/>
@@ -115,7 +115,7 @@
                                        VerticalAlignment="Center" Tag="{Binding Id}" 
                                        Source="/Office.Work.Platform;component/AppRes/Images/delete.png" 
                                        ToolTip="删除该文件" IsEnabled="{Binding ElementName=UCPlanInfo,Path=DataContext.UserHasGrant}"
-                                       MouseLeftButtonUp="Image_Delete_MouseLeftButtonUp">
+                                       MouseLeftButtonUp="Image_Delete_MouseLeftButtonUpAsync">
                                     <Image.Style>
                                         <Style TargetType="Image">
                                             <Style.Triggers>

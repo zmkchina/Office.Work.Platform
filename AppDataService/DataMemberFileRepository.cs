@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
@@ -13,6 +14,23 @@ namespace Office.Work.Platform.AppDataService
     public static class DataMemberFileRepository
     {
         /// <summary>
+        /// 读取指定查询条件的文件列表。
+        /// </summary>
+        /// <param name="mSearchFile">查询条件类的实例</param>
+        /// <returns></returns>
+        public static async Task<IEnumerable<MemberFile>> ReadFiles(MemberFileSearch mfSearchFile)
+        {
+            IEnumerable<MemberFile> FileList = null;
+            //创建查询url参数
+            string urlParams = DataApiRepository.CreateUrlParams(mfSearchFile);
+
+            if (urlParams.Length > 0)
+            {
+                FileList = await DataApiRepository.GetApiUri<IEnumerable<MemberFile>>(AppSettings.ApiUrlBase + "MemberFile/Search" + urlParams).ConfigureAwait(false);
+            }
+            return FileList;
+        }
+        /// <summary>
         /// 上传文件信息
         /// </summary>
         /// <param name="WillFileInfo"></param>
@@ -20,7 +38,7 @@ namespace Office.Work.Platform.AppDataService
         public static async Task<ExcuteResult> UpLoadFileInfo(MemberFile UpFileInfo, Stream PostFileStream, string PostFileKey, string PostFileName, ProgressMessageHandler showUploadProgress = null)
         {
             MultipartFormDataContent V_MultFormDatas = DataApiRepository.SetFormData(UpFileInfo, PostFileStream, PostFileKey, PostFileName);
-            ExcuteResult JsonResult = await DataApiRepository.PostApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "FileInfo", V_MultFormDatas, showUploadProgress).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.PostApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "MemberFile/UpLoadFile", V_MultFormDatas, showUploadProgress).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -32,7 +50,7 @@ namespace Office.Work.Platform.AppDataService
         {
             UpFile.UpDateTime = DateTime.Now;
             MultipartFormDataContent V_MultFormDatas = DataApiRepository.SetFormData(UpFile);
-            ExcuteResult JsonResult = await DataApiRepository.PutApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "FileInfo", V_MultFormDatas).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.PutApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "MemberFile", V_MultFormDatas).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -42,7 +60,7 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<ExcuteResult> DeleteFileInfo(MemberFile DelFile)
         {
-            ExcuteResult JsonResult = await DataApiRepository.DeleteApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "FileInfo/?FileId=" + DelFile.Id + "&FileExtName=" + DelFile.ExtendName).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.DeleteApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "MemberFile/?FileId=" + DelFile.Id + "&FileExtName=" + DelFile.ExtendName).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -78,13 +96,14 @@ namespace Office.Work.Platform.AppDataService
         /// <returns>返回下载成功的文件目录（包括路径）</returns>
         public static async Task<string> DownloadFile(MemberFile WillDownFile, bool ReDownLoad = false, ProgressMessageHandler showDownProgress = null)
         {
+            if (WillDownFile == null) { return null; }
             //合成目录
             string tempFileDir = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DownFiles", "MemberFiles");
             //合成目录+文件
             string tempFilePath = System.IO.Path.Combine(tempFileDir, WillDownFile.Name + "(" + WillDownFile.Id + ")" + WillDownFile.ExtendName);
             if (!File.Exists(tempFilePath) || ReDownLoad)
             {
-                HttpResponseMessage httpResponseMessage = await DataApiRepository.GetApiUri<HttpResponseMessage>(AppSettings.ApiUrlBase + @"FileDown/" + WillDownFile.Id, showDownProgress).ConfigureAwait(false);
+                HttpResponseMessage httpResponseMessage = await DataApiRepository.GetApiUri<HttpResponseMessage>(AppSettings.ApiUrlBase + @"MemberFile/DownloadFile/" + WillDownFile.Id, showDownProgress).ConfigureAwait(false);
                 if (httpResponseMessage != null && httpResponseMessage.StatusCode != System.Net.HttpStatusCode.NotFound)
                 {
                     Stream responseStream = await httpResponseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false);

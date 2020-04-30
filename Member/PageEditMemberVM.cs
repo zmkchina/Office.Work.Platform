@@ -9,6 +9,7 @@ namespace Office.Work.Platform.Member
     public class PageEditMemberVM : NotificationObject
     {
         private bool _isEditFlag;
+        private string _AddOrEditStr;
 
         public PageEditMemberVM(Lib.Member PMember)
         {
@@ -40,7 +41,21 @@ namespace Office.Work.Platform.Member
             }
             set
             {
-                _isEditFlag = value; RaisePropertyChanged();
+
+                _isEditFlag = value;
+                AddOrEditStr = value ? "编辑" : "新增";
+                RaisePropertyChanged();
+            }
+        }
+        public string AddOrEditStr
+        {
+            get
+            {
+                return _AddOrEditStr;
+            }
+            set
+            {
+                _AddOrEditStr = value; RaisePropertyChanged();
             }
         }
         public Lib.Member EntityMember { get; set; }

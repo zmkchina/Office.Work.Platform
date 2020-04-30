@@ -137,7 +137,7 @@ namespace Office.Work.Platform.Plan
             }
         }
         //打开选定的文件
-        private async void openFile_PreviewMouseLeftButtonUpAsync(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private async void OpenFile_PreviewMouseLeftButtonUpAsync(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             e.Handled = true;
             TextBlock tb = sender as TextBlock;

@@ -14,6 +14,23 @@ namespace Office.Work.Platform.AppDataService
     public static class DataPlanFileRepository
     {
         /// <summary>
+        /// 读取指定查询条件的文件列表。
+        /// </summary>
+        /// <param name="mSearchFile">查询条件类的实例</param>
+        /// <returns></returns>
+        public static async Task<IEnumerable<PlanFile>> ReadFiles(PlanFileSearch mSearchFile)
+        {
+            IEnumerable<PlanFile> FileList = null;
+            //创建查询url参数
+            string urlParams = DataApiRepository.CreateUrlParams(mSearchFile);
+
+            if (urlParams.Length > 0)
+            {
+                FileList = await DataApiRepository.GetApiUri<IEnumerable<PlanFile>>(AppSettings.ApiUrlBase + "PlanFile/Search" + urlParams).ConfigureAwait(false);
+            }
+            return FileList;
+        }
+        /// <summary>
         /// 上传计划附件
         /// </summary>
         /// <param name="UpFileInfo">该文件信息</param>
@@ -22,18 +39,18 @@ namespace Office.Work.Platform.AppDataService
         /// <param name="PostFileName">用于告诉服务器指定文件的名称。如服务器不使用之，可以为空</param>
         /// <param name="showUploadProgress">上传进度</param>
         /// <returns></returns>
-        public static async Task<ExcuteResult> UpLoadFileInfo(PlanFile UpFileInfo, Stream PostFileStream, string PostFileKey=null, string PostFileName = null, ProgressMessageHandler showUploadProgress = null)
+        public static async Task<ExcuteResult> UpLoadFileInfo(PlanFile UpFileInfo, Stream PostFileStream, string PostFileKey = null, string PostFileName = null, ProgressMessageHandler showUploadProgress = null)
         {
             MultipartFormDataContent V_MultFormDatas = DataApiRepository.SetFormData(UpFileInfo, PostFileStream, PostFileKey, PostFileName);
             ExcuteResult JsonResult = await DataApiRepository.PostApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "PlanFile/UpLoadFile", V_MultFormDatas, showUploadProgress).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
-        /// 更新文件信息
+        /// 更新文件信息（采用PUT）
         /// </summary>
-        /// <param name="UpFile">预更新文件信息</param>
+        /// <param name="UpdatePlan"></param>
         /// <returns></returns>
-        public static async Task<ExcuteResult> UpdateFileInfo(PlanFile UpFile)
+        public static async Task<ExcuteResult> UpdateFileInfo(Lib.PlanFile UpFile)
         {
             UpFile.UpDateTime = DateTime.Now;
             MultipartFormDataContent V_MultFormDatas = DataApiRepository.SetFormData(UpFile);
@@ -127,32 +144,6 @@ namespace Office.Work.Platform.AppDataService
             }
         }
 
-        ///// <summary>
-        ///// 读取所有文件列表
-        ///// </summary>
-        ///// <returns></returns>
-        //public static async Task<List<PlanFile>> ReadFiles()
-        //{
-        //    List<PlanFile> FileList = await DataApiRepository.GetApiUri<List<PlanFile>>(AppSettings.ApiUrlBase + "PlanFile");
-        //    return FileList;
-        //}
-        /// <summary>
-        /// 读取指定类型、指定宿主的文件列表。比如：读取“计划附件”编号为“201999999”的文件列表
-        /// 示例：ReadPlanFiles("计划附件","201999999");
-        /// </summary>
-        /// <param name="mSearchFile">查询条件类的实例</param>
-        /// <returns></returns>
-        public static async Task<IEnumerable<PlanFile>> ReadFiles(PlanFileSearch mSearchFile)
-        {
-            IEnumerable<PlanFile> FileList = null;
-            //创建查询url参数
-            string urlParams = DataApiRepository.CreateUrlParams(mSearchFile);
 
-            if (urlParams.Length > 0)
-            {
-                FileList = await DataApiRepository.GetApiUri<IEnumerable<PlanFile>>(AppSettings.ApiUrlBase + "PlanFile/Search" + urlParams).ConfigureAwait(false);
-            }
-            return FileList;
-        }
     }
 }

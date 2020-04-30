@@ -1,24 +1,19 @@
-﻿using Newtonsoft.Json;
-using Office.Work.Platform.AppCodes;
-using Office.Work.Platform.Lib;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading.Tasks;
-using System.Windows;
+using Office.Work.Platform.AppCodes;
 
 namespace Office.Work.Platform.Member
 {
     public class PageMemberListVM : NotificationObject
     {
 
-        public string[] FileContentTypes => AppSettings.ServerSetting.WorkContentType.Split(',', System.StringSplitOptions.RemoveEmptyEntries);
         public ObservableCollection<Lib.Member> EntityList { get; set; }
+        public Dictionary<string, string> FieldCn2En { get; set; }
 
-        public MemberSearch mSearchMember { get; set; }
+        public string FieldEnName { get; set; }
+        public string FieldValue { get; set; }
+        public bool SearchInResult { get; set; }
+        
         #region "方法"
         /// <summary>
         /// 构造函数
@@ -26,7 +21,7 @@ namespace Office.Work.Platform.Member
         public PageMemberListVM()
         {
             EntityList = new ObservableCollection<Lib.Member>();
-            mSearchMember = new MemberSearch();
+            FieldCn2En = new Dictionary<string, string>() { { "Name", "姓名" }, { "UnitName", "单位" }, { "Age", "年龄" } };
         }
 
         #endregion

@@ -40,7 +40,7 @@ namespace Office.Work.Platform.PlanFiles
         private async void btn_Refrash_Click(object sender, RoutedEventArgs e)
         {
             string SearchNoValue = tb_search.Text.Trim().Length > 0 ? tb_search.Text.Trim() : null;
-            _mSearchFile.SearchFromNameDesc= SearchNoValue;
+            _mSearchFile.SearchNameOrDesc= SearchNoValue;
             await _PageFilesListVM.GetFilesAsync(_mSearchFile);
             DataContext = _PageFilesListVM;
         }

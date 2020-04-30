@@ -331,17 +331,6 @@ namespace Office.Work.Platform.AppDataService
                         urlParams.Append($"&" + item.Name + "=" + itemValue.ToString());
                     }
                 }
-                //else
-                //{
-                //    if (urlParams.Length < 1)
-                //    {
-                //        urlParams.Append($"?" + item.Name + "=");
-                //    }
-                //    else
-                //    {
-                //        urlParams.Append($"&" + item.Name + "=");
-                //    }
-                //}
             }
             return urlParams.ToString();
         }

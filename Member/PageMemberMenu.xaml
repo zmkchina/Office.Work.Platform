@@ -7,7 +7,7 @@
       ShowsNavigationUI="False"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="150"
-      Title="PagePersonMenu">
+      Loaded="Page_Loaded">
     <Grid>
         <!--<Grid.ColumnDefinitions>
             <ColumnDefinition Width="150"/>
@@ -43,7 +43,7 @@
            <ListBoxItem MouseLeftButtonUp="ListBoxItem_MouseLeftButtonUp_0">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="&#xe643;" Style="{StaticResource FIcon}" FontSize="18" Margin="0,0,5,0" Foreground="Green"></TextBlock>
-                    <TextBlock  Text="新增员工" VerticalAlignment="Center"/>
+                    <TextBlock  Text="新增/编辑" VerticalAlignment="Center"/>
                 </StackPanel>
             </ListBoxItem>
             <ListBoxItem MouseLeftButtonUp="ListBoxItem_MouseLeftButtonUp_1">

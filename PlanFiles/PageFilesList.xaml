@@ -34,12 +34,13 @@
                             <Grid.ToolTip>
                                 <StackPanel>
                                     <TextBlock FontWeight="Heavy">
-                                            <Run  Text="{Binding Path=OwnerType}" />
-                                            <Run  Text=">" />
-                                            <Run  Text="{Binding Path=ContentType}" />
+                                            <Run  Text="{Binding Path=Plan.PlanType}" />
+                                            <Run  Text="{Binding Path=Plan.Caption,StringFormat= : {0}}"/>
                                     </TextBlock>
                                     <TextBlock Margin="0,5">
-                                           <Run  Text="{Binding Path=Describe,StringFormat=描述 : {0}}"/>
+                                           <Run  Text="{Binding Path=Plan.Content}"/>
+                                           <LineBreak/>
+                                           <Run  Text="{Binding Path=Describe}"/>
                                     </TextBlock>
                                 </StackPanel>
                             </Grid.ToolTip>

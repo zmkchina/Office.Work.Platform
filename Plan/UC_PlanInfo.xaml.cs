@@ -124,7 +124,7 @@ namespace Office.Work.Platform.Plan
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void Image_Delete_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private async void Image_Delete_MouseLeftButtonUpAsync(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             PlanFile SelectFile = LB_FileList.SelectedItem as PlanFile;
             if (MessageBox.Show("删除文件《" + SelectFile.Name + "》？", "确认", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
@@ -142,7 +142,7 @@ namespace Office.Work.Platform.Plan
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void TB_OpenFile_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private async void TB_OpenFile_MouseLeftButtonUpAsync(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             TextBlock curTextBlock = sender as TextBlock;
             curTextBlock.IsEnabled = false;

@@ -1,27 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Office.Work.Platform.AppDataService;
 using Office.Work.Platform.Lib;
 
-namespace Office.Work.Platform.Member
+namespace Office.Work.Platform.MemberUc
 {
     /// <summary>
-    /// UC_PayTemp.xaml 的交互逻辑
+    /// UC_BasicInfo.xaml 的交互逻辑
     /// </summary>
-    public partial class UC_PayTemp : UserControl
+    public partial class UC_Resume : UserControl
     {
         private PageEditMemberVM _CurMemberVM;
-        public UC_PayTemp()
+        public UC_Resume()
         {
             InitializeComponent();
         }
@@ -36,9 +26,24 @@ namespace Office.Work.Platform.Member
             MessageBox.Show(excuteResult.Msg);
         }
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private void btn_search_Click(object sender, RoutedEventArgs e)
         {
-            //await _UC_PayTempVM.Init_PayTempVMAsync(null)
+
+        }
+
+        private void btn_delte_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btn_add_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            e.Handled = true;
         }
     }
 }

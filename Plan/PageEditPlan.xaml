@@ -114,7 +114,9 @@
                                         <ColumnDefinition Width="100" />
                                     </Grid.ColumnDefinitions>
                                     <Image Width="20" Margin="2,5,8,5" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="{Binding Path=ExtendName,Converter={StaticResource ExtentNameToImgeUri}}"/>
-                                    <TextBlock  Grid.Column="1" VerticalAlignment="Center" TextWrapping="Wrap" Cursor="Hand" x:Name="openFile" PreviewMouseLeftButtonUp="openFile_PreviewMouseLeftButtonUpAsync">
+                                    <TextBlock  Grid.Column="1" VerticalAlignment="Center" TextWrapping="Wrap" 
+                                                Cursor="Hand" 
+                                                PreviewMouseLeftButtonUp="OpenFile_PreviewMouseLeftButtonUpAsync">
                                         <Run Text="{Binding Path=Name}" />
                                         <Run Text="{Binding Path=UpIntProgress,StringFormat=(上传{0:F0}%)}"/>
                                         <Run Text="{Binding Path=DownIntProgress,StringFormat=(下载{0:F0}%)}"/>
