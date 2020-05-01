@@ -9,14 +9,29 @@ namespace Office.Work.Platform.AppDataService
     public static class DataPlanRepository
     {
         /// <summary>
-        /// 新增或更新一个计划（如该计划已在数据库中存在，则更新之）
+        /// 读取满足指定条件的计划信息
+        /// </summary>
+        /// <param name="mSearchPlan">查询条件类的实例</param>
+        /// <returns></returns>
+        public static async Task<IEnumerable<Lib.Plan>> ReadPlans(PlanSearch mSearchPlan)
+        {
+            IEnumerable<Lib.Plan> PlansList = null;
+            string urlParams = DataApiRepository.CreateUrlParams(mSearchPlan);
+
+            if (urlParams.Length > 0)
+            {
+                PlansList = await DataApiRepository.GetApiUri<IEnumerable<Lib.Plan>>(AppSettings.ApiUrlBase + "Plan/Search" + urlParams).ConfigureAwait(false);
+            }
+            return PlansList;
+        }
+        /// <summary>
+        /// 新增一个计划
         /// </summary>
         /// <param name="Entity"></param>
         /// <returns></returns>
-        public static async Task<ExcuteResult> AddNewPlan(Lib.Plan Entity)
+        public static async Task<ExcuteResult> AddNewPlan(Lib.Plan PEntity)
         {
-            MultipartFormDataContent V_MultFormDatas = DataApiRepository.SetFormData(Entity);
-            ExcuteResult JsonResult = await DataApiRepository.PostApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "Plan", V_MultFormDatas).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(AppSettings.ApiUrlBase + "Plan", PEntity).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -24,10 +39,9 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="UpdatePlan"></param>
         /// <returns></returns>
-        public static async Task<ExcuteResult> UpdatePlan(Lib.Plan UpdatePlan)
+        public static async Task<ExcuteResult> UpdatePlan(Lib.Plan PEntity)
         {
-            MultipartFormDataContent V_MultFormDatas = DataApiRepository.SetFormData(UpdatePlan);
-            ExcuteResult JsonResult = await DataApiRepository.PutApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "Plan", V_MultFormDatas).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.PutApiUriAsync(AppSettings.ApiUrlBase + "Plan", PEntity).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -39,22 +53,6 @@ namespace Office.Work.Platform.AppDataService
         {
             ExcuteResult JsonResult = await DataApiRepository.DeleteApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "Plan/" + DelePlan.Id).ConfigureAwait(false);
             return JsonResult;
-        }
-        /// <summary>
-        /// 读取满足指定条件的计划信息
-        /// </summary>
-        /// <param name="mSearchPlan">查询条件类的实例</param>
-        /// <returns></returns>
-        public static async Task<IEnumerable<Lib.Plan>> ReadPlans(PlanSearch mSearchPlan)
-        {
-            IEnumerable<Lib.Plan> PlansList =null;
-            string urlParams = DataApiRepository.CreateUrlParams(mSearchPlan);
-
-            if (urlParams.Length > 0)
-            {
-                PlansList = await DataApiRepository.GetApiUri<IEnumerable<Lib.Plan>>(AppSettings.ApiUrlBase + "Plan/Search" + urlParams).ConfigureAwait(false);
-            }
-            return PlansList;
         }
     }
 }

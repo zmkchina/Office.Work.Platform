@@ -22,6 +22,7 @@ namespace Office.Work.Platform.AppDataService
             }
             return true;
         }
+
         /// <summary>
         /// 将一个对象存入文件
         /// </summary>
@@ -43,6 +44,7 @@ namespace Office.Work.Platform.AppDataService
             fs.Close();
             return true;
         }
+
         /// <summary>
         ///  从文件中读取一个对象（列表）
         /// </summary>

@@ -73,9 +73,9 @@ namespace Office.Work.Platform
         private async void Window_LoadedAsync(object sender, RoutedEventArgs e)
         {
             //1.检查是否需要更新。
-            if (await CheckUpdate.CheckAsync())
+            if (await CheckUpdate.CheckAppUpdateAsync())
             {
-                MessageBox.Show("发现新版本！", "更新", MessageBoxButton.OK, MessageBoxImage.Information);
+                (new WinMsgDialog("发现新版本。", "更新")).ShowDialog();
                 //升级程序路径。
                 string updateProgram = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Office.Work.Platform.Update.exe");
                 if (File.Exists(updateProgram))
@@ -85,7 +85,7 @@ namespace Office.Work.Platform
                 }
                 else
                 {
-                    MessageBox.Show("未找到更新程序,请与开发人员联系。", "更新", MessageBoxButton.OK, MessageBoxImage.Information);
+                    (new WinMsgDialog("未找到更新程序,请与开发人员联系。", "错误", isErr: true)).ShowDialog();
                 }
                 //关闭本程序
                 ShutDownApp();
@@ -94,7 +94,7 @@ namespace Office.Work.Platform
             AppSettings.SysUsers = await DataSystemRepository.ReadAllSysUsers();
             if (AppSettings.SysUsers == null || AppSettings.SysUsers.Count < 2)
             {
-                MessageBox.Show("读取用户列表时出错，程序无法运行！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                (new WinMsgDialog("读取用户列表时出错，程序无法运行。", "错误",isErr:true)).ShowDialog();
                 //关闭本程序
                 ShutDownApp();
             }
@@ -102,10 +102,11 @@ namespace Office.Work.Platform
             AppSettings.ServerSetting = await DataSystemRepository.ReadServerSettings();
             if (AppSettings.ServerSetting == null)
             {
-                MessageBox.Show("读取系统设置信息时出错，程序无法运行！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                (new WinMsgDialog("读取系统设置信息时出错，程序无法运行。", "错误", isErr: true)).ShowDialog();
                 //关闭本程序
                 ShutDownApp();
             }
+            lblLoginMsg.Text = $"当前用户：{AppSettings.LoginUser.Name}-{AppSettings.LoginUser.UnitName}";
             ListBoxItem_MouseLeftButtonUp_0(null, null);
         }
         /// <summary>
@@ -219,7 +220,7 @@ namespace Office.Work.Platform
         /// </summary>
         private void ShutDownApp()
         {
-            this.notifyIcon ?.Dispose();
+            this.notifyIcon?.Dispose();
             System.Windows.Application.Current.Shutdown(0);
         }
     }

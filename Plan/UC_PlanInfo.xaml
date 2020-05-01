@@ -66,7 +66,7 @@
                         </Button>
                     </StackPanel>
                 </GroupBox.Header>
-                <ListBox x:Name="LB_FileList" ItemsSource="{Binding CurPlan.Files}" Background="Transparent"
+                <ListBox x:Name="LB_FileList" ItemsSource="{Binding PlanFiles}" Background="Transparent"
                          MinHeight="20"
                          HorizontalAlignment="Stretch"
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"

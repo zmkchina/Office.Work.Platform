@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Office.Work.Platform.PlanFiles"
              mc:Ignorable="d" 
-             Loaded="UCFileInfo_Loaded"
              >
     <ScrollViewer>
         <StackPanel TextElement.FontSize="14"  HorizontalAlignment="Stretch">
@@ -22,7 +21,7 @@
                      TextWrapping="Wrap" 
                      VerticalAlignment="Center" 
                      Padding="3" 
-                     Text="{Binding Path=PlanFileInfo.Name}" />
+                     Text="{Binding Path=CurPlanFile.Name}" />
             </GroupBox>
             <GroupBox>
                 <GroupBox.Header>
@@ -35,7 +34,7 @@
                      TextWrapping="Wrap" 
                      VerticalAlignment="Center" 
                      Padding="3" 
-                     Text="{Binding Path=PlanFileInfo.Describe}" />
+                     Text="{Binding Path=CurPlanFile.Describe}" />
             </GroupBox>
             <Expander ExpandDirection="Down" Margin="5">
                 <Expander.Header>
@@ -45,11 +44,11 @@
                     <StackPanel Orientation="Vertical" Margin="5,2,0,5">
                         <DockPanel>
                             <TextBlock DockPanel.Dock="Left" Text="内容分类" Margin="5"/>
-                            <TextBlock  DockPanel.Dock="Right"  Text="{Binding Path=PlanFileInfo.Plan.PlanType}"  Margin="5"/>
+                            <TextBlock  DockPanel.Dock="Right"  Text="{Binding Path=CurPlanFile.Plan.PlanType}"  Margin="5"/>
                         </DockPanel>
                         <DockPanel>
                             <TextBlock DockPanel.Dock="Left" Text="所属计划" Margin="5"/>
-                            <TextBlock  DockPanel.Dock="Right"  Text="{Binding Path=PlanFileInfo.Plan.Caption}"  Margin="5"/>
+                            <TextBlock  DockPanel.Dock="Right"  Text="{Binding Path=CurPlanFile.Plan.Caption}"  Margin="5"/>
                         </DockPanel>
                         <DockPanel>
                             <TextBlock DockPanel.Dock="Left" Text="有权读取" Margin="5"/>
@@ -61,7 +60,7 @@
                         </DockPanel>
                         <DockPanel>
                             <TextBlock DockPanel.Dock="Left" Text="上传日期" Margin="5"/>
-                            <TextBlock  DockPanel.Dock="Right"  Text="{Binding Path=PlanFileInfo.UpDateTime}"  Margin="5"/>
+                            <TextBlock  DockPanel.Dock="Right"  Text="{Binding Path=CurPlanFile.UpDateTime}"  Margin="5"/>
                         </DockPanel>
                         
                     </StackPanel>

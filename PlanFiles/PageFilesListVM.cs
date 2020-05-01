@@ -10,18 +10,18 @@ namespace Office.Work.Platform.PlanFiles
     public class PageFilesListVM : NotificationObject
     {
 
-        public ObservableCollection<PlanFile> EntityFiles { get; set; }
+        public ObservableCollection<PlanFile> PlanFiles { get; set; }
         public PageFilesListVM()
         {
-            EntityFiles = new ObservableCollection<PlanFile>();
+            PlanFiles = new ObservableCollection<PlanFile>();
         }
         public async Task GetFilesAsync(PlanFileSearch mSearchFile)
         {
-            EntityFiles.Clear();
+            PlanFiles.Clear();
             var files = await DataPlanFileRepository.ReadFiles(mSearchFile);
             files.ToList().ForEach(e =>
             {
-                EntityFiles.Add(e);
+                PlanFiles.Add(e);
             });
         }
     }

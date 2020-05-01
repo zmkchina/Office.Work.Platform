@@ -20,7 +20,7 @@ namespace Office.Work.Platform.MemberUc
         {
             if (_CurRecord.Remark == null || _CurRecord.TypeName == null)
             {
-                MessageBox.Show("数据输入不正确，类型及备注均必须输入！", "缺少数据", MessageBoxButton.OK, MessageBoxImage.Warning);
+                (new WinMsgDialog("数据输入不正确，类型及备注均必须输入!", Caption: "缺少数据")).ShowDialog();
                 return;
             }
             DialogResult = true;

@@ -1,30 +1,27 @@
-﻿using System;
+﻿using Office.Work.Platform.AppCodes;
+using Office.Work.Platform.AppDataService;
+using Office.Work.Platform.Lib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
-using Office.Work.Platform.AppCodes;
-using Office.Work.Platform.AppDataService;
-using Office.Work.Platform.Lib;
 
 namespace Office.Work.Platform.MemberUc
 {
-    /// <summary>
-    /// UC_PayTemp.xaml 的交互逻辑
-    /// </summary>
-    public partial class UC_PayMonth : UserControl
+    public partial class UC_PrizePunish : UserControl
     {
-        private UC_PayMonthVM _UCPayMonthVM;
-        public UC_PayMonth()
+        private UC_PrizePunishVM _UCPrizePunishVM;
+        public UC_PrizePunish()
         {
             InitializeComponent();
-            _UCPayMonthVM = new UC_PayMonthVM();
+            _UCPrizePunishVM = new UC_PrizePunishVM();
         }
         public async void initControlAsync(Lib.Member PMember)
         {
-            await _UCPayMonthVM.InitVMAsync(PMember);
-            this.DataContext = _UCPayMonthVM;
+            await _UCPrizePunishVM.InitVMAsync(PMember);
+            this.DataContext = _UCPrizePunishVM;
         }
         /// <summary>
         /// 查询记录
@@ -33,7 +30,7 @@ namespace Office.Work.Platform.MemberUc
         /// <param name="e"></param>
         private async void BtnSearchClickAsync(object sender, RoutedEventArgs e)
         {
-            await _UCPayMonthVM.SearchRecords();
+            await _UCPrizePunishVM.SearchRecords();
         }
         /// <summary>
         ///  新增记录
@@ -42,38 +39,33 @@ namespace Office.Work.Platform.MemberUc
         /// <param name="e"></param>
         private async void BtnAddClickAsync(object sender, RoutedEventArgs e)
         {
-            Lib.MemberPayMonth NewRecord = new Lib.MemberPayMonth()
+            Lib.MemberPrizePunish NewRecord = new Lib.MemberPrizePunish()
             {
-                MemberId = _UCPayMonthVM.CurMember.Id,
+                MemberId = _UCPrizePunishVM.CurMember.Id,
                 UserId = AppSettings.LoginUser.Id
             };
 
-            UC_PayMonthWin AddWin = new UC_PayMonthWin(NewRecord);
+            UC_PrizePunishWin AddWin = new UC_PrizePunishWin(NewRecord);
             AddWin.Owner = AppSettings.AppMainWindow;
 
             if (AddWin.ShowDialog().Value)
             {
-                IEnumerable<MemberPayMonth> MemberPlayMonths = await DataMemberPayMonthRepository.GetRecords(new MemberPayMonthSearch()
+                IEnumerable<MemberPrizePunish> MemberPlayMonths = await DataMemberPrizePunishRepository.GetRecords(new MemberPrizePunishSearch()
                 {
                     MemberId = NewRecord.MemberId,
-                    PayYear = NewRecord.PayYear,
-                    PayMonth = NewRecord.PayMonth,
                     UserId = NewRecord.UserId
                 });
-                if (MemberPlayMonths.Count() > 0)
-                {
-                    MessageBox.Show($"该工作人员 {NewRecord.PayYear} 年 {NewRecord.PayMonth} 月份待遇已发放，无法新增。", "失败");
-                    return;
-                }
 
-                ExcuteResult excuteResult = await DataMemberPayMonthRepository.AddRecord(NewRecord);
+                ExcuteResult excuteResult = await DataMemberPrizePunishRepository.AddRecord(NewRecord);
                 if (excuteResult.State == 0)
                 {
                     NewRecord.Id = excuteResult.Tag;
-                    _UCPayMonthVM.PayMonths.Add(NewRecord);
+                    _UCPrizePunishVM.CurRecords.Add(NewRecord);
                 }
                 else
-                { MessageBox.Show(excuteResult.Msg, "失败"); }
+                {
+                    (new WinMsgDialog(excuteResult.Msg, Caption: "失败")).ShowDialog();
+                }
             }
         }
         /// <summary>
@@ -83,17 +75,19 @@ namespace Office.Work.Platform.MemberUc
         /// <param name="e"></param>
         private async void BtnDelClickAsync(object sender, RoutedEventArgs e)
         {
-            if (RecordDataGrid.SelectedItem is Lib.MemberPayMonth SelectedRec)
+            if (RecordListBox.SelectedItem is Lib.MemberPrizePunish SelectedRec)
             {
-                if (MessageBox.Show($"确认要删除 {SelectedRec.PayMonth} 月份待遇吗？", "确认", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                if ((new WinMsgDialog($"确认要删除该条简历吗？", Caption: "确认", showYesNo: true)).ShowDialog().Value)
                 {
-                    ExcuteResult excuteResult = await DataMemberPayMonthRepository.DeleteRecord(SelectedRec);
+                    ExcuteResult excuteResult = await DataMemberPrizePunishRepository.DeleteRecord(SelectedRec);
                     if (excuteResult.State == 0)
                     {
-                        _UCPayMonthVM.PayMonths.Remove(SelectedRec);
+                        _UCPrizePunishVM.CurRecords.Remove(SelectedRec);
                     }
                     else
-                    { MessageBox.Show(excuteResult.Msg, "失败"); }
+                    {
+                        (new WinMsgDialog(excuteResult.Msg, Caption: "失败")).ShowDialog();
+                    }
                 }
             }
         }
@@ -104,16 +98,16 @@ namespace Office.Work.Platform.MemberUc
         /// <param name="e"></param>
         private async void BtnEditClickAsync(object sender, RoutedEventArgs e)
         {
-            if (RecordDataGrid.SelectedItem is Lib.MemberPayMonth SelectedRec)
+            if (RecordListBox.SelectedItem is Lib.MemberPrizePunish SelectedRec)
             {
-                Lib.MemberPayMonth RecCloneObj = CloneObject<Lib.MemberPayMonth, Lib.MemberPayMonth>.Trans(SelectedRec);
+                Lib.MemberPrizePunish RecCloneObj = CloneObject<Lib.MemberPrizePunish, Lib.MemberPrizePunish>.Trans(SelectedRec);
 
-                UC_PayMonthWin AddWin = new UC_PayMonthWin(RecCloneObj);
+                UC_PrizePunishWin AddWin = new UC_PrizePunishWin(RecCloneObj);
                 AddWin.Owner = AppSettings.AppMainWindow;
 
                 if (AddWin.ShowDialog().Value)
                 {
-                    ExcuteResult excuteResult = await DataMemberPayMonthRepository.UpdateRecord(RecCloneObj);
+                    ExcuteResult excuteResult = await DataMemberPrizePunishRepository.UpdateRecord(RecCloneObj);
                     if (excuteResult.State == 0)
                     {
                         PropertyInfo[] TargetAttris = SelectedRec.GetType().GetProperties();
@@ -128,7 +122,9 @@ namespace Office.Work.Platform.MemberUc
                         }
                     }
                     else
-                    { MessageBox.Show(excuteResult.Msg, "失败"); }
+                    {
+                        (new WinMsgDialog(excuteResult.Msg, Caption: "失败")).ShowDialog();
+                    }
                 }
             }
         }

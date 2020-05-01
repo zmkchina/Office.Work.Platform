@@ -35,18 +35,7 @@ namespace Office.Work.Platform.AppDataService
             /// <returns></returns>
             public static async Task<ExcuteResult> AddRecord(Lib.MemberPayTemp PEntity)
             {
-                MultipartFormDataContent V_MultFormDatas = DataApiRepository.SetFormData(PEntity);
-                ExcuteResult JsonResult = await DataApiRepository.PostApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "MemberPayTemp", V_MultFormDatas).ConfigureAwait(false);
-                return JsonResult;
-            }
-            /// <summary>
-            /// 批量新增数据
-            /// </summary>
-            /// <param name="P_Entity"></param>
-            /// <returns></returns>
-            public static async Task<ExcuteResult> AddRecords(List<Lib.MemberPayTemp> Entitys)
-            {
-                ExcuteResult JsonResult = await DataApiRepository.PostApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "MemberPayTemp/AddRange", Entitys).ConfigureAwait(false);
+                ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(AppSettings.ApiUrlBase + "MemberPayTemp", PEntity).ConfigureAwait(false);
                 return JsonResult;
             }
             /// <summary>
@@ -56,8 +45,7 @@ namespace Office.Work.Platform.AppDataService
             /// <returns></returns>
             public static async Task<ExcuteResult> UpdateRecord(Lib.MemberPayTemp PEntity)
             {
-                MultipartFormDataContent V_MultFormDatas = DataApiRepository.SetFormData(PEntity);
-                ExcuteResult JsonResult = await DataApiRepository.PutApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "MemberPayTemp", V_MultFormDatas).ConfigureAwait(false);
+                ExcuteResult JsonResult = await DataApiRepository.PutApiUriAsync(AppSettings.ApiUrlBase + "MemberPayTemp", PEntity).ConfigureAwait(false);
                 return JsonResult;
             }
             /// <summary>

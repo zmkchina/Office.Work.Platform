@@ -62,7 +62,7 @@ namespace Office.Work.Platform.MemberUc
                 });
                 if (MemberPlayMonths.Count() > 0)
                 {
-                    MessageBox.Show($"该工作人员 {NewRecord.PayYear} 年 {NewRecord.PayMonth} 月份待遇已发放，无法新增。", "失败");
+                    (new WinMsgDialog($"该工作人员 {NewRecord.PayYear} 年 {NewRecord.PayMonth} 月份待遇已发放，无法新增。")).ShowDialog();
                     return;
                 }
 
@@ -73,7 +73,9 @@ namespace Office.Work.Platform.MemberUc
                     _UCPayMonthInsuranceVM.PayMonthInsurances.Add(NewRecord);
                 }
                 else
-                { MessageBox.Show(excuteResult.Msg, "失败"); }
+                {
+                    (new WinMsgDialog(excuteResult.Msg, Caption: "失败")).ShowDialog();
+                }
             }
         }
         /// <summary>
@@ -85,7 +87,7 @@ namespace Office.Work.Platform.MemberUc
         {
             if (RecordDataGrid.SelectedItem is Lib.MemberPayMonthInsurance SelectedRec)
             {
-                if (MessageBox.Show($"确认要删除 {SelectedRec.PayMonth} 月份待遇吗？", "确认", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                if ((new WinMsgDialog($"确认要删除 {SelectedRec.PayMonth} 月份待遇吗？", Caption: "确认", showYesNo: true)).ShowDialog().Value)
                 {
                     ExcuteResult excuteResult = await DataMemberPayMonthInsuranceRepository.DeleteRecord(SelectedRec);
                     if (excuteResult.State == 0)
@@ -93,7 +95,9 @@ namespace Office.Work.Platform.MemberUc
                         _UCPayMonthInsuranceVM.PayMonthInsurances.Remove(SelectedRec);
                     }
                     else
-                    { MessageBox.Show(excuteResult.Msg, "失败"); }
+                    {
+                        (new WinMsgDialog(excuteResult.Msg, Caption: "失败")).ShowDialog();
+                    }
                 }
             }
         }
@@ -128,7 +132,9 @@ namespace Office.Work.Platform.MemberUc
                         }
                     }
                     else
-                    { MessageBox.Show(excuteResult.Msg, "失败"); }
+                    {
+                        (new WinMsgDialog(excuteResult.Msg, Caption: "失败")).ShowDialog();
+                    }
                 }
             }
         }

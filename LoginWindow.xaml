@@ -11,19 +11,20 @@
         AllowsTransparency="True"
         Background="Transparent"
         WindowStartupLocation="CenterScreen" 
-        ShowInTaskbar="False"
+        ShowInTaskbar="True"
         ForceCursor="True"
         ResizeMode="NoResize" 
+        Title="政工业务管理平台"
         Loaded="Window_Loaded">
     <Grid Background="LightSeaGreen">
         <Grid.RowDefinitions>
             <RowDefinition Height="170" ></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <Border  BorderBrush="YellowGreen" BorderThickness="0,0,0,2" Grid.Row="0" Background="LightSkyBlue" Cursor="Hand"  MouseMove="Grid_MouseMove">
+        <Border  BorderBrush="YellowGreen" BorderThickness="0,0,0,2" Grid.Row="0" Background="#FF124768" Cursor="Hand"  MouseMove="Grid_MouseMove">
             <Canvas x:Name="Canvas_Top"  >
-                <TextBlock Text="&#xe64d;" Style="{StaticResource FIcon}" Foreground="Red" FontSize="20" VerticalAlignment="Center" Margin="6,2,5,0"></TextBlock>
-                <TextBlock x:Name="TextBlock_Ver" Margin="30,5,0,0"  Text="工作助手(Ver:2.0.0.0)" Foreground="White" FontSize="14"/>
+                <TextBlock Text="&#xe64d;" Style="{StaticResource FIcon}" Foreground="Yellow" FontSize="20" VerticalAlignment="Center" Margin="6,5,5,0" Cursor="Hand"></TextBlock>
+                <TextBlock x:Name="TextBlock_Ver" Margin="30,6,0,0"  Text="政工业务管理平台" Foreground="White" VerticalAlignment="Center" FontSize="14"/>
                 <Image Height="130" Margin="170,33,0,0"  Source="/AppRes/Images/PlanAction.png" VerticalAlignment="Center" />
                 <Label Name="Label_Caption" 
                    Background="AntiqueWhite"  
@@ -48,9 +49,9 @@
                 <Button Content="退出" Click="Btn_Exit_Click" Margin="10 0" Padding="10,2"  />
             </StackPanel>
         </StackPanel>
-        <Canvas x:Name="CanVas_loadding" Panel.ZIndex="1" Visibility="Collapsed" >
-            <uc:UiLoading Canvas.Left="160" Canvas.Top="208" Height="50" Width="50"/>
-            <Label Canvas.Left="200" Canvas.Top="220" Margin="0,0,0,0" FontSize="15" FontWeight="DemiBold" Content="正在登陆系统...." Height="30" Foreground="Blue" />
+        <Canvas x:Name="CanVas_loadding" Grid.Row="1"  Panel.ZIndex="1" Height="160" Visibility="Collapsed" Background="#CCFFFFFF" VerticalAlignment="Center" >
+            <uc:UiLoading Canvas.Left="140" Canvas.Top="40" Height="50" Width="50"/>
+            <Label Canvas.Left="190" Canvas.Top="52" Margin="0,0,0,0" FontSize="15" FontWeight="DemiBold" Content="正在登陆系统...." Height="30" Foreground="Blue" />
         </Canvas>
     </Grid>
 </Window>

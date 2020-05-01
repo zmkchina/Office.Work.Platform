@@ -13,7 +13,7 @@ namespace Office.Work.Platform.Member
         public string FieldEnName { get; set; }
         public string FieldValue { get; set; }
         public bool SearchInResult { get; set; }
-        
+
         #region "方法"
         /// <summary>
         /// 构造函数
@@ -21,7 +21,9 @@ namespace Office.Work.Platform.Member
         public PageMemberListVM()
         {
             EntityList = new ObservableCollection<Lib.Member>();
-            FieldCn2En = new Dictionary<string, string>() { { "Name", "姓名" }, { "UnitName", "单位" }, { "Age", "年龄" } };
+            FieldCn2En = new Dictionary<string, string>() { { "Name", "姓名" }, { "UnitName", "单位" },
+                { "Job", "岗位性质" }, { "JobGrade", "岗位级别" }, { "EducationTop", "最高学历" }, { "Age", "年龄" },{ "Remarks", "备注" }
+        };
         }
 
         #endregion

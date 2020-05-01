@@ -6,7 +6,7 @@ using Office.Work.Platform.AppCodes;
 using Office.Work.Platform.AppDataService;
 using Office.Work.Platform.Lib;
 
-namespace Office.Work.Platform.Member
+namespace Office.Work.Platform.MemberUc
 {
     /// <summary>
     /// UC_BasicInfo.xaml 的交互逻辑
@@ -21,7 +21,7 @@ namespace Office.Work.Platform.Member
         }
         public async System.Threading.Tasks.Task InitFileDatasAsync(string MemberId, string FileType, string OtherRecordId = null, bool ReadFlag = true)
         {
-           await _UCMemberFileVM.Init_MemberFileVMAsync(MemberId, FileType, OtherRecordId, ReadFlag);
+            await _UCMemberFileVM.Init_MemberFileVMAsync(MemberId, FileType, OtherRecordId, ReadFlag);
             DataContext = _UCMemberFileVM;
 
         }
@@ -49,7 +49,7 @@ namespace Office.Work.Platform.Member
             System.IO.FileInfo theFile = FileOperation.SelectFile();
             if (theFile != null)
             {
-                MemberFile newFile = new MemberFile()
+                MemberFile NewMemberFile = new MemberFile()
                 {
                     Name = theFile.Name.Substring(0, theFile.Name.LastIndexOf('.')),
                     UserId = AppSettings.LoginUser.Id,
@@ -63,17 +63,17 @@ namespace Office.Work.Platform.Member
                 ProgressMessageHandler UpProgress = new ProgressMessageHandler();
                 UpProgress.HttpSendProgress += (object sender, HttpProgressEventArgs e) =>
                 {
-                    newFile.UpIntProgress = e.ProgressPercentage;
+                    NewMemberFile.UpIntProgress = e.ProgressPercentage;
                 };
-                ExcuteResult result = await DataMemberFileRepository.UpLoadFileInfo(newFile, newFile.FileInfo.OpenRead(), "memberfile", "mf", UpProgress);
+                ExcuteResult result = await DataMemberFileRepository.UpLoadFileInfo(NewMemberFile, NewMemberFile.FileInfo.OpenRead(), "memberfile", "mf", UpProgress);
                 if (result == null || result.State != 0)
                 {
-                    newFile.UpIntProgress = 0;
+                    NewMemberFile.UpIntProgress = 0;
                 }
-                if (result.State == 0)
+                else
                 {
-                    newFile.Id = result.Tag;
-                    _UCMemberFileVM.MFiles.Add(newFile);
+                    NewMemberFile.Id = result.Tag;
+                    _UCMemberFileVM.MFiles.Add(NewMemberFile);
                 }
             }
         }
@@ -86,7 +86,7 @@ namespace Office.Work.Platform.Member
         private async void Image_Delete_MouseLeftButtonUpAsync(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             MemberFile SelectFile = LB_FileList.SelectedItem as MemberFile;
-            if (MessageBox.Show("删除文件《" + SelectFile.Name + "》？", "确认", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+            if ((new WinMsgDialog($"删除文件《{ SelectFile.Name }》？", Caption: "确认", showYesNo: true)).ShowDialog().Value)
             {
                 return;
             }
@@ -108,7 +108,7 @@ namespace Office.Work.Platform.Member
             MemberFile SelectFile = curTextBlock.DataContext as MemberFile;
             if (SelectFile == null)
             {
-                MessageBox.Show("未读到选取文件信息！", "错误", MessageBoxButton.OK, MessageBoxImage.Warning);
+                (new WinMsgDialog("未读到选取文件信息！", Caption: "错误", isErr: true)).ShowDialog();
                 return;
             }
             ProgressMessageHandler progress = new ProgressMessageHandler();
@@ -126,7 +126,7 @@ namespace Office.Work.Platform.Member
             }
             else
             {
-                MessageBox.Show("文件下载失败，可能该文件已被删除！", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+                (new WinMsgDialog("文件下载失败，可能该文件已被删除！", Caption: "警告")).ShowDialog();
             }
             curTextBlock.IsEnabled = true;
         }

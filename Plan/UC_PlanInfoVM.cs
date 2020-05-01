@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Office.Work.Platform.AppCodes;
 using Office.Work.Platform.AppDataService;
@@ -12,13 +13,14 @@ namespace Office.Work.Platform.Plan
 
         public UC_PlanInfoVM()
         {
+            PlanFiles = new ObservableCollection<PlanFile>();
         }
         public async System.Threading.Tasks.Task Init_PlanInfoVMAsync(Lib.Plan P_Entity)
         {
             CurPlan = P_Entity;
             OperateGrant = new PlanOperateGrant(AppSettings.LoginUser, P_Entity);
 
-            if (CurPlan.Files.Count < 1)
+            if (PlanFiles.Count < 1)
             {
                 //如果该计划的附件文件没有读取则读取之。
                 PlanFileSearch mSearchFile = new PlanFileSearch() { PlanId = P_Entity.Id, UserId = AppSettings.LoginUser.Id };
@@ -26,7 +28,7 @@ namespace Office.Work.Platform.Plan
                 UpFiles.ToList().ForEach(e =>
                 {
                     e.UpIntProgress = 100;
-                    CurPlan.Files.Add(e);
+                    PlanFiles.Add(e);
                 });
             }
             if (CurPlan.CreateUserId != null)
@@ -50,7 +52,10 @@ namespace Office.Work.Platform.Plan
         /// 当前所选计划信息
         /// </summary>
         public Lib.Plan CurPlan { get; set; }
-
+        /// <summary>
+        /// 当前计划的文件。
+        /// </summary>
+        public ObservableCollection<PlanFile> PlanFiles { get; set; }
         /// <summary>
         /// 计划创建者的姓名（中文）。
         /// </summary>

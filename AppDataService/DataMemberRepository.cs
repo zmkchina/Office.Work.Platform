@@ -33,10 +33,9 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="Entity"></param>
         /// <returns></returns>
-        public static async Task<ExcuteResult> AddMember(Lib.Member Entity)
+        public static async Task<ExcuteResult> AddMember(Lib.Member PEntity)
         {
-            MultipartFormDataContent V_MultFormDatas = DataApiRepository.SetFormData(Entity);
-            ExcuteResult JsonResult = await DataApiRepository.PostApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "Member", V_MultFormDatas).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(AppSettings.ApiUrlBase + "Member", PEntity).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -46,7 +45,7 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<ExcuteResult> AddMembers(List<Lib.Member> Entitys)
         {
-            ExcuteResult JsonResult = await DataApiRepository.PostApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "Member/AddRange", Entitys).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(AppSettings.ApiUrlBase + "Member/AddRange", Entitys).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -54,10 +53,9 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="Entity"></param>
         /// <returns></returns>
-        public static async Task<ExcuteResult> UpdateMember(Lib.Member Entity)
+        public static async Task<ExcuteResult> UpdateMember(Lib.Member PEntity)
         {
-            MultipartFormDataContent V_MultFormDatas = DataApiRepository.SetFormData(Entity);
-            ExcuteResult JsonResult = await DataApiRepository.PutApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "Member", V_MultFormDatas).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.PutApiUriAsync(AppSettings.ApiUrlBase + "Member", PEntity).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>

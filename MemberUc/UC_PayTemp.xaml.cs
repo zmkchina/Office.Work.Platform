@@ -67,7 +67,9 @@ namespace Office.Work.Platform.MemberUc
                     _UCPayTempVM.PayTemps.Add(NewRecord);
                 }
                 else
-                { MessageBox.Show(excuteResult.Msg, "失败"); }
+                {
+                    (new WinMsgDialog(excuteResult.Msg, Caption: "失败")).ShowDialog();
+                }
             }
         }
         /// <summary>
@@ -79,7 +81,7 @@ namespace Office.Work.Platform.MemberUc
         {
             if (RecordDataGrid.SelectedItem is Lib.MemberPayTemp SelectedRec)
             {
-                if (MessageBox.Show($"确认要删除名为 {SelectedRec.TypeName} 的补充待遇记录吗？", "确认", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                if ((new WinMsgDialog($"确认要删除名为 {SelectedRec.TypeName} 的补充待遇记录吗？", Caption: "确认", showYesNo: true)).ShowDialog().Value)
                 {
                     ExcuteResult excuteResult = await DataMemberPayTempRepository.DeleteRecord(SelectedRec);
                     if (excuteResult.State == 0)
@@ -87,7 +89,9 @@ namespace Office.Work.Platform.MemberUc
                         _UCPayTempVM.PayTemps.Remove(SelectedRec);
                     }
                     else
-                    { MessageBox.Show(excuteResult.Msg, "失败"); }
+                    {
+                        (new WinMsgDialog(excuteResult.Msg, Caption: "失败")).ShowDialog();
+                    }
                 }
             }
         }
@@ -122,7 +126,9 @@ namespace Office.Work.Platform.MemberUc
                         }
                     }
                     else
-                    { MessageBox.Show(excuteResult.Msg, "失败"); }
+                    {
+                        (new WinMsgDialog(excuteResult.Msg, Caption: "失败")).ShowDialog();
+                    }
                 }
             }
         }

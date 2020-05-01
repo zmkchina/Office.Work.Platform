@@ -38,11 +38,11 @@ namespace Office.Work.Platform.Plan
 
             if (!_PageEditPlanVM.EntityPlan.ModelIsValid())
             {
-                MessageBox.Show("输入输入不正确，请完善或更正相关数据！", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+                (new WinMsgDialog("输入不正确，请完善或更正相关数据！", "警告")).ShowDialog();
                 BtnAddPlan.IsEnabled = true;
                 return;
             }
-            _PageEditPlanVM.EntityPlan.CurrectState = string.IsNullOrWhiteSpace(_PageEditPlanVM.EntityPlan.CurrectState) ? PlanStatus.WaitBegin : PlanStatus.Running;
+            _PageEditPlanVM.EntityPlan.CurrectState = string.IsNullOrWhiteSpace(_PageEditPlanVM.EntityPlan.CurrectState) ? PlanStatus.Running : PlanStatus.WaitBegin;
 
             _PageEditPlanVM.EntityPlan.Helpers = _PageEditPlanVM.GetSelectUserIds(_PageEditPlanVM.UserHelperSelectList);
 
@@ -58,11 +58,9 @@ namespace Office.Work.Platform.Plan
 
             if (!_PageEditPlanVM.EntityPlan.ReadGrant.Contains(AppSettings.LoginUser.Id))
             {
-                if (MessageBox.Show("你本人没有读取该计划的权限，确认？", "警告", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.No)
-                {
-                    BtnAddPlan.IsEnabled = true;
-                    return;
-                }
+                (new WinMsgDialog("你本人必须有读取该计划的权限！", Caption: "警告")).ShowDialog();
+                BtnAddPlan.IsEnabled = true;
+                return;
             }
             ExcuteResult JsonResult = new ExcuteResult();
             if (_PageEditPlanVM.IsEditFlag)
@@ -75,32 +73,38 @@ namespace Office.Work.Platform.Plan
             {
                 //新增计划
                 JsonResult = await DataPlanRepository.AddNewPlan(_PageEditPlanVM.EntityPlan);
+                if (JsonResult.State == 0)
+                {
+                    //如服务器保存成功，将返回服务器为计划计划生成的Id号。更新到当前计划，以便供编辑计划使用。
+                    _PageEditPlanVM.EntityPlan.Id = JsonResult.Tag;
+                }
             }
             if (JsonResult.State == 0)
             {
                 _PageEditPlanVM.IsEditFlag = true;
-                foreach (PlanFile item in _PageEditPlanVM.EntityPlan.Files)
+                foreach (PlanFile FileItem in _PageEditPlanVM.PlanFiles)
                 {
-                    if (item.UpIntProgress == 0)//只上传未上传过的文件。
+                    if (FileItem.UpIntProgress == 0)//只上传未上传过的文件。
                     {
                         ProgressMessageHandler UpProgress = new System.Net.Http.Handlers.ProgressMessageHandler();
                         UpProgress.HttpSendProgress += (object sender, System.Net.Http.Handlers.HttpProgressEventArgs e) =>
                         {
-                            item.UpIntProgress = e.ProgressPercentage;
+                            FileItem.UpIntProgress = e.ProgressPercentage;
                         };
-                        ExcuteResult result = await DataPlanFileRepository.UpLoadFileInfo(item, item.FileInfo.OpenRead(), "planfile", "pf", UpProgress);
-                        if (result.State != 0)
+                        FileItem.PlanId = _PageEditPlanVM.EntityPlan.Id;
+                        ExcuteResult result = await DataPlanFileRepository.UpLoadFileInfo(FileItem, FileItem.FileInfo.OpenRead(), "planfile", "pf", UpProgress);
+                        if (result == null || result.State != 0)
                         {
-                            item.UpIntProgress = 0;
+                            FileItem.UpIntProgress = 0;
+                        }
+                        else
+                        {
+                            FileItem.Id = result.Tag;
                         }
                     }
                 }
-                MessageBox.Show(JsonResult.Msg, "消息", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-            else
-            {
-                MessageBox.Show(JsonResult.Msg, "消息", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
+             (new WinMsgDialog(JsonResult.Msg)).ShowDialog();
             BtnAddPlan.IsEnabled = true;
         }
         /// <summary>
@@ -122,7 +126,7 @@ namespace Office.Work.Platform.Plan
             System.IO.FileInfo theFile = FileOperation.SelectFile();
             if (theFile != null)
             {
-                _PageEditPlanVM.EntityPlan.Files.Add(new PlanFile()
+                _PageEditPlanVM.PlanFiles.Add(new PlanFile()
                 {
                     Name = theFile.Name.Substring(0, theFile.Name.LastIndexOf('.')),
                     UserId = AppSettings.LoginUser.Id,
@@ -162,7 +166,7 @@ namespace Office.Work.Platform.Plan
             }
             else
             {
-                MessageBox.Show("文件下载失败，可能该文件已被删除！", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+                (new WinMsgDialog("文件下载失败，可能该文件已被删除！", "警告")).ShowDialog();
             }
 
         }
@@ -178,12 +182,12 @@ namespace Office.Work.Platform.Plan
                 ExcuteResult excuteResult = await DataPlanFileRepository.DeleteFileInfo(pf);
                 if (excuteResult.State == 0)
                 {
-                    _PageEditPlanVM.EntityPlan.Files.Remove(pf);
+                    _PageEditPlanVM.PlanFiles.Remove(pf);
                 }
             }
             else
             {
-                _PageEditPlanVM.EntityPlan.Files.Remove(pf);
+                _PageEditPlanVM.PlanFiles.Remove(pf);
             }
         }
     }

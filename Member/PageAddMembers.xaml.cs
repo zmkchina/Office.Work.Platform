@@ -3,8 +3,11 @@ using Office.Work.Platform.AppDataService;
 using Office.Work.Platform.Lib;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
+using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,16 +24,24 @@ namespace Office.Work.Platform.Member
     /// <summary>
     /// PageAddMembers.xaml 的交互逻辑
     /// </summary>
-    public partial class PageAddMembers : Page
+    public partial class PageAddMembers : Page, INotifyPropertyChanged
     {
+        private string _ExcelName;
+        private string _AddCount;
+
         public PageAddMembers()
         {
             InitializeComponent();
+            this.DataContext = this;
         }
-
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPropertyChanged([CallerMemberName]string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
         private async void BtnSelectFile_Click(object sender, RoutedEventArgs e)
         {
-            ExcuteResult actResult = new ExcuteResult();
+            int AddCount = 0;
             // 在WPF中， OpenFileDialog位于Microsoft.Win32名称空间
             Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog
             {
@@ -54,7 +65,7 @@ namespace Office.Work.Platform.Member
                             tempMember = new Lib.Member();
                             foreach (PropertyInfo item in Attri)
                             {
-                                if (UserTable.Rows[i][item.Name] != null)
+                                if (UserTable.Columns.Contains(item.Name) && UserTable.Rows[i][item.Name] != null)
                                 {
                                     if (item.PropertyType.Name.Contains("DateTime"))
                                     {
@@ -81,19 +92,36 @@ namespace Office.Work.Platform.Member
                             }
                             if (!string.IsNullOrEmpty(tempMember.Id))
                             {
-                                memberList.Add(tempMember);
+                                if (!memberList.Any(x => x.Id != tempMember.Id))
+                                {
+                                    ExcuteResult excuteResult = await DataMemberRepository.AddMember(tempMember).ConfigureAwait(false);
+                                    if (excuteResult.State == 0)
+                                    {
+                                        AddCount++;
+                                    }
+                                }
                             }
                         }
-                        actResult = await DataMemberRepository.AddMembers(memberList);
                     }
-                    MessageBox.Show(actResult.Msg);
                 }
                 catch (Exception VE)
                 {
-                    MessageBox.Show("出现错误：" + VE.Message, "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                    (new WinMsgDialog("出现错误：" + VE.Message, Caption: "错误", isErr: true)).ShowDialog();
+
                     return;
                 }
             }
+        }
+
+        public string ExcelName
+        {
+            get { return _ExcelName; }
+            set { _ExcelName = value; OnPropertyChanged(); }
+        }
+        public string AddCount
+        {
+            get { return _AddCount; }
+            set { _AddCount = value; OnPropertyChanged(); }
         }
     }
 }

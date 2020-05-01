@@ -15,20 +15,22 @@
             <Setter Property="Margin" Value="5"/>
             <Setter Property="Width" Value="180"/>
         </Style>
+
+        <!--DataGrid 样式-->
         <Style TargetType="DataGrid">
             <Setter Property="ColumnHeaderStyle" Value="{DynamicResource ColumnHeaderStyle}"/>
             <Setter Property="CellStyle" Value="{DynamicResource CellStyle}"/>
             <Setter Property="RowStyle" Value="{DynamicResource RowStyle}"/>
             <Setter Property="FontSize" Value="16"/>
+            <Setter Property="EnableColumnVirtualization" Value="true"/>
+            <Setter Property="EnableRowVirtualization" Value="true"/>
             <Setter Property="Margin" Value="5"/>
             <Setter Property="IsReadOnly" Value="True"/>
             <Setter Property="GridLinesVisibility" Value="None"/>
-            <Setter Property="FrozenColumnCount" Value="2"/>
-            <!--禁止在尾行手动添加数据-->
             <Setter Property="AutoGenerateColumns" Value="False"/>
         </Style>
 
-        <!--表头样式-->
+        <!--DataGrid 表头样式-->
         <Style x:Key="ColumnHeaderStyle" TargetType="DataGridColumnHeader">
             <Setter Property="Margin" Value="0,5"/>
             <Setter Property="Padding" Value="7,10"/>
@@ -37,7 +39,7 @@
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <!--垂直居中-->
         </Style>
-        <!--数据行样式-->
+        <!--DataGrid 数据行样式-->
         <Style x:Key="RowStyle" TargetType="DataGridRow">
             <EventSetter Event="MouseDoubleClick" Handler="DataGridRow_MouseDoubleClick"/>
             <Setter Property="Cursor" Value="Hand"/>
@@ -55,9 +57,9 @@
             </Style.Triggers>
         </Style>
 
-        <!--单元格样式-->
+        <!--DataGrid 单元格样式-->
         <Style x:Key="CellStyle" TargetType="DataGridCell">
-            <Setter Property="Margin" Value="0,10"/>
+            <Setter Property="Margin" Value="10,10"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="DataGridCell">
@@ -65,13 +67,13 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-            <Setter Property="ToolTip" Value="{Binding Remark}"/>
             <Style.Triggers>
                 <Trigger Property="IsSelected" Value="True">
                     <Setter Property="Foreground" Value="White"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
+
     </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -85,20 +87,27 @@
                       SelectedValue="{Binding FieldEnName}"
                       ItemsSource ="{Binding FieldCn2En}"/>
             <TextBox Text="{Binding FieldValue}" Width="200"/>
-            <CheckBox  Content="在结果中查询" IsChecked="{Binding SearchInResult}"/>
-            <Button Content="刷新记录" Name="btn_Refrash" Click="btn_Refrash_Click" />
+            <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                <CheckBox Content="在结果中查询" IsChecked="{Binding SearchInResult}" />
+            </StackPanel>
+            <Button Content="开始查询" Name="btn_Refrash" Foreground="Blue" Margin="5,0" Click="btn_Refrash_ClickAsync" />
+            <Button Content="删除选定记录" Name="btn_Delete" Foreground="Red" Margin="5,0" Click="btn_Delete_ClickAsync" />
         </ToolBar>
         <DataGrid x:Name="RecordDataGrid" ItemsSource="{Binding EntityList}" Grid.Row="1" >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="单位" Binding="{Binding UnitName}" />
                 <DataGridTextColumn Header="姓名" Binding="{Binding Name}"/>
                 <DataGridTextColumn Header="性别" Binding="{Binding Sex}"/>
+                <DataGridTextColumn Header="出生年月" Binding="{Binding Birthday,StringFormat= {}{0:yyyy/MM/dd}}"/>
                 <DataGridTextColumn Header="部门" Binding="{Binding Department}"/>
                 <DataGridTextColumn Header="职务" Binding="{Binding Post}"/>
+                <DataGridTextColumn Header="岗位性质" Binding="{Binding Job}"/>
+                <DataGridTextColumn Header="岗位级别" Binding="{Binding JobGrade}"/>
                 <DataGridTextColumn Header="固定电话" Binding="{Binding FixPhoneCode}"/>
                 <DataGridTextColumn Header="移动电话" Binding="{Binding MobileCode}"/>
                 <DataGridTextColumn Header="更新日期" Binding="{Binding UpDateTime,StringFormat= {}{0:yyyy/MM/dd}}"/>
             </DataGrid.Columns>
         </DataGrid>
+
     </Grid>
 </Page>

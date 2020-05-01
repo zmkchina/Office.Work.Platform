@@ -63,7 +63,9 @@ namespace Office.Work.Platform.MemberUc
                     _UCResumeVM.CurRecords.Add(NewRecord);
                 }
                 else
-                { MessageBox.Show(excuteResult.Msg, "失败"); }
+                {
+                    (new WinMsgDialog(excuteResult.Msg, Caption: "失败")).ShowDialog();
+                }
             }
         }
         /// <summary>
@@ -75,7 +77,8 @@ namespace Office.Work.Platform.MemberUc
         {
             if (RecordListBox.SelectedItem is Lib.MemberResume SelectedRec)
             {
-                if (MessageBox.Show($"确认要删除该条简历吗？", "确认", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+
+                if ((new WinMsgDialog($"确认要删除该条履历信息吗？", Caption: "确认", showYesNo: true)).ShowDialog().Value)
                 {
                     ExcuteResult excuteResult = await DataMemberResumeRepository.DeleteRecord(SelectedRec);
                     if (excuteResult.State == 0)
@@ -83,7 +86,9 @@ namespace Office.Work.Platform.MemberUc
                         _UCResumeVM.CurRecords.Remove(SelectedRec);
                     }
                     else
-                    { MessageBox.Show(excuteResult.Msg, "失败"); }
+                    {
+                        (new WinMsgDialog(excuteResult.Msg, Caption: "失败")).ShowDialog();
+                    }
                 }
             }
         }
@@ -118,7 +123,9 @@ namespace Office.Work.Platform.MemberUc
                         }
                     }
                     else
-                    { MessageBox.Show(excuteResult.Msg, "失败"); }
+                    {
+                        (new WinMsgDialog(excuteResult.Msg, Caption: "失败")).ShowDialog();
+                    }
                 }
             }
         }

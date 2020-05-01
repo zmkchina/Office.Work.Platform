@@ -103,7 +103,7 @@
                     <TextBlock  Text="上传文件" Margin="5" x:Name="upFiles" PreviewMouseLeftButtonUp="upFiles_PreviewMouseLeftButtonUp"/>
                 </GroupBox.Header>
                 <StackPanel Orientation="Vertical">
-                    <ListBox x:Name="LB_FileList" ItemsSource="{Binding Path=EntityPlan.Files}"  Margin="5" 
+                    <ListBox x:Name="LB_FileList" ItemsSource="{Binding Path=PlanFiles}"  Margin="5" 
                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" >
                         <ListBox.ItemTemplate>
                             <DataTemplate>

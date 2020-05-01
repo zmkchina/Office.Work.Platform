@@ -38,7 +38,7 @@ namespace Office.Work.Platform.AppDataService
         public static async Task<ExcuteResult> UpLoadFileInfo(MemberFile UpFileInfo, Stream PostFileStream, string PostFileKey, string PostFileName, ProgressMessageHandler showUploadProgress = null)
         {
             MultipartFormDataContent V_MultFormDatas = DataApiRepository.SetFormData(UpFileInfo, PostFileStream, PostFileKey, PostFileName);
-            ExcuteResult JsonResult = await DataApiRepository.PostApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "MemberFile/UpLoadFile", V_MultFormDatas, showUploadProgress).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(AppSettings.ApiUrlBase + "MemberFile/UpLoadFile", V_MultFormDatas, showUploadProgress).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -49,8 +49,7 @@ namespace Office.Work.Platform.AppDataService
         public static async Task<ExcuteResult> UpdateFileInfo(MemberFile UpFile)
         {
             UpFile.UpDateTime = DateTime.Now;
-            MultipartFormDataContent V_MultFormDatas = DataApiRepository.SetFormData(UpFile);
-            ExcuteResult JsonResult = await DataApiRepository.PutApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "MemberFile", V_MultFormDatas).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.PutApiUriAsync(AppSettings.ApiUrlBase + "MemberFile", UpFile).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -84,7 +83,7 @@ namespace Office.Work.Platform.AppDataService
             }
             catch (Exception err)
             {
-                MessageBox.Show("打开文件时出错(正在使用？)" + err.Message, "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                (new WinMsgDialog("打开文件时出错(正在使用？)" + err.Message, Caption: "错误", isErr: true)).ShowDialog();
             }
         }
         /// <summary>

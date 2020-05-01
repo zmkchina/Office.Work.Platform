@@ -1,9 +1,8 @@
 ﻿<UserControl x:Class="Office.Work.Platform.MemberUc.UC_Resume"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Office.Work.Platform.Member"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" 
              >
     <UserControl.Resources>
@@ -57,7 +56,7 @@
             <Button Click="BtnDelClickAsync" Content="删除" Width="60" Margin="2,0,10,0"/>
             <Button Click="BtnEditClickAsync" Content="修改" Width="60" Margin="2,0,10,0"/>
         </StackPanel>
-        <GroupBox  Grid.Row="1" Header="个人简历" VerticalAlignment="Stretch" >
+        <GroupBox  Grid.Row="1" Header="个人履历" VerticalAlignment="Stretch" >
             <ListBox x:Name="RecordListBox" 
                      ItemsSource="{Binding Path=CurRecords}"
                      BorderBrush="Transparent"

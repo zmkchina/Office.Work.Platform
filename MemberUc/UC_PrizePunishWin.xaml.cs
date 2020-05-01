@@ -7,27 +7,25 @@ namespace Office.Work.Platform.MemberUc
     /// 此类用于新增或编辑月度待遇发放记录。
     /// 此窗体作为对话框使用，当DialogResult不被设为true时，将始终为false
     /// </summary>
-    public partial class UC_PayMonthWin : Window
+    public partial class UC_PrizePunishWin : Window
     {
-        public Lib.MemberPayMonth _PayMonth { get; set; }
-        public UC_PayMonthWin(Lib.MemberPayMonth PayMonth)
+        public Lib.MemberPrizePunish _CurRecord { get; set; }
+        public UC_PrizePunishWin(Lib.MemberPrizePunish ParamRecord)
         {
             InitializeComponent();
-            _PayMonth = PayMonth;
-            DataContext = PayMonth;
+            _CurRecord = ParamRecord;
+            DataContext = ParamRecord;
         }
         private void BtnSaveClickAsync(object sender, RoutedEventArgs e)
         {
             DialogResult = true;
-            _PayMonth.PayYear = _PayMonth.UpDateTime.Year;
-            _PayMonth.PayMonth = _PayMonth.UpDateTime.Month;
-            _PayMonth.UpDateTime = DateTime.Now;
+            _CurRecord.UpDateTime = DateTime.Now;
             this.Close();
         }
 
         private void BtnCancelClickAsync(object sender, RoutedEventArgs e)
         {
-            _PayMonth = null;
+            _CurRecord = null;
             this.Close();
         }
         /// <summary>

@@ -30,15 +30,15 @@ namespace Office.Work.Platform
             string V_UserPwd = Text_UserPwd.Password.Trim();
             if (V_UserId.Length < 1 || V_UserPwd.Length < 1)
             {
-                MessageBox.Show("请输入用户名和密码！", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+                (new WinMsgDialog("请输入用户名和密码。", "警告")).ShowDialog();
                 return;
             }
             //显示Loading
             this.CanVas_loadding.Visibility = Visibility.Visible;
             //请求token
-            await  DataApiRepository.GetAccessToken(V_UserId, V_UserPwd);
+            await DataApiRepository.GetAccessToken(V_UserId, V_UserPwd);
             //从服务器读取指定的用户并在服务器上登陆
-            User LoginUser =await DataApiRepository.GetApiUri<User>(AppSettings.ApiUrlBase + "User/" + V_UserId);
+            User LoginUser = await DataApiRepository.GetApiUri<User>(AppSettings.ApiUrlBase + "User/" + V_UserId);
             if (LoginUser != null && LoginUser.PassWord.Equals(V_UserPwd))
             {
                 DataRWLocalFileRepository.SaveObjToFile<SettingLocal>(AppSettings.LocalSetting, AppSettings.LocalSettingFileName);
@@ -50,7 +50,7 @@ namespace Office.Work.Platform
             }
             else
             {
-                MessageBox.Show("登陆失败，请检查网络或信息是否准确。", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+                (new WinMsgDialog("请检查用户名或密码是否准确,如仍有问题请检查网络。", "警告", isErr: true)).ShowDialog();
                 this.CanVas_loadding.Visibility = Visibility.Collapsed;
             }
         }

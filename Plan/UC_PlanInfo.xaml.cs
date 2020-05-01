@@ -1,12 +1,10 @@
-﻿using System;
-using System.Diagnostics;
+﻿using Office.Work.Platform.AppCodes;
+using Office.Work.Platform.AppDataService;
+using Office.Work.Platform.Lib;
+using System;
 using System.Net.Http.Handlers;
 using System.Windows;
 using System.Windows.Controls;
-using Office.Work.Platform.AppCodes;
-using Office.Work.Platform.AppDataService;
-using Office.Work.Platform.PlanFiles;
-using Office.Work.Platform.Lib;
 
 namespace Office.Work.Platform.Plan
 {
@@ -23,7 +21,7 @@ namespace Office.Work.Platform.Plan
         }
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            
+
         }
         public async void Init_PlanInfoAsync(Lib.Plan P_Entity, Action<Lib.Plan> P_CallBack = null)
         {
@@ -48,7 +46,7 @@ namespace Office.Work.Platform.Plan
         /// <param name="e"></param>
         private async void btn_DelePlan(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("删除计划《" + _UCPlanInfoVM.CurPlan.Caption + "》？", "确认", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+            if ((new WinMsgDialog($"删除计划《{_UCPlanInfoVM.CurPlan.Caption }》？", "确认", showYesNo: true)).ShowDialog().Value == false)
             {
                 return;
             }
@@ -57,11 +55,10 @@ namespace Office.Work.Platform.Plan
             {
                 AppSettings.AppMainWindow.lblCursorPosition.Text = JsonResult.Msg;
                 _CallBack(_UCPlanInfoVM.CurPlan);
-                //MessageBox.Show(JsonResult.Msg, "消息", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
-                MessageBox.Show(JsonResult.Msg, "消息", MessageBoxButton.OK, MessageBoxImage.Information);
+                (new WinMsgDialog(JsonResult.Msg, "消息")).ShowDialog();
             }
         }
         /// <summary>
@@ -75,7 +72,7 @@ namespace Office.Work.Platform.Plan
             System.IO.FileInfo theFile = FileOperation.SelectFile();
             if (theFile != null)
             {
-                PlanFile newFile = new PlanFile()
+                PlanFile NewPlanFile = new PlanFile()
                 {
                     Name = theFile.Name.Substring(0, theFile.Name.LastIndexOf('.')),
                     UserId = AppSettings.LoginUser.Id,
@@ -85,16 +82,21 @@ namespace Office.Work.Platform.Plan
                     FileInfo = theFile,
                     UpIntProgress = 0
                 };
-                _UCPlanInfoVM.CurPlan.Files.Add(newFile);
+                _UCPlanInfoVM.PlanFiles.Add(NewPlanFile);
                 ProgressMessageHandler UpProgress = new ProgressMessageHandler();
                 UpProgress.HttpSendProgress += (object sender, HttpProgressEventArgs e) =>
                 {
-                    newFile.UpIntProgress = e.ProgressPercentage;
+                    NewPlanFile.UpIntProgress = e.ProgressPercentage;
                 };
-                ExcuteResult result = await DataPlanFileRepository.UpLoadFileInfo(newFile, newFile.FileInfo.OpenRead(), "planfile", "pf", UpProgress);
-                if (result.State != 0)
+                ExcuteResult result = await DataPlanFileRepository.UpLoadFileInfo(NewPlanFile, NewPlanFile.FileInfo.OpenRead(), "planfile", "pf", UpProgress);
+                if (result == null || result.State != 0)
                 {
-                    newFile.UpIntProgress = 0;
+                    NewPlanFile.UpIntProgress = 0;
+                }
+                else
+                {
+                    //服务器保存该文件成功，将返回的Id更新到当前记录。
+                    NewPlanFile.Id = result.Tag;
                 }
             }
         }
@@ -126,14 +128,14 @@ namespace Office.Work.Platform.Plan
         private async void Image_Delete_MouseLeftButtonUpAsync(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             PlanFile SelectFile = LB_FileList.SelectedItem as PlanFile;
-            if (MessageBox.Show("删除文件《" + SelectFile.Name + "》？", "确认", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+            if ((new WinMsgDialog($"删除文件《{SelectFile.Name}》？", "确认", showYesNo: true)).ShowDialog().Value == false)
             {
                 return;
             }
             ExcuteResult delResult = await DataPlanFileRepository.DeleteFileInfo(SelectFile);
             if (delResult.State == 0)
             {
-                _UCPlanInfoVM.CurPlan.Files.Remove(SelectFile);
+                _UCPlanInfoVM.PlanFiles.Remove(SelectFile);
             }
         }
         /// <summary>
@@ -162,7 +164,7 @@ namespace Office.Work.Platform.Plan
             }
             else
             {
-                MessageBox.Show("文件下载失败，可能该文件已被删除！", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+                (new WinMsgDialog("文件下载失败，可能该文件已被删除！", "警告")).ShowDialog();
             }
             curTextBlock.IsEnabled = true;
         }
@@ -175,15 +177,7 @@ namespace Office.Work.Platform.Plan
         {
             _UCPlanInfoVM.CurPlan.CurrectState = PlanStatus.Running;
             ExcuteResult JsonResult = await DataPlanRepository.UpdatePlan(_UCPlanInfoVM.CurPlan);
-            if (JsonResult.State == 0)
-            {
-                //AppSettings.AppMainWindow.lblCursorPosition.Text = JsonResult.Msg;
-                MessageBox.Show(JsonResult.Msg, "消息", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            else
-            {
-                MessageBox.Show(JsonResult.Msg, "消息", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
+            (new WinMsgDialog(JsonResult.Msg)).ShowDialog();
         }
         /// <summary>
         /// 完结计划
@@ -194,7 +188,6 @@ namespace Office.Work.Platform.Plan
         {
             if (string.IsNullOrWhiteSpace(_UCPlanInfoVM.CurPlan.FinishNote))
             {
-                //MessageBox.Show("请输入完成情况！", "消息", MessageBoxButton.OK, MessageBoxImage.Warning);
                 Text_FinishNote.Focus();
                 return;
             }
@@ -203,12 +196,8 @@ namespace Office.Work.Platform.Plan
             if (JsonResult.State == 0)
             {
                 AppSettings.AppMainWindow.lblCursorPosition.Text = JsonResult.Msg;
-                //MessageBox.Show(JsonResult.Msg, "消息", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-            else
-            {
-                MessageBox.Show(JsonResult.Msg, "消息", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
+            (new WinMsgDialog(JsonResult.Msg)).ShowDialog();
         }
         /// <summary>
         /// 将计划状态重置为 正在实施
@@ -222,11 +211,10 @@ namespace Office.Work.Platform.Plan
             if (JsonResult.State == 0)
             {
                 AppSettings.AppMainWindow.lblCursorPosition.Text = JsonResult.Msg;
-                //MessageBox.Show(JsonResult.Msg, "消息", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
-                MessageBox.Show(JsonResult.Msg, "消息", MessageBoxButton.OK, MessageBoxImage.Information);
+                (new WinMsgDialog(JsonResult.Msg)).ShowDialog();
             }
         }
     }

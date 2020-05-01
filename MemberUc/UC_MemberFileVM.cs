@@ -5,7 +5,7 @@ using Office.Work.Platform.AppCodes;
 using Office.Work.Platform.AppDataService;
 using Office.Work.Platform.Lib;
 
-namespace Office.Work.Platform.Member
+namespace Office.Work.Platform.MemberUc
 {
     public class UC_MemberFileVM : NotificationObject
     {

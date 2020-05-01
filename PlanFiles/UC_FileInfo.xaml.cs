@@ -19,16 +19,7 @@ namespace Office.Work.Platform.PlanFiles
         {
             InitializeComponent();
         }
-        /// <summary>
-        /// 构造函数 重载1
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void UCFileInfo_Loaded(object sender, RoutedEventArgs e)
-        {
-            _UC_FileInfoVM = new UC_FileInfoVM();
-            DataContext = _UC_FileInfoVM;
-        }
+
         /// <summary>
         /// 初始化视图模型属性值。
         /// </summary>
@@ -37,7 +28,7 @@ namespace Office.Work.Platform.PlanFiles
         public void Init_FileInfo(PlanFile P_File, Action<PlanFile> P_DelFileCallBackFun = null)
         {
             _UC_FileInfoVM = new UC_FileInfoVM();
-            _UC_FileInfoVM.InitPropValus(P_File);
+            _UC_FileInfoVM.InitPropValusAsync(P_File);
             _DelFileCallBackFun = P_DelFileCallBackFun;
             DataContext = _UC_FileInfoVM;
         }
@@ -53,16 +44,16 @@ namespace Office.Work.Platform.PlanFiles
             ProgressMessageHandler progress = new System.Net.Http.Handlers.ProgressMessageHandler();
             progress.HttpReceiveProgress += (object sender, System.Net.Http.Handlers.HttpProgressEventArgs e) =>
             {
-                _UC_FileInfoVM.PlanFileInfo.DownIntProgress = e.ProgressPercentage;// (double)(e.BytesTransferred / e.TotalBytes) * 100;
+                _UC_FileInfoVM.CurPlanFile.DownIntProgress = e.ProgressPercentage;// (double)(e.BytesTransferred / e.TotalBytes) * 100;
             };
-            string theDownFileName = await DataPlanFileRepository.DownloadFile(_UC_FileInfoVM.PlanFileInfo, false, progress);
+            string theDownFileName = await DataPlanFileRepository.DownloadFile(_UC_FileInfoVM.CurPlanFile, false, progress);
             if (theDownFileName == null)
             {
-                MessageBox.Show("文件下载失败,可能已被删除！", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+                (new WinMsgDialog("文件下载失败,可能已被删除！", "警告")).ShowDialog();
                 V_Button.IsEnabled = true;
                 return;
             }
-            _UC_FileInfoVM.PlanFileInfo.DownIntProgress = 100;
+            _UC_FileInfoVM.CurPlanFile.DownIntProgress = 100;
             DataPlanFileRepository.OpenFileInfo(theDownFileName);
             V_Button.IsEnabled = true;
         }
@@ -73,29 +64,24 @@ namespace Office.Work.Platform.PlanFiles
         /// <param name="e"></param>
         private async void btn_SaveChange(object sender, RoutedEventArgs e)
         {
-            ExcuteResult JsonResult = await DataPlanFileRepository.UpdateFileInfo(_UC_FileInfoVM.PlanFileInfo);
+            ExcuteResult JsonResult = await DataPlanFileRepository.UpdateFileInfo(_UC_FileInfoVM.CurPlanFile);
             if (JsonResult.State == 0)
             {
                 AppSettings.AppMainWindow.lblCursorPosition.Text = JsonResult.Msg;
-                MessageBox.Show(JsonResult.Msg, "消息", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-            else
-            {
-                MessageBox.Show(JsonResult.Msg, "消息", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
+               (new WinMsgDialog(JsonResult.Msg, "消息")).ShowDialog();
         }
         private async void btn_DeleFile(object sender, RoutedEventArgs e)
         {
-            ExcuteResult JsonResult = await DataPlanFileRepository.DeleteFileInfo(_UC_FileInfoVM.PlanFileInfo);
+            ExcuteResult JsonResult = await DataPlanFileRepository.DeleteFileInfo(_UC_FileInfoVM.CurPlanFile);
             if (JsonResult.State == 0)
             {
-                if (_DelFileCallBackFun != null) _DelFileCallBackFun(_UC_FileInfoVM.PlanFileInfo);
+                if (_DelFileCallBackFun != null) _DelFileCallBackFun(_UC_FileInfoVM.CurPlanFile);
                 AppSettings.AppMainWindow.lblCursorPosition.Text = JsonResult.Msg;
-                //MessageBox.Show(JsonResult.Msg, "消息", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
-                MessageBox.Show(JsonResult.Msg, "消息", MessageBoxButton.OK, MessageBoxImage.Information);
+                (new WinMsgDialog(JsonResult.Msg, "消息")).ShowDialog();
             }
         }
 

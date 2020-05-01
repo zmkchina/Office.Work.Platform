@@ -42,7 +42,7 @@ namespace Office.Work.Platform.AppDataService
         public static async Task<ExcuteResult> UpLoadFileInfo(PlanFile UpFileInfo, Stream PostFileStream, string PostFileKey = null, string PostFileName = null, ProgressMessageHandler showUploadProgress = null)
         {
             MultipartFormDataContent V_MultFormDatas = DataApiRepository.SetFormData(UpFileInfo, PostFileStream, PostFileKey, PostFileName);
-            ExcuteResult JsonResult = await DataApiRepository.PostApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "PlanFile/UpLoadFile", V_MultFormDatas, showUploadProgress).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(AppSettings.ApiUrlBase + "PlanFile/UpLoadFile", V_MultFormDatas, showUploadProgress).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -50,11 +50,9 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="UpdatePlan"></param>
         /// <returns></returns>
-        public static async Task<ExcuteResult> UpdateFileInfo(Lib.PlanFile UpFile)
+        public static async Task<ExcuteResult> UpdateFileInfo(Lib.PlanFile PEntity)
         {
-            UpFile.UpDateTime = DateTime.Now;
-            MultipartFormDataContent V_MultFormDatas = DataApiRepository.SetFormData(UpFile);
-            ExcuteResult JsonResult = await DataApiRepository.PutApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "PlanFile", V_MultFormDatas).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.PutApiUriAsync(AppSettings.ApiUrlBase + "PlanFile", PEntity).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -88,7 +86,7 @@ namespace Office.Work.Platform.AppDataService
             }
             catch (Exception err)
             {
-                MessageBox.Show("打开文件时出错(正在使用？)" + err.Message, "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                (new WinMsgDialog("打开文件时出错(正在使用？)" + err.Message, Caption: "错误", isErr: true)).ShowDialog();
             }
         }
         /// <summary>

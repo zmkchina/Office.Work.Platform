@@ -15,13 +15,13 @@ namespace Office.Work.Platform.PlanFiles
         private PageFilesListVM _PageFilesListVM;
         private PlanFileSearch _mSearchFile;
 
-        public PageFilesList(string FileOwnerType = null)
+        public PageFilesList(string FilePlanType = null)
         {
             InitializeComponent();
             _PageFilesListVM = new PageFilesListVM();
             _mSearchFile = new PlanFileSearch();
             _mSearchFile.UserId = AppSettings.LoginUser.Id;
-            _mSearchFile.ContentType = FileOwnerType;
+            _mSearchFile.ContentType = FilePlanType;
         }
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
@@ -34,7 +34,7 @@ namespace Office.Work.Platform.PlanFiles
         {
             this.UCFileInfo.Init_FileInfo((PlanFile)LB_FileList.SelectedItem, (DelFile) =>
              {
-                 _PageFilesListVM.EntityFiles.Remove(DelFile);
+                 _PageFilesListVM.PlanFiles.Remove(DelFile);
              });
         }
         private async void btn_Refrash_Click(object sender, RoutedEventArgs e)

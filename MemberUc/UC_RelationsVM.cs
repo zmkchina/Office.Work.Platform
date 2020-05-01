@@ -7,24 +7,24 @@ using Office.Work.Platform.Lib;
 
 namespace Office.Work.Platform.MemberUc
 {
-    public class UC_PayMonthVM : NotificationObject
+    public class UC_RelationsVM : NotificationObject
     {
-        public UC_PayMonthVM()
+        public UC_RelationsVM()
         {
-            PayMonths = new ObservableCollection<MemberPayMonth>();
-            SearchCondition = new MemberPayMonthSearch();
+            CurRecords = new ObservableCollection<MemberRelations>();
+            SearchCondition = new MemberRelationsSearch();
         }
         public async System.Threading.Tasks.Task InitVMAsync(Lib.Member PMember)
         {
             CurMember = PMember;
             if (PMember != null)
             {
-                MemberPayMonthSearch SearchCondition = new MemberPayMonthSearch() { MemberId = PMember.Id, UserId = AppSettings.LoginUser.Id };
-                IEnumerable<MemberPayMonth> MemberPlayMonths = await DataMemberPayMonthRepository.GetRecords(SearchCondition);
-                PayMonths.Clear();
-                MemberPlayMonths.ToList().ForEach(e =>
+                MemberRelationsSearch SearchCondition = new MemberRelationsSearch() { MemberId = PMember.Id, UserId = AppSettings.LoginUser.Id };
+                IEnumerable<MemberRelations> MemberRelationsss = await DataMemberRelationsRepository.GetRecords(SearchCondition);
+                CurRecords.Clear();
+                MemberRelationsss.ToList().ForEach(e =>
                 {
-                    PayMonths.Add(e);
+                    CurRecords.Add(e);
                 });
             }
         }
@@ -35,18 +35,18 @@ namespace Office.Work.Platform.MemberUc
                 SearchCondition.MemberId = CurMember.Id;
                 SearchCondition.UserId = AppSettings.LoginUser.Id;
 
-                IEnumerable<MemberPayMonth> MemberPlayMonths = await DataMemberPayMonthRepository.GetRecords(SearchCondition);
-                PayMonths.Clear();
-                MemberPlayMonths.ToList().ForEach(e =>
+                IEnumerable<MemberRelations> TempRecords = await DataMemberRelationsRepository.GetRecords(SearchCondition);
+                CurRecords.Clear();
+                TempRecords.ToList().ForEach(e =>
                 {
-                    PayMonths.Add(e);
+                    CurRecords.Add(e);
                 });
             }
         }
         /// <summary>
         /// 查询条件类对象
         /// </summary>
-        public MemberPayMonthSearch SearchCondition { get; set; }
+        public MemberRelationsSearch SearchCondition { get; set; }
         /// <summary>
         /// 当前职工信息
         /// </summary>
@@ -54,8 +54,7 @@ namespace Office.Work.Platform.MemberUc
         /// <summary>
         /// 当前职工工资月度发放记录
         /// </summary>
-        public ObservableCollection<MemberPayMonth> PayMonths { get; set; }
-
+        public ObservableCollection<MemberRelations> CurRecords { get; set; }
     }
 
 }

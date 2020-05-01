@@ -10,8 +10,8 @@
     <Grid>
         <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Margin="0,20">
             <Button  FontSize="16" Width="50" Content="选择"  VerticalAlignment="Center" Margin="10,5" Click="BtnSelectFile_Click"/>
-            <TextBlock x:Name="TB_ExcelName" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
-            <TextBlock x:Name="TB_ExcelDatas" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+            <TextBlock x:Name="TB_ExcelName" Text="{Binding ExcelName,StringFormat=职工信息文件：{0}}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+            <TextBlock x:Name="TB_AddCount"  Text="{Binding AddCount,StringFormat=正在上传第{0}个职工信息。}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
         </StackPanel>
     </Grid>
 </Page>

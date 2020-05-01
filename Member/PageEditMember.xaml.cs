@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using Office.Work.Platform.AppCodes;
 using Office.Work.Platform.AppDataService;
 using Office.Work.Platform.Lib;
 
@@ -40,7 +41,7 @@ namespace Office.Work.Platform.Member
         {
             if (string.IsNullOrEmpty(_PageEditMemberVM.EntityMember.Id))
             {
-                //MessageBox.Show("若要开始，请选输入员工身份证号！", "输入不正确", MessageBoxButton.OK, MessageBoxImage.Warning);
+                // (new WinMsgDialog("若要开始，请选输入员工身份证号！", "输入不正确")).ShowDialog();
                 return;
             }
             MemberSearch msearch = new MemberSearch() { Id = _PageEditMemberVM.EntityMember.Id };
@@ -71,6 +72,7 @@ namespace Office.Work.Platform.Member
 
         private async void InitUcControlFilesAsync(bool isRead = true)
         {
+            AppSettings.AppMainWindow.lblCursorPosition.Text = $"正在编辑[{_PageEditMemberVM.EntityMember.Name}]";
             if (_PageEditMemberVM.isEditFlag && Person_TabControl.SelectedItem is TabItem tb && !string.IsNullOrWhiteSpace(_PageEditMemberVM.EntityMember.Id))
             {
                 switch (tb.Header)
@@ -84,17 +86,21 @@ namespace Office.Work.Platform.Member
                     case "教育信息":
                         await UcEduFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember.Id, "教育信息", null, isRead);
                         break;
-                    case "个人简历":
+                    case "个人履历":
                         UcResume.initControlAsync(_PageEditMemberVM.EntityMember);
-                        await UcResumeFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember.Id, "个人简历", null, isRead);
+                        await UcResumeFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember.Id, "个人履历", null, isRead);
                         break;
                     case "奖惩情况":
+                        UcPrizePunish.initControlAsync(_PageEditMemberVM.EntityMember);
+                        await UcPrizePunishFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember.Id, "奖惩情况", null, isRead);
                         break;
                     case "社会关系":
+                        UcRelations.initControlAsync(_PageEditMemberVM.EntityMember);
+                        await UcRelationsFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember.Id, "社会关系", null, isRead);
                         break;
-                    case "在编月待遇":
-                        UcPayMonth.initControlAsync(_PageEditMemberVM.EntityMember);
-                        await UcPayMonthFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember.Id, "在编月待遇", null, isRead);
+                    case "编内月待遇":
+                        UcPayMonthOfficial.initControlAsync(_PageEditMemberVM.EntityMember);
+                        await UcPayMonthOfficialFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember.Id, "编内月待遇", null, isRead);
                         break;
                     case "编外月待遇":
                         UcPayMonthUnofficial.initControlAsync(_PageEditMemberVM.EntityMember);
@@ -108,9 +114,12 @@ namespace Office.Work.Platform.Member
                         UcPayTemp.initControlAsync(_PageEditMemberVM.EntityMember);
                         await UcPayTempFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember.Id, "补充待遇", null, isRead);
                         break;
-                    case "考勤信息":
+                    case "休假信息":
+                        UcHoliday.initControlAsync(_PageEditMemberVM.EntityMember);
+                        await UcHolidayFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember.Id, "休假信息", null, isRead);
                         break;
                     case "其他说明":
+                        await UcRemarkFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember.Id, "其他说明", null, isRead);
                         break;
                 }
             }
@@ -124,13 +133,13 @@ namespace Office.Work.Platform.Member
         {
             if (string.IsNullOrWhiteSpace(_PageEditMemberVM.EntityMember.Id))
             {
-                MessageBox.Show("员工的身份证号必须输入！", "输入不正确", MessageBoxButton.OK, MessageBoxImage.Warning);
+                (new WinMsgDialog("员工的身份证号必须输入！")).ShowDialog();
                 Tb_UserId.Focus();
                 return;
             }
             if (string.IsNullOrWhiteSpace(_PageEditMemberVM.EntityMember.Name))
             {
-                MessageBox.Show("员工的姓名必须输入！", "输入不正确", MessageBoxButton.OK, MessageBoxImage.Warning);
+                (new WinMsgDialog("员工的姓名必须输入！")).ShowDialog();
                 Tb_UserName.Focus();
                 return;
             }
@@ -150,37 +159,22 @@ namespace Office.Work.Platform.Member
                     InitUcControlFilesAsync(false);
                 }
             }
-            MessageBox.Show(excuteResult.Msg);
+              (new WinMsgDialog(excuteResult.Msg)).ShowDialog();
         }
         /// <summary>
-        /// 保存员工的工作信息
+        /// 更新员工的工作信息、受教育信息、更新备注信息等。
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void BtnSaveWorkClickAsync(object sender, RoutedEventArgs e)
+        private async void BtnUpdateClickAsync(object sender, RoutedEventArgs e)
         {
             ExcuteResult excuteResult = await DataMemberRepository.UpdateMember(_PageEditMemberVM.EntityMember);
-            MessageBox.Show(excuteResult.Msg);
+            (new WinMsgDialog(excuteResult.Msg)).ShowDialog();
         }
-        /// <summary>
-        /// 保存员工受教育信息
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private async void BtnSaveEduClickAsync(object sender, RoutedEventArgs e)
+
+        private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
-            ExcuteResult excuteResult = await DataMemberRepository.UpdateMember(_PageEditMemberVM.EntityMember);
-            MessageBox.Show(excuteResult.Msg);
-        }
-        /// <summary>
-        /// 保存备注信息
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private async void BtnSaveRemarkClickAsync(object sender, RoutedEventArgs e)
-        {
-            ExcuteResult excuteResult = await DataMemberRepository.UpdateMember(_PageEditMemberVM.EntityMember);
-            MessageBox.Show(excuteResult.Msg);
+            AppSettings.AppMainWindow.lblCursorPosition.Text = "就绪";
         }
     }
 }

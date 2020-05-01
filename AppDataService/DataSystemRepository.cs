@@ -21,12 +21,9 @@ namespace Office.Work.Platform.AppDataService
         public static async Task<List<User>> ReadAllSysUsers()
         {
             List<User> SysUsers = await DataApiRepository.GetApiUri<List<User>>(AppSettings.ApiUrlBase + "User").ConfigureAwait(false);
-            if (SysUsers == null)
-            {
-                MessageBox.Show("从服务器读取系统用户列表时出错，请检查是否连接上网。", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
             return SysUsers;
         }
+
         /// <summary>
         /// 从服务器读取系统设置
         /// </summary>
@@ -34,37 +31,26 @@ namespace Office.Work.Platform.AppDataService
         public static async Task<SettingServer> ReadServerSettings()
         {
             SettingServer ServerSetting = await DataApiRepository.GetApiUri<SettingServer>(AppSettings.ApiUrlBase + "Settings").ConfigureAwait(false);
-            if (ServerSetting == null)
-            {
-                MessageBox.Show("从服务器读取系统设置时出现错误，请检查是否连接上网。", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
             return ServerSetting;
         }
+
         /// <summary>
         /// 更新服务器系统设置
         /// </summary>
         /// <returns></returns>
-        public static async Task<SettingServer> UpdateServerSettings()
+        public static async Task<ExcuteResult> UpdateServerSettings(SettingServer PEntity)
         {
-            SettingServer ServerSetting = await DataApiRepository.GetApiUri<SettingServer>(AppSettings.ApiUrlBase + "Settings").ConfigureAwait(false);
-            if (ServerSetting == null)
-            {
-                MessageBox.Show("从服务器读取系统设置时出现错误，请检查是否连接上网。", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            return ServerSetting;
+            ExcuteResult excuteResult = await DataApiRepository.PutApiUriAsync(AppSettings.ApiUrlBase + "Settings", PEntity).ConfigureAwait(false);
+            return excuteResult;
         }
+
         /// <summary>
-        /// 从服务器读取系统设置
+        /// 从服务器读取可能需要升级的文件信息
         /// </summary>
         /// <returns></returns>
         public static async Task<List<UpdateFile>> GetServerUpdateFiles()
         {
             List<UpdateFile> updateFiles = await DataApiRepository.GetApiUri<List<UpdateFile>>(AppSettings.ApiUrlBase + "UpdateFile").ConfigureAwait(false);
-
-            if (updateFiles == null)
-            {
-               // MessageBox.Show("从服务器读取升级文件时出错，请检查是否连接上网。", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
             return updateFiles;
         }
     }

@@ -1,9 +1,8 @@
-﻿<Window x:Class="Office.Work.Platform.MemberUc.UC_PayMonthWin"
+﻿<Window x:Class="Office.Work.Platform.MemberUc.UC_PrizePunishWin"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Office.Work.Platform.MemberUc"
         xmlns:AppCodes="clr-namespace:Office.Work.Platform.AppCodes"
         mc:Ignorable="d"
         ShowInTaskbar="False" 
@@ -11,7 +10,7 @@
         ResizeMode="CanResizeWithGrip"
         WindowStyle="None"
         AllowsTransparency="True" BorderBrush="LightBlue" BorderThickness="1" Background="AliceBlue"
-        Title="在编职工月度待遇" Width="550" Height="450">
+        Title="个人奖惩情况" Width="500" Height="450">
     <Window.Resources>
         <Style x:Key="GroupBoxStyle" TargetType="GroupBox">
             <Setter Property="Padding" Value="2,5"/>
@@ -41,7 +40,7 @@
             <Setter Property="Control.Template">
                 <Setter.Value>
                     <ControlTemplate>
-                        <TextBox Text="{Binding Path=SelectedDate, StringFormat='yyyy/MM', RelativeSource={RelativeSource AncestorType=DatePicker}}" />
+                        <TextBox Text="{Binding Path=SelectedDate, StringFormat='yyyy/MM/dd', RelativeSource={RelativeSource AncestorType=DatePicker}}" />
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -55,50 +54,33 @@
     </Window.Resources>
     <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top">
         <Border Height="30" Background="DodgerBlue" MouseMove="Border_MouseMove" Cursor="Hand">
-            <TextBlock Text="在编职工月度待遇" VerticalAlignment="Center" Foreground="White" Padding="5,0,0,0"/>
+            <TextBlock Text="个人奖惩情况" VerticalAlignment="Center" Foreground="White" Padding="5,0,0,0"/>
         </Border>
         <StackPanel Orientation="Vertical"  Margin="10,15" HorizontalAlignment="Stretch">
             <StackPanel Orientation="Horizontal">
-                <GroupBox Style="{StaticResource GroupBoxStyle}">
-                    <GroupBox.Header>
-                        <TextBlock>
-                     <Run Text="发放年份"/>
-                        </TextBlock>
-                    </GroupBox.Header>
-                    <DatePicker Style="{StaticResource DatePickerStyle}"
-                        SelectedDate="{Binding UpDateTime}" 
-                        AppCodes:DatePickerCalendar.IsMonthYear="True"/>
+                <GroupBox Header="发生时间" Style="{StaticResource GroupBoxStyle}">
+                    <DatePicker Style="{StaticResource DatePickerStyle}"    SelectedDate="{Binding OccurDate}" />
                 </GroupBox>
-                <GroupBox Header="奖励绩效(月）" Style="{StaticResource GroupBoxStyle}">
-                    <TextBox Text="{Binding IncentivePerformancePay}" Style="{StaticResource TextboxStyle}"/>
+                <GroupBox Header="绩效加减分" >
+                    <TextBox Text="{Binding GetScore}"   Height="30" Width="200" FontSize="16" Margin="5" />
                 </GroupBox>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <GroupBox Header="岗位工资" Style="{StaticResource GroupBoxStyle}">
-                    <TextBox Text="{Binding PostPay}" Style="{StaticResource TextboxStyle}"/>
+                <GroupBox Header="奖惩类型" Style="{StaticResource GroupBoxStyle}">
+                    <ComboBox ItemsSource="{Binding PrizrOrPunishTypeArr}" Text="{Binding PrizrOrPunishType}"  
+                          Height="30"  Width="180" HorizontalAlignment="Left" FontSize="16" Margin="5" />
                 </GroupBox>
-                <GroupBox Header="薪级工资" Style="{StaticResource GroupBoxStyle}">
-                    <TextBox Text="{Binding ScalePay}" Style="{StaticResource TextboxStyle}"/>
-                </GroupBox>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <GroupBox Header="岗位津贴" Style="{StaticResource GroupBoxStyle}">
-                    <TextBox Text="{Binding PostAllowance}" Style="{StaticResource TextboxStyle}"/>
-                </GroupBox>
-                <GroupBox Header="生活补贴" Style="{StaticResource GroupBoxStyle}">
-                    <TextBox Text="{Binding LivingAllowance}" Style="{StaticResource TextboxStyle}"/>
+                <GroupBox Header="奖惩名称" Style="{StaticResource GroupBoxStyle}">
+                    <TextBox Text="{Binding PrizrOrPunishName}" Height="30" Width="200" FontSize="16" Margin="5" ToolTip="比如：提醒谈话" />
                 </GroupBox>
             </StackPanel>
-
-
-            <StackPanel Orientation="Horizontal">
-                <GroupBox Header="交通补贴" Style="{StaticResource GroupBoxStyle}">
-                    <TextBox Text="{Binding TrafficAllowance}" Style="{StaticResource TextboxStyle}"/>
-                </GroupBox>
-                <GroupBox Header="伙食补贴" Style="{StaticResource GroupBoxStyle}">
-                    <TextBox Text="{Binding FoodAllowance}" Style="{StaticResource TextboxStyle}"/>
-                </GroupBox>
-            </StackPanel>
+            <GroupBox Header="奖惩事由" >
+                <TextBox Text="{Binding PrizrOrPunishReasion}"  HorizontalAlignment="Stretch" Height="50" FontSize="16" Margin="5" TextWrapping="Wrap"/>
+            </GroupBox>
+            <GroupBox Header="决定单位" >
+                <TextBox Text="{Binding PrizrOrPunishUnit}"  HorizontalAlignment="Stretch" FontSize="16" Margin="5" />
+            </GroupBox>
+            
             <GroupBox Header="备注信息" >
                 <TextBox Text="{Binding Remark}"  HorizontalAlignment="Stretch" Height="50" FontSize="16" Margin="5" TextWrapping="Wrap"/>
             </GroupBox>

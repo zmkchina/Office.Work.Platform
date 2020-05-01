@@ -12,7 +12,7 @@
         ResizeMode="CanResizeWithGrip"
         d:DesignWidth="800"
         d:DesignHeight="600"
-        Title="办公信息化平台"
+        Title="政工业务管理平台"
         Loaded="Window_LoadedAsync">
     <Window.Resources>
         <Style x:Key="ToolStyle" TargetType="Button">
@@ -50,7 +50,7 @@
             </DockPanel.Background>
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center" >
                 <TextBlock Text="&#xe64d;" Style="{StaticResource FIcon}" FontSize="25" VerticalAlignment="Center" Margin="6,0,5,0"></TextBlock>
-                <TextBlock Text="办公信息化平台 VER:1.0" 
+                <TextBlock Text="政工业务管理平台" 
                        VerticalAlignment="Center" 
                        FontSize="16"/>
             </StackPanel>
@@ -160,8 +160,11 @@
             </Frame>
         </Grid>
         <StatusBar Grid.Row="3" VerticalAlignment="Center" Margin="0" Padding="0" Height="30">
-            <StatusBarItem Background="#FFEEF0F6">
-                <TextBlock Name="lblCursorPosition"  Text="就绪" FontSize="14" Margin="15,0,0,0"/>
+            <StatusBarItem HorizontalAlignment="Left">
+                    <TextBlock Name="lblCursorPosition"  Text="就绪" FontSize="14" Margin="15,0,0,0"/>
+            </StatusBarItem>
+            <StatusBarItem HorizontalAlignment="Right">
+                <TextBlock  Name="lblLoginMsg" Text="就绪" FontSize="13" FontWeight="Bold" Foreground="Blue" Margin="15,0,10,0" />
             </StatusBarItem>
         </StatusBar>
     </Grid>

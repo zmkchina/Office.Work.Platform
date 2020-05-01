@@ -35,20 +35,10 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<ExcuteResult> AddRecord(Lib.MemberPayMonthInsurance PEntity)
         {
-            MultipartFormDataContent V_MultFormDatas = DataApiRepository.SetFormData(PEntity);
-            ExcuteResult JsonResult = await DataApiRepository.PostApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "MemberPayMonthInsurance", V_MultFormDatas).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(AppSettings.ApiUrlBase + "MemberPayMonthInsurance", PEntity).ConfigureAwait(false);
             return JsonResult;
         }
-        /// <summary>
-        /// 批量新增数据
-        /// </summary>
-        /// <param name="P_Entity"></param>
-        /// <returns></returns>
-        public static async Task<ExcuteResult> AddRecords(List<Lib.MemberPayMonthInsurance> Entitys)
-        {
-            ExcuteResult JsonResult = await DataApiRepository.PostApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "MemberPayMonthInsurance/AddRange", Entitys).ConfigureAwait(false);
-            return JsonResult;
-        }
+        
         /// <summary>
         /// 更新信息（采用PUT）
         /// </summary>
@@ -56,8 +46,7 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<ExcuteResult> UpdateRecord(Lib.MemberPayMonthInsurance PEntity)
         {
-            MultipartFormDataContent V_MultFormDatas = DataApiRepository.SetFormData(PEntity);
-            ExcuteResult JsonResult = await DataApiRepository.PutApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "MemberPayMonthInsurance", V_MultFormDatas).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.PutApiUriAsync(AppSettings.ApiUrlBase + "MemberPayMonthInsurance", PEntity).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>

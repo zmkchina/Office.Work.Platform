@@ -22,7 +22,7 @@
                 <ColumnDefinition Width="*"  MinWidth="200"/>
             </Grid.ColumnDefinitions>
             <ListBox x:Name="LB_FileList" Grid.Column="0" 
-                     ItemsSource="{Binding Path=EntityFiles}"
+                     ItemsSource="{Binding Path=PlanFiles}"
                      BorderBrush="Transparent"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                      ScrollViewer.VerticalScrollBarVisibility="Auto"

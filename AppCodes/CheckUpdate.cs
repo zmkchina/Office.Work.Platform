@@ -10,20 +10,27 @@ namespace Office.Work.Platform.AppCodes
 {
     public static class CheckUpdate
     {
-        public static async System.Threading.Tasks.Task<bool> CheckAsync()
+        public static async System.Threading.Tasks.Task<bool> CheckAppUpdateAsync()
         {
-            //读取服务器端本系统程序的信息，以便确定是否需要更新。
+            //1. 删除本地含有需要更新文件名称的文件
+            if (System.IO.File.Exists(AppSettings.LocalUpdateFileName))
+            {
+                DataRWLocalFileRepository.DeleLocalFile(AppSettings.LocalUpdateFileName);
+            }
+
+            //2. 读取服务器端本系统程序的信息。
             List<UpdateFile> ServerUpdateFiles = await DataSystemRepository.GetServerUpdateFiles();
-            DataRWLocalFileRepository.DeleLocalFile(AppSettings.LocalUpdateFileName);//删除本地含有需要更新文件名称的文件
-                                                                                     //检查程序是否需要更新
-            List<string> NeedUpdateFiles = new List<string>();
+
+            //3. 与本地程序文件比列，以便确定是否需要更新。
             if (ServerUpdateFiles != null && ServerUpdateFiles.Count > 0)
             {
+                List<string> NeedUpdateFiles = new List<string>();
                 foreach (UpdateFile item in ServerUpdateFiles)
                 {
                     string localFileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, item.FileName);
                     if (File.Exists(localFileName))
                     {
+                        //本地有同名文件，比较其版本号差异
                         string FileVersion = System.Diagnostics.FileVersionInfo.GetVersionInfo(localFileName).FileVersion;
                         if (FileVersion != item.Version)// || theFile.LastWriteTime != item.LastWriteTime)
                         {
@@ -32,16 +39,18 @@ namespace Office.Work.Platform.AppCodes
                     }
                     else
                     {
+                        //本地无同名文件，说明是新文件需要下载。
                         NeedUpdateFiles.Add(item.FileName);
                     }
                 }
-            }
-            if (NeedUpdateFiles != null && NeedUpdateFiles.Count > 0)
-            {
-                DataRWLocalFileRepository.SaveObjToFile<List<string>>(NeedUpdateFiles, AppSettings.LocalUpdateFileName);
-                if (File.Exists(AppSettings.LocalUpdateFileName))
+                //4. 将需要下载升级的文件名写入本地文件中，以便升级程序读取之。
+                if (NeedUpdateFiles != null && NeedUpdateFiles.Count > 0)
                 {
-                    return true;
+                    DataRWLocalFileRepository.SaveObjToFile<List<string>>(NeedUpdateFiles, AppSettings.LocalUpdateFileName);
+                    if (File.Exists(AppSettings.LocalUpdateFileName))
+                    {
+                        return true;
+                    }
                 }
             }
             return false;

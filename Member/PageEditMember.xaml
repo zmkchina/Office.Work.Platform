@@ -1,12 +1,13 @@
 ﻿<Page x:Class="Office.Work.Platform.Member.PageEditMember"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:local="clr-namespace:Office.Work.Platform.Member"
       xmlns:memberuc="clr-namespace:Office.Work.Platform.MemberUc"
       mc:Ignorable="d" 
       d:DesignHeight="800" d:DesignWidth="600" Loaded="Page_Loaded"
+      Unloaded="Page_Unloaded"
       Title="PageEditMember">
     <Page.Resources>
         <Style x:Key="GroupBoxStyle" TargetType="GroupBox">
@@ -43,15 +44,35 @@
             <Setter Property="FontSize" Value="15"/>
             <Setter Property="Height" Value="35"/>
             <Setter Property="Width" Value="90"/>
+            <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Margin" Value="2,0,2,5"/>
             <Style.Triggers>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Background" Value="Green"></Setter>
+                <Trigger Property="TabItem.IsSelected" Value="True">
+                    <Setter Property="TabItem.Template" >
+                        <Setter.Value>
+                            <ControlTemplate >
+                                <Canvas>
+                                    <TextBlock HorizontalAlignment="Stretch"
+                                               Background="LightBlue"
+                                               Foreground="Red"
+                                               Canvas.Top="2"
+                                               Canvas.Left="2"
+                                               Padding="12,5"
+                                               VerticalAlignment="Center" 
+                                               Text="{TemplateBinding HeaderedContentControl.Header}">
+                                   </TextBlock>
+                                </Canvas>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <!--<Setter Property="TabItem.FontWeight" Value="Bold"/>
+                    <Setter Property="TabItem.Foreground" Value="Blue"/>-->
                 </Trigger>
             </Style.Triggers>
         </Style>
     </Page.Resources>
-    <TabControl x:Name="Person_TabControl" Margin="2" TabStripPlacement="Right" >
+    <TabControl x:Name="Person_TabControl" Margin="2" TabStripPlacement="Right" 
+                >
         <TabItem Header="基本信息"  Style="{StaticResource TabItemStyle}" >
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -60,6 +81,7 @@
                 </Grid.ColumnDefinitions>
                 <ScrollViewer Grid.Column="0"  >
                     <StackPanel  Orientation="Vertical" Margin="0,5">
+                        <StackPanel Orientation="Horizontal">
                         <GroupBox Style="{StaticResource GroupBoxStyle}">
                             <GroupBox.Header>
                                 <TextBlock>
@@ -67,38 +89,46 @@
                             <Run Text="{Binding Path=AddOrEditStr,StringFormat=({0})}" Foreground="Red"/>
                                 </TextBlock>
                             </GroupBox.Header>
-                            <TextBox x:Name="Tb_UserId" Text="{Binding EntityMember.Id,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextboxStyle}" LostFocus="Tb_UserId_LostFocusAsync"/>
+                            <TextBox x:Name="Tb_UserId" Text="{Binding EntityMember.Id,UpdateSourceTrigger=PropertyChanged}"
+                                     MaxLength="18"
+                                     Style="{StaticResource TextboxStyle}" LostFocus="Tb_UserId_LostFocusAsync"/>
                         </GroupBox>
-                        <GroupBox Header="员工姓名" Style="{StaticResource GroupBoxStyle}">
-                            <TextBox x:Name="Tb_UserName"  Text="{Binding EntityMember.Name}" Style="{StaticResource TextboxStyle}"/>
+                            <GroupBox Header="出生年月"  Style="{StaticResource GroupBoxStyle}">
+                                <DatePicker SelectedDate="{Binding EntityMember.Birthday}" Style="{StaticResource DatePickerStyle}"/>
+                            </GroupBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <GroupBox Header="员工姓名" Style="{StaticResource GroupBoxStyle}">
+                            <TextBox x:Name="Tb_UserName"  Text="{Binding EntityMember.Name}"  MaxLength="10" Style="{StaticResource TextboxStyle}"/>
                         </GroupBox>
                         <GroupBox Header="性别" Style="{StaticResource GroupBoxStyle}">
-                            <ComboBox Text="{Binding EntityMember.Sex}" 
-                          Style="{StaticResource ComboBoxStyle}">
+                            <ComboBox Text="{Binding EntityMember.Sex}" Style="{StaticResource ComboBoxStyle}">
                                 <ComboBoxItem>男</ComboBoxItem>
                                 <ComboBoxItem>女</ComboBoxItem>
                             </ComboBox>
                         </GroupBox>
-                        <GroupBox Header="出生年月"  Style="{StaticResource GroupBoxStyle}">
-                            <DatePicker SelectedDate="{Binding EntityMember.Birthday}" Style="{StaticResource DatePickerStyle}"/>
-                        </GroupBox>
-                        <GroupBox Header="政治面貌" Style="{StaticResource GroupBoxStyle}">
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <GroupBox Header="政治面貌" Style="{StaticResource GroupBoxStyle}">
                             <TextBox Text="{Binding EntityMember.PoliticalStatus}" Style="{StaticResource TextboxStyle}"/>
                         </GroupBox>
                         <GroupBox Header="入党时间" Style="{StaticResource GroupBoxStyle}">
                             <DatePicker SelectedDate="{Binding EntityMember.JoinCPC}"  Style="{StaticResource DatePickerStyle}"/>
                         </GroupBox>
-                        <GroupBox Header="固定电话" Style="{StaticResource GroupBoxStyle}">
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <GroupBox Header="固定电话" Style="{StaticResource GroupBoxStyle}">
                             <TextBox Text="{Binding EntityMember.FixPhoneCode}" Style="{StaticResource TextboxStyle}"/>
                         </GroupBox>
                         <GroupBox Header="移动电话" Style="{StaticResource GroupBoxStyle}">
                             <TextBox Text="{Binding EntityMember.MobileCode}" Style="{StaticResource TextboxStyle}"/>
                         </GroupBox>
-                        <Button Content="保存" Height="30" Width="100" Click="BtnSaveBasicClickAsync" Margin="10" />
+                        </StackPanel>
+                        <Button Content="保存" Height="30" Width="100" HorizontalAlignment="Left" Click="BtnSaveBasicClickAsync" Margin="10" />
                     </StackPanel>
                 </ScrollViewer>
                 <GridSplitter Grid.Column="0" BorderThickness="2" BorderBrush="#FFDFF0E7"/>
-                <local:UC_MemberFile x:Name="UcBasicFile" Grid.Column="1" IsEnabled="{Binding Path=isEditFlag}"/>
+                <memberuc:UC_MemberFile x:Name="UcBasicFile" Grid.Column="1" IsEnabled="{Binding Path=isEditFlag}"/>
             </Grid>
         </TabItem>
         <TabItem Header="工作信息"  Style="{StaticResource TabItemStyle}">
@@ -149,11 +179,11 @@
                         <ComboBox ItemsSource="{Binding JobGrades}" Text="{Binding EntityMember.JobGrade}" Style="{StaticResource ComboBoxStyle}"/>
                     </GroupBox>
                         </StackPanel>
-                        <Button  Content="保存" Height="30" Width="100"  IsEnabled="{Binding Path=isEditFlag}" HorizontalAlignment="Left"  Click="BtnSaveWorkClickAsync" Margin="20,10"/>
+                        <Button  Content="保存" Height="30" Width="100"  IsEnabled="{Binding Path=isEditFlag}" HorizontalAlignment="Left"  Click="BtnUpdateClickAsync" Margin="20,10"/>
                 </StackPanel>
                 </ScrollViewer>
                 <GridSplitter Grid.Column="0" BorderThickness="2" BorderBrush="#FFDFF0E7"/>
-                <local:UC_MemberFile x:Name="UcWorkFile" Grid.Column="1"  IsEnabled="{Binding Path=isEditFlag}"/>
+                <memberuc:UC_MemberFile x:Name="UcWorkFile" Grid.Column="1"  IsEnabled="{Binding Path=isEditFlag}"/>
             </Grid>
         </TabItem>
         <TabItem Header="教育信息" Style="{StaticResource TabItemStyle}">
@@ -217,14 +247,14 @@
                                 <ComboBoxItem>学士</ComboBoxItem>
                             </ComboBox>
                         </GroupBox>
-                        <Button Content="保存" Height="30" Width="100" Click="BtnSaveEduClickAsync" HorizontalAlignment="Left" Margin="10" IsEnabled="{Binding Path=isEditFlag}" />
+                        <Button Content="保存" Height="30" Width="100" Click="BtnUpdateClickAsync" HorizontalAlignment="Left" Margin="10" IsEnabled="{Binding Path=isEditFlag}" />
                     </StackPanel>
                 </ScrollViewer>
                 <GridSplitter Grid.Column="0" BorderThickness="2" BorderBrush="#FFDFF0E7"/>
-                <local:UC_MemberFile x:Name="UcEduFile" Grid.Column="1"  IsEnabled="{Binding Path=isEditFlag}"/>
+                <memberuc:UC_MemberFile x:Name="UcEduFile" Grid.Column="1"  IsEnabled="{Binding Path=isEditFlag}"/>
             </Grid>
         </TabItem>
-        <TabItem Header="个人简历" Style="{StaticResource TabItemStyle}">
+        <TabItem Header="个人履历" Style="{StaticResource TabItemStyle}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2*"/>
@@ -232,24 +262,40 @@
                 </Grid.ColumnDefinitions>
                 <memberuc:UC_Resume x:Name="UcResume" Grid.Column="0"  HorizontalAlignment="Stretch" IsEnabled="{Binding Path=isEditFlag}"/>
                 <GridSplitter Grid.Column="0" BorderThickness="2" BorderBrush="#FFDFF0E7"/>
-                <local:UC_MemberFile x:Name="UcResumeFile" Grid.Column="1"  IsEnabled="{Binding Path=isEditFlag}"/>
+                <memberuc:UC_MemberFile x:Name="UcResumeFile" Grid.Column="1"  IsEnabled="{Binding Path=isEditFlag}"/>
             </Grid>
         </TabItem>
         <TabItem Header="奖惩情况" Style="{StaticResource TabItemStyle}">
-
-        </TabItem>
-        <TabItem Header="社会关系" Style="{StaticResource TabItemStyle}">
-            
-        </TabItem>
-        <TabItem Header="在编月待遇" Style="{StaticResource TabItemStyle}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2*"/>
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
-                <memberuc:UC_PayMonth x:Name="UcPayMonth" Grid.Column="0"  HorizontalAlignment="Stretch" IsEnabled="{Binding Path=isEditFlag}"/>
+                <memberuc:UC_PrizePunish x:Name="UcPrizePunish" Grid.Column="0"  HorizontalAlignment="Stretch" IsEnabled="{Binding Path=isEditFlag}"/>
                 <GridSplitter Grid.Column="0" BorderThickness="2" BorderBrush="#FFDFF0E7"/>
-                <local:UC_MemberFile x:Name="UcPayMonthFile" Grid.Column="1"  IsEnabled="{Binding Path=isEditFlag}"/>
+                <memberuc:UC_MemberFile x:Name="UcPrizePunishFile" Grid.Column="1"  IsEnabled="{Binding Path=isEditFlag}"/>
+            </Grid>
+        </TabItem>
+        <TabItem Header="社会关系" Style="{StaticResource TabItemStyle}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <memberuc:UC_Relations x:Name="UcRelations" Grid.Column="0"  HorizontalAlignment="Stretch" IsEnabled="{Binding Path=isEditFlag}"/>
+                <GridSplitter Grid.Column="0" BorderThickness="2" BorderBrush="#FFDFF0E7"/>
+                <memberuc:UC_MemberFile x:Name="UcRelationsFile" Grid.Column="1"  IsEnabled="{Binding Path=isEditFlag}"/>
+            </Grid>
+        </TabItem>
+        <TabItem Header="编内月待遇" Style="{StaticResource TabItemStyle}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <memberuc:UC_PayMonthOfficial x:Name="UcPayMonthOfficial" Grid.Column="0"  HorizontalAlignment="Stretch" IsEnabled="{Binding Path=isEditFlag}"/>
+                <GridSplitter Grid.Column="0" BorderThickness="2" BorderBrush="#FFDFF0E7"/>
+                <memberuc:UC_MemberFile x:Name="UcPayMonthOfficialFile" Grid.Column="1"  IsEnabled="{Binding Path=isEditFlag}"/>
             </Grid>
         </TabItem>
         <TabItem Header="编外月待遇" Style="{StaticResource TabItemStyle}">
@@ -260,7 +306,7 @@
                 </Grid.ColumnDefinitions>
                 <memberuc:UC_PayMonthUnofficial x:Name="UcPayMonthUnofficial" Grid.Column="0"  HorizontalAlignment="Stretch" IsEnabled="{Binding Path=isEditFlag}"/>
                 <GridSplitter Grid.Column="0" BorderThickness="2" BorderBrush="#FFDFF0E7"/>
-                <local:UC_MemberFile x:Name="UcPayMonthUnofficialFile" Grid.Column="1"  IsEnabled="{Binding Path=isEditFlag}"/>
+                <memberuc:UC_MemberFile x:Name="UcPayMonthUnofficialFile" Grid.Column="1"  IsEnabled="{Binding Path=isEditFlag}"/>
             </Grid>
         </TabItem>
         <TabItem Header="月度社保" Style="{StaticResource TabItemStyle}">
@@ -271,7 +317,7 @@
                 </Grid.ColumnDefinitions>
                 <memberuc:UC_PayMonthInsurance x:Name="UcPayMonthInsurance" Grid.Column="0"  HorizontalAlignment="Stretch" IsEnabled="{Binding Path=isEditFlag}"/>
                 <GridSplitter Grid.Column="0" BorderThickness="2" BorderBrush="#FFDFF0E7"/>
-                <local:UC_MemberFile x:Name="UcPayMonthInsuranceFile" Grid.Column="1"  IsEnabled="{Binding Path=isEditFlag}"/>
+                <memberuc:UC_MemberFile x:Name="UcPayMonthInsuranceFile" Grid.Column="1"  IsEnabled="{Binding Path=isEditFlag}"/>
             </Grid>
         </TabItem>
         <TabItem Header="补充待遇" Style="{StaticResource TabItemStyle}">
@@ -282,11 +328,19 @@
                 </Grid.ColumnDefinitions>
                 <memberuc:UC_PayTemp x:Name="UcPayTemp" Grid.Column="0"  HorizontalAlignment="Stretch" IsEnabled="{Binding Path=isEditFlag}"/>
                 <GridSplitter Grid.Column="0" BorderThickness="2" BorderBrush="#FFDFF0E7"/>
-                <local:UC_MemberFile x:Name="UcPayTempFile" Grid.Column="1"  IsEnabled="{Binding Path=isEditFlag}"/>
+                <memberuc:UC_MemberFile x:Name="UcPayTempFile" Grid.Column="1"  IsEnabled="{Binding Path=isEditFlag}"/>
             </Grid>
         </TabItem>
-        <TabItem Header="考勤信息" Style="{StaticResource TabItemStyle}">
-
+        <TabItem Header="休假信息" Style="{StaticResource TabItemStyle}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <memberuc:UC_Holiday x:Name="UcHoliday" Grid.Column="0"  HorizontalAlignment="Stretch" IsEnabled="{Binding Path=isEditFlag}"/>
+                <GridSplitter Grid.Column="0" BorderThickness="2" BorderBrush="#FFDFF0E7"/>
+                <memberuc:UC_MemberFile x:Name="UcHolidayFile" Grid.Column="1"  IsEnabled="{Binding Path=isEditFlag}"/>
+            </Grid>
         </TabItem>
         <TabItem Header="其他说明" Style="{StaticResource TabItemStyle}">
             <Grid>
@@ -299,10 +353,12 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="60"/>
                     </Grid.RowDefinitions>
-                    <TextBox Text="{Binding EntityMember.Remarks}" Grid.Row="0" Margin="5" TextWrapping="Wrap"/>
-                    <Button Content="保存" Height="30" Width="100" Grid.Row="1" Click="BtnSaveRemarkClickAsync" Margin="10" />
+                    <GroupBox Header="其他说明" Grid.Row="0"  Margin="5">
+                        <TextBox Text="{Binding EntityMember.Remarks}" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+                    </GroupBox>
+                    <Button Content="保存" Height="30" Width="100" Grid.Row="1" Click="BtnUpdateClickAsync" Margin="10" />
                 </Grid>
-                <local:UC_MemberFile x:Name="UcRemarkFile" Grid.Column="1"  IsEnabled="{Binding Path=isEditFlag}"/>
+                <memberuc:UC_MemberFile x:Name="UcRemarkFile" Grid.Column="1"  IsEnabled="{Binding Path=isEditFlag}"/>
             </Grid>
         </TabItem>
     </TabControl>

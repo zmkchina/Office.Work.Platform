@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace Office.Work.Platform.Member
 {
@@ -40,7 +41,7 @@ namespace Office.Work.Platform.Member
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void btn_Refrash_Click(object sender, RoutedEventArgs e)
+        private async void btn_Refrash_ClickAsync(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(_PageMemberListVM.FieldValue))
             {
@@ -72,6 +73,11 @@ namespace Office.Work.Platform.Member
                 _PageMemberListVM.EntityList.Clear();
                 MemberList.ForEach(e => { _PageMemberListVM.EntityList.Add(e); });
             }
+            else
+            {
+                _PageMemberListVM.EntityList.Clear();
+            }
+            AppSettings.AppMainWindow.lblCursorPosition.Text = $"共查询到记录：{_PageMemberListVM.EntityList.Count}条";
         }
         /// <summary>
         /// 
@@ -84,6 +90,30 @@ namespace Office.Work.Platform.Member
             {
                 PageEditMember pageEditMember = new PageEditMember(CurMember);
                 AppSettings.AppMainWindow.FrameContentPage.Content = pageEditMember;
+            }
+        }
+
+        /// <summary>
+        /// 删除选定记录。
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void btn_Delete_ClickAsync(object sender, RoutedEventArgs e)
+        {
+            if (RecordDataGrid.SelectedItem is Lib.Member SelectMember)
+            {
+                if (SelectMember != null && (new WinMsgDialog($"确定要删除[{SelectMember.Name}]信息吗？", "确认")).ShowDialog().Value)
+                {
+                    ExcuteResult excuteResult = await DataMemberRepository.DeleteMember(SelectMember).ConfigureAwait(false);
+                    if (excuteResult.State == 0)
+                    {
+                        await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { _PageMemberListVM.EntityList.Remove(SelectMember); })); ;
+                    }
+                    else
+                    {
+                        (new WinMsgDialog(excuteResult.Msg)).ShowDialog();
+                    }
+                }
             }
         }
     }
