@@ -1,15 +1,6 @@
-﻿using Office.Work.Platform.AppCodes;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Office.Work.Platform
 {
@@ -20,10 +11,10 @@ namespace Office.Work.Platform
     {
         public WinMsgDialog(string Message, string Caption = "信息", bool isErr = false, bool showYesNo = false, bool ShowOk = true)
         {
-            this.Owner = AppSettings.AppMainWindow;
+            this.Owner = Application.Current.MainWindow;
+            this.Height = 300;
             InitializeComponent();
             if (showYesNo) { ShowOk = false; } else { ShowOk = true; }
-            this.Height = 300;
             this.Message = Message;
             this.Caption = Caption;
             this.ShowYes = this.ShowNo = showYesNo ? "Visible" : "Collapsed";

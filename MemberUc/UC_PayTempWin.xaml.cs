@@ -12,6 +12,7 @@ namespace Office.Work.Platform.MemberUc
         public Lib.MemberPayTemp _CurRecord { get; set; }
         public UC_PayTempWin(Lib.MemberPayTemp PRecord)
         {
+            this.Owner = Application.Current.MainWindow;
             InitializeComponent();
             _CurRecord = PRecord;
             DataContext = PRecord;

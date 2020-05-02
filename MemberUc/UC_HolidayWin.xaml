@@ -7,10 +7,10 @@
         mc:Ignorable="d"
         ShowInTaskbar="False" 
         WindowStartupLocation="CenterOwner"
-        ResizeMode="CanResizeWithGrip"
+        ResizeMode="CanResizeWithGrip" SizeToContent="WidthAndHeight"
         WindowStyle="None"
         AllowsTransparency="True" BorderBrush="LightBlue" BorderThickness="1" Background="AliceBlue"
-        Title="职工休假情况" Width="450" Height="400">
+        Title="职工休假情况">
     <Window.Resources>
         <Style x:Key="GroupBoxStyle" TargetType="GroupBox">
             <Setter Property="Padding" Value="2,5"/>
@@ -52,11 +52,15 @@
             <Setter Property="Width" Value="180"/>
         </Style>
     </Window.Resources>
-    <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top">
-        <Border Height="30" Background="DodgerBlue" MouseMove="Border_MouseMove" Cursor="Hand">
-            <TextBlock Text="职工休假情况" VerticalAlignment="Center" Foreground="White" Padding="5,0,0,0"/>
-        </Border>
-        <StackPanel Orientation="Vertical"  Margin="10,15" HorizontalAlignment="Stretch">
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+            <Border Height="30" Background="DodgerBlue" MouseMove="Border_MouseMove" Cursor="Hand" Margin="0,0,0,10">
+                <TextBlock Text="职工休假情况" VerticalAlignment="Center" Foreground="White" Padding="5,0,0,0"/>
+            </Border>
             <GroupBox Header="假期类型" >
                 <ComboBox ItemsSource="{Binding HolidayTypeArr}" Text="{Binding HolidayType}"  
                           Width="200" HorizontalAlignment="Left" FontSize="16" Margin="5" />
@@ -77,10 +81,10 @@
             <GroupBox Header="备注信息" >
                 <TextBox Text="{Binding Remark}"  HorizontalAlignment="Stretch" Height="50" FontSize="16" Margin="5" TextWrapping="Wrap"/>
             </GroupBox>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="保存" Height="30" Width="60" Click="BtnSaveClickAsync" Margin="10" />
-                <Button Content="取消" Height="30" Width="60" Click="BtnCancelClickAsync" Margin="10" />
-            </StackPanel>
         </StackPanel>
-    </StackPanel>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="保存" Height="30" Width="60" Click="BtnSaveClickAsync" Margin="10" />
+            <Button Content="取消" Height="30" Width="60" Click="BtnCancelClickAsync" Margin="10" />
+        </StackPanel>
+    </Grid>
 </Window>

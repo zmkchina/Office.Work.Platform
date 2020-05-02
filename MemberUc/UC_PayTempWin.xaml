@@ -6,10 +6,10 @@
         mc:Ignorable="d"
         ShowInTaskbar="False" 
         WindowStartupLocation="CenterOwner"
-        ResizeMode="CanResizeWithGrip"
+        ResizeMode="CanResizeWithGrip" SizeToContent="WidthAndHeight"
         WindowStyle="None"
         AllowsTransparency="True" BorderBrush="LightBlue" BorderThickness="1" Background="AliceBlue"
-        Title="职工补充待遇发放" Width="450" Height="350">
+        Title="职工补充待遇发放">
     <Window.Resources>
         <Style x:Key="GroupBoxStyle" TargetType="GroupBox">
             <Setter Property="Padding" Value="2,5"/>

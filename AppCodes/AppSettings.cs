@@ -40,5 +40,10 @@ namespace Office.Work.Platform.AppCodes
         public static string ApiUrlBase = @"http://Localhost:5000/Api/";
         //public static string ApiUrlBase = @"http://172.16.0.9/Api/";
 
+        public static void SetStateBarText(string Msg)
+        {
+            AppMainWindow.lblCursorPosition.Text = Msg;
+        }
+
     }
 }

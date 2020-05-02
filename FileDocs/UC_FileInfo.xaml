@@ -1,9 +1,9 @@
-﻿<UserControl x:Name="UCFileInfo" x:Class="Office.Work.Platform.PlanFiles.UC_FileInfo"
+﻿<UserControl x:Name="UCFileInfo" x:Class="Office.Work.Platform.FileDocs.UC_FileInfo"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Office.Work.Platform.PlanFiles"
+             xmlns:local="clr-namespace:Office.Work.Platform.FileDocs"
              mc:Ignorable="d" 
              >
     <ScrollViewer>
@@ -12,7 +12,7 @@
                 <GroupBox.Header>
                     <TextBlock Margin="5">
                         <Run Text="文件名称"/>
-                        <Run Foreground="Blue" Text="{Binding Path=PlanFileInfo.DownIntProgress,StringFormat=(下载 {0:F0} %)}"/>
+                        <Run Foreground="Blue" Text="{Binding Path=CurFile.DownIntProgress,StringFormat=(下载 {0:F0} %)}"/>
                     </TextBlock> 
                 </GroupBox.Header>
                 <TextBox BorderBrush="#EAEAEA" Margin="5"
@@ -21,7 +21,7 @@
                      TextWrapping="Wrap" 
                      VerticalAlignment="Center" 
                      Padding="3" 
-                     Text="{Binding Path=CurPlanFile.Name}" />
+                     Text="{Binding Path=CurFile.Name}" />
             </GroupBox>
             <GroupBox>
                 <GroupBox.Header>
@@ -34,7 +34,7 @@
                      TextWrapping="Wrap" 
                      VerticalAlignment="Center" 
                      Padding="3" 
-                     Text="{Binding Path=CurPlanFile.Describe}" />
+                     Text="{Binding Path=CurFile.Describe}" />
             </GroupBox>
             <Expander ExpandDirection="Down" Margin="5">
                 <Expander.Header>
@@ -44,11 +44,11 @@
                     <StackPanel Orientation="Vertical" Margin="5,2,0,5">
                         <DockPanel>
                             <TextBlock DockPanel.Dock="Left" Text="内容分类" Margin="5"/>
-                            <TextBlock  DockPanel.Dock="Right"  Text="{Binding Path=CurPlanFile.Plan.PlanType}"  Margin="5"/>
+                            <TextBlock  DockPanel.Dock="Right"  Text="{Binding Path=CurFile.ContentType}"  Margin="5"/>
                         </DockPanel>
                         <DockPanel>
                             <TextBlock DockPanel.Dock="Left" Text="所属计划" Margin="5"/>
-                            <TextBlock  DockPanel.Dock="Right"  Text="{Binding Path=CurPlanFile.Plan.Caption}"  Margin="5"/>
+                            <TextBlock  DockPanel.Dock="Right"  Text="{Binding Path=CurFile.OwnerType}"  Margin="5"/>
                         </DockPanel>
                         <DockPanel>
                             <TextBlock DockPanel.Dock="Left" Text="有权读取" Margin="5"/>
@@ -60,7 +60,7 @@
                         </DockPanel>
                         <DockPanel>
                             <TextBlock DockPanel.Dock="Left" Text="上传日期" Margin="5"/>
-                            <TextBlock  DockPanel.Dock="Right"  Text="{Binding Path=CurPlanFile.UpDateTime}"  Margin="5"/>
+                            <TextBlock  DockPanel.Dock="Right"  Text="{Binding Path=CurFile.UpDateTime}"  Margin="5"/>
                         </DockPanel>
                         
                     </StackPanel>

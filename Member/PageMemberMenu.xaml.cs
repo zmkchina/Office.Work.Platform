@@ -51,5 +51,15 @@ namespace Office.Work.Platform.Member
         {
             ListBoxItem_MouseLeftButtonUp_1(null, null);
         }
+        /// <summary>
+        /// 正式人员月度工资查询（发放）
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void PayMonthOfficial_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            PagePayMonthOfficialSheet CurPage = new PagePayMonthOfficialSheet();
+            AppSettings.AppMainWindow.FrameContentPage.Content = CurPage;
+        }
     }
 }

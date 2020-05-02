@@ -40,21 +40,22 @@
                     </Setter>
                 </Style>
             </ListBox.ItemContainerStyle>
-            <ListBoxItem>
+            <ListBoxItem MouseLeftButtonUp="ListBoxItem_MouseLeftButtonUp_0">
                 <StackPanel Orientation="Horizontal">
-                    <Image Height="18" Width="18" Margin="0,0,3,0" Source="/AppRes/Images/app.ico" />
+                    <TextBlock Text="&#xe643;" Style="{StaticResource FIcon}" FontSize="18" Margin="0,0,5,0" Foreground="Green"></TextBlock>
                     <TextBlock  Text="新增备注" VerticalAlignment="Center"/>
                 </StackPanel>
             </ListBoxItem>
-            <ListBoxItem>
+            <ListBoxItem MouseLeftButtonUp="ListBoxItem_MouseLeftButtonUp_1">
                 <StackPanel Orientation="Horizontal">
-                    <Image Height="18" Width="18" Margin="0,0,3,0" Source="/AppRes/Images/app.ico" />
-                    <TextBlock  Text="我的备忘" VerticalAlignment="Center"/>
+                    <TextBlock Text="&#xe643;" Style="{StaticResource FIcon}" FontSize="18" Margin="0,0,5,0" Foreground="Green"></TextBlock>
+                    <TextBlock  Text="我的备注" VerticalAlignment="Center"/>
                 </StackPanel>
             </ListBoxItem>
-            <ListBoxItem >
+
+            <ListBoxItem MouseLeftButtonUp="ListBoxItem_MouseLeftButtonUp_2">
                 <StackPanel Orientation="Horizontal">
-                    <Image Height="18" Width="18" Margin="0,0,3,0" Source="/AppRes/Images/app.ico" />
+                    <TextBlock Text="&#xe643;" Style="{StaticResource FIcon}" FontSize="18" Margin="0,0,5,0" Foreground="Green"></TextBlock>
                     <TextBlock  Text="全部备注" VerticalAlignment="Center"/>
                 </StackPanel>
             </ListBoxItem>

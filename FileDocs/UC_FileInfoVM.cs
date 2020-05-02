@@ -1,22 +1,20 @@
-﻿using Office.Work.Platform.AppCodes;
+﻿using System.Linq;
+using Office.Work.Platform.AppCodes;
 using Office.Work.Platform.Lib;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 
-namespace Office.Work.Platform.PlanFiles
+namespace Office.Work.Platform.FileDocs
 {
     public class UC_FileInfoVM : NotificationObject
     {
-        private PlanFile _CurPlanFile;
+        private FileDoc _CurFile;
         private FileOperateGrant _OperateGrant;
         /// <summary>
         /// 文件对象
         /// </summary>
-        public PlanFile CurPlanFile
+        public FileDoc CurFile
         {
-            get { return _CurPlanFile; }
-            set { _CurPlanFile = value; this.RaisePropertyChanged(); }
+            get { return _CurFile; }
+            set { _CurFile = value; this.RaisePropertyChanged(); }
         }
 
         /// <summary>
@@ -49,14 +47,14 @@ namespace Office.Work.Platform.PlanFiles
         {
             OperateGrant = new FileOperateGrant();
         }
-        public void InitPropValusAsync(PlanFile PFile)
+        public void InitPropValusAsync(FileDoc PFile)
         {
             if (PFile == null) return;
-            CurPlanFile = PFile;
+            CurFile = PFile;
             OperateGrant = new FileOperateGrant(AppSettings.LoginUser, PFile);
-            if (PFile.Plan.ReadGrant != null)
+            if (PFile.CanReadUserIds != null)
             {
-                CurFileHasGrantNames = string.Join(",", AppSettings.SysUsers.Where(e => PFile.Plan.ReadGrant.Contains(e.Id, System.StringComparison.Ordinal)).Select(x => x.Name)?.ToArray());
+                CurFileHasGrantNames = string.Join(",", AppSettings.SysUsers.Where(e => PFile.CanReadUserIds.Contains(e.Id, System.StringComparison.Ordinal)).Select(x => x.Name)?.ToArray());
             }
             if (PFile.UserId != null)
             {
@@ -75,28 +73,20 @@ namespace Office.Work.Platform.PlanFiles
             {
                 CanRead = CanUpdate = "Collapsed";
             }
-            public FileOperateGrant(User P_LoginUser, PlanFile P_CurFile)
+            public FileOperateGrant(User P_LoginUser, FileDoc P_CurFile)
             {
                 CanRead = CanUpdate = "Collapsed";
                 if (P_LoginUser.Post.Equals("管理员"))
                 {
                     CanRead = CanUpdate = "Visible";
                 }
-                else if (P_LoginUser.Post.Equals("部门负责人"))
+                else if (P_CurFile.UserId.Equals(AppSettings.LoginUser.Id,System.StringComparison.Ordinal))
                 {
                     CanRead = CanUpdate = "Visible";
                 }
-                else if (P_CurFile.Plan.ReadGrant.Contains(P_CurFile.UserId))
+                else if (P_CurFile.CanReadUserIds.Contains(AppSettings.LoginUser.Id, System.StringComparison.Ordinal))
                 {
-                    if (P_LoginUser.Id.Equals(P_CurFile.Plan.CreateUserId) || P_CurFile.Plan.Helpers.Contains(P_LoginUser.Id))
-                    {
-                        //文件上传人员：A—E
-                        CanRead = CanUpdate = "Visible";
-                    }
-                    else
-                    {
-                        CanRead = "Visible";
-                    }
+                    CanRead = "Visible";
                 }
             }
         }

@@ -13,7 +13,7 @@ namespace Office.Work.Platform.Plan
 
         public UC_PlanInfoVM()
         {
-            PlanFiles = new ObservableCollection<PlanFile>();
+            PlanFiles = new ObservableCollection<FileDoc>();
         }
         public async System.Threading.Tasks.Task Init_PlanInfoVMAsync(Lib.Plan P_Entity)
         {
@@ -23,8 +23,8 @@ namespace Office.Work.Platform.Plan
             if (PlanFiles.Count < 1)
             {
                 //如果该计划的附件文件没有读取则读取之。
-                PlanFileSearch mSearchFile = new PlanFileSearch() { PlanId = P_Entity.Id, UserId = AppSettings.LoginUser.Id };
-                IEnumerable<PlanFile> UpFiles = await DataPlanFileRepository.ReadFiles(mSearchFile);
+                FileDocSearch mSearchFile = new FileDocSearch() { OwnerId = P_Entity.Id, UserId = AppSettings.LoginUser.Id };
+                IEnumerable<FileDoc> UpFiles = await DataFileDocRepository.ReadFiles(mSearchFile);
                 UpFiles.ToList().ForEach(e =>
                 {
                     e.UpIntProgress = 100;
@@ -55,7 +55,7 @@ namespace Office.Work.Platform.Plan
         /// <summary>
         /// 当前计划的文件。
         /// </summary>
-        public ObservableCollection<PlanFile> PlanFiles { get; set; }
+        public ObservableCollection<FileDoc> PlanFiles { get; set; }
         /// <summary>
         /// 计划创建者的姓名（中文）。
         /// </summary>

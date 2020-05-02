@@ -12,6 +12,7 @@ namespace Office.Work.Platform.MemberUc
         public Lib.MemberHoliday _CurRecord { get; set; }
         public UC_HolidayWin(Lib.MemberHoliday ParamRecord)
         {
+            this.Owner = Application.Current.MainWindow;
             InitializeComponent();
             _CurRecord = ParamRecord;
             DataContext = ParamRecord;

@@ -8,9 +8,9 @@
         ShowInTaskbar="False" 
         WindowStartupLocation="CenterOwner"
         ResizeMode="CanResizeWithGrip"
-        WindowStyle="None"
+        WindowStyle="None" SizeToContent="WidthAndHeight"
         AllowsTransparency="True" BorderBrush="LightBlue" BorderThickness="1" Background="AliceBlue"
-        Title="职工主要社会关系" Width="500" Height="360">
+        Title="职工主要社会关系">
     <Window.Resources>
         <Style x:Key="GroupBoxStyle" TargetType="GroupBox">
             <Setter Property="Padding" Value="2,5"/>

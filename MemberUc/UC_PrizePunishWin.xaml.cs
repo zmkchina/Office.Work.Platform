@@ -12,6 +12,7 @@ namespace Office.Work.Platform.MemberUc
         public Lib.MemberPrizePunish _CurRecord { get; set; }
         public UC_PrizePunishWin(Lib.MemberPrizePunish ParamRecord)
         {
+            this.Owner = Application.Current.MainWindow;
             InitializeComponent();
             _CurRecord = ParamRecord;
             DataContext = ParamRecord;

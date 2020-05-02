@@ -78,48 +78,48 @@ namespace Office.Work.Platform.Member
                 switch (tb.Header)
                 {
                     case "基本信息":
-                        await UcBasicFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember.Id, "基本信息", null, isRead);
+                        await UcBasicFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember, "基本信息", isRead);
                         break;
                     case "工作信息":
-                        await UcWorkFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember.Id, "工作信息", null, isRead);
+                        await UcWorkFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember, "工作信息",  isRead);
                         break;
                     case "教育信息":
-                        await UcEduFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember.Id, "教育信息", null, isRead);
+                        await UcEduFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember, "教育信息", isRead);
                         break;
                     case "个人履历":
                         UcResume.initControlAsync(_PageEditMemberVM.EntityMember);
-                        await UcResumeFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember.Id, "个人履历", null, isRead);
+                        await UcResumeFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember, "个人履历",  isRead);
                         break;
                     case "奖惩情况":
                         UcPrizePunish.initControlAsync(_PageEditMemberVM.EntityMember);
-                        await UcPrizePunishFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember.Id, "奖惩情况", null, isRead);
+                        await UcPrizePunishFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember, "奖惩情况", isRead);
                         break;
                     case "社会关系":
                         UcRelations.initControlAsync(_PageEditMemberVM.EntityMember);
-                        await UcRelationsFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember.Id, "社会关系", null, isRead);
+                        await UcRelationsFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember, "社会关系",  isRead);
                         break;
                     case "编内月待遇":
                         UcPayMonthOfficial.initControlAsync(_PageEditMemberVM.EntityMember);
-                        await UcPayMonthOfficialFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember.Id, "编内月待遇", null, isRead);
+                        await UcPayMonthOfficialFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember, "编内月待遇",  isRead);
                         break;
                     case "编外月待遇":
                         UcPayMonthUnofficial.initControlAsync(_PageEditMemberVM.EntityMember);
-                        await UcPayMonthUnofficialFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember.Id, "编外月待遇", null, isRead);
+                        await UcPayMonthUnofficialFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember, "编外月待遇", isRead);
                         break;
                     case "月度社保":
                         UcPayMonthInsurance.initControlAsync(_PageEditMemberVM.EntityMember);
-                        await UcPayMonthInsuranceFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember.Id, "月度社保", null, isRead);
+                        await UcPayMonthInsuranceFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember, "月度社保",  isRead);
                         break;
                     case "补充待遇":
                         UcPayTemp.initControlAsync(_PageEditMemberVM.EntityMember);
-                        await UcPayTempFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember.Id, "补充待遇", null, isRead);
+                        await UcPayTempFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember, "补充待遇", isRead);
                         break;
                     case "休假信息":
                         UcHoliday.initControlAsync(_PageEditMemberVM.EntityMember);
-                        await UcHolidayFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember.Id, "休假信息", null, isRead);
+                        await UcHolidayFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember, "休假信息",  isRead);
                         break;
                     case "其他说明":
-                        await UcRemarkFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember.Id, "其他说明", null, isRead);
+                        await UcRemarkFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember, "其他说明", isRead);
                         break;
                 }
             }

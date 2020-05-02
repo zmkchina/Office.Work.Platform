@@ -14,25 +14,13 @@ namespace Office.Work.Platform.Plan
         public PageEditPlanVM(Lib.Plan CurPlan)
         {
             EntityPlan = CurPlan;
-            PlanFiles = new ObservableCollection<PlanFile>();
         }
-        public async Task InitPropValueAsync()
+        public void InitPropValueAsync()
         {
             if (EntityPlan != null)
             {
                 IsEditFlag = true;
                 //设置查询条件类
-                PlanFiles.Clear();
-                PlanFileSearch mSearchFile = new PlanFileSearch();
-                mSearchFile.UserId = AppSettings.LoginUser.Id;
-                mSearchFile.PlanId = EntityPlan.Id;
-                IEnumerable<PlanFile> UpFiles = await DataPlanFileRepository.ReadFiles(mSearchFile);
-                UpFiles.ToList().ForEach(e =>
-                {
-                    e.UpIntProgress = 100;
-                    PlanFiles.Add(e);
-                });
-
             }
             else
             {
@@ -60,10 +48,6 @@ namespace Office.Work.Platform.Plan
         public bool IsEditFlag { get; set; }
         public Lib.Plan EntityPlan { get; set; }
 
-        /// <summary>
-        /// 当前计划的文件。
-        /// </summary>
-        public ObservableCollection<PlanFile> PlanFiles { get; set; }
         /// <summary>
         /// 有权读取该计划的用户选择
         /// </summary>

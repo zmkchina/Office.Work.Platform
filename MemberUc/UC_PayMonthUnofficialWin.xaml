@@ -8,9 +8,9 @@
         ShowInTaskbar="False" 
         WindowStartupLocation="CenterOwner"
         ResizeMode="CanResizeWithGrip"
-        WindowStyle="None"
+        WindowStyle="None" SizeToContent="WidthAndHeight"
         AllowsTransparency="True" BorderBrush="LightBlue" BorderThickness="1" Background="AliceBlue"
-        Title="编外职工月度待遇" Width="550" Height="450">
+        Title="编外职工月度待遇">
     <Window.Resources>
         <Style x:Key="GroupBoxStyle" TargetType="GroupBox">
             <Setter Property="Padding" Value="2,5"/>

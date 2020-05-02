@@ -8,9 +8,9 @@
         ShowInTaskbar="False" 
         WindowStartupLocation="CenterOwner"
         ResizeMode="CanResizeWithGrip"
-        WindowStyle="None"
+        WindowStyle="None" SizeToContent="WidthAndHeight"
         AllowsTransparency="True" BorderBrush="LightBlue" BorderThickness="1" Background="AliceBlue"
-        Title="在职职工月度待遇" Width="550" Height="450">
+        Title="在职职工月度待遇" >
     <Window.Resources>
         <Style x:Key="GroupBoxStyle" TargetType="GroupBox">
             <Setter Property="Padding" Value="2,5"/>
@@ -61,7 +61,7 @@
                 <GroupBox Style="{StaticResource GroupBoxStyle}">
                     <GroupBox.Header>
                         <TextBlock>
-                     <Run Text="发放年份"/>
+                     <Run Text="发放年度月份"/>
                         </TextBlock>
                     </GroupBox.Header>
                     <DatePicker Style="{StaticResource DatePickerStyle}"

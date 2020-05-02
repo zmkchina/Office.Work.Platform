@@ -12,6 +12,7 @@ namespace Office.Work.Platform.MemberUc
         public Lib.MemberRelations _CurRecord { get; set; }
         public UC_RelationsWin(Lib.MemberRelations ParamRecord)
         {
+            this.Owner = Application.Current.MainWindow;
             InitializeComponent();
             _CurRecord = ParamRecord;
             DataContext = ParamRecord;

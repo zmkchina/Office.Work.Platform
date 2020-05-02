@@ -1,5 +1,6 @@
 ﻿using Office.Work.Platform.AppCodes;
 using Office.Work.Platform.AppDataService;
+using Office.Work.Platform.FileDocs;
 using Office.Work.Platform.Lib;
 using System;
 using System.Net.Http.Handlers;
@@ -66,38 +67,17 @@ namespace Office.Work.Platform.Plan
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void BtnUpFile_ClickAsync(object sender, RoutedEventArgs e)
+        private  void BtnUpFile_Click(object sender, RoutedEventArgs e)
         {
             e.Handled = true;
             System.IO.FileInfo theFile = FileOperation.SelectFile();
             if (theFile != null)
             {
-                PlanFile NewPlanFile = new PlanFile()
+                WinUpLoadFile winUpLoadFile = new WinUpLoadFile(new Action<FileDoc>(newFile =>
                 {
-                    Name = theFile.Name.Substring(0, theFile.Name.LastIndexOf('.')),
-                    UserId = AppSettings.LoginUser.Id,
-                    Length = theFile.Length,
-                    ExtendName = theFile.Extension,
-                    PlanId = _UCPlanInfoVM.CurPlan.Id,
-                    FileInfo = theFile,
-                    UpIntProgress = 0
-                };
-                _UCPlanInfoVM.PlanFiles.Add(NewPlanFile);
-                ProgressMessageHandler UpProgress = new ProgressMessageHandler();
-                UpProgress.HttpSendProgress += (object sender, HttpProgressEventArgs e) =>
-                {
-                    NewPlanFile.UpIntProgress = e.ProgressPercentage;
-                };
-                ExcuteResult result = await DataPlanFileRepository.UpLoadFileInfo(NewPlanFile, NewPlanFile.FileInfo.OpenRead(), "planfile", "pf", UpProgress);
-                if (result == null || result.State != 0)
-                {
-                    NewPlanFile.UpIntProgress = 0;
-                }
-                else
-                {
-                    //服务器保存该文件成功，将返回的Id更新到当前记录。
-                    NewPlanFile.Id = result.Tag;
-                }
+                    _UCPlanInfoVM.PlanFiles.Add(newFile);
+                }), theFile, "计划附件",_UCPlanInfoVM.CurPlan.Id,_UCPlanInfoVM.CurPlan.ContentType);
+                winUpLoadFile.ShowDialog();
             }
         }
 
@@ -127,12 +107,12 @@ namespace Office.Work.Platform.Plan
         /// <param name="e"></param>
         private async void Image_Delete_MouseLeftButtonUpAsync(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            PlanFile SelectFile = LB_FileList.SelectedItem as PlanFile;
+            FileDoc SelectFile = LB_FileList.SelectedItem as FileDoc;
             if ((new WinMsgDialog($"删除文件《{SelectFile.Name}》？", "确认", showYesNo: true)).ShowDialog().Value == false)
             {
                 return;
             }
-            ExcuteResult delResult = await DataPlanFileRepository.DeleteFileInfo(SelectFile);
+            ExcuteResult delResult = await DataFileDocRepository.DeleteFileInfo(SelectFile);
             if (delResult.State == 0)
             {
                 _UCPlanInfoVM.PlanFiles.Remove(SelectFile);
@@ -147,7 +127,7 @@ namespace Office.Work.Platform.Plan
         {
             TextBlock curTextBlock = sender as TextBlock;
             curTextBlock.IsEnabled = false;
-            PlanFile SelectFile = LB_FileList.SelectedItem as PlanFile;
+            FileDoc SelectFile = LB_FileList.SelectedItem as FileDoc;
 
             ProgressMessageHandler progress = new ProgressMessageHandler();
 
@@ -156,7 +136,7 @@ namespace Office.Work.Platform.Plan
                 SelectFile.DownIntProgress = e.ProgressPercentage;
             };
 
-            string theDownFileName = await DataPlanFileRepository.DownloadFile(SelectFile, false, progress);
+            string theDownFileName = await DataFileDocRepository.DownloadFile(SelectFile, false, progress);
             if (theDownFileName != null)
             {
                 SelectFile.DownIntProgress = 100;

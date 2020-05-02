@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Office.Work.Platform.AppCodes;
 using Office.Work.Platform.AppDataService;
+using Office.Work.Platform.FileDocs;
 using Office.Work.Platform.Lib;
 
 namespace Office.Work.Platform.MemberUc
@@ -19,9 +20,9 @@ namespace Office.Work.Platform.MemberUc
             InitializeComponent();
             _UCMemberFileVM = new UC_MemberFileVM();
         }
-        public async System.Threading.Tasks.Task InitFileDatasAsync(string MemberId, string FileType, string OtherRecordId = null, bool ReadFlag = true)
+        public async System.Threading.Tasks.Task InitFileDatasAsync(Lib.Member PMember, string PContentType, bool ReadFlag = true)
         {
-            await _UCMemberFileVM.Init_MemberFileVMAsync(MemberId, FileType, OtherRecordId, ReadFlag);
+            await _UCMemberFileVM.Init_MemberFileVMAsync(PMember, PContentType, ReadFlag);
             DataContext = _UCMemberFileVM;
 
         }
@@ -32,7 +33,7 @@ namespace Office.Work.Platform.MemberUc
         /// <param name="e"></param>
         private async void btn_search_ClickAsync(object sender, RoutedEventArgs e)
         {
-            MemberFileSearch mfsearch = new MemberFileSearch()
+            FileDocSearch mfsearch = new FileDocSearch()
             {
                 SearchNameOrDesc = _UCMemberFileVM.SearchValues,
             };
@@ -43,38 +44,18 @@ namespace Office.Work.Platform.MemberUc
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void BtnUpFile_ClickAsync(object sender, RoutedEventArgs e)
+        private  void BtnUpFile_Click(object sender, RoutedEventArgs e)
         {
             e.Handled = true;
             System.IO.FileInfo theFile = FileOperation.SelectFile();
             if (theFile != null)
             {
-                MemberFile NewMemberFile = new MemberFile()
+                WinUpLoadFile winUpLoadFile = new WinUpLoadFile(new Action<FileDoc>(newFile =>
                 {
-                    Name = theFile.Name.Substring(0, theFile.Name.LastIndexOf('.')),
-                    UserId = AppSettings.LoginUser.Id,
-                    Length = theFile.Length,
-                    ExtendName = theFile.Extension,
-                    MemberId = _UCMemberFileVM.MemberId,
-                    FileInfo = theFile,
-                    FileType = _UCMemberFileVM.FileType,
-                    UpIntProgress = 0
-                };
-                ProgressMessageHandler UpProgress = new ProgressMessageHandler();
-                UpProgress.HttpSendProgress += (object sender, HttpProgressEventArgs e) =>
-                {
-                    NewMemberFile.UpIntProgress = e.ProgressPercentage;
-                };
-                ExcuteResult result = await DataMemberFileRepository.UpLoadFileInfo(NewMemberFile, NewMemberFile.FileInfo.OpenRead(), "memberfile", "mf", UpProgress);
-                if (result == null || result.State != 0)
-                {
-                    NewMemberFile.UpIntProgress = 0;
-                }
-                else
-                {
-                    NewMemberFile.Id = result.Tag;
-                    _UCMemberFileVM.MFiles.Add(NewMemberFile);
-                }
+                    _UCMemberFileVM.MFiles.Add(newFile);
+                }), theFile, "人事附件", _UCMemberFileVM.CurMember.Id,_UCMemberFileVM.ContentType);
+
+                winUpLoadFile.ShowDialog();
             }
         }
 
@@ -85,12 +66,12 @@ namespace Office.Work.Platform.MemberUc
         /// <param name="e"></param>
         private async void Image_Delete_MouseLeftButtonUpAsync(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            MemberFile SelectFile = LB_FileList.SelectedItem as MemberFile;
+            FileDoc SelectFile = LB_FileList.SelectedItem as FileDoc;
             if ((new WinMsgDialog($"删除文件《{ SelectFile.Name }》？", Caption: "确认", showYesNo: true)).ShowDialog().Value)
             {
                 return;
             }
-            ExcuteResult delResult = await DataMemberFileRepository.DeleteFileInfo(SelectFile);
+            ExcuteResult delResult = await DataFileDocRepository.DeleteFileInfo(SelectFile);
             if (delResult != null && delResult.State == 0)
             {
                 _UCMemberFileVM.MFiles.Remove(SelectFile);
@@ -105,7 +86,7 @@ namespace Office.Work.Platform.MemberUc
         {
             e.Handled = true;
             TextBlock curTextBlock = sender as TextBlock;
-            MemberFile SelectFile = curTextBlock.DataContext as MemberFile;
+            FileDoc SelectFile = curTextBlock.DataContext as FileDoc;
             if (SelectFile == null)
             {
                 (new WinMsgDialog("未读到选取文件信息！", Caption: "错误", isErr: true)).ShowDialog();
@@ -118,7 +99,7 @@ namespace Office.Work.Platform.MemberUc
                 SelectFile.DownIntProgress = e.ProgressPercentage;
             };
 
-            string theDownFileName = await DataMemberFileRepository.DownloadFile(SelectFile, false, progress);
+            string theDownFileName = await DataFileDocRepository.DownloadFile(SelectFile, false, progress);
             if (theDownFileName != null)
             {
                 SelectFile.DownIntProgress = 100;

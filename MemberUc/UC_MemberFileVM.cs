@@ -11,30 +11,29 @@ namespace Office.Work.Platform.MemberUc
     {
         public UC_MemberFileVM()
         {
-            MFiles = new ObservableCollection<MemberFile>();
+            MFiles = new ObservableCollection<FileDoc>();
         }
-        public async System.Threading.Tasks.Task Init_MemberFileVMAsync(string MemberId, string FileType, string OtherRecordId = null, bool ReadFlag = true)
+        public async System.Threading.Tasks.Task Init_MemberFileVMAsync(Lib.Member PMember, string PContentType, bool ReadFlag = true)
         {
-            this.MemberId = MemberId;
-            this.FileType = FileType;
+            CurMember = PMember;
+            ContentType = PContentType;
             if (!ReadFlag) { return; }
-            MemberFileSearch mfsearch = new MemberFileSearch()
+            FileDocSearch mfsearch = new FileDocSearch()
             {
-                MemberId = MemberId,
-                FileType = FileType,
-                OtherRecordId = OtherRecordId
+                OwnerId = PMember.Id,
+                OwnerType = "人事附件",
+                ContentType = PContentType,
+                UserId = AppSettings.LoginUser.Id
             };
             await SearchMemberFiles(mfsearch);
         }
-        public async System.Threading.Tasks.Task SearchMemberFiles(MemberFileSearch mfsearch)
+        public async System.Threading.Tasks.Task SearchMemberFiles(FileDocSearch mfsearch)
         {
             if (mfsearch != null)
             {
-                mfsearch.MemberId = MemberId;
-                mfsearch.FileType = FileType;
                 mfsearch.UserId = AppSettings.LoginUser.Id;
 
-                IEnumerable<MemberFile> MemberPayTemps = await DataMemberFileRepository.ReadFiles(mfsearch);
+                IEnumerable<FileDoc> MemberPayTemps = await DataFileDocRepository.ReadFiles(mfsearch);
                 MFiles.Clear();
                 MemberPayTemps.ToList().ForEach(e =>
                 {
@@ -45,12 +44,12 @@ namespace Office.Work.Platform.MemberUc
         /// <summary>
         /// 当前所选信息
         /// </summary>
-        public string MemberId { get; set; }
-        public string FileType { get; set; }
+        public Lib.Member CurMember { get; set; }
+        public string ContentType { get; set; }
 
         //定义查询内容字符串
         public string SearchValues { get; set; }
-        public ObservableCollection<MemberFile> MFiles { get; set; }
+        public ObservableCollection<FileDoc> MFiles { get; set; }
 
     }
 

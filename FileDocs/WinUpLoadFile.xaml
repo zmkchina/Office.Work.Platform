@@ -1,0 +1,138 @@
+﻿<Window x:Class="Office.Work.Platform.FileDocs.WinUpLoadFile"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Office.Work.Platform.FileDocs"
+        mc:Ignorable="d"     
+        ShowInTaskbar="False" 
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="CanResizeWithGrip"
+        WindowStyle="None"
+        SizeToContent="WidthAndHeight"
+        AllowsTransparency="True" BorderBrush="LightBlue" BorderThickness="1" Background="AliceBlue"
+        Title="完善文件信息" Loaded="Window_Loaded">
+    <Window.Resources>
+        <Style TargetType="GroupBox">
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        </Style>
+        <Style x:Key="DatePickerStyle" TargetType="DatePicker">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Margin" Value="10,3"/>
+            <Setter Property="Width" Value="250"/>
+        </Style>
+        <Style TargetType="DatePickerTextBox">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <TextBox Text="{Binding Path=SelectedDate, StringFormat='yyyy年MM月dd日', RelativeSource={RelativeSource AncestorType=DatePicker}}" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Column="0" Orientation="Vertical" 
+                    TextElement.FontSize="13"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Top">
+            <Border Height="30" Background="DodgerBlue" MouseMove="Border_MouseMove" Cursor="Hand" Margin="0,0,0,10">
+                <TextBlock Text="完善文件信息" VerticalAlignment="Center" Foreground="White" Padding="5,0,0,0"/>
+            </Border>
+            <GroupBox Header="文件名称" >
+                <TextBox VerticalScrollBarVisibility="Auto"
+                         Width="535" Height="30" 
+                         AcceptsReturn ="True"
+                         TextWrapping="WrapWithOverflow"
+                         IsEnabled="{Binding Path=SelectFileBool}"
+                         Text="{Binding Path=EntityFile.Name}" 
+                         HorizontalAlignment="Left" 
+                         Margin="10,3"/>
+            </GroupBox>
+            <StackPanel Orientation="Horizontal">
+                <GroupBox Header="文件类别">
+                    <ComboBox  Width="250" HorizontalAlignment="Left" Margin="10,5"
+                               ItemsSource="{Binding Path=FileContentTypes}"
+                               IsEnabled="{Binding Path=SelectFileBool}"
+                               Text="{Binding Path=EntityFile.ContentType}"
+                               VerticalAlignment="Center"  
+                               Cursor="Hand"/>
+                </GroupBox>
+                <GroupBox Header="成文日期" >
+                    <DatePicker Style="{StaticResource DatePickerStyle}"
+                                SelectedDate="{Binding EntityFile.Pubdate}" />
+                </GroupBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <GroupBox Header="发文单位">
+                    <TextBox VerticalScrollBarVisibility="Auto"
+                         Width="250" Height="40" 
+                         AcceptsReturn ="True"
+                         TextWrapping="WrapWithOverflow"
+                         IsEnabled="{Binding Path=SelectFileBool}"
+                         Text="{Binding Path=EntityFile.DispatchUnit}" 
+                         HorizontalAlignment="Left" 
+                         Margin="10,3"/>
+                </GroupBox>
+                <GroupBox Header="文件编号" >
+                    <TextBox VerticalScrollBarVisibility="Auto"
+                         Width="250" Height="40" 
+                         AcceptsReturn ="True"
+                         TextWrapping="WrapWithOverflow"
+                         IsEnabled="{Binding Path=SelectFileBool}"
+                         Text="{Binding Path=EntityFile.FileNumber}" 
+                         HorizontalAlignment="Left" 
+                         Margin="10,3"/>
+                </GroupBox>
+            </StackPanel>
+
+            <GroupBox Header="备注信息" >
+                <TextBox VerticalScrollBarVisibility="Auto"
+                         Width="535" Height="80" 
+                         AcceptsReturn ="True"
+                         TextWrapping="WrapWithOverflow"
+                         IsEnabled="{Binding Path=SelectFileBool}"
+                         Text="{Binding Path=EntityFile.Describe}" 
+                         HorizontalAlignment="Left" 
+                         Margin="10,3"/>
+            </GroupBox>
+            <GroupBox>
+                <GroupBox.Header>
+                    <TextBlock  Text="有权读取" Margin="5"/>
+                </GroupBox.Header>
+                <ListBox ItemsSource="{Binding UserGrantSelectList}"  Margin="5">
+                    <ListBox.Template>
+                        <ControlTemplate TargetType="{x:Type ListBox}">
+                            <WrapPanel VerticalAlignment="Center"  IsItemsHost="True"/>
+                        </ControlTemplate>
+                    </ListBox.Template>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding IsSelect}" VerticalAlignment="Center" Content="{Binding Obj.Name}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </GroupBox>
+        </StackPanel>
+        <DockPanel Grid.Row="1">
+            <TextBlock DockPanel.Dock="Left" TextAlignment="Center" Height="30" FontSize="15" FontWeight="Bold" Margin="10,0,0,0"
+                       Text="{Binding Path=EntityFile.UpIntProgress,StringFormat=正在上传 {0:F0} %}" />
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                <Button Content="开始上传" x:Name="BtnUpFile"
+                    Height="30" Width="60" Margin="10"
+                    Click="BtnUploadFile_ClickAsync" />
+                <Button Content="关闭窗体" 
+                    Height="30" Width="60" Margin="10,0,30,0"
+                    Click="BtnClose_Click"  />
+            </StackPanel>
+            <TextBlock Background="Transparent"></TextBlock>
+        </DockPanel>
+
+    </Grid>
+</Window>

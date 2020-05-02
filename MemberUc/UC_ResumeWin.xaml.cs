@@ -12,6 +12,7 @@ namespace Office.Work.Platform.MemberUc
         public Lib.MemberResume _CurRecord { get; set; }
         public UC_ResumeWin(Lib.MemberResume ParamRecord)
         {
+            this.Owner = Application.Current.MainWindow;
             InitializeComponent();
             _CurRecord = ParamRecord;
             DataContext = ParamRecord;

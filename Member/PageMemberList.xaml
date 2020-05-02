@@ -6,7 +6,8 @@
       xmlns:local="clr-namespace:Office.Work.Platform.Member"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="600"
-      Title="PageFilesList" Loaded="Page_LoadedAsync">
+      Title="PageFilesList" Loaded="Page_LoadedAsync"
+      Unloaded="Page_Unloaded">
     <Page.Resources>
         <Style x:Key="TextboxStyle" TargetType="TextBox">
             <Setter Property="TextAlignment" Value="Left"/>

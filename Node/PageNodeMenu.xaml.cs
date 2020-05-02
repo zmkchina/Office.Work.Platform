@@ -1,16 +1,6 @@
-﻿using Office.Work.Platform.AppCodes;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+﻿using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using Office.Work.Platform.AppCodes;
 
 namespace Office.Work.Platform.Node
 {
@@ -23,6 +13,26 @@ namespace Office.Work.Platform.Node
         {
             InitializeComponent();
             //AppSettings.AppMainWindow 
+        }
+        /// <summary>
+        /// 新增备注
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ListBoxItem_MouseLeftButtonUp_0(object sender, MouseButtonEventArgs e)
+        {
+            PageEditNode pageEditMember = new PageEditNode(null);
+            AppSettings.AppMainWindow.FrameContentPage.Content = pageEditMember;
+        }
+
+        private void ListBoxItem_MouseLeftButtonUp_1(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void ListBoxItem_MouseLeftButtonUp_2(object sender, MouseButtonEventArgs e)
+        {
+
         }
     }
 }

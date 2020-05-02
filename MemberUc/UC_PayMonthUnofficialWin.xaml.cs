@@ -12,6 +12,7 @@ namespace Office.Work.Platform.MemberUc
         public Lib.MemberPayMonthUnofficial _PayMonthUnofficial { get; set; }
         public UC_PayMonthUnofficialWin(Lib.MemberPayMonthUnofficial PayMonth)
         {
+            this.Owner = Application.Current.MainWindow;
             InitializeComponent();
             _PayMonthUnofficial = PayMonth;
             DataContext = PayMonth;
