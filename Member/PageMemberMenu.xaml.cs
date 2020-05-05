@@ -1,16 +1,7 @@
-﻿using Office.Work.Platform.AppCodes;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using Office.Work.Platform.AppCodes;
 
 namespace Office.Work.Platform.Member
 {
@@ -51,15 +42,6 @@ namespace Office.Work.Platform.Member
         {
             ListBoxItem_MouseLeftButtonUp_1(null, null);
         }
-        /// <summary>
-        /// 正式人员月度工资查询（发放）
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void PayMonthOfficial_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            PagePayMonthOfficialSheet CurPage = new PagePayMonthOfficialSheet();
-            AppSettings.AppMainWindow.FrameContentPage.Content = CurPage;
-        }
+
     }
 }

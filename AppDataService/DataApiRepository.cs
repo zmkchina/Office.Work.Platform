@@ -1,15 +1,14 @@
-﻿using IdentityModel.Client;
-using Newtonsoft.Json;
-using Office.Work.Platform.AppCodes;
-using Office.Work.Platform.Lib;
-using System;
+﻿using System;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Handlers;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
+using IdentityModel.Client;
+using Newtonsoft.Json;
+using Office.Work.Platform.AppCodes;
+using Office.Work.Platform.Lib;
 
 namespace Office.Work.Platform.AppDataService
 {

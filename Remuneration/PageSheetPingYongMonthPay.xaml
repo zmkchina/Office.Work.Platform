@@ -1,4 +1,4 @@
-﻿<Page x:Class="Office.Work.Platform.Member.PagePayMonthOfficialSheet"
+﻿<Page x:Class="Office.Work.Platform.Remuneration.PageSheetPingYongMonthPay"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -88,6 +88,15 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <Style  TargetType="TableCell">
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="BorderBrush" Value="Black" />
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+        <Style x:Key="PgStyle" TargetType="Paragraph">
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,5"/>
+        </Style>
     </Page.Resources>
     <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" >
         <StackPanel Orientation="Horizontal" Margin="0,10">
@@ -98,27 +107,75 @@
             <Button Click="BtnCreateClickAsync" Content="生成" Width="60" Margin="2,0,10,0"/>
             <Button Click="BtnPrintClickAsync" Content="打印" Width="60" Margin="2,0,10,0"/>
         </StackPanel>
-        <DataGrid x:Name="RecordDataGrid" ItemsSource="{Binding PaySheet}" >
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="姓名" Binding="{Binding MemberName}" />
-                <DataGridTextColumn Header="发放年份" Binding="{Binding PayYear}" />
-                <DataGridTextColumn Header="月份" Binding="{Binding  PayMonth}"/>
-                <DataGridTextColumn Header="岗位工资" Binding="{Binding  PostPay}"/>
-                <DataGridTextColumn Header="薪级工资" Binding="{Binding  ScalePay}"/>
-                <DataGridTextColumn Header="岗位津贴" Binding="{Binding  PostAllowance}"/>
-                <DataGridTextColumn Header="生活补贴" Binding="{Binding  LivingAllowance}"/>
-                <DataGridTextColumn Header="奖励绩效(月）" Binding="{Binding  IncentivePerformancePay}"/>
-                <DataGridTextColumn Header="应发工资" Binding="{Binding  ShouldGetMoney}"/>
-                <DataGridTextColumn Header="扣养老保险" Binding="{Binding  PensionInsurance}"/>
-                <DataGridTextColumn Header="扣职业年金" Binding="{Binding  OccupationalPension}"/>
-                <DataGridTextColumn Header="扣住房公积金" Binding="{Binding  HousingFund}"/>
-                <DataGridTextColumn Header="扣失业保险" Binding="{Binding  UnemploymentInsurance}"/>
-                <DataGridTextColumn Header="扣医疗保险" Binding="{Binding  MedicalInsurance}"/>
-                <DataGridTextColumn Header="扣工会费" Binding="{Binding  UnionFees}"/>
-                <DataGridTextColumn Header="应纳个税" Binding="{Binding  Tax}"/>
-                <DataGridTextColumn Header="实发工资" Binding="{Binding  FactGetMoney}"/>
-                <DataGridTextColumn Header="备注信息" Binding="{Binding  Remark}"/>
-            </DataGrid.Columns>
+        <DataGrid x:Name="RecordDataGrid">
         </DataGrid>
+        <RichTextBox x:Name="RichTBFlowDoc">
+            <FlowDocument x:Name="FlowDoc"  Background="AliceBlue">
+                <!--PageHeight="21cm" PageWidth="29.7cm" ColumnWidth ="29.7cm"-->
+                <Paragraph TextAlignment="Center" FontWeight="Bold" FontSize="24" LineHeight="20">港航中心在职职工月度工资表</Paragraph>
+                <Paragraph TextAlignment="Center" FontWeight="Light" FontSize="16" >
+                    <Run x:Name="Run_PayDate" Text="（2020年4月）" FontFamily="Times New Roman"/>
+                </Paragraph>
+                <Table  CellSpacing="0">
+                    <TableRowGroup Background="LightGray" FontWeight="Bold">
+                        <TableRow>
+                            <TableCell>
+                                <Paragraph Style="{StaticResource PgStyle}"  >
+                                    姓名
+                                </Paragraph>
+                            </TableCell>
+                            <TableCell>
+                                <Paragraph Style="{StaticResource PgStyle}">岗位工资</Paragraph>
+                            </TableCell>
+                            <TableCell>
+                                <Paragraph Style="{StaticResource PgStyle}">薪级工资</Paragraph>
+                            </TableCell>
+                            <TableCell>
+                                <Paragraph Style="{StaticResource PgStyle}">岗位津贴</Paragraph>
+                            </TableCell>
+                            <TableCell>
+                                <Paragraph Style="{StaticResource PgStyle}">生活补贴</Paragraph>
+                            </TableCell>
+                            <TableCell>
+                                <Paragraph Style="{StaticResource PgStyle}">奖励绩效(月）</Paragraph>
+                            </TableCell>
+                            <TableCell>
+                                <Paragraph Style="{StaticResource PgStyle}">应发工资</Paragraph>
+                            </TableCell>
+                            <TableCell>
+                                <Paragraph Style="{StaticResource PgStyle}">扣养老保险</Paragraph>
+                            </TableCell>
+                            <TableCell>
+                                <Paragraph Style="{StaticResource PgStyle}">扣职业年金</Paragraph>
+                            </TableCell>
+                            <TableCell>
+                                <Paragraph Style="{StaticResource PgStyle}">扣住房公积金</Paragraph>
+                            </TableCell>
+                            <TableCell>
+                                <Paragraph Style="{StaticResource PgStyle}">扣失业保险</Paragraph>
+                            </TableCell>
+                            <TableCell>
+                                <Paragraph Style="{StaticResource PgStyle}">扣医疗保险</Paragraph>
+                            </TableCell>
+                            <TableCell>
+                                <Paragraph Style="{StaticResource PgStyle}">扣工会费</Paragraph>
+                            </TableCell>
+                            <TableCell>
+                                <Paragraph Style="{StaticResource PgStyle}">应纳个税</Paragraph>
+                            </TableCell>
+                            <TableCell>
+                                <Paragraph Style="{StaticResource PgStyle}">实发工资</Paragraph>
+                            </TableCell>
+                            <TableCell>
+                                <Paragraph Style="{StaticResource PgStyle}">备注信息</Paragraph>
+                            </TableCell>
+                        </TableRow>
+                    </TableRowGroup>
+
+                    <TableRowGroup x:Name="TableContentRows" FontFamily="Verdana" FontSize="12">
+                    </TableRowGroup>
+                </Table>
+            </FlowDocument>
+        </RichTextBox>
     </StackPanel>
 </Page>

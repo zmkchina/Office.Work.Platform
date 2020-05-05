@@ -185,18 +185,6 @@
     <Compile Update="MemberUc\UC_RelationsWin.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="MemberUc\UC_PayMonthUnofficial.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="MemberUc\UC_PayMonthInsurance.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="MemberUc\UC_PayMonthUnofficialWin.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="MemberUc\UC_PayMonthInsuranceWin.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="MemberUc\UC_PrizePunish.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -212,13 +200,10 @@
     <Compile Update="MemberUc\UC_ResumeWin.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="MemberUc\UC_PayTempWin.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="MemberUc\UC_MemberFile.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="MemberUc\UC_PayMonthOfficial.xaml.cs">
+    <Compile Update="Remuneration\PageMemberPay.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="MemberUc\UC_Resume.xaml.cs">
@@ -260,18 +245,6 @@
     <Page Update="MemberUc\UC_RelationsWin.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="MemberUc\UC_PayMonthUnofficial.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="MemberUc\UC_PayMonthInsurance.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="MemberUc\UC_PayMonthUnofficialWin.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="MemberUc\UC_PayMonthInsuranceWin.xaml">
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="MemberUc\UC_PrizePunish.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -287,13 +260,10 @@
     <Page Update="MemberUc\UC_ResumeWin.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="MemberUc\UC_PayTempWin.xaml">
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="MemberUc\UC_MemberFile.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="MemberUc\UC_PayMonthOfficial.xaml">
+    <Page Update="Remuneration\PageMemberPay.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="MemberUc\UC_Resume.xaml">

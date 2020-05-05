@@ -11,45 +11,68 @@ namespace Office.Work.Platform.AppDataService
     public static class DataMemberCombiningRepository
     {
         /// <summary>
-        /// 获取正式人员月度工资表
+        /// 获取本单位聘用合同制人员月度工资发放表
         /// </summary>
         /// <param name="SearchCondition"></param>
         /// <returns></returns>
-        public static async Task<IEnumerable<MemberPayMonthOfficialSheet>> GetMemberPayMonthOfficialSheet(int PayYear, int PayMonth)
+        public static async Task<string> GetPingYongMemberMonthPaySheet(int PayYear, int PayMonth)
         {
-            IEnumerable<MemberPayMonthOfficialSheet> RecList = null;
-            RecList = await DataApiRepository.GetApiUri<IEnumerable<MemberPayMonthOfficialSheet>>(AppSettings.ApiUrlBase + $"MemberCombining/GetMemberPayMonthOfficialSheet/{PayYear}/{PayMonth}").ConfigureAwait(false);
-            return RecList;
+            return  await DataApiRepository.GetApiUri<string>(AppSettings.ApiUrlBase + $"MemberCombining/GetPingYongMemberMonthPaySheet/{PayYear}/{PayMonth}").ConfigureAwait(false);
         }
         /// <summary>
-        /// 生成正式人员月度工资表
+        /// 获取本单位聘用合同制人员月度补贴发放表
+        /// </summary>
+        /// <param name="SearchCondition"></param>
+        /// <returns></returns>
+        public static async Task<string> GetPingYongMemberMonthAllowanceSheet(int PayYear, int PayMonth)
+        {
+            return await DataApiRepository.GetApiUri<string>(AppSettings.ApiUrlBase + $"MemberCombining/GetPingYongMemberMonthAllowanceSheet/{PayYear}/{PayMonth}").ConfigureAwait(false);
+        }
+        /// <summary>
+        /// 获取本单位劳动合同制人员月度工资发放表
+        /// </summary>
+        /// <param name="SearchCondition"></param>
+        /// <returns></returns>
+        public static async Task<string> GetLaoDongMemberMonthPaySheet(int PayYear, int PayMonth)
+        {
+            return await DataApiRepository.GetApiUri<string>(AppSettings.ApiUrlBase + $"MemberCombining/GetLaoDongMemberMonthPaySheet/{PayYear}/{PayMonth}").ConfigureAwait(false);
+        }
+        /// <summary>
+        /// 获取本单位劳动合同制人员月度补贴发放表
+        /// </summary>
+        /// <param name="SearchCondition"></param>
+        /// <returns></returns>
+        public static async Task<string> GetLaoDongMemberMonthAllowanceSheet(int PayYear, int PayMonth)
+        {
+            return await DataApiRepository.GetApiUri<string>(AppSettings.ApiUrlBase + $"MemberCombining/GetLaoDongMemberMonthAllowanceSheet/{PayYear}/{PayMonth}").ConfigureAwait(false);
+        }
+        /// <summary>
+        /// 获取本单位劳务合同制人员月度工资发放表
+        /// </summary>
+        /// <param name="SearchCondition"></param>
+        /// <returns></returns>
+        public static async Task<string> GetLaoWuMemberMonthPaySheet(int PayYear, int PayMonth)
+        {
+            return await DataApiRepository.GetApiUri<string>(AppSettings.ApiUrlBase + $"MemberCombining/GetLaoWuMemberMonthPaySheet/{PayYear}/{PayMonth}").ConfigureAwait(false);
+        }
+        /// <summary>
+        /// 获取本单位离退休人员月度补贴发放表
+        /// </summary>
+        /// <param name="SearchCondition"></param>
+        /// <returns></returns>
+        public static async Task<string> GetTuiXiuMemberMonthAllowanceSheet(int PayYear, int PayMonth)
+        {
+            return await DataApiRepository.GetApiUri<string>(AppSettings.ApiUrlBase + $"MemberCombining/GetTuiXiuMemberMonthAllowanceSheet/{PayYear}/{PayMonth}").ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// 按指定的规定生成指定月份的待遇信息
         /// </summary>
         /// <param name="SearchCondition"></param>
         /// <returns></returns>
         public static async Task<ExcuteResult> PostMemberPayMonthOfficialSheet(int PayYear, int PayMonth)
         {
             return await DataApiRepository.GetApiUri<ExcuteResult>(AppSettings.ApiUrlBase + $"MemberCombining/PostMemberPayMonthOfficialSheet/{PayYear}/{PayMonth}").ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// 更新信息（采用PUT）
-        /// </summary>
-        /// <param name="PEntity"></param>
-        /// <returns></returns>
-        public static async Task<ExcuteResult> UpdateRecord(Lib.MemberHoliday PEntity)
-        {
-            ExcuteResult JsonResult = await DataApiRepository.PutApiUriAsync(AppSettings.ApiUrlBase + "MemberHoliday", PEntity).ConfigureAwait(false);
-            return JsonResult;
-        }
-        /// <summary>
-        /// 删除一个实体
-        /// </summary>
-        /// <param name="PEntity"></param>
-        /// <returns></returns>
-        public static async Task<ExcuteResult> DeleteRecord(Lib.MemberHoliday PEntity)
-        {
-            ExcuteResult JsonResult = await DataApiRepository.DeleteApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "MemberHoliday/?Id=" + PEntity.Id).ConfigureAwait(false);
-            return JsonResult;
         }
     }
 }

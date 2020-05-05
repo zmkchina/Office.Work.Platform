@@ -53,12 +53,6 @@
                 </StackPanel>
             </ListBoxItem>
 
-            <ListBoxItem MouseLeftButtonUp="PayMonthOfficial_MouseLeftButtonUp">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="&#xe643;" Style="{StaticResource FIcon}" FontSize="18" Margin="0,0,5,0" Foreground="Green"></TextBlock>
-                    <TextBlock  Text="月度工资" VerticalAlignment="Center"/>
-                </StackPanel>
-            </ListBoxItem>
             <ListBoxItem MouseLeftButtonUp="ListBoxItem_MouseLeftButtonUp_2">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="&#xe643;" Style="{StaticResource FIcon}" FontSize="18" Margin="0,0,5,0" Foreground="Green"></TextBlock>

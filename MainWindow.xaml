@@ -121,7 +121,13 @@
                 <ListBoxItem MouseLeftButtonUp="ListBoxItem_MouseLeftButtonUp_3">
                     <StackPanel Orientation="Vertical">
                         <TextBlock Text="&#xe633;" Style="{StaticResource FIcon}" FontSize="25" Margin="0,0,0,5"></TextBlock>
-                        <TextBlock  Text="人事劳资" VerticalAlignment="Center"/>
+                        <TextBlock  Text="人事管理" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </ListBoxItem>
+                <ListBoxItem MouseLeftButtonUp="ListBoxItemPay_MouseLeftButtonUp">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="&#xe633;" Style="{StaticResource FIcon}" FontSize="25" Margin="0,0,0,5"></TextBlock>
+                        <TextBlock  Text="劳资管理" VerticalAlignment="Center"/>
                     </StackPanel>
                 </ListBoxItem>
                 <ListBoxItem MouseLeftButtonUp="ListBoxItem_MouseLeftButtonUp_4">

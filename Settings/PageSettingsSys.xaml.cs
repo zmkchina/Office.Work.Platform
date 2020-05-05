@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Office.Work.Platform.AppCodes;
@@ -31,5 +32,26 @@ namespace Office.Work.Platform.Settings
         {
 
         }
+    }
+
+
+    public class PageSettingsSysVM : NotificationObject
+    {
+
+        public string[] FileContentTypes => AppSettings.ServerSetting.WorkContentType.Split(',', System.StringSplitOptions.RemoveEmptyEntries);
+        public SettingServer EntitySettingServer { get; set; }
+
+        #region "方法"
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        public PageSettingsSysVM()
+        {
+        }
+        public async Task GetEntityInfoAsync()
+        {
+            EntitySettingServer = await DataSystemRepository.ReadServerSettings();
+        }
+        #endregion
     }
 }

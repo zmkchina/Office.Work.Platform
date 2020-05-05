@@ -6,8 +6,8 @@
       xmlns:local="clr-namespace:Office.Work.Platform.Remuneration"
       mc:Ignorable="d" 
       ShowsNavigationUI="False"
-      d:DesignHeight="450" d:DesignWidth="150"
-      Title="员工待遇菜单">
+      d:DesignHeight="450" d:DesignWidth="180"
+      Title="劳资管理">
     <Grid>
         <!--<Grid.ColumnDefinitions>
             <ColumnDefinition Width="150"/>
@@ -40,22 +40,46 @@
                     </Setter>
                 </Style>
             </ListBox.ItemContainerStyle>
-            <ListBoxItem>
+            <ListBoxItem MouseLeftButtonUp="MemberPay_MouseLeftButtonUp">
                 <StackPanel Orientation="Horizontal">
-                    <Image Height="18" Width="18" Margin="0,0,3,0" Source="/AppRes/Images/app.ico" />
-                    <TextBlock  Text="记录查询" VerticalAlignment="Center"/>
+                    <TextBlock Text="&#xe643;" Style="{StaticResource FIcon}" FontSize="18" Margin="0,0,5,0" Foreground="Green"></TextBlock>
+                    <TextBlock  Text="个人明细" VerticalAlignment="Center"/>
+                </StackPanel>
+            </ListBoxItem>
+            <ListBoxItem MouseLeftButtonUp="MemberPayFast_MouseLeftButtonUp">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="&#xe643;" Style="{StaticResource FIcon}" FontSize="18" Margin="0,0,5,0" Foreground="Green"></TextBlock>
+                    <TextBlock  Text="快速发放" VerticalAlignment="Center"/>
+                </StackPanel>
+            </ListBoxItem>
+            <ListBoxItem MouseLeftButtonUp="PageSheetPingYongMonthPay_MouseLeftButtonUp">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="&#xe643;" Style="{StaticResource FIcon}" FontSize="18" Margin="0,0,5,0" Foreground="Green"></TextBlock>
+                    <TextBlock  Text="聘用待遇" VerticalAlignment="Center"/>
                 </StackPanel>
             </ListBoxItem>
             <ListBoxItem>
                 <StackPanel Orientation="Horizontal">
-                    <Image Height="18" Width="18" Margin="0,0,3,0" Source="/AppRes/Images/app.ico" />
-                    <TextBlock  Text="待遇发放" VerticalAlignment="Center"/>
+                    <TextBlock Text="&#xe643;" Style="{StaticResource FIcon}" FontSize="18" Margin="0,0,5,0" Foreground="Green"></TextBlock>
+                    <TextBlock  Text="劳动待遇" VerticalAlignment="Center"/>
                 </StackPanel>
             </ListBoxItem>
             <ListBoxItem >
                 <StackPanel Orientation="Horizontal">
-                    <Image Height="18" Width="18" Margin="0,0,3,0" Source="/AppRes/Images/app.ico" />
-                    <TextBlock  Text="变动日志" VerticalAlignment="Center"/>
+                    <TextBlock Text="&#xe643;" Style="{StaticResource FIcon}" FontSize="18" Margin="0,0,5,0" Foreground="Green"></TextBlock>
+                    <TextBlock  Text="劳务待遇" VerticalAlignment="Center"/>
+                </StackPanel>
+            </ListBoxItem>
+            <ListBoxItem MouseLeftButtonUp="ListBoxItem_PayItem_Click">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="&#xe643;" Style="{StaticResource FIcon}" FontSize="18" Margin="0,0,5,0" Foreground="Green"></TextBlock>
+                    <TextBlock  Text="待遇项目" VerticalAlignment="Center"/>
+                </StackPanel>
+            </ListBoxItem>
+            <ListBoxItem >
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="&#xe643;" Style="{StaticResource FIcon}" FontSize="18" Margin="0,0,5,0" Foreground="Green"></TextBlock>
+                    <TextBlock  Text="待遇报告" VerticalAlignment="Center"/>
                 </StackPanel>
             </ListBoxItem>
         </ListBox>

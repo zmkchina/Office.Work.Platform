@@ -71,15 +71,14 @@
             </Style.Triggers>
         </Style>
     </Page.Resources>
-    <TabControl x:Name="Person_TabControl" Margin="2" TabStripPlacement="Right" 
-                >
+    <TabControl x:Name="Person_TabControl" Margin="2" TabStripPlacement="Right" >
         <TabItem Header="基本信息"  Style="{StaticResource TabItemStyle}" >
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="2*" />
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
-                <ScrollViewer Grid.Column="0"  >
+                <ScrollViewer Grid.Column="0" >
                     <StackPanel  Orientation="Vertical" Margin="0,5">
                         <StackPanel Orientation="Horizontal">
                             <GroupBox Style="{StaticResource GroupBoxStyle}">
@@ -122,6 +121,11 @@
                             </GroupBox>
                             <GroupBox Header="移动电话" Style="{StaticResource GroupBoxStyle}">
                                 <TextBox Text="{Binding EntityMember.MobileCode}" Style="{StaticResource TextboxStyle}"/>
+                            </GroupBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <GroupBox Header="人员排序" Style="{StaticResource GroupBoxStyle}">
+                                <TextBox Text="{Binding EntityMember.OrderIndex}"  Style="{StaticResource TextboxStyle}"/>
                             </GroupBox>
                         </StackPanel>
                         <Button Content="保存" Height="30" Width="100" HorizontalAlignment="Left" Click="BtnSaveBasicClickAsync" Margin="10" />
@@ -292,50 +296,6 @@
                 <memberuc:UC_Relations x:Name="UcRelations" Grid.Column="0"  HorizontalAlignment="Stretch" IsEnabled="{Binding Path=isEditFlag}"/>
                 <GridSplitter Grid.Column="0" BorderThickness="2" BorderBrush="#FFDFF0E7"/>
                 <memberuc:UC_MemberFile x:Name="UcRelationsFile" Grid.Column="1"  IsEnabled="{Binding Path=isEditFlag}"/>
-            </Grid>
-        </TabItem>
-        <TabItem Header="编内月待遇" Style="{StaticResource TabItemStyle}">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="1*"/>
-                </Grid.ColumnDefinitions>
-                <memberuc:UC_PayMonthOfficial x:Name="UcPayMonthOfficial" Grid.Column="0"  HorizontalAlignment="Stretch" IsEnabled="{Binding Path=isEditFlag}"/>
-                <GridSplitter Grid.Column="0" BorderThickness="2" BorderBrush="#FFDFF0E7"/>
-                <memberuc:UC_MemberFile x:Name="UcPayMonthOfficialFile" Grid.Column="1"  IsEnabled="{Binding Path=isEditFlag}"/>
-            </Grid>
-        </TabItem>
-        <TabItem Header="编外月待遇" Style="{StaticResource TabItemStyle}">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="1*"/>
-                </Grid.ColumnDefinitions>
-                <memberuc:UC_PayMonthUnofficial x:Name="UcPayMonthUnofficial" Grid.Column="0"  HorizontalAlignment="Stretch" IsEnabled="{Binding Path=isEditFlag}"/>
-                <GridSplitter Grid.Column="0" BorderThickness="2" BorderBrush="#FFDFF0E7"/>
-                <memberuc:UC_MemberFile x:Name="UcPayMonthUnofficialFile" Grid.Column="1"  IsEnabled="{Binding Path=isEditFlag}"/>
-            </Grid>
-        </TabItem>
-        <TabItem Header="月度社保" Style="{StaticResource TabItemStyle}">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="1*"/>
-                </Grid.ColumnDefinitions>
-                <memberuc:UC_PayMonthInsurance x:Name="UcPayMonthInsurance" Grid.Column="0"  HorizontalAlignment="Stretch" IsEnabled="{Binding Path=isEditFlag}"/>
-                <GridSplitter Grid.Column="0" BorderThickness="2" BorderBrush="#FFDFF0E7"/>
-                <memberuc:UC_MemberFile x:Name="UcPayMonthInsuranceFile" Grid.Column="1"  IsEnabled="{Binding Path=isEditFlag}"/>
-            </Grid>
-        </TabItem>
-        <TabItem Header="补充待遇" Style="{StaticResource TabItemStyle}">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="1*"/>
-                </Grid.ColumnDefinitions>
-                <memberuc:UC_PayTemp x:Name="UcPayTemp" Grid.Column="0"  HorizontalAlignment="Stretch" IsEnabled="{Binding Path=isEditFlag}"/>
-                <GridSplitter Grid.Column="0" BorderThickness="2" BorderBrush="#FFDFF0E7"/>
-                <memberuc:UC_MemberFile x:Name="UcPayTempFile" Grid.Column="1"  IsEnabled="{Binding Path=isEditFlag}"/>
             </Grid>
         </TabItem>
         <TabItem Header="休假信息" Style="{StaticResource TabItemStyle}">

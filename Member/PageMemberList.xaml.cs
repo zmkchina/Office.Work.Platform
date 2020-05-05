@@ -1,13 +1,14 @@
-﻿using Office.Work.Platform.AppCodes;
-using Office.Work.Platform.AppDataService;
-using Office.Work.Platform.Lib;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using Office.Work.Platform.AppCodes;
+using Office.Work.Platform.AppDataService;
+using Office.Work.Platform.Lib;
 
 namespace Office.Work.Platform.Member
 {
@@ -34,6 +35,7 @@ namespace Office.Work.Platform.Member
                 };
                 await SearchMember(mSearch);
                 DataContext = _PageMemberListVM;
+                CB_FieldName.SelectedIndex = 0;
             }
         }
         /// <summary>
@@ -68,6 +70,7 @@ namespace Office.Work.Platform.Member
         private async System.Threading.Tasks.Task SearchMember(MemberSearch mSearch)
         {
             List<Lib.Member> MemberList = await DataMemberRepository.ReadMembers(mSearch);
+            MemberList.Sort((x, y) => x.OrderIndex - y.OrderIndex);
             if (MemberList != null && MemberList.Count > 0)
             {
                 _PageMemberListVM.EntityList.Clear();
@@ -102,7 +105,7 @@ namespace Office.Work.Platform.Member
         {
             if (RecordDataGrid.SelectedItem is Lib.Member SelectMember)
             {
-                if (SelectMember != null && (new WinMsgDialog($"确定要删除[{SelectMember.Name}]信息吗？", "确认",showYesNo:true)).ShowDialog().Value)
+                if (SelectMember != null && (new WinMsgDialog($"确定要删除[{SelectMember.Name}]信息吗？", "确认", showYesNo: true)).ShowDialog().Value)
                 {
                     ExcuteResult excuteResult = await DataMemberRepository.DeleteMember(SelectMember).ConfigureAwait(false);
                     if (excuteResult.State == 0)
@@ -121,5 +124,32 @@ namespace Office.Work.Platform.Member
         {
             AppSettings.AppMainWindow.lblCursorPosition.Text = "就绪";
         }
+    }
+
+
+
+    public class PageMemberListVM : NotificationObject
+    {
+
+        public ObservableCollection<Lib.Member> EntityList { get; set; }
+        public Dictionary<string, string> FieldCn2En { get; set; }
+
+        public string FieldEnName { get; set; }
+        public string FieldValue { get; set; }
+        public bool SearchInResult { get; set; }
+
+        #region "方法"
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        public PageMemberListVM()
+        {
+            EntityList = new ObservableCollection<Lib.Member>();
+            FieldCn2En = new Dictionary<string, string>() { { "Name", "姓名" }, { "UnitName", "单位" },
+                { "Job", "岗位性质" }, { "JobGrade", "岗位级别" }, { "EducationTop", "最高学历" }, { "Age", "年龄" },{ "Remarks", "备注" }
+        };
+        }
+
+        #endregion
     }
 }

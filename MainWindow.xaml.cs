@@ -140,17 +140,9 @@ namespace Office.Work.Platform
         {
             LoadPageMenu(_PageFileMenu);
         }
+      
         /// <summary>
-        /// 待遇发放菜单
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ListBoxItem_MouseLeftButtonUp_2(object sender, MouseButtonEventArgs e)
-        {
-            LoadPageMenu(_PagePlayMenu);
-        }
-        /// <summary>
-        /// 员工信息菜单
+        /// 人事管理菜单
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -222,6 +214,15 @@ namespace Office.Work.Platform
         {
             this.notifyIcon?.Dispose();
             System.Windows.Application.Current.Shutdown(0);
+        }
+        /// <summary>
+        /// 劳资管理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ListBoxItemPay_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            LoadPageMenu(_PagePlayMenu);
         }
     }
 }

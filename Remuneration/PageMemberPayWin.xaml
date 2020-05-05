@@ -1,0 +1,97 @@
+﻿<Window x:Class="Office.Work.Platform.Remuneration.PageMemberPayWin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:AppCodes="clr-namespace:Office.Work.Platform.AppCodes"
+        mc:Ignorable="d"
+        ShowInTaskbar="False" 
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="CanResizeWithGrip"
+        WindowStyle="None"
+        SizeToContent="WidthAndHeight"
+        AllowsTransparency="True" BorderBrush="LightBlue" BorderThickness="1" Background="AliceBlue"
+        Loaded="Window_LoadedAsync"
+        Title="在编职工月度待遇">
+    <Window.Resources>
+        <Style x:Key="GroupBoxStyle" TargetType="GroupBox">
+            <Setter Property="Padding" Value="2,5"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+        <Style x:Key="TextboxStyle" TargetType="TextBox">
+            <Setter Property="TextAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Width" Value="115"/>
+        </Style>
+        <Style x:Key="DatePickerStyle" TargetType="DatePicker">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Margin" Value="3,5"/>
+            <Setter Property="Width" Value="135"/>
+        </Style>
+        <Style TargetType="DatePickerTextBox">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <TextBox Text="{Binding Path=SelectedDate, StringFormat='yyyy/MM/dd', RelativeSource={RelativeSource AncestorType=DatePicker}}" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Width" Value="270"/>
+        </Style>
+    </Window.Resources>
+    <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+        <Border Height="30" Background="DodgerBlue" MouseMove="Border_MouseMove" Cursor="Hand">
+            <TextBlock Text="在编职工月度待遇" VerticalAlignment="Center" Foreground="White" Padding="5,0,0,0"/>
+        </Border>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Vertical" Grid.Column="0"  Margin="10" HorizontalAlignment="Stretch">
+                <GroupBox Header="发放项目" Style="{StaticResource GroupBoxStyle}">
+                    <ComboBox ItemsSource="{Binding MemberPayItemNameList}"   
+                          Text="{Binding CurMemberPay.PayName,UpdateSourceTrigger=PropertyChanged}" 
+                          SelectionChanged="ComboBox_SelectionChanged"
+                          HorizontalAlignment="Left" FontSize="16" Margin="5" />
+                </GroupBox>
+                <StackPanel Orientation="Horizontal">
+                    <GroupBox Header="发放日期" Style="{StaticResource GroupBoxStyle}">
+                        <DatePicker Style="{StaticResource DatePickerStyle}"
+                        SelectedDate="{Binding CurMemberPay.PayDate}"/>
+                    </GroupBox>
+                    <GroupBox Header="发放金额" Style="{StaticResource GroupBoxStyle}">
+                        <TextBox Text="{Binding CurMemberPay.Amount}" Style="{StaticResource TextboxStyle}"/>
+                    </GroupBox>
+                </StackPanel>
+                <GroupBox Header="备注信息" >
+                    <TextBox Text="{Binding CurMemberPay.Remark}"  HorizontalAlignment="Stretch" Height="60" FontSize="16" Margin="5" TextWrapping="Wrap"/>
+                </GroupBox>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="保存" Height="30" Width="60" Click="BtnSaveClickAsync" Margin="10" />
+                    <Button Content="取消" Height="30" Width="60" Click="BtnCancelClickAsync" Margin="10" />
+                </StackPanel>
+            </StackPanel>
+            <StackPanel  Grid.Column="1"  Margin="10" Orientation="Vertical" HorizontalAlignment="Stretch" Background="#FFFAFBE1">
+                <TextBlock Margin="10" FontWeight="Bold">
+                    该项目的相关信息:
+                </TextBlock>
+                <TextBlock Margin="10" >
+                    <Run Text="{Binding SelectPayItem.InCardinality , StringFormat=计入缴费基数：{0}}"/>
+                    <LineBreak/>
+                    <Run Text="{Binding SelectPayItem.InTableType , StringFormat=所属待遇表表：{0}}"/>
+                    <LineBreak/>
+                    <Run Text="{Binding SelectPayItem.AddOrCut , StringFormat=增减类别：{0}}"/>
+                </TextBlock>
+            </StackPanel>
+        </Grid>
+    </StackPanel>
+</Window>

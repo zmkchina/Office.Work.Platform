@@ -1,28 +1,34 @@
-﻿using Office.Work.Platform.AppCodes;
-using Office.Work.Platform.AppDataService;
-using Office.Work.Platform.Lib;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using Office.Work.Platform.AppCodes;
+using Office.Work.Platform.AppDataService;
+using Office.Work.Platform.Lib;
 
-namespace Office.Work.Platform.MemberUc
+namespace Office.Work.Platform.Remuneration
 {
-    public partial class UC_PrizePunish : UserControl
+    /// <summary>
+    /// PageMemberPay.xaml 的交互逻辑
+    /// </summary>
+    public partial class PageMemberPay : Page
     {
-        private UC_PrizePunishVM _UCPrizePunishVM;
-        public UC_PrizePunish()
+        private PageMemberPayVM _PageMemberPayVM;
+        public PageMemberPay()
         {
             InitializeComponent();
-            _UCPrizePunishVM = new UC_PrizePunishVM();
+            _PageMemberPayVM = new PageMemberPayVM();
         }
-        public async void initControlAsync(Lib.Member PMember)
+
+        private void Page_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            await _UCPrizePunishVM.InitVMAsync(PMember);
-            this.DataContext = _UCPrizePunishVM;
+            //await _PageMemberPayVM.InitVMAsync(PMember);
+            //this.DataContext = _PageMemberPayVM;
+            //UcMemberPay.initControlAsync(_PageEditMemberVM.EntityMember);
+            //await UcMemberPayFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember, "月度税费", isRead);
         }
         /// <summary>
         /// 查询记录
@@ -31,7 +37,7 @@ namespace Office.Work.Platform.MemberUc
         /// <param name="e"></param>
         private async void BtnSearchClickAsync(object sender, RoutedEventArgs e)
         {
-            await _UCPrizePunishVM.SearchRecords();
+            await _PageMemberPayVM.SearchRecords();
         }
         /// <summary>
         ///  新增记录
@@ -40,28 +46,35 @@ namespace Office.Work.Platform.MemberUc
         /// <param name="e"></param>
         private async void BtnAddClickAsync(object sender, RoutedEventArgs e)
         {
-            Lib.MemberPrizePunish NewRecord = new Lib.MemberPrizePunish()
+            Lib.MemberPay NewRecord = new Lib.MemberPay()
             {
-                MemberId = _UCPrizePunishVM.CurMember.Id,
+                MemberId = _PageMemberPayVM.CurMember.Id,
                 UserId = AppSettings.LoginUser.Id
             };
 
-            UC_PrizePunishWin AddWin = new UC_PrizePunishWin(NewRecord);
+            PageMemberPayWin AddWin = new PageMemberPayWin(NewRecord, _PageMemberPayVM.CurMember);
             AddWin.Owner = AppSettings.AppMainWindow;
 
             if (AddWin.ShowDialog().Value)
             {
-                IEnumerable<MemberPrizePunish> MemberPlayMonths = await DataMemberPrizePunishRepository.GetRecords(new MemberPrizePunishSearch()
+                IEnumerable<MemberPay> MemberPlays = await DataMemberPayRepository.GetRecords(new MemberPaySearch()
                 {
                     MemberId = NewRecord.MemberId,
+                    PayYear = NewRecord.PayDate.Year,
+                    PayMonth = NewRecord.PayDate.Month,
                     UserId = NewRecord.UserId
                 });
+                if (MemberPlays.Count() > 0)
+                {
+                    (new WinMsgDialog($"该工作人员{NewRecord.PayName}项目的 {NewRecord.PayDate.Year} 年 {NewRecord.PayDate.Month} 月份待遇已发放，无法新增。")).ShowDialog();
+                    return;
+                }
 
-                ExcuteResult excuteResult = await DataMemberPrizePunishRepository.AddRecord(NewRecord);
+                ExcuteResult excuteResult = await DataMemberPayRepository.AddRecord(NewRecord);
                 if (excuteResult.State == 0)
                 {
                     NewRecord.Id = excuteResult.Tag;
-                    _UCPrizePunishVM.CurRecords.Add(NewRecord);
+                    _PageMemberPayVM.PayMonths.Add(NewRecord);
                 }
                 else
                 {
@@ -76,14 +89,15 @@ namespace Office.Work.Platform.MemberUc
         /// <param name="e"></param>
         private async void BtnDelClickAsync(object sender, RoutedEventArgs e)
         {
-            if (RecordListBox.SelectedItem is Lib.MemberPrizePunish SelectedRec)
+            if (RecordDataGrid.SelectedItem is Lib.MemberPay SelectedRec)
             {
-                if ((new WinMsgDialog($"确认要删除该条简历吗？", Caption: "确认", showYesNo: true)).ShowDialog().Value)
+
+                if ((new WinMsgDialog($"确认要删除 {SelectedRec.PayDate.Month} 月份待遇吗？", Caption: "确认", showYesNo: true)).ShowDialog().Value)
                 {
-                    ExcuteResult excuteResult = await DataMemberPrizePunishRepository.DeleteRecord(SelectedRec);
+                    ExcuteResult excuteResult = await DataMemberPayRepository.DeleteRecord(SelectedRec);
                     if (excuteResult.State == 0)
                     {
-                        _UCPrizePunishVM.CurRecords.Remove(SelectedRec);
+                        _PageMemberPayVM.PayMonths.Remove(SelectedRec);
                     }
                     else
                     {
@@ -99,16 +113,16 @@ namespace Office.Work.Platform.MemberUc
         /// <param name="e"></param>
         private async void BtnEditClickAsync(object sender, RoutedEventArgs e)
         {
-            if (RecordListBox.SelectedItem is Lib.MemberPrizePunish SelectedRec)
+            if (RecordDataGrid.SelectedItem is Lib.MemberPay SelectedRec)
             {
-                Lib.MemberPrizePunish RecCloneObj = CloneObject<Lib.MemberPrizePunish, Lib.MemberPrizePunish>.Trans(SelectedRec);
+                Lib.MemberPay RecCloneObj = CloneObject<Lib.MemberPay, Lib.MemberPay>.Trans(SelectedRec);
 
-                UC_PrizePunishWin AddWin = new UC_PrizePunishWin(RecCloneObj);
+                PageMemberPayWin AddWin = new PageMemberPayWin(RecCloneObj, _PageMemberPayVM.CurMember);
                 AddWin.Owner = AppSettings.AppMainWindow;
 
                 if (AddWin.ShowDialog().Value)
                 {
-                    ExcuteResult excuteResult = await DataMemberPrizePunishRepository.UpdateRecord(RecCloneObj);
+                    ExcuteResult excuteResult = await DataMemberPayRepository.UpdateRecord(RecCloneObj);
                     if (excuteResult.State == 0)
                     {
                         PropertyInfo[] TargetAttris = SelectedRec.GetType().GetProperties();
@@ -132,24 +146,24 @@ namespace Office.Work.Platform.MemberUc
     }
 
 
-    public class UC_PrizePunishVM : NotificationObject
+    public class PageMemberPayVM : NotificationObject
     {
-        public UC_PrizePunishVM()
+        public PageMemberPayVM()
         {
-            CurRecords = new ObservableCollection<MemberPrizePunish>();
-            SearchCondition = new MemberPrizePunishSearch();
+            PayMonths = new ObservableCollection<MemberPay>();
+            SearchCondition = new MemberPaySearch();
         }
         public async System.Threading.Tasks.Task InitVMAsync(Lib.Member PMember)
         {
             CurMember = PMember;
             if (PMember != null)
             {
-                MemberPrizePunishSearch SearchCondition = new MemberPrizePunishSearch() { MemberId = PMember.Id, UserId = AppSettings.LoginUser.Id };
-                IEnumerable<MemberPrizePunish> MemberPrizePunishss = await DataMemberPrizePunishRepository.GetRecords(SearchCondition);
-                CurRecords.Clear();
-                MemberPrizePunishss.ToList().ForEach(e =>
+                MemberPaySearch SearchCondition = new MemberPaySearch() { MemberId = PMember.Id, UserId = AppSettings.LoginUser.Id };
+                IEnumerable<MemberPay> MemberPlayMonths = await DataMemberPayRepository.GetRecords(SearchCondition);
+                PayMonths.Clear();
+                MemberPlayMonths.ToList().ForEach(e =>
                 {
-                    CurRecords.Add(e);
+                    PayMonths.Add(e);
                 });
             }
         }
@@ -160,18 +174,18 @@ namespace Office.Work.Platform.MemberUc
                 SearchCondition.MemberId = CurMember.Id;
                 SearchCondition.UserId = AppSettings.LoginUser.Id;
 
-                IEnumerable<MemberPrizePunish> TempRecords = await DataMemberPrizePunishRepository.GetRecords(SearchCondition);
-                CurRecords.Clear();
-                TempRecords.ToList().ForEach(e =>
+                IEnumerable<MemberPay> MemberPlayMonths = await DataMemberPayRepository.GetRecords(SearchCondition);
+                PayMonths.Clear();
+                MemberPlayMonths.ToList().ForEach(e =>
                 {
-                    CurRecords.Add(e);
+                    PayMonths.Add(e);
                 });
             }
         }
         /// <summary>
         /// 查询条件类对象
         /// </summary>
-        public MemberPrizePunishSearch SearchCondition { get; set; }
+        public MemberPaySearch SearchCondition { get; set; }
         /// <summary>
         /// 当前职工信息
         /// </summary>
@@ -179,7 +193,7 @@ namespace Office.Work.Platform.MemberUc
         /// <summary>
         /// 当前职工工资月度发放记录
         /// </summary>
-        public ObservableCollection<MemberPrizePunish> CurRecords { get; set; }
-    }
+        public ObservableCollection<MemberPay> PayMonths { get; set; }
 
+    }
 }

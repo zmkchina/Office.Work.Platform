@@ -44,7 +44,7 @@
         <Style x:Key="RowStyle" TargetType="DataGridRow">
             <EventSetter Event="MouseDoubleClick" Handler="DataGridRow_MouseDoubleClick"/>
             <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Margin" Value="0,2" />
+            <Setter Property="Margin" Value="0" />
             <Setter Property="Background" Value="White" />
             <Setter Property="Foreground" Value="Black" />
             <Style.Triggers>
@@ -60,6 +60,7 @@
 
         <!--DataGrid 单元格样式-->
         <Style x:Key="CellStyle" TargetType="DataGridCell">
+            <Setter Property="Padding" Value="10,10"/>
             <Setter Property="Margin" Value="10,10"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -94,8 +95,9 @@
             <Button Content="开始查询" Name="btn_Refrash" Foreground="Blue" Margin="5,0" Click="btn_Refrash_ClickAsync" />
             <Button Content="删除选定记录" Name="btn_Delete" Foreground="Red" Margin="5,0" Click="btn_Delete_ClickAsync" />
         </ToolBar>
-        <DataGrid x:Name="RecordDataGrid" ItemsSource="{Binding EntityList}" Grid.Row="1" >
+        <DataGrid x:Name="RecordDataGrid" ItemsSource="{Binding EntityList}" Grid.Row="1"  SelectionUnit="FullRow">
             <DataGrid.Columns>
+                <DataGridTextColumn Header="排序" Binding="{Binding OrderIndex}" />
                 <DataGridTextColumn Header="单位" Binding="{Binding UnitName}" />
                 <DataGridTextColumn Header="姓名" Binding="{Binding Name}"/>
                 <DataGridTextColumn Header="性别" Binding="{Binding Sex}"/>

@@ -1,16 +1,6 @@
-﻿using Office.Work.Platform.AppCodes;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+﻿using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using Office.Work.Platform.AppCodes;
 
 namespace Office.Work.Platform.Remuneration
 {
@@ -23,6 +13,46 @@ namespace Office.Work.Platform.Remuneration
         {
             InitializeComponent();
             //AppSettings.AppMainWindow;
+        }
+        /// <summary>
+        /// 发放待遇（个人明细）
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MemberPay_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            PageMemberPay CurPage = new PageMemberPay();
+            AppSettings.AppMainWindow.FrameContentPage.Content = CurPage;
+        }
+        /// <summary>
+        /// 正式人员月度工资查询（发放）
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void PageSheetPingYongMonthPay_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            PageSheetPingYongMonthPay CurPage = new PageSheetPingYongMonthPay();
+            AppSettings.AppMainWindow.FrameContentPage.Content = CurPage;
+        }
+        /// <summary>
+        /// 快速发放（批量发放）
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MemberPayFast_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            PageMemberPayFast CurPage = new PageMemberPayFast();
+            AppSettings.AppMainWindow.FrameContentPage.Content = CurPage;
+        }
+        /// <summary>
+        /// 待遇项目设置
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ListBoxItem_PayItem_Click(object sender, MouseButtonEventArgs e)
+        {
+            PageMemberPayItem CurPage = new PageMemberPayItem();
+            AppSettings.AppMainWindow.FrameContentPage.Content = CurPage;
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Net.Http.Handlers;
-using System.Windows;
+using Microsoft.Win32;
 
 namespace Office.Work.Platform.AppCodes
 {
@@ -15,7 +15,7 @@ namespace Office.Work.Platform.AppCodes
         {
             System.IO.FileInfo theFile = null;
             // 在WPF中， OpenFileDialog位于Microsoft.Win32名称空间
-            Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog
+            OpenFileDialog dialog = new OpenFileDialog
             {
                 Filter = "工作文档|*.doc;*.docx;*.xls;*.xlsx;*.ppt;*.pptx;*.wps;*.pdf;*.jpg;*.jpeg;*.png;*.gif;|压缩文档|*.rar;*.zip|所有文件|*.*"
             };
