@@ -11,8 +11,7 @@ namespace Office.Work.Platform
     {
         public WinMsgDialog(string Message, string Caption = "信息", bool isErr = false, bool showYesNo = false, bool ShowOk = true)
         {
-            this.Owner = Application.Current.MainWindow;
-            this.Height = 300;
+           
             InitializeComponent();
             if (showYesNo) { ShowOk = false; } else { ShowOk = true; }
             this.Message = Message;
@@ -27,6 +26,8 @@ namespace Office.Work.Platform
             {
                 this.CaptionBackGround = "DodgerBlue";
             }
+            //this.Owner = Application.Current.MainWindow;
+            this.Height = 300;
             this.DataContext = this;
         }
 
@@ -61,6 +62,11 @@ namespace Office.Work.Platform
             {
                 Dispatcher.BeginInvoke(new Action(() => this.DragMove()));
             }
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            
         }
     }
 }

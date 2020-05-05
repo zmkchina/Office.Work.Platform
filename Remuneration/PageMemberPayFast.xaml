@@ -56,11 +56,12 @@
                 <Button Content="生成数据" Click="Btn_Pay_ClickAnsyc" FontSize="15" Padding="10,5"  />
             </StackPanel>
         </Border>
-        <ScrollViewer Grid.Row="2" >
-            <StackPanel Orientation="Vertical">
-                <Grid x:Name="GridResult" Margin="5" ScrollViewer.VerticalScrollBarVisibility="Auto"  TextElement.FontSize="16"></Grid>
-                <DataGrid x:Name="DgResult0"  MouseDoubleClick="DgResult0_MouseDoubleClick" />
-            </StackPanel>
-        </ScrollViewer>
+        <DataGrid x:Name="DataGridResult" Grid.Row="2" CanUserAddRows="False" SelectionUnit="FullRow" IsReadOnly="True">
+            <DataGrid.CellStyle>
+                <Style TargetType="{x:Type DataGridCell}">
+                    <EventSetter Event="MouseDoubleClick" Handler="DataGridCell_MouseDoubleClick"></EventSetter>
+                </Style>
+            </DataGrid.CellStyle>
+        </DataGrid>
     </Grid>
 </Page>

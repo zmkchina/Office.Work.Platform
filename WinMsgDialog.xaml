@@ -11,6 +11,7 @@
         WindowStyle="None"
         AllowsTransparency="True" BorderBrush="LightBlue" BorderThickness="1" Background="AliceBlue"
         MinHeight="200" MinWidth="400"
+        Loaded="Window_Loaded"
         SizeToContent="WidthAndHeight" >
     <Grid>
         <Grid.RowDefinitions>
