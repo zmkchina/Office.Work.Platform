@@ -28,6 +28,7 @@ namespace Office.Work.Platform.Remuneration
         {
             InitializeComponent();
             RichTBFlowDoc.Visibility = Visibility.Collapsed;
+            MemberSet = new MemberSettings();
         }
 
         private async void Page_LoadedAsync(object sender, RoutedEventArgs e)
@@ -50,7 +51,7 @@ namespace Office.Work.Platform.Remuneration
             {
                 PayYear = PayMonthDate.Year,
                 PayMonth = PayMonthDate.Month,
-                EmploymentType = MemberType,
+                MemberType = MemberType,
                 PayTableType = PayTableName,
                 PayUnitName = AppSettings.LoginUser.UnitName,
                 UserId = AppSettings.LoginUser.Id

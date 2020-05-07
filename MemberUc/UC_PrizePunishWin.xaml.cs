@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Office.Work.Platform.AppCodes;
+using System;
 using System.Windows;
 
 namespace Office.Work.Platform.MemberUc
@@ -12,8 +13,8 @@ namespace Office.Work.Platform.MemberUc
         public Lib.MemberPrizePunish _CurRecord { get; set; }
         public UC_PrizePunishWin(Lib.MemberPrizePunish ParamRecord)
         {
-            this.Owner = Application.Current.MainWindow;
             InitializeComponent();
+            this.Owner = AppSettings.AppMainWindow;
             _CurRecord = ParamRecord;
             DataContext = ParamRecord;
         }

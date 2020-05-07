@@ -55,7 +55,9 @@ namespace Office.Work.Platform.Remuneration
             Lib.MemberPay NewRecord = new Lib.MemberPay()
             {
                 MemberId = _PageMemberPayVM.CurMember.MemberId,
-                MemberIndex=_PageMemberPayVM.CurMember.OrderIndex,
+                MemberName = _PageMemberPayVM.CurMember.MemberName,
+                MemberIndex = _PageMemberPayVM.CurMember.OrderIndex,
+                MemberType = _PageMemberPayVM.CurMember.MemberType,
                 UserId = AppSettings.LoginUser.Id
             };
 

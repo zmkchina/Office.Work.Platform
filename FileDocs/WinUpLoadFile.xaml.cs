@@ -20,7 +20,7 @@ namespace Office.Work.Platform.FileDocs
 
         public WinUpLoadFile(Action<FileDoc> P_CallBackFunc, FileInfo P_FileInfo, string P_OwnerType, string P_OwnerId,string P_OwnerContentType)
         {
-            this.Owner = Application.Current.MainWindow;
+            this.Owner =AppSettings.AppMainWindow;
             this.Height = 300;
             InitializeComponent();
             _WinUpLoadFileVM = new WinUpLoadFileVM(P_FileInfo, P_OwnerType, P_OwnerId, P_OwnerContentType);

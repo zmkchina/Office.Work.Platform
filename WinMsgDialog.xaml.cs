@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Office.Work.Platform.AppCodes;
+using System;
 using System.Windows;
 using System.Windows.Input;
 
@@ -13,7 +14,7 @@ namespace Office.Work.Platform
         {
            
             InitializeComponent();
-            this.Owner = App.Current.MainWindow;
+            this.Owner = AppSettings.AppMainWindow;
             if (showYesNo) { ShowOk = false; } else { ShowOk = true; }
             this.Message = Message;
             this.Caption = Caption;

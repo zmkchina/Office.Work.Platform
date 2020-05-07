@@ -107,8 +107,7 @@
                         AppCodes:DatePickerCalendar.IsMonthYear="True"/>
             <ComboBox ItemsSource="{Binding PayTableTypes}"
                       Text="{Binding PayTableName}" Width="150" Height="30"/>
-            <ComboBox ItemsSource="{Binding MemberSet}"
-                      DisplayMemberPath="EmploymentTypeArr"
+            <ComboBox ItemsSource="{Binding MemberSet.EmploymentTypeArr}"
                       Text="{Binding MemberType}" Width="150" Height="30"/>
             <Button Click="BtnSearchClickAsync" Content="查询" Width="60" Margin="2,0,10,0"/>
             <Button Click="BtnPrintClickAsync" Content="打印" Width="60" Margin="2,0,10,0"/>

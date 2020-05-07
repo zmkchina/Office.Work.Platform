@@ -184,7 +184,7 @@
                             </GroupBox>
                         </StackPanel>
                         <GroupBox Header="用工性质" Style="{StaticResource GroupBoxStyle}">
-                            <ComboBox Text="{Binding EntityMember.EmploymentType}" Style="{StaticResource ComboBoxStyle}">
+                            <ComboBox Text="{Binding EntityMember.MemberType}" Style="{StaticResource ComboBoxStyle}">
                                 <ComboBoxItem IsSelected="True">聘用合同制</ComboBoxItem>
                                 <ComboBoxItem>劳动合同制</ComboBoxItem>
                                 <ComboBoxItem>劳务派遣制</ComboBoxItem>

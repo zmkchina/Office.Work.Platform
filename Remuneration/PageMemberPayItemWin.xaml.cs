@@ -14,7 +14,7 @@ namespace Office.Work.Platform.Remuneration
 
         public PageMemberPayItemWin(Lib.MemberPayItem PPayItem)
         {
-            this.Owner = Application.Current.MainWindow;
+            this.Owner =AppSettings.AppMainWindow;
             InitializeComponent();
             CurPayItem = PPayItem;
         }

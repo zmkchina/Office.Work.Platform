@@ -20,7 +20,7 @@ namespace Office.Work.Platform.Remuneration
         public PageMemberPayWin(Lib.MemberPay PMemberPay, List<MemberPayItem>PMemberPayItems)
         {
             InitializeComponent();
-            this.Owner = Application.Current.MainWindow;
+            this.Owner = AppSettings.AppMainWindow;
             CurMemberPay = PMemberPay;
             MemberPayItems = PMemberPayItems;
             MemberPayItems.Sort((x, y) => x.OrderIndex - y.OrderIndex);
