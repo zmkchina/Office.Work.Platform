@@ -86,7 +86,7 @@ namespace Office.Work.Platform.Remuneration
         /// <param name="e"></param>
         private async void Btn_Edit_ClickAnsyc(object sender, System.Windows.RoutedEventArgs e)
         {
-            
+
             if (RecordDataGrid.SelectedItem is Lib.MemberPayItem SelectedRec)
             {
                 PageMemberPayItemWin AddWin = new PageMemberPayItemWin(SelectedRec);
@@ -94,7 +94,7 @@ namespace Office.Work.Platform.Remuneration
                 if (AddWin.ShowDialog().Value)
                 {
                     ExcuteResult excuteResult = await DataMemberPayItemRepository.UpdateRecord(SelectedRec);
-                    if (excuteResult.State == 0)
+                    if (excuteResult == null || excuteResult.State == 0)
                     {
                         cvm.PayItems.Add(SelectedRec);
                     }
@@ -120,6 +120,6 @@ namespace Office.Work.Platform.Remuneration
             public Lib.MemberPayItem CurPayItem { get; set; }
         }
 
-    
+
     }
 }

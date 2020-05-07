@@ -40,7 +40,11 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Border Grid.Row="0" Height="50" Background="AliceBlue">
-            <TextBlock  VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20">工作人员月度待遇发放配置信息表</TextBlock>
+            <TextBlock  VerticalAlignment="Center" 
+                        HorizontalAlignment="Center" FontSize="20">
+                <Run  x:Name="Run_PayUnitName"/>
+                <Run  Text="工作人员月度待遇发放配置信息表"/>
+            </TextBlock>
         </Border>
         <Border Grid.Row="1" Height="50">
             <StackPanel  VerticalAlignment="Center" HorizontalAlignment="Left" Orientation="Horizontal" Margin="20,0">
@@ -50,18 +54,51 @@
                 <DatePicker Style="{StaticResource DatePickerStyle}"
                         SelectedDate="{Binding PayMonthDate}" 
                         AppCodes:DatePickerCalendar.IsMonthYear="True"/>
-                <Button Content="新增员工" Click="Btn_Add_ClickAnsyc" FontSize="15" Padding="10,5"  Margin="10,0"/>
+                <Button Content="新增员工" Click="Btn_Add_Click" FontSize="15" Padding="10,5"  Margin="10,0"/>
                 <Button Content="删除员工" Click="Btn_Del_ClickAnsyc" FontSize="15" Padding="10,5"  Margin="10,0"/>
                 <Button Content="保存配置" Click="Btn_Save_ClickAnsyc" FontSize="15" Padding="10,5"  Margin="20,0"/>
                 <Button Content="生成数据" Click="Btn_Pay_ClickAnsyc" FontSize="15" Padding="10,5"  />
             </StackPanel>
         </Border>
-        <DataGrid x:Name="DataGridResult" Grid.Row="2" CanUserAddRows="False" SelectionUnit="FullRow" IsReadOnly="True">
+        <DataGrid x:Name="DataGridResult" Grid.Row="2" CanUserAddRows="False" GridLinesVisibility="None"
+                  SelectionUnit="FullRow" IsReadOnly="True">
             <DataGrid.CellStyle>
                 <Style TargetType="{x:Type DataGridCell}">
                     <EventSetter Event="MouseDoubleClick" Handler="DataGridCell_MouseDoubleClick"></EventSetter>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="DataGridCell">
+                                <ContentPresenter HorizontalAlignment="Center"  VerticalAlignment="Center"  />
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="Padding" Value="10,10"/>
+                    <Setter Property="Margin" Value="10,10"/>
                 </Style>
             </DataGrid.CellStyle>
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Cursor" Value="Hand"/>
+                    <Setter Property="Margin" Value="0" />
+                    <Setter Property="Background" Value="White" />
+                    <Setter Property="Foreground" Value="Black" />
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="LightGoldenrodYellow"/>
+                            <!--<Setter Property="Foreground" Value="White"/>-->
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="DeepSkyBlue"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="HorizontalContentAlignment" Value="Center">
+                    </Setter>
+                </Style>
+            </DataGrid.ColumnHeaderStyle>
         </DataGrid>
     </Grid>
 </Page>

@@ -60,7 +60,7 @@
 
                 <StackPanel Orientation="Horizontal">
                     <GroupBox Header="项目名称" Style="{StaticResource GroupBoxStyle}">
-                        <TextBox Text="{Binding CurPayItem.Name}" Style="{StaticResource TextboxStyle}"/>
+                        <TextBox x:Name="Tb_ItemName" Text="{Binding CurPayItem.Name}" Style="{StaticResource TextboxStyle}"/>
                     </GroupBox>
                   
                 </StackPanel>
@@ -83,11 +83,16 @@
                         </ComboBox>
                     </GroupBox>
                 </StackPanel>
-                <GroupBox Header="所属待遇表" Style="{StaticResource GroupBoxStyle}">
-                    <ComboBox ItemsSource="{Binding CurPayItem.InTableTypeList}"   
+                <StackPanel Orientation="Horizontal">
+                    <GroupBox Header="所属待遇表" Style="{StaticResource GroupBoxStyle}">
+                        <ComboBox Width="146" ItemsSource="{Binding CurPayItem.InTableTypeList}"   
                           Text="{Binding CurPayItem.InTableType,UpdateSourceTrigger=PropertyChanged}" 
                           HorizontalAlignment="Left" FontSize="16" Margin="5" />
                 </GroupBox>
+                <GroupBox Header="打印排序" Style="{StaticResource GroupBoxStyle}">
+                        <TextBox Width="146" Text="{Binding CurPayItem.OrderIndex}" Style="{StaticResource TextboxStyle}"/>
+                </GroupBox>
+                </StackPanel>
                 <GroupBox Header="备注信息" >
                     <TextBox Text="{Binding CurPayItem.Remark}"  HorizontalAlignment="Stretch" Height="60" FontSize="16" Margin="5" TextWrapping="Wrap"/>
                 </GroupBox>

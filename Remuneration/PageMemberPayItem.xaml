@@ -107,10 +107,10 @@
         <DataGrid x:Name="RecordDataGrid"  Grid.Row="2" ItemsSource="{Binding PayItems}" >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="项目名称" Binding="{Binding Name}" />
-                <DataGridTextColumn Header="所属人员" Binding="{Binding MemberType}"/>
                 <DataGridTextColumn Header="计入基数" Binding="{Binding InCardinality}"/>
                 <DataGridTextColumn Header="所属待遇表" Binding="{Binding InTableType}"/>
                 <DataGridTextColumn Header="待遇性质" Binding="{Binding AddOrCut}"/>
+                <DataGridTextColumn Header="打印排序" Binding="{Binding OrderIndex}"/>
                 <DataGridTextColumn Header="相关说明" Binding="{Binding Remark}"/>
             </DataGrid.Columns>
         </DataGrid>

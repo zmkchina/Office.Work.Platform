@@ -23,9 +23,9 @@ namespace Office.Work.Platform.MemberUc
             InitializeComponent();
             _UCMemberFileVM = new UC_MemberFileVM();
         }
-        public async System.Threading.Tasks.Task InitFileDatasAsync(Lib.Member PMember, string PContentType, bool ReadFlag = true)
+        public async System.Threading.Tasks.Task InitFileDatasAsync(string PMemberId, string PContentType, bool ReadFlag = true)
         {
-            await _UCMemberFileVM.Init_MemberFileVMAsync(PMember, PContentType, ReadFlag);
+            await _UCMemberFileVM.Init_MemberFileVMAsync(PMemberId, PContentType, ReadFlag);
             DataContext = _UCMemberFileVM;
 
         }
@@ -56,7 +56,7 @@ namespace Office.Work.Platform.MemberUc
                 WinUpLoadFile winUpLoadFile = new WinUpLoadFile(new Action<FileDoc>(newFile =>
                 {
                     _UCMemberFileVM.MFiles.Add(newFile);
-                }), theFile, "人事附件", _UCMemberFileVM.CurMember.Id,_UCMemberFileVM.ContentType);
+                }), theFile, "人事附件", _UCMemberFileVM.MemberId, _UCMemberFileVM.ContentType);
 
                 winUpLoadFile.ShowDialog();
             }
@@ -70,7 +70,7 @@ namespace Office.Work.Platform.MemberUc
         private async void Image_Delete_MouseLeftButtonUpAsync(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             FileDoc SelectFile = LB_FileList.SelectedItem as FileDoc;
-            if ((new WinMsgDialog($"删除文件《{ SelectFile.Name }》？", Caption: "确认", showYesNo: true)).ShowDialog().Value)
+            if (!(new WinMsgDialog($"删除文件《{ SelectFile.Name }》？", Caption: "确认", showYesNo: true)).ShowDialog().Value)
             {
                 return;
             }
@@ -123,14 +123,14 @@ namespace Office.Work.Platform.MemberUc
         {
             MFiles = new ObservableCollection<FileDoc>();
         }
-        public async System.Threading.Tasks.Task Init_MemberFileVMAsync(Lib.Member PMember, string PContentType, bool ReadFlag = true)
+        public async System.Threading.Tasks.Task Init_MemberFileVMAsync(string PMemberId, string PContentType, bool ReadFlag = true)
         {
-            CurMember = PMember;
+            MemberId = PMemberId;
             ContentType = PContentType;
             if (!ReadFlag) { return; }
             FileDocSearch mfsearch = new FileDocSearch()
             {
-                OwnerId = PMember.Id,
+                OwnerId = MemberId,
                 OwnerType = "人事附件",
                 ContentType = PContentType,
                 UserId = AppSettings.LoginUser.Id
@@ -154,7 +154,7 @@ namespace Office.Work.Platform.MemberUc
         /// <summary>
         /// 当前所选信息
         /// </summary>
-        public Lib.Member CurMember { get; set; }
+        public string MemberId { get; set; }
         public string ContentType { get; set; }
 
         //定义查询内容字符串

@@ -272,6 +272,9 @@
     <Page Update="PageHome.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Remuneration\PageMemberPayFastWin.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Settings\PageSettingsSys.xaml">
       <SubType>Designer</SubType>
     </Page>

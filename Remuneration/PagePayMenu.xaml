@@ -52,22 +52,10 @@
                     <TextBlock  Text="快速发放" VerticalAlignment="Center"/>
                 </StackPanel>
             </ListBoxItem>
-            <ListBoxItem MouseLeftButtonUp="PageSheetPingYongMonthPay_MouseLeftButtonUp">
+            <ListBoxItem MouseLeftButtonUp="PagePaySheet_MouseLeftButtonUp">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="&#xe643;" Style="{StaticResource FIcon}" FontSize="18" Margin="0,0,5,0" Foreground="Green"></TextBlock>
-                    <TextBlock  Text="聘用待遇" VerticalAlignment="Center"/>
-                </StackPanel>
-            </ListBoxItem>
-            <ListBoxItem>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="&#xe643;" Style="{StaticResource FIcon}" FontSize="18" Margin="0,0,5,0" Foreground="Green"></TextBlock>
-                    <TextBlock  Text="劳动待遇" VerticalAlignment="Center"/>
-                </StackPanel>
-            </ListBoxItem>
-            <ListBoxItem >
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="&#xe643;" Style="{StaticResource FIcon}" FontSize="18" Margin="0,0,5,0" Foreground="Green"></TextBlock>
-                    <TextBlock  Text="劳务待遇" VerticalAlignment="Center"/>
+                    <TextBlock  Text="打印发放表" VerticalAlignment="Center"/>
                 </StackPanel>
             </ListBoxItem>
             <ListBoxItem MouseLeftButtonUp="ListBoxItem_PayItem_Click">

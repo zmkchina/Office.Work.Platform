@@ -12,10 +12,10 @@
         SizeToContent="WidthAndHeight"
         AllowsTransparency="True" BorderBrush="LightBlue" BorderThickness="1" Background="AliceBlue"
         Loaded="Window_LoadedAsync"
-        Title="在编职工月度待遇">
+        Title="职工待遇发放">
     <Window.Resources>
         <Style x:Key="GroupBoxStyle" TargetType="GroupBox">
-            <Setter Property="Padding" Value="2,5"/>
+            <Setter Property="Padding" Value="2,2"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
         </Style>
         <Style x:Key="TextboxStyle" TargetType="TextBox">
@@ -35,7 +35,7 @@
             <Setter Property="Control.Template">
                 <Setter.Value>
                     <ControlTemplate>
-                        <TextBox Text="{Binding Path=SelectedDate, StringFormat='yyyy/MM/dd', RelativeSource={RelativeSource AncestorType=DatePicker}}" />
+                        <TextBox Text="{Binding Path=SelectedDate, StringFormat='yyyy/MM', RelativeSource={RelativeSource AncestorType=DatePicker}}" />
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -43,13 +43,13 @@
         <Style TargetType="ComboBox">
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="FontSize" Value="16"/>
-            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Margin" Value="5,2"/>
             <Setter Property="Width" Value="270"/>
         </Style>
     </Window.Resources>
     <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top">
         <Border Height="30" Background="DodgerBlue" MouseMove="Border_MouseMove" Cursor="Hand">
-            <TextBlock Text="在编职工月度待遇" VerticalAlignment="Center" Foreground="White" Padding="5,0,0,0"/>
+            <TextBlock Text="职工待遇发放" VerticalAlignment="Center" Foreground="White" Padding="5,0,0,0"/>
         </Border>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -58,16 +58,21 @@
             </Grid.ColumnDefinitions>
             <StackPanel Orientation="Vertical" Grid.Column="0"  Margin="10" HorizontalAlignment="Stretch">
                 <GroupBox Header="发放项目" Style="{StaticResource GroupBoxStyle}">
-                    <ComboBox ItemsSource="{Binding MemberPayItemNameList}"   
-                          Text="{Binding CurMemberPay.PayName,UpdateSourceTrigger=PropertyChanged}" 
-                          SelectionChanged="ComboBox_SelectionChanged"
-                          HorizontalAlignment="Left" FontSize="16" Margin="5" />
+                    <ComboBox  ItemsSource="{Binding MemberPayItems}"   
+                               SelectedIndex="0"
+                               DisplayMemberPath="Name"
+                               x:Name="ComboBox_PayItems"
+                               Text="{Binding CurMemberPay.PayName}" 
+                               SelectionChanged="ComboBox_SelectionChanged"
+                               HorizontalAlignment="Left" FontSize="16" Margin="5" />
                 </GroupBox>
+                <GroupBox Header="发放月份" Style="{StaticResource GroupBoxStyle}">
+                    <DatePicker Style="{StaticResource DatePickerStyle}"
+                                SelectedDate="{Binding SelectPayDate}"
+                                AppCodes:DatePickerCalendar.IsMonthYear="True"/>
+                </GroupBox>
+
                 <StackPanel Orientation="Horizontal">
-                    <GroupBox Header="发放日期" Style="{StaticResource GroupBoxStyle}">
-                        <DatePicker Style="{StaticResource DatePickerStyle}"
-                        SelectedDate="{Binding CurMemberPay.PayDate}"/>
-                    </GroupBox>
                     <GroupBox Header="发放金额" Style="{StaticResource GroupBoxStyle}">
                         <TextBox Text="{Binding CurMemberPay.Amount}" Style="{StaticResource TextboxStyle}"/>
                     </GroupBox>
@@ -84,12 +89,14 @@
                 <TextBlock Margin="10" FontWeight="Bold">
                     该项目的相关信息:
                 </TextBlock>
-                <TextBlock Margin="10" >
-                    <Run Text="{Binding SelectPayItem.InCardinality , StringFormat=计入缴费基数：{0}}"/>
+                <TextBlock Margin="10" x:Name="TextBlock_ItemInfo">
+                    <Run Text="{Binding InCardinality , StringFormat=计入缴费基数：{0}}"/>
                     <LineBreak/>
-                    <Run Text="{Binding SelectPayItem.InTableType , StringFormat=所属待遇表表：{0}}"/>
+                    <Run Text="{Binding InTableType , StringFormat=所属待遇表：{0}}"/>
                     <LineBreak/>
-                    <Run Text="{Binding SelectPayItem.AddOrCut , StringFormat=增减类别：{0}}"/>
+                    <Run Text="{Binding AddOrCut , StringFormat=增减类别：{0}}"/>
+                    <LineBreak/>
+                    <Run Text="{Binding OrderIndex , StringFormat=打印排序：{0}}"/>
                 </TextBlock>
             </StackPanel>
         </Grid>

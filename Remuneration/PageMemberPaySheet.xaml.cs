@@ -16,17 +16,28 @@ namespace Office.Work.Platform.Remuneration
     /// <summary>
     /// 正式人员月度工资查询（发放）
     /// </summary>
-    public partial class PageSheetPingYongMonthPay : Page
+    public partial class PageMemberPaySheet : Page
     {
-        public PageSheetPingYongMonthPay()
+
+        public string MemberType { get; set; }
+        public string PayTableName { get; set; }
+        public MemberSettings MemberSet { get; set; }
+        public string[] PayTableTypes { get; set; }
+
+        public PageMemberPaySheet()
         {
             InitializeComponent();
             RichTBFlowDoc.Visibility = Visibility.Collapsed;
         }
 
-        private void Page_Loaded(object sender, RoutedEventArgs e)
+        private async void Page_LoadedAsync(object sender, RoutedEventArgs e)
         {
-            this.DataContext = this;
+            //获取已发放信息中所有工资表类型
+            PayTableTypes = await DataMemberPaySheetRepository.GetPayTableTypes().ConfigureAwait(false);
+            App.Current.Dispatcher.Invoke(() =>
+            {
+                this.DataContext = this;
+            });
         }
         /// <summary>
         /// 查询正式人员待发放工资
@@ -35,44 +46,23 @@ namespace Office.Work.Platform.Remuneration
         /// <param name="e"></param>
         private async void BtnSearchClickAsync(object sender, RoutedEventArgs e)
         {
-            string ResultString = await DataMemberCombiningRepository.GetPingYongMemberMonthPaySheet(PayMonthDate.Year, PayMonthDate.Month);
-            if (!string.IsNullOrWhiteSpace(ResultString))
+            string SearchResult = await DataMemberPaySheetRepository.GetMemberPaySheet(new MemberPaySheetSearch()
             {
-                var searchObjs = JsonConvert.DeserializeObject(ResultString);
-                if (searchObjs != null)
-                {
-                    JContainer jc = (Newtonsoft.Json.Linq.JContainer)searchObjs;
-                    foreach (var item in (JObject)jc[0])
-                    {
-                        RecordDataGrid.Columns.Add(new DataGridTextColumn() { Header = item.Key, Binding = new Binding(item.Key) });
-                    }
-                    RecordDataGrid.ItemsSource = jc;
-                    TableContentRows.Rows.Clear();
-                    foreach (JObject items in jc)
-                    {
-                        TableRow tr = new TableRow();
-                        foreach (var item in items)
-                        {
-                            //item.Key + ":" + item.Value + ",";
-                            //设置待打印的FlowDocument内部的内容。
-                            Paragraph TempParagraph = new Paragraph(new Run(item.Value.ToString()));
-                            TempParagraph.TextAlignment = TextAlignment.Center;
-                            TempParagraph.Margin = new Thickness(0, 5, 0, 5);
-                            TableCell tempCell = new TableCell(TempParagraph);
-                            tempCell.TextAlignment = TextAlignment.Center;
-                            tr.Cells.Add(tempCell);
-                        }
-                        TableContentRows.Rows.Add(tr);
-                    }
-                }
+                PayYear = PayMonthDate.Year,
+                PayMonth = PayMonthDate.Month,
+                EmploymentType = MemberType,
+                PayTableType = PayTableName,
+                PayUnitName = AppSettings.LoginUser.UnitName,
+                UserId = AppSettings.LoginUser.Id
+            }).ConfigureAwait(false);
+
+            if (SearchResult != null)
+            {
+                JArray JArrayResult = (JArray)JsonConvert.DeserializeObject(SearchResult);
+                RecordDataGrid.ItemsSource = JArrayResult;
             }
 
-            //e.ShouldGetMoney = e.LivingAllowance + e.IncentivePerformancePay + e.PostAllowance + e.ScalePay + e.PostPay;
-            //e.FactGetMoney = e.HousingFund + e.MedicalInsurance + e.OccupationalPension + e.PensionInsurance + e.Tax + e.UnionFees;
-            //e.FactGetMoney = e.ShouldGetMoney - e.FactGetMoney;
-            //e.ShouldGetMoney = (float)Math.Round(e.ShouldGetMoney, 2);
-            //e.FactGetMoney = (float)Math.Round(e.FactGetMoney, 2);
-            AppSettings.SetStateBarText($"共查询到：{TableContentRows.Rows.Count()} 条数据。");
+            AppSettings.SetStateBarText($"共查询到：{RecordDataGrid.Items.Count} 条数据。");
         }
         /// <summary>
         /// 打印工资表
@@ -106,16 +96,6 @@ namespace Office.Work.Platform.Remuneration
         }
         public DateTime PayMonthDate { get; set; } = DateTime.Now;
 
-        /// <summary>
-        /// 生成正式人员指定月份的工资。
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private async void BtnCreateClickAsync(object sender, RoutedEventArgs e)
-        {
-            ExcuteResult excuteResult = await DataMemberCombiningRepository.PostMemberPayMonthOfficialSheet(PayMonthDate.Year, PayMonthDate.Month);
-            (new WinMsgDialog(excuteResult.Msg)).ShowDialog();
-        }
         /// <summary>
         /// 克隆一个对象
         /// </summary>

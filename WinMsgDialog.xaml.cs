@@ -13,6 +13,7 @@ namespace Office.Work.Platform
         {
            
             InitializeComponent();
+            this.Owner = App.Current.MainWindow;
             if (showYesNo) { ShowOk = false; } else { ShowOk = true; }
             this.Message = Message;
             this.Caption = Caption;
@@ -26,7 +27,6 @@ namespace Office.Work.Platform
             {
                 this.CaptionBackGround = "DodgerBlue";
             }
-            //this.Owner = Application.Current.MainWindow;
             this.Height = 300;
             this.DataContext = this;
         }

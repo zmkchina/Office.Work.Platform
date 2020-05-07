@@ -15,25 +15,16 @@ namespace Office.Work.Platform.Remuneration
             //AppSettings.AppMainWindow;
         }
         /// <summary>
-        /// 发放待遇（个人明细）
+        /// 打印待遇表格
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void MemberPay_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void PagePaySheet_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            PageMemberPay CurPage = new PageMemberPay();
+            PageMemberPaySheet CurPage = new PageMemberPaySheet();
             AppSettings.AppMainWindow.FrameContentPage.Content = CurPage;
         }
-        /// <summary>
-        /// 正式人员月度工资查询（发放）
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void PageSheetPingYongMonthPay_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            PageSheetPingYongMonthPay CurPage = new PageSheetPingYongMonthPay();
-            AppSettings.AppMainWindow.FrameContentPage.Content = CurPage;
-        }
+       
         /// <summary>
         /// 快速发放（批量发放）
         /// </summary>
@@ -52,6 +43,16 @@ namespace Office.Work.Platform.Remuneration
         private void ListBoxItem_PayItem_Click(object sender, MouseButtonEventArgs e)
         {
             PageMemberPayItem CurPage = new PageMemberPayItem();
+            AppSettings.AppMainWindow.FrameContentPage.Content = CurPage;
+        }
+        /// <summary>
+        /// 发放待遇（个人明细）
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MemberPay_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            PageMemberPay CurPage = new PageMemberPay();
             AppSettings.AppMainWindow.FrameContentPage.Content = CurPage;
         }
     }

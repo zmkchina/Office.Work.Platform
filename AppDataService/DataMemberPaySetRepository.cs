@@ -27,6 +27,7 @@ namespace Office.Work.Platform.AppDataService
             }
             return RecList;
         }
+       
         /// <summary>
         /// 单个新增或者更新数据信息（如数据库中没有则新增之，如有则更新之）
         /// </summary>

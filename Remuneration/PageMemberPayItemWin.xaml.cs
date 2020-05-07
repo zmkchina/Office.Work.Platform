@@ -18,8 +18,13 @@ namespace Office.Work.Platform.Remuneration
             InitializeComponent();
             CurPayItem = PPayItem;
         }
-        private  void Window_Loaded(object sender, RoutedEventArgs e)
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            if (!string.IsNullOrWhiteSpace(CurPayItem.Name))
+            {
+                //说明是编辑项目。
+                Tb_ItemName.IsReadOnly = true;
+            }
             DataContext = this;
         }
 

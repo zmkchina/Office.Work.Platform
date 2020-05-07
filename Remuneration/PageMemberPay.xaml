@@ -5,9 +5,10 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
        xmlns:memberuc="clr-namespace:Office.Work.Platform.MemberUc"
       xmlns:local="clr-namespace:Office.Work.Platform.Remuneration"
+      xmlns:AppCodes="clr-namespace:Office.Work.Platform.AppCodes"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Loaded="Page_Loaded"
+      Loaded="Page_LoadedAsync"
       Title="PageMakeNewPay">
     <Page.Resources>
         <Style x:Key="TextboxStyle" TargetType="TextBox">
@@ -17,6 +18,23 @@
             <Setter Property="Margin" Value="5"/>
             <Setter Property="Width" Value="180"/>
         </Style>
+
+        <Style TargetType="DatePickerTextBox">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <TextBox Text="{Binding Path=SelectedDate, StringFormat='yyyy/MM', RelativeSource={RelativeSource AncestorType=DatePicker}}" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="DatePickerStyle" TargetType="DatePicker">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Margin" Value="3,5"/>
+            <Setter Property="Width" Value="185"/>
+        </Style>
+
         <Style TargetType="DataGrid">
             <Setter Property="ColumnHeaderStyle" Value="{DynamicResource ColumnHeaderStyle}"/>
             <Setter Property="CellStyle" Value="{DynamicResource CellStyle}"/>
@@ -77,37 +95,47 @@
     <Grid>
         <Grid>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="120"/>
                 <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
-       
-            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" >
-                <StackPanel Orientation="Horizontal" Margin="0,10">
-                    <TextBox Text="{Binding SearchCondition.PayYear}" Style="{StaticResource TextboxStyle}" Width="70" ToolTip="输入查询年份"/>
-                    <TextBox Text="{Binding SearchCondition.PayMonth}" Style="{StaticResource TextboxStyle}" Width="50" ToolTip="输入查询月份"/>
-                    <TextBox Text="{Binding SearchCondition.Remark}" Style="{StaticResource TextboxStyle}" ToolTip="输入备注信息"/>
+            <ListBox ItemsSource="{Binding PaySetMembers}" x:Name="ListBox_PaySetMembers" SelectionChanged="ListBox_SelectionChangedAsync">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock FontSize="15" Margin="2">
+                            <Run Text="{Binding MemberName}"/>
+                        </TextBlock>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <StackPanel Grid.Column="1"   Orientation="Vertical" 
+                        IsEnabled="{Binding CanOperation}"
+                        HorizontalAlignment="Stretch" >
+                <StackPanel Orientation="Horizontal" Margin="0,10" >
+                    <DatePicker Style="{StaticResource DatePickerStyle}"
+                        SelectedDate="{Binding SearchDate}" 
+                        AppCodes:DatePickerCalendar.IsMonthYear="True"/>
                     <Button Click="BtnSearchClickAsync" Content="查询" Width="60" Margin="2,0,10,0"/>
                     <Button Click="BtnAddClickAsync" Content="新增" Width="60" Margin="2,0,10,0"/>
                     <Button Click="BtnDelClickAsync" Content="删除" Width="60" Margin="2,0,10,0"/>
                     <Button Click="BtnEditClickAsync" Content="修改" Width="60" Margin="2,0,10,0"/>
                 </StackPanel>
-                <DataGrid x:Name="RecordDataGrid" ItemsSource="{Binding PayMonths}" >
+                <DataGrid x:Name="RecordDataGrid" ItemsSource="{Binding MemberPays}" >
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="发放年份" Binding="{Binding PayYear}" />
+                        <DataGridTextColumn Header="年份" Binding="{Binding PayYear}" />
                         <DataGridTextColumn Header="月份" Binding="{Binding PayMonth}"/>
-                        <DataGridTextColumn Header="岗位工资" Binding="{Binding PostPay}"/>
-                        <DataGridTextColumn Header="薪级工资" Binding="{Binding ScalePay}"/>
-                        <DataGridTextColumn Header="岗位津贴" Binding="{Binding PostAllowance}"/>
-                        <DataGridTextColumn Header="生活补贴" Binding="{Binding LivingAllowance}"/>
-                        <DataGridTextColumn Header="奖励绩效(月）" Binding="{Binding IncentivePerformancePay}"/>
-                        <DataGridTextColumn Header="交通补贴" Binding="{Binding TrafficAllowance}"/>
-                        <DataGridTextColumn Header="伙食补贴" Binding="{Binding FoodAllowance}"/>
+                        <DataGridTextColumn Header="名称" Binding="{Binding PayName}"/>
+                        <DataGridTextColumn Header="金额" Binding="{Binding Amount}"/>
+                        <DataGridTextColumn Header="增减类别" Binding="{Binding AddOrCut}"/>
+                        <DataGridTextColumn Header="计入基数" Binding="{Binding InCardinality}"/>
+                        <DataGridTextColumn Header="所属待遇表" Binding="{Binding InTableType}"/>
+                        <DataGridTextColumn Header="备注信息" Binding="{Binding Remark}"/>
                         <DataGridTextColumn Header="更新日期" Binding="{Binding UpDateTime,StringFormat= {}{0:yyyy/MM/dd}}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </StackPanel>
-            <GridSplitter Grid.Column="0" BorderThickness="2" BorderBrush="#FFDFF0E7"/>
-            <memberuc:UC_MemberFile x:Name="UcMemberPayFile" Grid.Column="1"  IsEnabled="{Binding Path=isEditFlag}"/>
+            <GridSplitter Grid.Column="1" BorderThickness="2" BorderBrush="#FFDFF0E7"/>
+            <memberuc:UC_MemberFile x:Name="UcMemberPayFile" Grid.Column="2"  IsEnabled="{Binding CanOperation}"/>
         </Grid>
     </Grid>
 </Page>
