@@ -17,7 +17,7 @@ namespace Office.Work.Platform.Remuneration
         public Lib.MemberPayItem SelectPayItem { get; set; }
         public DateTime SelectPayDate { get; set; } = DateTime.Now;
 
-        public PageMemberPayWin(Lib.MemberPay PMemberPay, List<MemberPayItem>PMemberPayItems)
+        public PageMemberPayWin(Lib.MemberPay PMemberPay, List<MemberPayItem> PMemberPayItems)
         {
             InitializeComponent();
             this.Owner = AppSettings.AppMainWindow;
@@ -59,7 +59,7 @@ namespace Office.Work.Platform.Remuneration
             DialogResult = false;
             this.Close();
         }
-        
+
         /// <summary>
         /// 发放项目选择发生变化
         /// </summary>
@@ -67,7 +67,7 @@ namespace Office.Work.Platform.Remuneration
         /// <param name="e"></param>
         private void ComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            if (ComboBox_PayItems.SelectedItem!=null)
+            if (ComboBox_PayItems.SelectedItem != null)
             {
                 SelectPayItem = ComboBox_PayItems.SelectedItem as Lib.MemberPayItem;
                 TextBlock_ItemInfo.DataContext = SelectPayItem;

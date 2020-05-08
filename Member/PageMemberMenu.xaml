@@ -49,7 +49,7 @@
             <ListBoxItem MouseLeftButtonUp="ListBoxItem_MouseLeftButtonUp_1">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="&#xe643;" Style="{StaticResource FIcon}" FontSize="18" Margin="0,0,5,0" Foreground="Green"></TextBlock>
-                    <TextBlock  Text="员工列表" VerticalAlignment="Center"/>
+                    <TextBlock  Text="职工花名册" VerticalAlignment="Center"/>
                 </StackPanel>
             </ListBoxItem>
 

@@ -18,6 +18,7 @@ namespace Office.Work.Platform.Remuneration
     /// </summary>
     public partial class PageMemberPayFast : Page
     {
+        public DateTime PayYearMonth { get; set; } = DateTime.Now;
         private List<string> PayItemNameList { get; set; }
         private JArray PaySetJArray { get; set; }
         private const string SelectedChar = "✔";
@@ -40,6 +41,7 @@ namespace Office.Work.Platform.Remuneration
                 // DataGridResult.Columns.Add(new DataGridTextColumn() { Header = "身份证号", Binding = new Binding("身份证号") });
                 // DataGridResult.Columns.Add(new DataGridCheckBoxColumn() { Header = "个税", Binding = new Binding("个税") });
                 DataGridResult.ItemsSource = PaySetJArray;
+                this.DataContext = this;
             });
         }
         private async System.Threading.Tasks.Task<JArray> InitDataJArray()
@@ -183,7 +185,7 @@ namespace Office.Work.Platform.Remuneration
                 if (curBtn != null) { curBtn.IsEnabled = true; }
             });
         }
-       
+
         /// <summary>
         /// 新增员工
         /// </summary>
@@ -253,10 +255,28 @@ namespace Office.Work.Platform.Remuneration
                 }
             }
         }
-
-        private void Btn_Pay_ClickAnsyc(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// 快速生成数据
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void Btn_Pay_ClickAnsyc(object sender, RoutedEventArgs e)
         {
+            if (sender is Button curBtn) { curBtn.IsEnabled = false; } else { curBtn = null; }
 
+            MemberPayFastByPaySet PayFastInfo = new MemberPayFastByPaySet()
+            {
+                PayYear = PayYearMonth.Year,
+                PayMonth = PayYearMonth.Month,
+                PayUnitName = AppSettings.LoginUser.UnitName,
+                UserId = AppSettings.LoginUser.Id
+            };
+            ExcuteResult excuteResult = await DataMemberPaySheetRepository.PostMemberPaySheet(PayFastInfo).ConfigureAwait(false);
+            App.Current.Dispatcher.Invoke(() =>
+            {
+                (new WinMsgDialog(excuteResult.Msg)).ShowDialog();
+                if (curBtn != null) { curBtn.IsEnabled = true; }
+            });
         }
     }
 }

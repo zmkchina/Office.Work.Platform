@@ -11,10 +11,11 @@ namespace Office.Work.Platform.Remuneration
     public partial class PageMemberPayItemWin : Window
     {
         public Lib.MemberPayItem CurPayItem { get; set; }
+        public Lib.MemberSettings MemberSets { get; set; } = new Lib.MemberSettings();
 
         public PageMemberPayItemWin(Lib.MemberPayItem PPayItem)
         {
-            this.Owner =AppSettings.AppMainWindow;
+            this.Owner = AppSettings.AppMainWindow;
             InitializeComponent();
             CurPayItem = PPayItem;
         }

@@ -112,7 +112,7 @@
             <Button Click="BtnSearchClickAsync" Content="查询" Width="60" Margin="2,0,10,0"/>
             <Button Click="BtnPrintClickAsync" Content="打印" Width="60" Margin="2,0,10,0"/>
         </StackPanel>
-        <DataGrid x:Name="RecordDataGrid">
+        <DataGrid x:Name="RecordDataGrid" >
         </DataGrid>
         <RichTextBox x:Name="RichTBFlowDoc">
             <FlowDocument x:Name="FlowDoc"  Background="AliceBlue">
@@ -122,8 +122,8 @@
                     <Run x:Name="Run_PayDate" Text="（2020年4月）" FontFamily="Times New Roman"/>
                 </Paragraph>
                 <Table  CellSpacing="0">
-                    <TableRowGroup Background="LightGray" FontWeight="Bold">
-                        <TableRow>
+                    <TableRowGroup x:Name="TableRowGroupHeader" Background="LightGray" FontWeight="Bold">
+                        <!--<TableRow>
                             <TableCell>
                                 <Paragraph Style="{StaticResource PgStyle}"  >
                                     姓名
@@ -174,9 +174,8 @@
                             <TableCell>
                                 <Paragraph Style="{StaticResource PgStyle}">备注信息</Paragraph>
                             </TableCell>
-                        </TableRow>
+                        </TableRow>-->
                     </TableRowGroup>
-
                     <TableRowGroup x:Name="TableContentRows" FontFamily="Verdana" FontSize="12">
                     </TableRowGroup>
                 </Table>

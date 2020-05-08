@@ -52,8 +52,8 @@
                     <Run Text="{Binding CurMember.UnitName,StringFormat=发放单位：{0}   发放月份：}"/>
                 </TextBlock>
                 <DatePicker Style="{StaticResource DatePickerStyle}"
-                        SelectedDate="{Binding PayMonthDate}" 
-                        AppCodes:DatePickerCalendar.IsMonthYear="True"/>
+                            SelectedDate="{Binding PayYearMonth}" 
+                            AppCodes:DatePickerCalendar.IsMonthYear="True"/>
                 <Button Content="新增员工" Click="Btn_Add_Click" FontSize="15" Padding="10,5"  Margin="10,0"/>
                 <Button Content="删除员工" Click="Btn_Del_ClickAnsyc" FontSize="15" Padding="10,5"  Margin="10,0"/>
                 <Button Content="保存配置" Click="Btn_Save_ClickAnsyc" FontSize="15" Padding="10,5"  Margin="20,0"/>

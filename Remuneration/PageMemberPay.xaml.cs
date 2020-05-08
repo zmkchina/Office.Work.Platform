@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -44,6 +43,7 @@ namespace Office.Work.Platform.Remuneration
         private async void BtnSearchClickAsync(object sender, RoutedEventArgs e)
         {
             await _PageMemberPayVM.SearchRecords();
+           
         }
         /// <summary>
         ///  新增记录
@@ -115,58 +115,6 @@ namespace Office.Work.Platform.Remuneration
                     if (excuteResult.State == 0)
                     {
                         _PageMemberPayVM.MemberPays.Remove(SelectedRec);
-                    }
-                    else
-                    {
-                        (new WinMsgDialog(excuteResult.Msg, Caption: "失败")).ShowDialog();
-                    }
-                }
-            }
-        }
-        /// <summary>
-        /// 编辑一条记录
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private async void BtnEditClickAsync(object sender, RoutedEventArgs e)
-        {
-            if (RecordDataGrid.SelectedItem is Lib.MemberPay SelectedRec)
-            {
-                Lib.MemberPay RecCloneObj = CloneObject<Lib.MemberPay, Lib.MemberPay>.Trans(SelectedRec);
-
-                PageMemberPayWin AddWin = new PageMemberPayWin(RecCloneObj, _PageMemberPayVM.MemberPayItems.ToList());
-
-                AddWin.Owner = AppSettings.AppMainWindow;
-
-                if (AddWin.ShowDialog().Value)
-                {
-                    IEnumerable<MemberPay> MemberPlays = await DataMemberPayRepository.GetRecords(new MemberPaySearch()
-                    {
-                        UserId = AppSettings.LoginUser.Id,
-                        MemberId = RecCloneObj.MemberId,
-                        PayYear = RecCloneObj.PayYear,
-                        PayMonth = RecCloneObj.PayMonth,
-                        PayName = RecCloneObj.PayName,
-                    });
-                    if (MemberPlays.Count() > 0)
-                    {
-                        (new WinMsgDialog($"该工作人员{RecCloneObj.PayYear} 年 {RecCloneObj.PayMonth} 月份的[{RecCloneObj.PayName}]已经发放。", "无法修改")).ShowDialog();
-                        return;
-                    }
-
-                    ExcuteResult excuteResult = await DataMemberPayRepository.UpdateRecord(RecCloneObj);
-                    if (excuteResult.State == 0)
-                    {
-                        PropertyInfo[] TargetAttris = SelectedRec.GetType().GetProperties();
-                        PropertyInfo[] SourceAttris = RecCloneObj.GetType().GetProperties();
-                        foreach (PropertyInfo item in SourceAttris)
-                        {
-                            var tempObj = TargetAttris.Where(x => x.Name.Equals(item.Name, StringComparison.Ordinal)).FirstOrDefault();
-                            if (tempObj != null)
-                            {
-                                item.SetValue(SelectedRec, item.GetValue(RecCloneObj));
-                            }
-                        }
                     }
                     else
                     {

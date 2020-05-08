@@ -113,12 +113,11 @@
                         HorizontalAlignment="Stretch" >
                 <StackPanel Orientation="Horizontal" Margin="0,10" >
                     <DatePicker Style="{StaticResource DatePickerStyle}"
-                        SelectedDate="{Binding SearchDate}" 
-                        AppCodes:DatePickerCalendar.IsMonthYear="True"/>
+                                SelectedDate="{Binding SearchDate}" 
+                                AppCodes:DatePickerCalendar.IsMonthYear="True"/>
                     <Button Click="BtnSearchClickAsync" Content="查询" Width="60" Margin="2,0,10,0"/>
                     <Button Click="BtnAddClickAsync" Content="新增" Width="60" Margin="2,0,10,0"/>
                     <Button Click="BtnDelClickAsync" Content="删除" Width="60" Margin="2,0,10,0"/>
-                    <Button Click="BtnEditClickAsync" Content="修改" Width="60" Margin="2,0,10,0"/>
                 </StackPanel>
                 <DataGrid x:Name="RecordDataGrid" ItemsSource="{Binding MemberPays}" >
                     <DataGrid.Columns>
@@ -129,8 +128,11 @@
                         <DataGridTextColumn Header="增减类别" Binding="{Binding AddOrCut}"/>
                         <DataGridTextColumn Header="计入基数" Binding="{Binding InCardinality}"/>
                         <DataGridTextColumn Header="所属待遇表" Binding="{Binding InTableType}"/>
+                        <DataGridTextColumn Header="人员性质" Binding="{Binding MemberType}"/>
+                        <DataGridTextColumn Header="发放单位" Binding="{Binding PayUnitName}"/>
                         <DataGridTextColumn Header="备注信息" Binding="{Binding Remark}"/>
-                        <DataGridTextColumn Header="更新日期" Binding="{Binding UpDateTime,StringFormat= {}{0:yyyy/MM/dd}}"/>
+                        <DataGridTextColumn Header="更新日期" Binding="{Binding UpDateTime,StringFormat= {} {0:yyyy/MM/dd}}"/>
+                        <DataGridTextColumn Header="项目序号" Binding="{Binding OrderIndex}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </StackPanel>

@@ -109,7 +109,7 @@ namespace Office.Work.Platform.AppDataService
         public static async Task<T> GetApiUri<T>(string ApiUri, ProgressMessageHandler processMessageHander = null)
         {
             using HttpClient _Client = CreateHttpClient(processMessageHander);
-            Object TResult = null;
+            Object TResult = new ExcuteResult();
             HttpResponseMessage ResultResponse = await _Client.GetAsync(ApiUri).ConfigureAwait(false);
             if (typeof(T) == typeof(HttpResponseMessage))
             {
@@ -123,6 +123,10 @@ namespace Office.Work.Platform.AppDataService
             {
                 TResult = await ResultResponse.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
             }
+            else if (typeof(T) == typeof(string))
+            {
+                TResult = await ResultResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+            }
             else
             {
                 string ResponseString = await ResultResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -133,7 +137,7 @@ namespace Office.Work.Platform.AppDataService
         public static async Task<T> DeleteApiUri<T>(string ApiUri, ProgressMessageHandler processMessageHander = null)
         {
             HttpClient _Client = CreateHttpClient(processMessageHander);
-            Object TResult = null;
+            Object TResult = new ExcuteResult();
             try
             {
 
@@ -162,7 +166,7 @@ namespace Office.Work.Platform.AppDataService
         public static async Task<ExcuteResult> PostApiUriAsync(string ApiUri, MultipartFormDataContent PostFormData, ProgressMessageHandler processMessageHander = null)
         {
             HttpClient _Client = CreateHttpClient(processMessageHander);
-            ExcuteResult TResult = null;
+            ExcuteResult TResult = new ExcuteResult();
             try
             {
                 HttpResponseMessage ResponseMsg = await _Client.PostAsync(ApiUri, PostFormData).ConfigureAwait(false);
@@ -198,7 +202,7 @@ namespace Office.Work.Platform.AppDataService
         public static async Task<ExcuteResult> PostApiUriAsync<T>(string ApiUri, T PostObject, ProgressMessageHandler processMessageHander = null)
         {
             HttpClient _Client = CreateHttpClient(processMessageHander);
-            ExcuteResult TResult = null;
+            ExcuteResult TResult = new ExcuteResult();
             //表头参数  (添加此Headers 会导致返回的数据在解析时出问题，估计.net core 已默认为json格式，再加会画蛇添足。
             //_Client.DefaultRequestHeaders.Accept.Clear();
             //_Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -235,7 +239,7 @@ namespace Office.Work.Platform.AppDataService
         public static async Task<ExcuteResult> PutApiUriAsync<T>(string ApiUri, T PostObject, ProgressMessageHandler processMessageHander = null)
         {
             HttpClient _Client = CreateHttpClient(processMessageHander);
-            ExcuteResult TResult = null;
+            ExcuteResult TResult = new ExcuteResult();
             //表头参数  (添加此Headers 会导致返回的数据在解析时出问题，估计.net core 已默认为json格式，再加会画蛇添足。
             //_Client.DefaultRequestHeaders.Accept.Clear();
             //_Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

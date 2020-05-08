@@ -85,7 +85,7 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <GroupBox Header="所属待遇表" Style="{StaticResource GroupBoxStyle}">
-                        <ComboBox Width="146" ItemsSource="{Binding CurPayItem.InTableTypeList}"   
+                        <ComboBox Width="146" ItemsSource="{Binding MemberSets.PayTableTypArr}"   
                           Text="{Binding CurPayItem.InTableType,UpdateSourceTrigger=PropertyChanged}" 
                           HorizontalAlignment="Left" FontSize="16" Margin="5" />
                 </GroupBox>
