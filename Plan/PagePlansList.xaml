@@ -9,14 +9,22 @@
       Title="PagePlansList" Loaded="Page_Loaded">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <ToolBar Grid.Row="0">
+        <Border Grid.Row="0" Background="#FFFAF0" Padding="0,10" Margin="0,1" HorizontalAlignment="Stretch">
+            <TextBlock  VerticalAlignment="Center" Foreground="#FF495981"
+                        HorizontalAlignment="Left" FontSize="14" Padding="10,0,0,0">
+                <Run  Text="> 计划管理—计划列表"/>
+                <Run  Text="[显示指定的计划列表，并可以点击操作]"/>
+            </TextBlock>
+        </Border>
+        <ToolBar Grid.Row="1">
             <TextBox x:Name="tb_SearchKeys" Width="200"/>
             <Button Content="刷新记录" Name="btn_Refrash" Click="btn_Refrash_Click" />
         </ToolBar>
-        <Grid Grid.Row="1" TextElement.FontSize="15">
+        <Grid Grid.Row="2" TextElement.FontSize="15">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" MinWidth="200"/>
                 <ColumnDefinition Width="*" x:Name="col_panInfo"/>

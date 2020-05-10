@@ -20,7 +20,7 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<List<User>> ReadAllSysUsers()
         {
-            List<User> SysUsers = await DataApiRepository.GetApiUri<List<User>>(AppSettings.ApiUrlBase + "User").ConfigureAwait(false);
+            List<User> SysUsers = await DataApiRepository.GetApiUri<List<User>>(AppSet.ApiUrlBase + "User").ConfigureAwait(false);
             return SysUsers;
         }
 
@@ -30,7 +30,7 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<SettingServer> ReadServerSettings()
         {
-            SettingServer ServerSetting = await DataApiRepository.GetApiUri<SettingServer>(AppSettings.ApiUrlBase + "Settings").ConfigureAwait(false);
+            SettingServer ServerSetting = await DataApiRepository.GetApiUri<SettingServer>(AppSet.ApiUrlBase + "Settings").ConfigureAwait(false);
             return ServerSetting;
         }
 
@@ -40,7 +40,7 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<ExcuteResult> UpdateServerSettings(SettingServer PEntity)
         {
-            ExcuteResult excuteResult = await DataApiRepository.PutApiUriAsync(AppSettings.ApiUrlBase + "Settings", PEntity).ConfigureAwait(false);
+            ExcuteResult excuteResult = await DataApiRepository.PutApiUriAsync(AppSet.ApiUrlBase + "Settings", PEntity).ConfigureAwait(false);
             return excuteResult;
         }
 
@@ -50,7 +50,7 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<List<UpdateFile>> GetServerUpdateFiles()
         {
-            List<UpdateFile> updateFiles = await DataApiRepository.GetApiUri<List<UpdateFile>>(AppSettings.ApiUrlBase + "UpdateFile").ConfigureAwait(false);
+            List<UpdateFile> updateFiles = await DataApiRepository.GetApiUri<List<UpdateFile>>(AppSet.ApiUrlBase + "UpdateFile").ConfigureAwait(false);
             return updateFiles;
         }
     }

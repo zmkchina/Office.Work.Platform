@@ -43,11 +43,11 @@ namespace Office.Work.Platform.MemberUc
             Lib.MemberRelations NewRecord = new Lib.MemberRelations()
             {
                 MemberId = _UCRelationsVM.CurMember.Id,
-                UserId = AppSettings.LoginUser.Id
+                UserId = AppSet.LoginUser.Id
             };
 
             UC_RelationsWin AddWin = new UC_RelationsWin(NewRecord);
-            AddWin.Owner = AppSettings.AppMainWindow;
+            AddWin.Owner = AppSet.AppMainWindow;
 
             if (AddWin.ShowDialog().Value)
             {
@@ -104,7 +104,7 @@ namespace Office.Work.Platform.MemberUc
                 Lib.MemberRelations RecCloneObj = CloneObject<Lib.MemberRelations, Lib.MemberRelations>.Trans(SelectedRec);
 
                 UC_RelationsWin AddWin = new UC_RelationsWin(RecCloneObj);
-                AddWin.Owner = AppSettings.AppMainWindow;
+                AddWin.Owner = AppSet.AppMainWindow;
 
                 if (AddWin.ShowDialog().Value)
                 {
@@ -143,7 +143,7 @@ namespace Office.Work.Platform.MemberUc
             CurMember = PMember;
             if (PMember != null)
             {
-                MemberRelationsSearch SearchCondition = new MemberRelationsSearch() { MemberId = PMember.Id, UserId = AppSettings.LoginUser.Id };
+                MemberRelationsSearch SearchCondition = new MemberRelationsSearch() { MemberId = PMember.Id, UserId = AppSet.LoginUser.Id };
                 IEnumerable<MemberRelations> MemberRelationsss = await DataMemberRelationsRepository.GetRecords(SearchCondition);
                 CurRecords.Clear();
                 MemberRelationsss.ToList().ForEach(e =>
@@ -157,7 +157,7 @@ namespace Office.Work.Platform.MemberUc
             if (SearchCondition != null)
             {
                 SearchCondition.MemberId = CurMember.Id;
-                SearchCondition.UserId = AppSettings.LoginUser.Id;
+                SearchCondition.UserId = AppSet.LoginUser.Id;
 
                 IEnumerable<MemberRelations> TempRecords = await DataMemberRelationsRepository.GetRecords(SearchCondition);
                 CurRecords.Clear();

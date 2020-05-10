@@ -43,11 +43,11 @@ namespace Office.Work.Platform.MemberUc
             Lib.MemberPrizePunish NewRecord = new Lib.MemberPrizePunish()
             {
                 MemberId = _UCPrizePunishVM.CurMember.Id,
-                UserId = AppSettings.LoginUser.Id
+                UserId = AppSet.LoginUser.Id
             };
 
             UC_PrizePunishWin AddWin = new UC_PrizePunishWin(NewRecord);
-            AddWin.Owner = AppSettings.AppMainWindow;
+            AddWin.Owner = AppSet.AppMainWindow;
 
             if (AddWin.ShowDialog().Value)
             {
@@ -104,7 +104,7 @@ namespace Office.Work.Platform.MemberUc
                 Lib.MemberPrizePunish RecCloneObj = CloneObject<Lib.MemberPrizePunish, Lib.MemberPrizePunish>.Trans(SelectedRec);
 
                 UC_PrizePunishWin AddWin = new UC_PrizePunishWin(RecCloneObj);
-                AddWin.Owner = AppSettings.AppMainWindow;
+                AddWin.Owner = AppSet.AppMainWindow;
 
                 if (AddWin.ShowDialog().Value)
                 {
@@ -144,7 +144,7 @@ namespace Office.Work.Platform.MemberUc
             CurMember = PMember;
             if (PMember != null)
             {
-                MemberPrizePunishSearch SearchCondition = new MemberPrizePunishSearch() { MemberId = PMember.Id, UserId = AppSettings.LoginUser.Id };
+                MemberPrizePunishSearch SearchCondition = new MemberPrizePunishSearch() { MemberId = PMember.Id, UserId = AppSet.LoginUser.Id };
                 IEnumerable<MemberPrizePunish> MemberPrizePunishss = await DataMemberPrizePunishRepository.GetRecords(SearchCondition);
                 CurRecords.Clear();
                 MemberPrizePunishss.ToList().ForEach(e =>
@@ -158,7 +158,7 @@ namespace Office.Work.Platform.MemberUc
             if (SearchCondition != null)
             {
                 SearchCondition.MemberId = CurMember.Id;
-                SearchCondition.UserId = AppSettings.LoginUser.Id;
+                SearchCondition.UserId = AppSet.LoginUser.Id;
 
                 IEnumerable<MemberPrizePunish> TempRecords = await DataMemberPrizePunishRepository.GetRecords(SearchCondition);
                 CurRecords.Clear();

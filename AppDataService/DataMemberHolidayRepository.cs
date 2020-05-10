@@ -24,7 +24,7 @@ namespace Office.Work.Platform.AppDataService
 
             if (urlParams.Length > 0)
             {
-                RecList = await DataApiRepository.GetApiUri<IEnumerable<MemberHoliday>>(AppSettings.ApiUrlBase + "MemberHoliday/Search" + urlParams).ConfigureAwait(false);
+                RecList = await DataApiRepository.GetApiUri<IEnumerable<MemberHoliday>>(AppSet.ApiUrlBase + "MemberHoliday/Search" + urlParams).ConfigureAwait(false);
             }
             return RecList;
         }
@@ -35,7 +35,7 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<ExcuteResult> AddRecord(Lib.MemberHoliday PEntity)
         {
-            ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(AppSettings.ApiUrlBase + "MemberHoliday", PEntity).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(AppSet.ApiUrlBase + "MemberHoliday", PEntity).ConfigureAwait(false);
             return JsonResult;
         }
         
@@ -46,7 +46,7 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<ExcuteResult> UpdateRecord(Lib.MemberHoliday PEntity)
         {
-            ExcuteResult JsonResult = await DataApiRepository.PutApiUriAsync(AppSettings.ApiUrlBase + "MemberHoliday", PEntity).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.PutApiUriAsync(AppSet.ApiUrlBase + "MemberHoliday", PEntity).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -56,7 +56,7 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<ExcuteResult> DeleteRecord(Lib.MemberHoliday PEntity)
         {
-            ExcuteResult JsonResult = await DataApiRepository.DeleteApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "MemberHoliday/?Id=" + PEntity.Id).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.DeleteApiUri<ExcuteResult>(AppSet.ApiUrlBase + "MemberHoliday/?Id=" + PEntity.Id).ConfigureAwait(false);
             return JsonResult;
         }
     }

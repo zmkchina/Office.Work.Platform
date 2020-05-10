@@ -72,7 +72,7 @@ namespace Office.Work.Platform.Member
 
         private async void InitUcControlFilesAsync(bool isRead = true)
         {
-            AppSettings.AppMainWindow.lblCursorPosition.Text = $"正在编辑[{_PageEditMemberVM.EntityMember.Name}]";
+            AppSet.AppMainWindow.lblCursorPosition.Text = $"正在编辑[{_PageEditMemberVM.EntityMember.Name}]";
             if (_PageEditMemberVM.isEditFlag && Person_TabControl.SelectedItem is TabItem tb && !string.IsNullOrWhiteSpace(_PageEditMemberVM.EntityMember.Id))
             {
                 switch (tb.Header)
@@ -158,7 +158,7 @@ namespace Office.Work.Platform.Member
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
-            AppSettings.AppMainWindow.lblCursorPosition.Text = "就绪";
+            AppSet.AppMainWindow.lblCursorPosition.Text = "就绪";
         }
     }
 

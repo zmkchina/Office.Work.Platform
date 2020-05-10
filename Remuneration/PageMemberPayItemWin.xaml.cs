@@ -15,7 +15,7 @@ namespace Office.Work.Platform.Remuneration
 
         public PageMemberPayItemWin(Lib.MemberPayItem PPayItem)
         {
-            this.Owner = AppSettings.AppMainWindow;
+            this.Owner = AppSet.AppMainWindow;
             InitializeComponent();
             CurPayItem = PPayItem;
         }
@@ -31,8 +31,8 @@ namespace Office.Work.Platform.Remuneration
 
         private void BtnSaveClickAsync(object sender, RoutedEventArgs e)
         {
-            CurPayItem.UnitName = AppSettings.LoginUser.UnitName;
-            CurPayItem.UserId = AppSettings.LoginUser.Id;
+            CurPayItem.UnitName = AppSet.LoginUser.UnitName;
+            CurPayItem.UserId = AppSet.LoginUser.Id;
             DialogResult = true;
             this.Close();
         }

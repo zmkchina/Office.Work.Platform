@@ -35,7 +35,7 @@ namespace Office.Work.Platform.Plan
                 switch (_SearchPlanType)
                 {
                     case "MyNoFinishPlans":
-                        _PagePlansListVM.mSearchPlan.CreateUserId = AppSettings.LoginUser.Id;
+                        _PagePlansListVM.mSearchPlan.CreateUserId = AppSet.LoginUser.Id;
                         _PagePlansListVM.mSearchPlan.CurrectState = PlanStatus.WaitBegin + "," + PlanStatus.Running;
                         break;
                     case "AllNoFinishPlans":
@@ -96,7 +96,7 @@ namespace Office.Work.Platform.Plan
 
         public PagePlansListVM()
         {
-            FileContentTypes = AppSettings.ServerSetting.WorkContentType.Split(',', System.StringSplitOptions.RemoveEmptyEntries);
+            FileContentTypes = AppSet.ServerSetting.WorkContentType.Split(',', System.StringSplitOptions.RemoveEmptyEntries);
             mSearchPlan = new PlanSearch();
             EntityPlans = new ObservableCollection<Lib.Plan>();
         }

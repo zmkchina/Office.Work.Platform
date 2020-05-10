@@ -19,9 +19,9 @@ namespace Office.Work.Platform
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             //读取本地设置
-            AppSettings.LocalSetting = DataRWLocalFileRepository.ReadObjFromFile<SettingLocal>(AppSettings.LocalSettingFileName);
-            Text_UserId.Text = AppSettings.LocalSetting.LoginUserId;
-            DataContext = AppSettings.LocalSetting;
+            AppSet.LocalSetting = DataRWLocalFileRepository.ReadObjFromFile<SettingLocal>(AppSet.LocalSettingFileName);
+            Text_UserId.Text = AppSet.LocalSetting.LoginUserId;
+            DataContext = AppSet.LocalSetting;
             Text_UserPwd.Focus();
         }
         private async void Btn_Login_ClickAsync(object sender, RoutedEventArgs e)
@@ -38,11 +38,11 @@ namespace Office.Work.Platform
             //请求token
             await DataApiRepository.GetAccessToken(V_UserId, V_UserPwd);
             //从服务器读取指定的用户并在服务器上登陆
-            User LoginUser = await DataApiRepository.GetApiUri<User>(AppSettings.ApiUrlBase + "User/" + V_UserId);
+            User LoginUser = await DataApiRepository.GetApiUri<User>(AppSet.ApiUrlBase + "User/" + V_UserId);
             if (LoginUser != null && LoginUser.PassWord.Equals(V_UserPwd))
             {
-                DataRWLocalFileRepository.SaveObjToFile<SettingLocal>(AppSettings.LocalSetting, AppSettings.LocalSettingFileName);
-                AppSettings.LoginUser = LoginUser;
+                DataRWLocalFileRepository.SaveObjToFile<SettingLocal>(AppSet.LocalSetting, AppSet.LocalSettingFileName);
+                AppSet.LoginUser = LoginUser;
                 MainWindow mainWindow = new MainWindow();
                 mainWindow.Show();
                 mainWindow.Activate();

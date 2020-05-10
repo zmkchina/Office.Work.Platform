@@ -133,7 +133,7 @@ namespace Office.Work.Platform.MemberUc
                 OwnerId = MemberId,
                 OwnerType = "人事附件",
                 ContentType = PContentType,
-                UserId = AppSettings.LoginUser.Id
+                UserId = AppSet.LoginUser.Id
             };
             await SearchMemberFiles(mfsearch);
         }
@@ -141,7 +141,7 @@ namespace Office.Work.Platform.MemberUc
         {
             if (mfsearch != null)
             {
-                mfsearch.UserId = AppSettings.LoginUser.Id;
+                mfsearch.UserId = AppSet.LoginUser.Id;
 
                 IEnumerable<FileDoc> MemberPayTemps = await DataFileDocRepository.ReadFiles(mfsearch);
                 MFiles.Clear();

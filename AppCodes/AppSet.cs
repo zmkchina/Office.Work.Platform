@@ -1,9 +1,9 @@
-﻿using Office.Work.Platform.Lib;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Office.Work.Platform.Lib;
 
 namespace Office.Work.Platform.AppCodes
 {
-    public static class AppSettings
+    public static class AppSet
     {
         /// <summary>
         /// 系统所有用户对象列表
@@ -39,11 +39,6 @@ namespace Office.Work.Platform.AppCodes
         //public static string ApiUrlBase = @"http://Localhost/Api/";
         public static string ApiUrlBase = @"http://Localhost:5000/Api/";
         //public static string ApiUrlBase = @"http://172.16.0.9/Api/";
-
-        public static void SetStateBarText(string Msg)
-        {
-            AppMainWindow.lblCursorPosition.Text = Msg;
-        }
 
     }
 }

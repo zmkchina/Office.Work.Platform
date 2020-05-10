@@ -18,6 +18,7 @@ namespace Office.Work.Platform.AppCodes
         #region 字段
         private string _LoginUserId;
         private int _RestInterval;
+        private string _ColorMainWinCpationBar = "FF0000";//"#EFEFEF";
         #endregion
 
         #region 属性
@@ -36,6 +37,14 @@ namespace Office.Work.Platform.AppCodes
         {
             get { return _RestInterval; }
             set { _RestInterval = value; OnPropertyChanged(); }
+        }
+        /// <summary>
+        /// 主窗口标题栏背景色
+        /// </summary>
+        public string ColorMainWinCpationBar
+        {
+            get { return _ColorMainWinCpationBar; }
+            set { _ColorMainWinCpationBar = value; OnPropertyChanged(); }
         }
         #endregion
         #region 构造函数

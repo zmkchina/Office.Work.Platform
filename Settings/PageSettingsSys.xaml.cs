@@ -1,12 +1,9 @@
-﻿using System;
-using System.ComponentModel;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using Office.Work.Platform.AppCodes;
 using Office.Work.Platform.AppDataService;
-using Office.Work.Platform.FileDocs;
 using Office.Work.Platform.Lib;
 
 namespace Office.Work.Platform.Settings
@@ -32,13 +29,18 @@ namespace Office.Work.Platform.Settings
         {
 
         }
+
+        private void BtnUpdateTheme_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Resources["ColorMainWinTitle"] = Brushes.Blue;
+        }
     }
 
 
     public class PageSettingsSysVM : NotificationObject
     {
 
-        public string[] FileContentTypes => AppSettings.ServerSetting.WorkContentType.Split(',', System.StringSplitOptions.RemoveEmptyEntries);
+        public string[] FileContentTypes => AppSet.ServerSetting.WorkContentType.Split(',', System.StringSplitOptions.RemoveEmptyEntries);
         public SettingServer EntitySettingServer { get; set; }
 
         #region "方法"

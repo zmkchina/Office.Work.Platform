@@ -13,7 +13,7 @@
         d:DesignWidth="800"
         d:DesignHeight="600"
         Title="政工业务管理平台"
-        Loaded="Window_LoadedAsync">
+        Loaded="Window_LoadedAsync" BorderBrush="#FFA3C8F5" BorderThickness="2">
     <Window.Resources>
         <Style x:Key="ToolStyle" TargetType="Button">
             <Style.Setters>
@@ -44,11 +44,9 @@
         <DockPanel Grid.Row="0" 
               MouseMove="Grid_MouseMove" 
               MouseLeftButtonDown="Grid_MouseLeftButtonDown" 
-              TextElement.Foreground="Black">
-            <DockPanel.Background>
-                <ImageBrush ImageSource="/AppRes/Window/barbackground.png"/>
-            </DockPanel.Background>
-            <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center" >
+              Background="{DynamicResource ColorMainWinTitle}">
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" 
+                        HorizontalAlignment="Left" VerticalAlignment="Center" >
                 <TextBlock Text="&#xe64d;" Style="{StaticResource FIcon}" FontSize="25" VerticalAlignment="Center" Margin="6,0,5,0"></TextBlock>
                 <TextBlock Text="政工业务管理平台" 
                        VerticalAlignment="Center" 
@@ -74,8 +72,8 @@
                         />
             </StackPanel>
         </DockPanel>
-        <Grid Grid.Row="1"  Background="#EFEFEFEE" HorizontalAlignment="Stretch" ShowGridLines="True">
-            <ListBox FontSize="12">
+        <StackPanel Grid.Row="1" Background="#FFE5E8E5" >
+            <ListBox  FontSize="13">
                 <ListBox.Template>
                     <ControlTemplate TargetType="{x:Type ListBox}">
                         <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
@@ -97,7 +95,7 @@
                                     <ControlTemplate.Triggers>
                                         <Trigger Property="IsMouseOver" Value="true">
                                             <Setter Property="Foreground"  Value="Red"/>
-                                            <Setter Property="FontSize" Value="12"/>
+                                            <Setter Property="FontSize" Value="13"/>
                                             <Setter Property="BorderBrush" Value="Green" TargetName="BottomSideRectangle"/>
                                             <Setter Property="BorderThickness" Value="0,0,0,2" TargetName="BottomSideRectangle"/>
                                         </Trigger>
@@ -149,8 +147,7 @@
                     </StackPanel>
                 </ListBoxItem>
             </ListBox>
-        </Grid>
-
+        </StackPanel>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="170"/>
@@ -165,7 +162,7 @@
             <Frame Grid.Column="1" x:Name="FrameContentPage" NavigationUIVisibility="Hidden" Background="#FFF9FAFB">
             </Frame>
         </Grid>
-        <StatusBar Grid.Row="3" VerticalAlignment="Center" Margin="0" Padding="0" Height="30">
+        <StatusBar Grid.Row="3" VerticalAlignment="Center" Margin="0" Padding="0" Height="30" Background="#FFF5EAEA">
             <StatusBarItem HorizontalAlignment="Left">
                     <TextBlock Name="lblCursorPosition"  Text="就绪" FontSize="14" Margin="15,0,0,0"/>
             </StatusBarItem>

@@ -23,7 +23,7 @@ namespace Office.Work.Platform.FileDocs
             InitializeComponent();
             _PageFilesListVM = new PageFilesListVM();
             _mSearchFile = new FileDocSearch();
-            _mSearchFile.UserId = AppSettings.LoginUser.Id;
+            _mSearchFile.UserId = AppSet.LoginUser.Id;
             _mSearchFile.ContentType = FilePlanType;
         }
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -44,7 +44,7 @@ namespace Office.Work.Platform.FileDocs
             string SearchNoValue = tb_search.Text.Trim().Length > 0 ? tb_search.Text.Trim() : null;
             _mSearchFile.SearchNameOrDesc = SearchNoValue;
             await _PageFilesListVM.GetFilesAsync(_mSearchFile);
-            AppSettings.SetStateBarText($"共查询到 :{_PageFilesListVM.FileDocs.Count}条记录！");
+            AppFuns.SetStateBarText($"共查询到 :{_PageFilesListVM.FileDocs.Count}条记录！");
             DataContext = _PageFilesListVM;
         }
 

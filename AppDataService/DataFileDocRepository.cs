@@ -26,7 +26,7 @@ namespace Office.Work.Platform.AppDataService
 
             if (urlParams.Length > 0)
             {
-                FileList = await DataApiRepository.GetApiUri<IEnumerable<FileDoc>>(AppSettings.ApiUrlBase + "FileDoc/Search" + urlParams).ConfigureAwait(false);
+                FileList = await DataApiRepository.GetApiUri<IEnumerable<FileDoc>>(AppSet.ApiUrlBase + "FileDoc/Search" + urlParams).ConfigureAwait(false);
             }
             return FileList;
         }
@@ -42,7 +42,7 @@ namespace Office.Work.Platform.AppDataService
         public static async Task<ExcuteResult> UpLoadFileInfo(FileDoc UpFileInfo, Stream PostFileStream, string PostFileKey = null, string PostFileName = null, ProgressMessageHandler showUploadProgress = null)
         {
             MultipartFormDataContent V_MultFormDatas = DataApiRepository.SetFormData(UpFileInfo, PostFileStream, PostFileKey, PostFileName);
-            ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(AppSettings.ApiUrlBase + "FileDoc/UpLoadFile", V_MultFormDatas, showUploadProgress).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(AppSet.ApiUrlBase + "FileDoc/UpLoadFile", V_MultFormDatas, showUploadProgress).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -52,7 +52,7 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<ExcuteResult> UpdateFileInfo(Lib.FileDoc PEntity)
         {
-            ExcuteResult JsonResult = await DataApiRepository.PutApiUriAsync(AppSettings.ApiUrlBase + "FileDoc", PEntity).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.PutApiUriAsync(AppSet.ApiUrlBase + "FileDoc", PEntity).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -62,7 +62,7 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<ExcuteResult> DeleteFileInfo(FileDoc DelFile)
         {
-            ExcuteResult JsonResult = await DataApiRepository.DeleteApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "FileDoc/?FileId=" + DelFile.Id + "&FileExtName=" + DelFile.ExtendName).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.DeleteApiUri<ExcuteResult>(AppSet.ApiUrlBase + "FileDoc/?FileId=" + DelFile.Id + "&FileExtName=" + DelFile.ExtendName).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -104,7 +104,7 @@ namespace Office.Work.Platform.AppDataService
             string tempFilePath = System.IO.Path.Combine(tempFileDir, WillDownFile.Name + "(" + WillDownFile.Id + ")" + WillDownFile.ExtendName);
             if (!File.Exists(tempFilePath) || ReDownLoad)
             {
-                HttpResponseMessage httpResponseMessage = await DataApiRepository.GetApiUri<HttpResponseMessage>(AppSettings.ApiUrlBase + @"FileDoc/DownloadFile/" + WillDownFile.Id, showDownProgress).ConfigureAwait(false);
+                HttpResponseMessage httpResponseMessage = await DataApiRepository.GetApiUri<HttpResponseMessage>(AppSet.ApiUrlBase + @"FileDoc/DownloadFile/" + WillDownFile.Id, showDownProgress).ConfigureAwait(false);
                 if (httpResponseMessage != null && httpResponseMessage.StatusCode != System.Net.HttpStatusCode.NotFound)
                 {
                     Stream responseStream = await httpResponseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false);

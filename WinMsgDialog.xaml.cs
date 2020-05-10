@@ -14,7 +14,7 @@ namespace Office.Work.Platform
         {
            
             InitializeComponent();
-            this.Owner = AppSettings.AppMainWindow;
+            this.Owner = AppSet.AppMainWindow;
             if (showYesNo) { ShowOk = false; } else { ShowOk = true; }
             this.Message = Message;
             this.Caption = Caption;

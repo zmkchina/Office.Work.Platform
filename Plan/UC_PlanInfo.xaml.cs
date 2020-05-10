@@ -41,7 +41,7 @@ namespace Office.Work.Platform.Plan
         /// <param name="e"></param>
         private void btn_EditPlan(object sender, RoutedEventArgs e)
         {
-            AppSettings.AppMainWindow.FrameContentPage.Content = new PageEditPlan(_UCPlanInfoVM.CurPlan);
+            AppSet.AppMainWindow.FrameContentPage.Content = new PageEditPlan(_UCPlanInfoVM.CurPlan);
         }
         /// <summary>
         /// 删除当前计划
@@ -57,7 +57,7 @@ namespace Office.Work.Platform.Plan
             ExcuteResult JsonResult = await DataPlanRepository.DeletePlan(_UCPlanInfoVM.CurPlan);
             if (JsonResult.State == 0)
             {
-                AppSettings.AppMainWindow.lblCursorPosition.Text = JsonResult.Msg;
+                AppSet.AppMainWindow.lblCursorPosition.Text = JsonResult.Msg;
                 _CallBack(_UCPlanInfoVM.CurPlan);
             }
             else
@@ -178,7 +178,7 @@ namespace Office.Work.Platform.Plan
             ExcuteResult JsonResult = await DataPlanRepository.UpdatePlan(_UCPlanInfoVM.CurPlan);
             if (JsonResult.State == 0)
             {
-                AppSettings.AppMainWindow.lblCursorPosition.Text = JsonResult.Msg;
+                AppSet.AppMainWindow.lblCursorPosition.Text = JsonResult.Msg;
             }
             (new WinMsgDialog(JsonResult.Msg)).ShowDialog();
         }
@@ -193,7 +193,7 @@ namespace Office.Work.Platform.Plan
             ExcuteResult JsonResult = await DataPlanRepository.UpdatePlan(_UCPlanInfoVM.CurPlan);
             if (JsonResult.State == 0)
             {
-                AppSettings.AppMainWindow.lblCursorPosition.Text = JsonResult.Msg;
+                AppSet.AppMainWindow.lblCursorPosition.Text = JsonResult.Msg;
             }
             else
             {
@@ -214,12 +214,12 @@ namespace Office.Work.Platform.Plan
         public async System.Threading.Tasks.Task Init_PlanInfoVMAsync(Lib.Plan P_Entity)
         {
             CurPlan = P_Entity;
-            OperateGrant = new PlanOperateGrant(AppSettings.LoginUser, P_Entity);
+            OperateGrant = new PlanOperateGrant(AppSet.LoginUser, P_Entity);
 
             if (PlanFiles.Count < 1)
             {
                 //如果该计划的附件文件没有读取则读取之。
-                FileDocSearch mSearchFile = new FileDocSearch() { OwnerId = P_Entity.Id, UserId = AppSettings.LoginUser.Id };
+                FileDocSearch mSearchFile = new FileDocSearch() { OwnerId = P_Entity.Id, UserId = AppSet.LoginUser.Id };
                 IEnumerable<FileDoc> UpFiles = await DataFileDocRepository.ReadFiles(mSearchFile);
                 UpFiles.ToList().ForEach(e =>
                 {
@@ -229,19 +229,19 @@ namespace Office.Work.Platform.Plan
             }
             if (CurPlan.CreateUserId != null)
             {
-                CurPlanCreateUserName = AppSettings.SysUsers.Where(e => CurPlan.CreateUserId.Equals(e.Id, System.StringComparison.Ordinal)).Select(x => x.Name).FirstOrDefault()?.Trim();
+                CurPlanCreateUserName = AppSet.SysUsers.Where(e => CurPlan.CreateUserId.Equals(e.Id, System.StringComparison.Ordinal)).Select(x => x.Name).FirstOrDefault()?.Trim();
             }
             if (CurPlan.ResponsiblePerson != null)
             {
-                CurPlanResponsibleName = AppSettings.SysUsers.Where(e => CurPlan.ResponsiblePerson.Equals(e.Id, System.StringComparison.Ordinal)).Select(x => x.Name).FirstOrDefault()?.Trim();
+                CurPlanResponsibleName = AppSet.SysUsers.Where(e => CurPlan.ResponsiblePerson.Equals(e.Id, System.StringComparison.Ordinal)).Select(x => x.Name).FirstOrDefault()?.Trim();
             }
             if (CurPlan.ReadGrant != null)
             {
-                CurPlanHasGrantNames = string.Join(",", AppSettings.SysUsers.Where(e => CurPlan.ReadGrant.Contains(e.Id, System.StringComparison.Ordinal)).Select(x => x.Name)?.ToArray());
+                CurPlanHasGrantNames = string.Join(",", AppSet.SysUsers.Where(e => CurPlan.ReadGrant.Contains(e.Id, System.StringComparison.Ordinal)).Select(x => x.Name)?.ToArray());
             }
             if (CurPlan.Helpers != null)
             {
-                CurPlanHelperNames = string.Join(",", AppSettings.SysUsers.Where(e => CurPlan.Helpers.Contains(e.Id, System.StringComparison.Ordinal)).Select(x => x.Name)?.ToArray());
+                CurPlanHelperNames = string.Join(",", AppSet.SysUsers.Where(e => CurPlan.Helpers.Contains(e.Id, System.StringComparison.Ordinal)).Select(x => x.Name)?.ToArray());
             }
         }
         /// <summary>

@@ -43,11 +43,11 @@ namespace Office.Work.Platform.MemberUc
             Lib.MemberHoliday NewRecord = new Lib.MemberHoliday()
             {
                 MemberId = _UCHolidayVM.CurMember.Id,
-                UserId = AppSettings.LoginUser.Id
+                UserId = AppSet.LoginUser.Id
             };
 
             UC_HolidayWin AddWin = new UC_HolidayWin(NewRecord);
-            AddWin.Owner = AppSettings.AppMainWindow;
+            AddWin.Owner = AppSet.AppMainWindow;
 
             if (AddWin.ShowDialog().Value)
             {
@@ -98,7 +98,7 @@ namespace Office.Work.Platform.MemberUc
                 Lib.MemberHoliday RecCloneObj = CloneObject<Lib.MemberHoliday, Lib.MemberHoliday>.Trans(SelectedRec);
 
                 UC_HolidayWin AddWin = new UC_HolidayWin(RecCloneObj);
-                AddWin.Owner = AppSettings.AppMainWindow;
+                AddWin.Owner = AppSet.AppMainWindow;
 
                 if (AddWin.ShowDialog().Value)
                 {
@@ -140,7 +140,7 @@ namespace Office.Work.Platform.MemberUc
             CurMember = PMember;
             if (PMember != null)
             {
-                MemberHolidaySearch SearchCondition = new MemberHolidaySearch() { MemberId = PMember.Id, UserId = AppSettings.LoginUser.Id };
+                MemberHolidaySearch SearchCondition = new MemberHolidaySearch() { MemberId = PMember.Id, UserId = AppSet.LoginUser.Id };
                 IEnumerable<MemberHoliday> MemberHolidayss = await DataMemberHolidayRepository.GetRecords(SearchCondition);
                 CurRecords.Clear();
                 MemberHolidayss.ToList().ForEach(e =>
@@ -154,7 +154,7 @@ namespace Office.Work.Platform.MemberUc
             if (SearchCondition != null)
             {
                 SearchCondition.MemberId = CurMember.Id;
-                SearchCondition.UserId = AppSettings.LoginUser.Id;
+                SearchCondition.UserId = AppSet.LoginUser.Id;
 
                 IEnumerable<MemberHoliday> TempRecords = await DataMemberHolidayRepository.GetRecords(SearchCondition);
                 CurRecords.Clear();

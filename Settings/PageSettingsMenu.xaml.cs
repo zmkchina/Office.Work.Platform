@@ -26,7 +26,7 @@ namespace Office.Work.Platform.Settings
         /// <param name="e"></param>
         private void ListBoxItem_MouseLeftButtonUp_0(object sender, MouseButtonEventArgs e)
         {
-            AppSettings.AppMainWindow.FrameContentPage.Content = new PageSettingsSys();
+            AppSet.AppMainWindow.FrameContentPage.Content = new PageSettingsSys();
         }
         /// <summary>
         /// 个人中心
@@ -51,7 +51,16 @@ namespace Office.Work.Platform.Settings
         /// <param name="e"></param>
         private void ListBoxItem_MouseLeftButtonUp_3(object sender, MouseButtonEventArgs e)
         {
-            AppSettings.AppMainWindow.FrameContentPage.Content = new PageSettingsTools(null);
+            AppSet.AppMainWindow.FrameContentPage.Content = new PageSettingsTools(null);
+        }
+        /// <summary>
+        /// 设置主题
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ListBoxItem_SetTheme_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            AppSet.AppMainWindow.FrameContentPage.Content = new PageSettingsTheme();
         }
     }
 }

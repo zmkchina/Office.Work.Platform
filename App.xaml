@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Office.Work.Platform"
              xmlns:File="clr-namespace:Office.Work.Platform.AppCodes"
-             xmlns:Plan="clr-namespace:Office.Work.Platform.Plan"
+             xmlns:Plan="clr-namespace:Office.Work.Platform.Plan"             
              StartupUri="LoginWindow.xaml">
     <Application.Resources>
         <Style x:Key="FIcon" TargetType="TextBlock">
@@ -17,6 +17,6 @@
         <File:ConverExtentNameToImgeUri x:Key="ExtentNameToImgeUri"/>
         <File:ConverByteLengthToMBLength x:Key="ByteLengthToMBLength"/>
         <Plan:ConverPlanStateToImgeUri x:Key="PlanStateToImgeUri"/>
-        
+        <SolidColorBrush  x:Key="ColorMainWinTitle" Color="LightSkyBlue"/>
     </Application.Resources>
 </Application>

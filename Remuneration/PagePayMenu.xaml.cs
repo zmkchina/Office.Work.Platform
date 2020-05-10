@@ -22,7 +22,7 @@ namespace Office.Work.Platform.Remuneration
         private void PagePaySheet_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             PageMemberPaySheet CurPage = new PageMemberPaySheet();
-            AppSettings.AppMainWindow.FrameContentPage.Content = CurPage;
+            AppSet.AppMainWindow.FrameContentPage.Content = CurPage;
         }
        
         /// <summary>
@@ -33,7 +33,7 @@ namespace Office.Work.Platform.Remuneration
         private void MemberPayFast_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             PageMemberPayFast CurPage = new PageMemberPayFast();
-            AppSettings.AppMainWindow.FrameContentPage.Content = CurPage;
+            AppSet.AppMainWindow.FrameContentPage.Content = CurPage;
         }
         /// <summary>
         /// 待遇项目设置
@@ -43,7 +43,7 @@ namespace Office.Work.Platform.Remuneration
         private void ListBoxItem_PayItem_Click(object sender, MouseButtonEventArgs e)
         {
             PageMemberPayItem CurPage = new PageMemberPayItem();
-            AppSettings.AppMainWindow.FrameContentPage.Content = CurPage;
+            AppSet.AppMainWindow.FrameContentPage.Content = CurPage;
         }
         /// <summary>
         /// 发放待遇（个人明细）
@@ -53,7 +53,7 @@ namespace Office.Work.Platform.Remuneration
         private void MemberPay_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             PageMemberPay CurPage = new PageMemberPay();
-            AppSettings.AppMainWindow.FrameContentPage.Content = CurPage;
+            AppSet.AppMainWindow.FrameContentPage.Content = CurPage;
         }
     }
 }

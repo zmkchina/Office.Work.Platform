@@ -54,8 +54,8 @@ namespace Office.Work.Platform.Remuneration
                 PayMonth = PayMonthDate.Month,
                 MemberType = MemberType,
                 PayTableType = PayTableName,
-                PayUnitName = AppSettings.LoginUser.UnitName,
-                UserId = AppSettings.LoginUser.Id
+                PayUnitName = AppSet.LoginUser.UnitName,
+                UserId = AppSet.LoginUser.Id
             }).ConfigureAwait(false);
             App.Current.Dispatcher.Invoke(() =>
             {
@@ -73,19 +73,19 @@ namespace Office.Work.Platform.Remuneration
                         RecordDataGrid.Items.Refresh();
 
                         RecordDataGrid.ItemsSource = JArrayResult;
-                        AppSettings.SetStateBarText($"共查询到：{JArrayResult.Count} 条数据。");
+                        AppFuns.SetStateBarText($"共查询到：{JArrayResult.Count} 条数据。");
                     }
                     catch (Exception ex)
                     {
 
-                        AppSettings.SetStateBarText(ex.Message);
+                        AppFuns.SetStateBarText(ex.Message);
                     }
 
 
                 }
                 else
                 {
-                    AppSettings.SetStateBarText($"共查询到： 0 条数据。");
+                    AppFuns.SetStateBarText($"共查询到： 0 条数据。");
 
                 }
             });
@@ -141,7 +141,7 @@ namespace Office.Work.Platform.Remuneration
             //第二种方式
             //A4：793,1122
             PrintPreviewWindow previewWnd = new PrintPreviewWindow(this.FlowDoc, P_DocWidth: 1122, P_DocHeight: 793);//在这里我们将FlowDocument.xaml这个页面传进去，之后通过打印预览窗口的构造函数填充打印内容,如果有数据要插入应该在此传数据结构进去
-            previewWnd.Owner = AppSettings.AppMainWindow;
+            previewWnd.Owner = AppSet.AppMainWindow;
             previewWnd.ShowInTaskbar = false;//设置预览窗体在最小化时不要出现在任务栏中 
             previewWnd.ShowDialog();//显示打印预览窗体
 

@@ -7,6 +7,14 @@
       mc:Ignorable="d"  d:DesignHeight="650" d:DesignWidth="550"
       Loaded="Page_Loaded"
       Title="计划编辑">
+    <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
+        <Border Background="#FFFAF0" Padding="0,10" Margin="0,1" HorizontalAlignment="Stretch">
+            <TextBlock  VerticalAlignment="Center" Foreground="#FF495981"
+                        HorizontalAlignment="Left" FontSize="14" Padding="10,0,0,0">
+                <Run  Text="> 计划管理—新增/编辑计划"/>
+                <Run  Text="[可以新增或编辑一个计划信息]"/>
+            </TextBlock>
+        </Border>
     <ScrollViewer TextElement.FontSize="14" Margin="5" >
         <StackPanel TextElement.FontSize="14"  HorizontalAlignment="Stretch">
             <GroupBox>
@@ -36,23 +44,23 @@
                 <GroupBox.Header>
                     <TextBlock  Text="计划类型" Margin="5"/>
                 </GroupBox.Header>
-                <ComboBox  DockPanel.Dock="Right" Width="125" HorizontalAlignment="Left" Margin="10,5"
-                               ItemsSource="{Binding Path=WorkContentTypes}"
-                               Text="{Binding Path=EntityPlan.ContentType}"
-                               VerticalAlignment="Center"  
-                               Cursor="Hand"/>
+                <ComboBox  Width="125" HorizontalAlignment="Left" Margin="10,5"
+                           ItemsSource="{Binding Path=WorkContentTypes}"
+                           Text="{Binding Path=EntityPlan.ContentType}"
+                           VerticalAlignment="Center"  
+                           Cursor="Hand"/>
             </GroupBox>
             <GroupBox>
                 <GroupBox.Header>
                     <TextBlock  Text="责任人员" Margin="5"/>
                 </GroupBox.Header>
-                <ComboBox  DockPanel.Dock="Bottom"  Width="125" HorizontalAlignment="Left" Margin="10,5"
-                               ItemsSource="{Binding Path=UserGrantSelectList}"
-                               DisplayMemberPath="Obj.Name" 
-                               SelectedValuePath="Obj.Id" 
-                               SelectedValue="{Binding Path=EntityPlan.ResponsiblePerson}"
-                               VerticalAlignment="Center"  
-                               Cursor="Hand"/>
+                <ComboBox  Width="125" HorizontalAlignment="Left" Margin="10,5"
+                           ItemsSource="{Binding Path=UserGrantSelectList}"
+                           DisplayMemberPath="Obj.Name" 
+                           SelectedValuePath="Obj.Id" 
+                           SelectedValue="{Binding Path=EntityPlan.ResponsiblePerson}"
+                           VerticalAlignment="Center"  
+                           Cursor="Hand"/>
             </GroupBox>
             <GroupBox>
                 <GroupBox.Header>
@@ -108,4 +116,5 @@
             </StackPanel>
         </StackPanel>
     </ScrollViewer>
+    </StackPanel>
 </Page>

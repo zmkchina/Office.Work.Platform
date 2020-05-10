@@ -24,7 +24,7 @@ namespace Office.Work.Platform.AppDataService
 
             if (urlParams.Length > 0)
             {
-                MemberList = await DataApiRepository.GetApiUri<List<Lib.Member>>(AppSettings.ApiUrlBase + "Member/Search" + urlParams);
+                MemberList = await DataApiRepository.GetApiUri<List<Lib.Member>>(AppSet.ApiUrlBase + "Member/Search" + urlParams);
             }
             return MemberList;
         }
@@ -35,7 +35,7 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<ExcuteResult> AddMember(Lib.Member PEntity)
         {
-            ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(AppSettings.ApiUrlBase + "Member", PEntity).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(AppSet.ApiUrlBase + "Member", PEntity).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -45,7 +45,7 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<ExcuteResult> AddMembers(List<Lib.Member> Entitys)
         {
-            ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(AppSettings.ApiUrlBase + "Member/AddRange", Entitys).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(AppSet.ApiUrlBase + "Member/AddRange", Entitys).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -55,7 +55,7 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<ExcuteResult> UpdateMember(Lib.Member PEntity)
         {
-            ExcuteResult JsonResult = await DataApiRepository.PutApiUriAsync(AppSettings.ApiUrlBase + "Member", PEntity).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.PutApiUriAsync(AppSet.ApiUrlBase + "Member", PEntity).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -65,7 +65,7 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<ExcuteResult> DeleteMember(Lib.Member Entity)
         {
-            ExcuteResult JsonResult = await DataApiRepository.DeleteApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "Member/?Id=" + Entity.Id).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.DeleteApiUri<ExcuteResult>(AppSet.ApiUrlBase + "Member/?Id=" + Entity.Id).ConfigureAwait(false);
             return JsonResult;
         }        
     }

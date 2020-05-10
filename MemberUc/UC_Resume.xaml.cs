@@ -43,11 +43,11 @@ namespace Office.Work.Platform.MemberUc
             Lib.MemberResume NewRecord = new Lib.MemberResume()
             {
                 MemberId = _UCResumeVM.CurMember.Id,
-                UserId = AppSettings.LoginUser.Id
+                UserId = AppSet.LoginUser.Id
             };
 
             UC_ResumeWin AddWin = new UC_ResumeWin(NewRecord);
-            AddWin.Owner = AppSettings.AppMainWindow;
+            AddWin.Owner = AppSet.AppMainWindow;
 
             if (AddWin.ShowDialog().Value)
             {
@@ -105,7 +105,7 @@ namespace Office.Work.Platform.MemberUc
                 Lib.MemberResume RecCloneObj = CloneObject<Lib.MemberResume, Lib.MemberResume>.Trans(SelectedRec);
 
                 UC_ResumeWin AddWin = new UC_ResumeWin(RecCloneObj);
-                AddWin.Owner = AppSettings.AppMainWindow;
+                AddWin.Owner = AppSet.AppMainWindow;
 
                 if (AddWin.ShowDialog().Value)
                 {
@@ -145,7 +145,7 @@ namespace Office.Work.Platform.MemberUc
             CurMember = PMember;
             if (PMember != null)
             {
-                MemberResumeSearch SearchCondition = new MemberResumeSearch() { MemberId = PMember.Id, UserId = AppSettings.LoginUser.Id };
+                MemberResumeSearch SearchCondition = new MemberResumeSearch() { MemberId = PMember.Id, UserId = AppSet.LoginUser.Id };
                 IEnumerable<MemberResume> MemberResumess = await DataMemberResumeRepository.GetRecords(SearchCondition);
                 CurRecords.Clear();
                 MemberResumess.ToList().ForEach(e =>
@@ -159,7 +159,7 @@ namespace Office.Work.Platform.MemberUc
             if (SearchCondition != null)
             {
                 SearchCondition.MemberId = CurMember.Id;
-                SearchCondition.UserId = AppSettings.LoginUser.Id;
+                SearchCondition.UserId = AppSet.LoginUser.Id;
 
                 IEnumerable<MemberResume> TempRecords = await DataMemberResumeRepository.GetRecords(SearchCondition);
                 CurRecords.Clear();

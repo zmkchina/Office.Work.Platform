@@ -20,7 +20,7 @@ namespace Office.Work.Platform.FileDocs
         {
             ListBoxItem_MouseLeftButtonUp_0(null, null);
 
-            List<string> MenuList = AppSettings.ServerSetting.GetWorkContentTypes();
+            List<string> MenuList = AppSet.ServerSetting.GetWorkContentTypes();
             foreach (string item in MenuList)
             {
                 ListBoxItem tempItem = new ListBoxItem();
@@ -49,7 +49,7 @@ namespace Office.Work.Platform.FileDocs
             if (sender is ListBoxItem tempItem)
             {
                 string contentType = tempItem.Tag as string;
-                AppSettings.AppMainWindow.FrameContentPage.Content = new PageFilesList(contentType);
+                AppSet.AppMainWindow.FrameContentPage.Content = new PageFilesList(contentType);
             }
         }
 
@@ -60,7 +60,7 @@ namespace Office.Work.Platform.FileDocs
         /// <param name="e"></param>
         private void ListBoxItem_MouseLeftButtonUp_0(object sender, MouseButtonEventArgs e)
         {
-            AppSettings.AppMainWindow.FrameContentPage.Content = new PageFilesList(null);
+            AppSet.AppMainWindow.FrameContentPage.Content = new PageFilesList(null);
         }
     }
 }

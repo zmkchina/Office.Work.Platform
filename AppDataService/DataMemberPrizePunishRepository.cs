@@ -24,7 +24,7 @@ namespace Office.Work.Platform.AppDataService
 
                 if (urlParams.Length > 0)
                 {
-                    RecList = await DataApiRepository.GetApiUri<IEnumerable<MemberPrizePunish>>(AppSettings.ApiUrlBase + "MemberPrizePunish/Search" + urlParams).ConfigureAwait(false);
+                    RecList = await DataApiRepository.GetApiUri<IEnumerable<MemberPrizePunish>>(AppSet.ApiUrlBase + "MemberPrizePunish/Search" + urlParams).ConfigureAwait(false);
                 }
                 return RecList;
             }
@@ -35,7 +35,7 @@ namespace Office.Work.Platform.AppDataService
             /// <returns></returns>
             public static async Task<ExcuteResult> AddRecord(Lib.MemberPrizePunish PEntity)
             {
-                ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(AppSettings.ApiUrlBase + "MemberPrizePunish", PEntity).ConfigureAwait(false);
+                ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(AppSet.ApiUrlBase + "MemberPrizePunish", PEntity).ConfigureAwait(false);
                 return JsonResult;
             }
             /// <summary>
@@ -45,7 +45,7 @@ namespace Office.Work.Platform.AppDataService
             /// <returns></returns>
             public static async Task<ExcuteResult> UpdateRecord(Lib.MemberPrizePunish PEntity)
             {
-                ExcuteResult JsonResult = await DataApiRepository.PutApiUriAsync(AppSettings.ApiUrlBase + "MemberPrizePunish", PEntity).ConfigureAwait(false);
+                ExcuteResult JsonResult = await DataApiRepository.PutApiUriAsync(AppSet.ApiUrlBase + "MemberPrizePunish", PEntity).ConfigureAwait(false);
                 return JsonResult;
             }
             /// <summary>
@@ -55,7 +55,7 @@ namespace Office.Work.Platform.AppDataService
             /// <returns></returns>
             public static async Task<ExcuteResult> DeleteRecord(Lib.MemberPrizePunish PEntity)
             {
-                ExcuteResult JsonResult = await DataApiRepository.DeleteApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "MemberPrizePunish/?Id=" + PEntity.Id).ConfigureAwait(false);
+                ExcuteResult JsonResult = await DataApiRepository.DeleteApiUri<ExcuteResult>(AppSet.ApiUrlBase + "MemberPrizePunish/?Id=" + PEntity.Id).ConfigureAwait(false);
                 return JsonResult;
             }
     }

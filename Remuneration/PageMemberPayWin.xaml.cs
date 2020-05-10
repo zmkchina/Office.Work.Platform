@@ -20,7 +20,7 @@ namespace Office.Work.Platform.Remuneration
         public PageMemberPayWin(Lib.MemberPay PMemberPay, List<MemberPayItem> PMemberPayItems)
         {
             InitializeComponent();
-            this.Owner = AppSettings.AppMainWindow;
+            this.Owner = AppSet.AppMainWindow;
             CurMemberPay = PMemberPay;
             MemberPayItems = PMemberPayItems;
             MemberPayItems.Sort((x, y) => x.OrderIndex - y.OrderIndex);
@@ -37,7 +37,7 @@ namespace Office.Work.Platform.Remuneration
         /// <param name="e"></param>
         private void BtnSaveClickAsync(object sender, RoutedEventArgs e)
         {
-            CurMemberPay.PayUnitName = AppSettings.LoginUser.UnitName;
+            CurMemberPay.PayUnitName = AppSet.LoginUser.UnitName;
             CurMemberPay.PayYear = SelectPayDate.Year;
             CurMemberPay.PayMonth = SelectPayDate.Month;
             CurMemberPay.AddOrCut = SelectPayItem.AddOrCut;

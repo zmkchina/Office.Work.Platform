@@ -55,7 +55,7 @@
             <ListBoxItem MouseLeftButtonUp="PagePaySheet_MouseLeftButtonUp">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="&#xe643;" Style="{StaticResource FIcon}" FontSize="18" Margin="0,0,5,0" Foreground="Green"></TextBlock>
-                    <TextBlock  Text="打印发放表" VerticalAlignment="Center"/>
+                    <TextBlock  Text="打印待遇表" VerticalAlignment="Center"/>
                 </StackPanel>
             </ListBoxItem>
             <ListBoxItem MouseLeftButtonUp="ListBoxItem_PayItem_Click">

@@ -23,7 +23,7 @@ namespace Office.Work.Platform.AppDataService
 
             if (urlParams.Length > 0)
             {
-                RecList = await DataApiRepository.GetApiUri<IEnumerable<MemberPay>>(AppSettings.ApiUrlBase + "MemberPay/Search" + urlParams).ConfigureAwait(false);
+                RecList = await DataApiRepository.GetApiUri<IEnumerable<MemberPay>>(AppSet.ApiUrlBase + "MemberPay/Search" + urlParams).ConfigureAwait(false);
             }
             return RecList;
         }
@@ -34,7 +34,7 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<ExcuteResult> AddRecord(Lib.MemberPay PEntity)
         {
-            ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(AppSettings.ApiUrlBase + "MemberPay", PEntity).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(AppSet.ApiUrlBase + "MemberPay", PEntity).ConfigureAwait(false);
             return JsonResult;
         }
         
@@ -45,7 +45,7 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<ExcuteResult> UpdateRecord(Lib.MemberPay PEntity)
         {
-            ExcuteResult JsonResult = await DataApiRepository.PutApiUriAsync(AppSettings.ApiUrlBase + "MemberPay", PEntity).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.PutApiUriAsync(AppSet.ApiUrlBase + "MemberPay", PEntity).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -55,7 +55,7 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<ExcuteResult> DeleteRecord(Lib.MemberPay PEntity)
         {
-            ExcuteResult JsonResult = await DataApiRepository.DeleteApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "MemberPay/?Id=" + PEntity.Id).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.DeleteApiUri<ExcuteResult>(AppSet.ApiUrlBase + "MemberPay/?Id=" + PEntity.Id).ConfigureAwait(false);
             return JsonResult;
         }
     }

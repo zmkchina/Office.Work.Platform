@@ -26,7 +26,7 @@ namespace Office.Work.Platform.Plan
         /// <param name="e"></param>
         private void ListBoxItem_MouseLeftButtonUp_0(object sender, MouseButtonEventArgs e)
         {
-            AppSettings.AppMainWindow.FrameContentPage.Content = new PageEditPlan(null);
+            AppSet.AppMainWindow.FrameContentPage.Content = new PageEditPlan(null);
         }
         /// <summary>
         /// 我的计划
@@ -35,7 +35,7 @@ namespace Office.Work.Platform.Plan
         /// <param name="e"></param>
         private void ListBoxItem_MouseLeftButtonUp_1(object sender, MouseButtonEventArgs e)
         {
-            AppSettings.AppMainWindow.FrameContentPage.Content = new PagePlansList("MyNoFinishPlans");
+            AppSet.AppMainWindow.FrameContentPage.Content = new PagePlansList("MyNoFinishPlans");
         }
         /// <summary>
         /// 全部待办
@@ -44,7 +44,7 @@ namespace Office.Work.Platform.Plan
         /// <param name="e"></param>
         private void ListBoxItem_MouseLeftButtonUp_2(object sender, MouseButtonEventArgs e)
         {
-            AppSettings.AppMainWindow.FrameContentPage.Content = new PagePlansList("AllNoFinishPlans"); ;
+            AppSet.AppMainWindow.FrameContentPage.Content = new PagePlansList("AllNoFinishPlans"); ;
         }
         /// <summary>
         /// 完结计划
@@ -53,7 +53,7 @@ namespace Office.Work.Platform.Plan
         /// <param name="e"></param>
         private void ListBoxItem_MouseLeftButtonUp_3(object sender, MouseButtonEventArgs e)
         {
-            AppSettings.AppMainWindow.FrameContentPage.Content = new PagePlansList("AllFinihPlans"); ;
+            AppSet.AppMainWindow.FrameContentPage.Content = new PagePlansList("AllFinihPlans"); ;
         }
         /// <summary>
         /// 全部计划
@@ -62,7 +62,7 @@ namespace Office.Work.Platform.Plan
         /// <param name="e"></param>
         private void ListBoxItem_MouseLeftButtonUp_4(object sender, MouseButtonEventArgs e)
         {
-            AppSettings.AppMainWindow.FrameContentPage.Content = new PagePlansList("AllPlans"); ;
+            AppSet.AppMainWindow.FrameContentPage.Content = new PagePlansList("AllPlans"); ;
         }
     }
 }

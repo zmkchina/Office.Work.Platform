@@ -22,7 +22,7 @@ namespace Office.Work.Platform.Node
         private void ListBoxItem_MouseLeftButtonUp_0(object sender, MouseButtonEventArgs e)
         {
             PageEditNode pageEditMember = new PageEditNode(null);
-            AppSettings.AppMainWindow.FrameContentPage.Content = pageEditMember;
+            AppSet.AppMainWindow.FrameContentPage.Content = pageEditMember;
         }
 
         private void ListBoxItem_MouseLeftButtonUp_1(object sender, MouseButtonEventArgs e)

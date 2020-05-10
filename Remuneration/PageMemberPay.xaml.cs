@@ -16,22 +16,21 @@ namespace Office.Work.Platform.Remuneration
     /// </summary>
     public partial class PageMemberPay : Page
     {
-        private PageMemberPayVM _PageMemberPayVM;
-
-
+        private PageViewModel _PageViewModel;
         public PageMemberPay()
         {
             InitializeComponent();
+            _PageViewModel = new PageViewModel();
+
         }
 
         private async void Page_LoadedAsync(object sender, System.Windows.RoutedEventArgs e)
         {
-            _PageMemberPayVM = new PageMemberPayVM();
-            await _PageMemberPayVM.InitVMAsync();
+            await _PageViewModel.InitPropValuesAsync();
             //因为此函数为异步（即使用的是后台线程或者说非UI线程），故要更新界面需使用 Dispatcher 来向WPF的UI线程添加任务。
             App.Current.Dispatcher.Invoke(() =>
             {
-                this.DataContext = _PageMemberPayVM;
+                this.DataContext = _PageViewModel;
             });
 
         }
@@ -42,8 +41,8 @@ namespace Office.Work.Platform.Remuneration
         /// <param name="e"></param>
         private async void BtnSearchClickAsync(object sender, RoutedEventArgs e)
         {
-            await _PageMemberPayVM.SearchRecords();
-           
+            await _PageViewModel.SearchRecords();
+
         }
         /// <summary>
         ///  新增记录
@@ -54,21 +53,21 @@ namespace Office.Work.Platform.Remuneration
         {
             Lib.MemberPay NewRecord = new Lib.MemberPay()
             {
-                MemberId = _PageMemberPayVM.CurMember.MemberId,
-                MemberName = _PageMemberPayVM.CurMember.MemberName,
-                MemberIndex = _PageMemberPayVM.CurMember.OrderIndex,
-                MemberType = _PageMemberPayVM.CurMember.MemberType,
-                UserId = AppSettings.LoginUser.Id
+                MemberId = _PageViewModel.CurMember.MemberId,
+                MemberName = _PageViewModel.CurMember.MemberName,
+                MemberIndex = _PageViewModel.CurMember.OrderIndex,
+                MemberType = _PageViewModel.CurMember.MemberType,
+                UserId = AppSet.LoginUser.Id
             };
 
-            PageMemberPayWin AddWin = new PageMemberPayWin(NewRecord, _PageMemberPayVM.MemberPayItems.ToList());
-            AddWin.Owner = AppSettings.AppMainWindow;
+            PageMemberPayWin AddWin = new PageMemberPayWin(NewRecord, _PageViewModel.MemberPayItems.ToList());
+            AddWin.Owner = AppSet.AppMainWindow;
 
             if (AddWin.ShowDialog().Value)
             {
                 IEnumerable<MemberPay> MemberPlays = await DataMemberPayRepository.GetRecords(new MemberPaySearch()
                 {
-                    UserId = AppSettings.LoginUser.Id,
+                    UserId = AppSet.LoginUser.Id,
                     MemberId = NewRecord.MemberId,
                     PayYear = NewRecord.PayYear,
                     PayMonth = NewRecord.PayMonth,
@@ -86,7 +85,7 @@ namespace Office.Work.Platform.Remuneration
                     if (excuteResult.State == 0)
                     {
                         NewRecord.Id = excuteResult.Tag;
-                        _PageMemberPayVM.MemberPays.Add(NewRecord);
+                        _PageViewModel.MemberPays.Add(NewRecord);
                     }
                     else
                     {
@@ -114,7 +113,7 @@ namespace Office.Work.Platform.Remuneration
                     ExcuteResult excuteResult = await DataMemberPayRepository.DeleteRecord(SelectedRec);
                     if (excuteResult.State == 0)
                     {
-                        _PageMemberPayVM.MemberPays.Remove(SelectedRec);
+                        _PageViewModel.MemberPays.Remove(SelectedRec);
                     }
                     else
                     {
@@ -130,107 +129,115 @@ namespace Office.Work.Platform.Remuneration
         /// <param name="e"></param>
         private async void ListBox_SelectionChangedAsync(object sender, SelectionChangedEventArgs e)
         {
-            _PageMemberPayVM.MemberPays.Clear();
-            if (ListBox_PaySetMembers.SelectedItem is Lib.MemberPaySet PSMember)
+            _PageViewModel.MemberPays.Clear();
+            if (ListBox_PaySetMembers.SelectedItem is Lib.MemberPaySet MemberPset)
             {
-                _PageMemberPayVM.CanOperation = true;
-                _PageMemberPayVM.CurMember = PSMember;
-                await UcMemberPayFile.InitFileDatasAsync(PSMember.MemberId, "个人待遇", true);
+                _PageViewModel.CanOperation = true;
+                _PageViewModel.CurMember = MemberPset;
+                await UcMemberPayFile.InitFileDatasAsync(MemberPset.MemberId, "个人待遇", true);
 
             }
             else
             {
-                _PageMemberPayVM.CanOperation = false;
-                _PageMemberPayVM.CurMember = null;
+                _PageViewModel.CanOperation = false;
+                _PageViewModel.CurMember = null;
             }
 
         }
-    }
-    //****************************************************************************************************************************************
-
-    public class PageMemberPayVM : NotificationObject
-    {
-        private bool _CanOperation = false;
-
-        public PageMemberPayVM()
+        //****************************************************************************************************************************************
+        /// <summary>
+        /// 该页面的视图模型类
+        /// </summary>
+        private class PageViewModel : NotificationObject
         {
-            MemberPays = new ObservableCollection<MemberPay>();
-            PaySetMembers = new ObservableCollection<MemberPaySet>();
-            SearchCondition = new MemberPaySearch();
-        }
-        public async Task InitVMAsync()
-        {
-            PaySetMembers.Clear();
-            //读取可发放待遇的所有用户列表
-            var TempMemberPaySets = await DataMemberPaySetRepository.GetRecords(new MemberPaySetSearch()
-            {
-                UserId = AppSettings.LoginUser.Id,
-                PayUnitName = AppSettings.LoginUser.UnitName
-            });
-            TempMemberPaySets.ToList().ForEach(e =>
-            {
-                PaySetMembers.Add(e);
-            });
-            //读取可发放的所有待遇项目列表
-            MemberPayItems = await DataMemberPayItemRepository.GetRecords(new Lib.MemberPayItemSearch()
-            {
-                UnitName = AppSettings.LoginUser.UnitName,
-                UserId = AppSettings.LoginUser.Id
+            private bool _CanOperation = false;
 
-            }).ConfigureAwait(false);
-        }
-        public async System.Threading.Tasks.Task SearchRecords()
-        {
-            if (SearchCondition != null)
+            public PageViewModel()
             {
-                IEnumerable<MemberPay> MemberPlayMonths = await DataMemberPayRepository.GetRecords(new MemberPaySearch()
+                MemberPays = new ObservableCollection<MemberPay>();
+                PaySetMembers = new ObservableCollection<MemberPaySet>();
+                SearchCondition = new MemberPaySearch();
+            }
+            /// <summary>
+            /// 初始化各类属性值
+            /// </summary>
+            /// <returns></returns>
+            public async Task InitPropValuesAsync()
+            {
+                //读取可发放的所有待遇项目列表
+                var TempPayItems = await DataMemberPayItemRepository.GetRecords(new MemberPayItemSearch(AppSet.LoginUser.UnitName, AppSet.LoginUser.Id)).ConfigureAwait(false);
+                MemberPayItems = TempPayItems.ToList();
+                MemberPayItems.Sort((x, y) => x.OrderIndex - y.OrderIndex);
+
+                //读取可发放待遇的所有用户列表
+                var TempMemberPaySets = await DataMemberPaySetRepository.GetRecords(new MemberPaySetSearch(AppSet.LoginUser.UnitName, AppSet.LoginUser.Id)).ConfigureAwait(false);
+                PaySetMembers.Clear();
+                TempMemberPaySets?.ToList().ForEach(e =>
                 {
-                    PayYear = SearchDate.Year,
-                    PayMonth = SearchDate.Month,
-                    MemberId = CurMember.MemberId,
-                    UserId = AppSettings.LoginUser.Id
-                });
-                MemberPays.Clear();
-                MemberPlayMonths.ToList().ForEach(e =>
-                {
-                    MemberPays.Add(e);
+                    PaySetMembers.Add(e);
                 });
             }
+            /// <summary>
+            /// 查询数据
+            /// </summary>
+            /// <returns></returns>
+            public async Task SearchRecords()
+            {
+                if (SearchCondition != null)
+                {
+                    IEnumerable<MemberPay> MemberPlayMonths = await DataMemberPayRepository.GetRecords(new MemberPaySearch()
+                    {
+                        PayYear = SearchDate.Year,
+                        PayMonth = SearchDate.Month,
+                        MemberId = CurMember.MemberId,
+                        UserId = AppSet.LoginUser.Id
+                    });
+                    MemberPays.Clear();
+                    MemberPlayMonths.ToList().ForEach(e =>
+                    {
+                        MemberPays.Add(e);
+                    });
+                }
+            }
+
+
+            /// <summary>
+            /// 是否可以操作（只有选中一个用户后，才能操作）
+            /// </summary>
+            public bool CanOperation
+            {
+                get { return _CanOperation; }
+                set { _CanOperation = value; RaisePropertyChanged(); }
+            }
+            /// <summary>
+            /// 查询时间
+            /// </summary>
+            public DateTime SearchDate { get; set; } = DateTime.Now;
+            /// <summary>
+            /// 当前选定可发放待遇的职工信息
+            /// </summary>
+            public Lib.MemberPaySet CurMember { get; set; }
+            /// <summary>
+            /// 查询条件类对象
+            /// </summary>
+            public MemberPaySearch SearchCondition { get; set; }
+
+            /// <summary>
+            /// 当前职工工资月度发放记录
+            /// </summary>
+            public ObservableCollection<MemberPay> MemberPays { get; set; }
+            /// <summary>
+            /// 当前用户所在单位设置可发放待遇项目。
+            /// </summary>
+            public List<MemberPayItem> MemberPayItems { get; set; }
+
+            /// <summary>
+            /// 当前用户所在单位设置可发放待遇的所有人员（即在MemberPaySet中配置的人员）。
+            /// </summary>
+            public ObservableCollection<Lib.MemberPaySet> PaySetMembers { get; set; }
+
         }
-        /// <summary>
-        /// 当前用户所在单位设置可发放待遇项目。
-        /// </summary>
-        public bool CanOperation
-        {
-            get { return _CanOperation; }
-            set { _CanOperation = value; RaisePropertyChanged(); }
-        }
-        /// <summary>
-        /// 查询时间
-        /// </summary>
-        public DateTime SearchDate { get; set; } = DateTime.Now;
-        /// <summary>
-        /// 当前选定可发放待遇的职工信息
-        /// </summary>
-        public Lib.MemberPaySet CurMember { get; set; }
-        /// <summary>
-        /// 查询条件类对象
-        /// </summary>
-        public MemberPaySearch SearchCondition { get; set; }
-
-        /// <summary>
-        /// 当前职工工资月度发放记录
-        /// </summary>
-        public ObservableCollection<MemberPay> MemberPays { get; set; }
-        /// <summary>
-        /// 当前用户所在单位设置可发放待遇项目。
-        /// </summary>
-        public IEnumerable<MemberPayItem> MemberPayItems { get; set; }
-
-        /// <summary>
-        /// 当前用户所在单位设置可发放待遇的所有人员（即在MemberPaySet中配置的人员）。
-        /// </summary>
-        public ObservableCollection<Lib.MemberPaySet> PaySetMembers { get; set; }
-
     }
+
+
 }

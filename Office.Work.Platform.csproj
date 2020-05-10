@@ -95,6 +95,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Cef_WebkitChrome" Version="1.0.0" />
     <PackageReference Include="DotNetCore.NPOI" Version="1.2.2" />
     <PackageReference Include="IdentityModel" Version="4.2.0" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
@@ -212,6 +213,9 @@
     <Compile Update="PageHome.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Settings\PageSettingsTheme.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Settings\PageSettingsSys.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -273,6 +277,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Remuneration\PageMemberPayFastWin.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Settings\PageSettingsTheme.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Settings\PageSettingsSys.xaml">

@@ -17,7 +17,7 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<string[]> GetPayTableTypes()
         {
-            return await DataApiRepository.GetApiUri<string[]>(AppSettings.ApiUrlBase + $"MemberPaySheet/GetPayTableTypes").ConfigureAwait(false);
+            return await DataApiRepository.GetApiUri<string[]>(AppSet.ApiUrlBase + $"MemberPaySheet/GetPayTableTypes").ConfigureAwait(false);
         }
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace Office.Work.Platform.AppDataService
 
             if (urlParams.Length > 0)
             {
-                return await DataApiRepository.GetApiUri<string>(AppSettings.ApiUrlBase + "MemberPaySheet/GetMemberPaySheet" + urlParams).ConfigureAwait(false);
+                return await DataApiRepository.GetApiUri<string>(AppSet.ApiUrlBase + "MemberPaySheet/GetMemberPaySheet" + urlParams).ConfigureAwait(false);
             }
             return null;
         }
@@ -43,7 +43,7 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<ExcuteResult> PostMemberPaySheet(MemberPayFastByPaySet PayFastInfo)
         {
-            return await DataApiRepository.PostApiUriAsync(AppSettings.ApiUrlBase + $"MemberPaySheet/PostMemberPaySheet", PayFastInfo, null).ConfigureAwait(false);
+            return await DataApiRepository.PostApiUriAsync(AppSet.ApiUrlBase + $"MemberPaySheet/PostMemberPaySheet", PayFastInfo, null).ConfigureAwait(false);
         }
     }
 }

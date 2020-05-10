@@ -11,6 +11,7 @@
       Loaded="Page_LoadedAsync"
       Title="PageMakeNewPay">
     <Page.Resources>
+
         <Style x:Key="TextboxStyle" TargetType="TextBox">
             <Setter Property="TextAlignment" Value="Left"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -23,7 +24,7 @@
             <Setter Property="Control.Template">
                 <Setter.Value>
                     <ControlTemplate>
-                        <TextBox Text="{Binding Path=SelectedDate, StringFormat='yyyy/MM', RelativeSource={RelativeSource AncestorType=DatePicker}}" />
+                        <TextBox Text="{Binding Path=SelectedDate, StringFormat=yyyy/MM, RelativeSource={RelativeSource AncestorType=DatePicker}}" />
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -34,7 +35,6 @@
             <Setter Property="Margin" Value="3,5"/>
             <Setter Property="Width" Value="185"/>
         </Style>
-
         <Style TargetType="DataGrid">
             <Setter Property="ColumnHeaderStyle" Value="{DynamicResource ColumnHeaderStyle}"/>
             <Setter Property="CellStyle" Value="{DynamicResource CellStyle}"/>
@@ -93,13 +93,29 @@
         </Style>
     </Page.Resources>
     <Grid>
-        <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Border Grid.Row="0" Background="#FFFAF0" Padding="0,10" Margin="0,1" HorizontalAlignment="Stretch">
+            <TextBlock  VerticalAlignment="Center" Foreground="#FF495981"
+                        HorizontalAlignment="Left" FontSize="14" Padding="10,0,0,0">
+                <Run  Text="> 劳资管理—个人明细"/>
+                <Run  Text="[查看或发放单个人员待遇]"/>
+            </TextBlock>
+        </Border>
+        <Grid Grid.Row="1" >
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
-            <ListBox ItemsSource="{Binding PaySetMembers}" x:Name="ListBox_PaySetMembers" SelectionChanged="ListBox_SelectionChangedAsync">
+            <ListBox ItemsSource="{Binding PaySetMembers}"
+                     Margin="2,0"
+                      Padding="5,0"
+                     x:Name="ListBox_PaySetMembers" 
+                     HorizontalAlignment="Center"
+                     SelectionChanged="ListBox_SelectionChangedAsync">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock FontSize="15" Margin="2">
@@ -111,14 +127,14 @@
             <StackPanel Grid.Column="1"   Orientation="Vertical" 
                         IsEnabled="{Binding CanOperation}"
                         HorizontalAlignment="Stretch" >
-                <StackPanel Orientation="Horizontal" Margin="0,10" >
+                <ToolBar FontSize="14" Cursor="Hand">
                     <DatePicker Style="{StaticResource DatePickerStyle}"
                                 SelectedDate="{Binding SearchDate}" 
                                 AppCodes:DatePickerCalendar.IsMonthYear="True"/>
                     <Button Click="BtnSearchClickAsync" Content="查询" Width="60" Margin="2,0,10,0"/>
                     <Button Click="BtnAddClickAsync" Content="新增" Width="60" Margin="2,0,10,0"/>
                     <Button Click="BtnDelClickAsync" Content="删除" Width="60" Margin="2,0,10,0"/>
-                </StackPanel>
+                </ToolBar>
                 <DataGrid x:Name="RecordDataGrid" ItemsSource="{Binding MemberPays}" >
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="年份" Binding="{Binding PayYear}" />

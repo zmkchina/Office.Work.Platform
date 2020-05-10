@@ -22,12 +22,9 @@ namespace Office.Work.Platform.Remuneration
 
         private async void Page_LoadedAsync(object sender, System.Windows.RoutedEventArgs e)
         {
-            IEnumerable<Lib.MemberPayItem> MemberPayItems = await DataMemberPayItemRepository.GetRecords(new Lib.MemberPayItemSearch()
-            {
-                UnitName = AppSettings.LoginUser.UnitName,
-                UserId = AppSettings.LoginUser.Id
-            }).ConfigureAwait(false);
+            IEnumerable<Lib.MemberPayItem> MemberPayItems = await DataMemberPayItemRepository.GetRecords(new Lib.MemberPayItemSearch(AppSet.LoginUser.UnitName, AppSet.LoginUser.Id)).ConfigureAwait(false);
             cvm.PayItems.Clear();
+            MemberPayItems = MemberPayItems.OrderBy(x => x.OrderIndex);
             MemberPayItems.ToList().ForEach(e =>
             {
                 cvm.PayItems.Add(e);

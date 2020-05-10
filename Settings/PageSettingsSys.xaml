@@ -24,6 +24,9 @@
             <Button Content="更新设置" Margin="5,10,5,10" Height="35" Width="120" HorizontalAlignment="Left"
                             x:Name="BtnUpdateSettings"
                             Click="BtnUpdateSettings_Click"/>
+
+            <Button Content="应用主题" Margin="5,10,5,10" Height="35" Width="120" HorizontalAlignment="Left"
+                            Click="BtnUpdateTheme_Click"/>
         </StackPanel>
     </Grid>
 </Page>

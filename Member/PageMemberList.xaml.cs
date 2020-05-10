@@ -13,12 +13,11 @@ using Office.Work.Platform.Lib;
 namespace Office.Work.Platform.Member
 {
     /// <summary>
-    /// PageFilesList.xaml 的交互逻辑
+    /// 职工信息列表页面
     /// </summary>
     public partial class PageMemberList : Page
     {
-        private PageMemberListVM _PageMemberListVM;
-        private MemberSearch mSearch;
+        private PageViewModel _PageViewModel;
 
         public PageMemberList()
         {
@@ -26,15 +25,11 @@ namespace Office.Work.Platform.Member
         }
         private async void Page_LoadedAsync(object sender, RoutedEventArgs e)
         {
-            if (_PageMemberListVM == null)
+            if (_PageViewModel == null)
             {
-                _PageMemberListVM = new PageMemberListVM();
-                mSearch = new MemberSearch()
-                {
-                    UnitName = AppSettings.LoginUser.UnitName
-                };
-                await SearchMember(mSearch);
-                DataContext = _PageMemberListVM;
+                _PageViewModel = new PageViewModel();
+                await SearchMember();
+                DataContext = _PageViewModel;
                 CB_FieldName.SelectedIndex = 0;
             }
         }
@@ -45,45 +40,48 @@ namespace Office.Work.Platform.Member
         /// <param name="e"></param>
         private async void btn_Refrash_ClickAsync(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(_PageMemberListVM.FieldValue))
+            if (string.IsNullOrWhiteSpace(_PageViewModel.FieldValue))
             {
                 return;
             }
-            if (!_PageMemberListVM.SearchInResult)
+            //是否在结果中查询
+            if (!_PageViewModel.SearchInResult)
             {
-                mSearch = new MemberSearch();
+                _PageViewModel.mSearch = new MemberSearch();
             }
+
             //设置查询条件
-            PropertyInfo[] SourceAttris = mSearch.GetType().GetProperties();
-            var tempObj = SourceAttris.Where(x => x.Name.Equals(_PageMemberListVM.FieldEnName, StringComparison.Ordinal)).FirstOrDefault();
+            PropertyInfo[] SourceAttris = _PageViewModel.mSearch.GetType().GetProperties();
+            var tempObj = SourceAttris.Where(x => x.Name.Equals(_PageViewModel.FieldEnName, StringComparison.Ordinal)).FirstOrDefault();
             if (tempObj != null)
             {
-                tempObj.SetValue(mSearch, _PageMemberListVM.FieldValue);
+                tempObj.SetValue(_PageViewModel.mSearch, _PageViewModel.FieldValue);
             }
-            await SearchMember(mSearch);
+            await SearchMember();
         }
         /// <summary>
         /// 查询指定条件的记录
         /// </summary>
-        /// <param name="mSearch"></param>
         /// <returns></returns>
-        private async System.Threading.Tasks.Task SearchMember(MemberSearch mSearch)
+        private async System.Threading.Tasks.Task SearchMember()
         {
-            List<Lib.Member> MemberList = await DataMemberRepository.ReadMembers(mSearch);
+            List<Lib.Member> MemberList = await DataMemberRepository.ReadMembers(_PageViewModel.mSearch);
             MemberList.Sort((x, y) => x.OrderIndex - y.OrderIndex);
+
             if (MemberList != null && MemberList.Count > 0)
             {
-                _PageMemberListVM.EntityList.Clear();
-                MemberList.ForEach(e => { _PageMemberListVM.EntityList.Add(e); });
+                _PageViewModel.EntityList.Clear();
+                MemberList.ForEach(e => { _PageViewModel.EntityList.Add(e); });
             }
             else
             {
-                _PageMemberListVM.EntityList.Clear();
+                _PageViewModel.EntityList.Clear();
             }
-            AppSettings.AppMainWindow.lblCursorPosition.Text = $"共查询到记录：{_PageMemberListVM.EntityList.Count}条";
+
+            AppSet.AppMainWindow.lblCursorPosition.Text = $"共查询到记录：{_PageViewModel.EntityList.Count}条";
         }
         /// <summary>
-        /// 
+        /// 双击开始编辑职工信息
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -92,7 +90,7 @@ namespace Office.Work.Platform.Member
             if (((System.Windows.FrameworkElement)sender).DataContext is Lib.Member CurMember)
             {
                 PageEditMember pageEditMember = new PageEditMember(CurMember);
-                AppSettings.AppMainWindow.FrameContentPage.Content = pageEditMember;
+                AppSet.AppMainWindow.FrameContentPage.Content = pageEditMember;
             }
         }
 
@@ -110,7 +108,7 @@ namespace Office.Work.Platform.Member
                     ExcuteResult excuteResult = await DataMemberRepository.DeleteMember(SelectMember).ConfigureAwait(false);
                     if (excuteResult.State == 0)
                     {
-                        await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { _PageMemberListVM.EntityList.Remove(SelectMember); })); ;
+                        await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { _PageViewModel.EntityList.Remove(SelectMember); })); ;
                     }
                     else
                     {
@@ -119,37 +117,45 @@ namespace Office.Work.Platform.Member
                 }
             }
         }
-
+        /// <summary>
+        /// 本页面退出
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
-            AppSettings.AppMainWindow.lblCursorPosition.Text = "就绪";
+            AppSet.AppMainWindow.lblCursorPosition.Text = "就绪";
         }
-    }
 
 
-
-    public class PageMemberListVM : NotificationObject
-    {
-
-        public ObservableCollection<Lib.Member> EntityList { get; set; }
-        public Dictionary<string, string> FieldCn2En { get; set; }
-
-        public string FieldEnName { get; set; }
-        public string FieldValue { get; set; }
-        public bool SearchInResult { get; set; }
-
-        #region "方法"
         /// <summary>
-        /// 构造函数
+        /// 本页面的查询类
         /// </summary>
-        public PageMemberListVM()
+        public class PageViewModel : NotificationObject
         {
-            EntityList = new ObservableCollection<Lib.Member>();
-            FieldCn2En = new Dictionary<string, string>() { { "Name", "姓名" }, { "UnitName", "单位" },
-                { "Job", "岗位性质" }, { "JobGrade", "岗位级别" }, { "EducationTop", "最高学历" }, { "Age", "年龄" },{ "Remarks", "备注" }
-        };
-        }
 
-        #endregion
+            public ObservableCollection<Lib.Member> EntityList { get; set; }
+            public Dictionary<string, string> FieldCn2En { get; set; }
+            public MemberSearch mSearch;
+            public string FieldEnName { get; set; }
+            public string FieldValue { get; set; }
+            public bool SearchInResult { get; set; }
+
+            #region "方法"
+            /// <summary>
+            /// 构造函数
+            /// </summary>
+            public PageViewModel()
+            {
+                mSearch = new MemberSearch()
+                {
+                    UnitName = AppSet.LoginUser.UnitName
+                };
+                EntityList = new ObservableCollection<Lib.Member>();
+                FieldCn2En = new Dictionary<string, string>() { { "Name", "姓名" }, { "UnitName", "单位" },{ "Job", "岗位性质" }, { "TechnicalTitle", "技术职称" },
+                    { "EducationTop", "最高学历" }, { "Age", "年龄" },{ "PoliticalStatus", "政治面貌"  },{ "Remarks", "备注" }  };
+            }
+            #endregion
+        }
     }
 }

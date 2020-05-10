@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using Newtonsoft.Json.Linq;
 using Office.Work.Platform.AppCodes;
@@ -19,15 +21,17 @@ namespace Office.Work.Platform.Remuneration
     public partial class PageMemberPayFast : Page
     {
         public DateTime PayYearMonth { get; set; } = DateTime.Now;
+        public JArray PaySetJArray { get; set; }
         private List<string> PayItemNameList { get; set; }
-        private JArray PaySetJArray { get; set; }
         private const string SelectedChar = "✔";
         private const string NoSelectedChar = "❌";
         public PageMemberPayFast()
         {
             InitializeComponent();
+           
+            DataGridResult.UpdateLayout();
             PayItemNameList = new List<string>();
-            Run_PayUnitName.Text = AppSettings.LoginUser.UnitName;
+            Run_PayUnitName.Text = AppSet.LoginUser.UnitName;
         }
 
         private async void Page_LoadedAsync(object sender, RoutedEventArgs e)
@@ -40,7 +44,6 @@ namespace Office.Work.Platform.Remuneration
                 //DataGridResult.ItemsSource = PaySetJArray;
                 // DataGridResult.Columns.Add(new DataGridTextColumn() { Header = "身份证号", Binding = new Binding("身份证号") });
                 // DataGridResult.Columns.Add(new DataGridCheckBoxColumn() { Header = "个税", Binding = new Binding("个税") });
-                DataGridResult.ItemsSource = PaySetJArray;
                 this.DataContext = this;
             });
         }
@@ -49,11 +52,7 @@ namespace Office.Work.Platform.Remuneration
 
             //1.查询所有可发放的待遇项目信息
             JArray PaySetJArray = new JArray();
-            IEnumerable<MemberPayItem> PayItems = await DataMemberPayItemRepository.GetRecords(new MemberPayItemSearch()
-            {
-                UnitName = AppSettings.LoginUser.UnitName,
-                UserId = AppSettings.LoginUser.Id
-            }).ConfigureAwait(false);
+            IEnumerable<MemberPayItem> PayItems = await DataMemberPayItemRepository.GetRecords(new MemberPayItemSearch(AppSet.LoginUser.UnitName, AppSet.LoginUser.Id)).ConfigureAwait(false);
 
             PayItemNameList = PayItems.Select(x => x.Name).ToList();
 
@@ -64,11 +63,7 @@ namespace Office.Work.Platform.Remuneration
 
 
             //2.查询已经配置的拷贝项目数据信息
-            IEnumerable<MemberPaySet> OldPaySets = await DataMemberPaySetRepository.GetRecords(new MemberPaySetSearch()
-            {
-                UserId = AppSettings.LoginUser.UnitName,
-                PayUnitName = AppSettings.LoginUser.UnitName
-            }).ConfigureAwait(false);
+            IEnumerable<MemberPaySet> OldPaySets = await DataMemberPaySetRepository.GetRecords(new MemberPaySetSearch(AppSet.LoginUser.UnitName, AppSet.LoginUser.Id)).ConfigureAwait(false);
 
             //3.定义绑定到界面的数据对象。
             if (OldPaySets != null && OldPaySets.Count() > 0)
@@ -104,7 +99,7 @@ namespace Office.Work.Platform.Remuneration
                 //(1)如果没有则“查询该单位所有人员信息列表”
                 IEnumerable<Lib.Member> Members = await DataMemberRepository.ReadMembers(new MemberSearch()
                 {
-                    UnitName = AppSettings.LoginUser.UnitName
+                    UnitName = AppSet.LoginUser.UnitName
                 }).ConfigureAwait(false);
                 List<Lib.Member> MemberList = Members.ToList();
                 MemberList.Sort((x, y) => x.OrderIndex - y.OrderIndex);
@@ -167,7 +162,7 @@ namespace Office.Work.Platform.Remuneration
                             break;
                     }
                 }
-                TempPaySet.UserId = AppSettings.LoginUser.Id;
+                TempPaySet.UserId = AppSet.LoginUser.Id;
                 NewPaySetList.Add(TempPaySet);
             }
             //2.保存
@@ -202,7 +197,7 @@ namespace Office.Work.Platform.Remuneration
             }
 
             JObject NewDic = new JObject();
-            NewDic.Add(PayItemNameList[0], AppSettings.LoginUser.UnitName);
+            NewDic.Add(PayItemNameList[0], AppSet.LoginUser.UnitName);
             NewDic.Add(PayItemNameList[1], NewMamber.UnitName);
             NewDic.Add(PayItemNameList[2], NewMamber.Id);
             NewDic.Add(PayItemNameList[3], NewMamber.Name);
@@ -219,18 +214,7 @@ namespace Office.Work.Platform.Remuneration
             }
             PaySetJArray.Add(NewDic);
         }
-        /// <summary>
-        /// 删除员工
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Btn_Del_ClickAnsyc(object sender, RoutedEventArgs e)
-        {
-            if (DataGridResult.SelectedItem is JObject curItem)
-            {
-                PaySetJArray.Remove(curItem);
-            }
-        }
+       
         /// <summary>
         /// 双击变换选中状态
         /// </summary>
@@ -268,15 +252,27 @@ namespace Office.Work.Platform.Remuneration
             {
                 PayYear = PayYearMonth.Year,
                 PayMonth = PayYearMonth.Month,
-                PayUnitName = AppSettings.LoginUser.UnitName,
-                UserId = AppSettings.LoginUser.Id
+                PayUnitName = AppSet.LoginUser.UnitName,
+                UserId = AppSet.LoginUser.Id
             };
             ExcuteResult excuteResult = await DataMemberPaySheetRepository.PostMemberPaySheet(PayFastInfo).ConfigureAwait(false);
             App.Current.Dispatcher.Invoke(() =>
             {
-                (new WinMsgDialog(excuteResult.Msg)).ShowDialog();
+                AppCodes.AppFuns.ShowMessage(excuteResult.Msg);
                 if (curBtn != null) { curBtn.IsEnabled = true; }
             });
+        }
+        /// <summary>
+        /// 删除员工
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Btn_Del_ClickAnsyc(object sender, RoutedEventArgs e)
+        {
+            if (DataGridResult.SelectedItem is JObject curItem)
+            {
+                PaySetJArray.Remove(curItem);
+            }
         }
     }
 }

@@ -12,7 +12,7 @@
         <Style x:Key="TextboxStyle" TargetType="TextBox">
             <Setter Property="TextAlignment" Value="Left"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontSize" Value="14"/>
             <Setter Property="Margin" Value="5"/>
             <Setter Property="Width" Value="180"/>
         </Style>
@@ -22,7 +22,7 @@
             <Setter Property="ColumnHeaderStyle" Value="{DynamicResource ColumnHeaderStyle}"/>
             <Setter Property="CellStyle" Value="{DynamicResource CellStyle}"/>
             <Setter Property="RowStyle" Value="{DynamicResource RowStyle}"/>
-            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontSize" Value="14"/>
             <Setter Property="EnableColumnVirtualization" Value="true"/>
             <Setter Property="EnableRowVirtualization" Value="true"/>
             <Setter Property="Margin" Value="5"/>
@@ -79,10 +79,18 @@
     </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <ToolBar Grid.Row="0">
+        <Border Grid.Row="0" Background="#FFFAF0" Padding="0,10" Margin="0,1" HorizontalAlignment="Stretch">
+            <TextBlock  VerticalAlignment="Center" Foreground="#FF495981"
+                        HorizontalAlignment="Left" FontSize="14" Padding="10,0,0,0">
+                <Run  Text="> 人事管理—职工花名称"/>
+                <Run  Text="[可以查询或导出人员信息表]"/>
+            </TextBlock>
+        </Border>
+        <ToolBar Grid.Row="1" FontSize="14" Padding="0,2" Cursor="Hand">
             <ComboBox x:Name="CB_FieldName" MinWidth="100" 
                       SelectedValuePath = "Key" 
                       DisplayMemberPath = "Value" 
@@ -95,19 +103,26 @@
             <Button Content="开始查询" Name="btn_Refrash" Foreground="Blue" Margin="5,0" Click="btn_Refrash_ClickAsync" />
             <Button Content="删除选定记录" Name="btn_Delete" Foreground="Red" Margin="5,0" Click="btn_Delete_ClickAsync" />
         </ToolBar>
-        <DataGrid x:Name="RecordDataGrid" ItemsSource="{Binding EntityList}" Grid.Row="1"  SelectionUnit="FullRow">
+        <DataGrid x:Name="RecordDataGrid" ItemsSource="{Binding EntityList}" Grid.Row="2"  SelectionUnit="FullRow">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="排序" Binding="{Binding OrderIndex}" />
                 <DataGridTextColumn Header="单位" Binding="{Binding UnitName}" />
                 <DataGridTextColumn Header="姓名" Binding="{Binding Name}"/>
                 <DataGridTextColumn Header="性别" Binding="{Binding Sex}"/>
                 <DataGridTextColumn Header="出生年月" Binding="{Binding Birthday,StringFormat= {}{0:yyyy/MM/dd}}"/>
+                <DataGridTextColumn Header="政治面貌" Binding="{Binding PoliticalStatus}"/>
+                <DataGridTextColumn Header="最高学历" Binding="{Binding EducationTop}"/>
+                <DataGridTextColumn Header="最高学历所学专业" Binding="{Binding MajorTop}"/>
+                <DataGridTextColumn Header="参加工作时间" Binding="{Binding BeginWork,StringFormat= {}{0:yyyy/MM/dd}}"/>
                 <DataGridTextColumn Header="部门" Binding="{Binding Department}"/>
-                <DataGridTextColumn Header="职务" Binding="{Binding Post}"/>
+                <DataGridTextColumn Header="行政职务" Binding="{Binding Post}"/>
+                <DataGridTextColumn Header="党内职务" Binding="{Binding PostInCPC}"/>
+                <DataGridTextColumn Header="技术职称" Binding="{Binding TechnicalTitle}"/>
                 <DataGridTextColumn Header="岗位性质" Binding="{Binding Job}"/>
                 <DataGridTextColumn Header="岗位级别" Binding="{Binding JobGrade}"/>
                 <DataGridTextColumn Header="固定电话" Binding="{Binding FixPhoneCode}"/>
                 <DataGridTextColumn Header="移动电话" Binding="{Binding MobileCode}"/>
+                <DataGridTextColumn Header="人员性质" Binding="{Binding MemberType}"/>
                 <DataGridTextColumn Header="更新日期" Binding="{Binding UpDateTime,StringFormat= {}{0:yyyy/MM/dd}}"/>
             </DataGrid.Columns>
         </DataGrid>

@@ -8,10 +8,19 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="PageAddMembers">
     <Grid>
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Margin="0,20">
-            <Button  FontSize="16" Width="50" Content="选择"  VerticalAlignment="Center" Margin="10,5" Click="BtnSelectFile_Click"/>
-            <TextBlock x:Name="TB_ExcelName" Text="{Binding ExcelName,StringFormat=职工信息文件：{0}}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
-            <TextBlock x:Name="TB_AddCount"  Text="{Binding AddCount,StringFormat=正在上传第{0}个职工信息。}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Margin="0,0" TextElement.FontSize="14">
+            <Border Background="#FFFAF0" Padding="0,10" Margin="0,1" HorizontalAlignment="Stretch">
+                <TextBlock  VerticalAlignment="Center" Foreground="#FF495981"
+                        HorizontalAlignment="Left" FontSize="14" Padding="10,0,0,0">
+                <Run  Text="> 人事管理—批量新增"/>
+                <Run  Text="[从Excel数据表中导入人员信息]"/>
+                </TextBlock>
+            </Border>
+            <ToolBar Grid.Row="0">
+                <Button  FontSize="14" Content="选择职工数据文件"  VerticalAlignment="Center" Margin="10,5" Click="BtnSelectFile_Click"/>
+            </ToolBar>
+            <TextBlock x:Name="TB_ExcelName" Text="{Binding ExcelName,StringFormat=职工信息文件：{0}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="5,10"/>
+            <TextBlock x:Name="TB_AddCount"  Text="{Binding AddCount,StringFormat=正在上传第{0}个职工信息。}" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="5,10"/>
         </StackPanel>
     </Grid>
 </Page>

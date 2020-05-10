@@ -24,7 +24,7 @@ namespace Office.Work.Platform.AppDataService
 
                 if (urlParams.Length > 0)
                 {
-                    RecList = await DataApiRepository.GetApiUri<IEnumerable<MemberRelations>>(AppSettings.ApiUrlBase + "MemberRelations/Search" + urlParams).ConfigureAwait(false);
+                    RecList = await DataApiRepository.GetApiUri<IEnumerable<MemberRelations>>(AppSet.ApiUrlBase + "MemberRelations/Search" + urlParams).ConfigureAwait(false);
                 }
                 return RecList;
             }
@@ -35,7 +35,7 @@ namespace Office.Work.Platform.AppDataService
             /// <returns></returns>
             public static async Task<ExcuteResult> AddRecord(Lib.MemberRelations PEntity)
             {
-                ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(AppSettings.ApiUrlBase + "MemberRelations", PEntity).ConfigureAwait(false);
+                ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(AppSet.ApiUrlBase + "MemberRelations", PEntity).ConfigureAwait(false);
                 return JsonResult;
             }
             /// <summary>
@@ -45,7 +45,7 @@ namespace Office.Work.Platform.AppDataService
             /// <returns></returns>
             public static async Task<ExcuteResult> UpdateRecord(Lib.MemberRelations PEntity)
             {
-                ExcuteResult JsonResult = await DataApiRepository.PutApiUriAsync(AppSettings.ApiUrlBase + "MemberRelations", PEntity).ConfigureAwait(false);
+                ExcuteResult JsonResult = await DataApiRepository.PutApiUriAsync(AppSet.ApiUrlBase + "MemberRelations", PEntity).ConfigureAwait(false);
                 return JsonResult;
             }
             /// <summary>
@@ -55,7 +55,7 @@ namespace Office.Work.Platform.AppDataService
             /// <returns></returns>
             public static async Task<ExcuteResult> DeleteRecord(Lib.MemberRelations PEntity)
             {
-                ExcuteResult JsonResult = await DataApiRepository.DeleteApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "MemberRelations/?Id=" + PEntity.Id).ConfigureAwait(false);
+                ExcuteResult JsonResult = await DataApiRepository.DeleteApiUri<ExcuteResult>(AppSet.ApiUrlBase + "MemberRelations/?Id=" + PEntity.Id).ConfigureAwait(false);
                 return JsonResult;
             }
     }

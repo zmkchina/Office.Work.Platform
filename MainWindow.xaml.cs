@@ -33,7 +33,7 @@ namespace Office.Work.Platform
         public MainWindow()
         {
             InitializeComponent();
-            AppSettings.AppMainWindow = this;
+            AppSet.AppMainWindow = this;
             //以下代码，修复窗体全屏时覆盖任务栏以及大小不正确问题。
 
             FullScreenManager.RepairWpfWindowFullScreenBehavior(this);
@@ -91,22 +91,22 @@ namespace Office.Work.Platform
                 ShutDownApp();
             }
             //2.读取系统用户列表
-            AppSettings.SysUsers = await DataSystemRepository.ReadAllSysUsers();
-            if (AppSettings.SysUsers == null || AppSettings.SysUsers.Count < 2)
+            AppSet.SysUsers = await DataSystemRepository.ReadAllSysUsers();
+            if (AppSet.SysUsers == null || AppSet.SysUsers.Count < 2)
             {
                 (new WinMsgDialog("读取用户列表时出错，程序无法运行。", "错误",isErr:true)).ShowDialog();
                 //关闭本程序
                 ShutDownApp();
             }
             //3.读取服务器设置
-            AppSettings.ServerSetting = await DataSystemRepository.ReadServerSettings();
-            if (AppSettings.ServerSetting == null)
+            AppSet.ServerSetting = await DataSystemRepository.ReadServerSettings();
+            if (AppSet.ServerSetting == null)
             {
                 (new WinMsgDialog("读取系统设置信息时出错，程序无法运行。", "错误", isErr: true)).ShowDialog();
                 //关闭本程序
                 ShutDownApp();
             }
-            lblLoginMsg.Text = $"当前用户：{AppSettings.LoginUser.Name}-{AppSettings.LoginUser.UnitName}";
+            lblLoginMsg.Text = $"当前用户：{AppSet.LoginUser.Name}-{AppSet.LoginUser.UnitName}";
             ListBoxItem_MouseLeftButtonUp_0(null, null);
         }
         /// <summary>

@@ -20,7 +20,7 @@ namespace Office.Work.Platform.AppDataService
 
             if (urlParams.Length > 0)
             {
-                PlansList = await DataApiRepository.GetApiUri<IEnumerable<Lib.Plan>>(AppSettings.ApiUrlBase + "Plan/Search" + urlParams).ConfigureAwait(false);
+                PlansList = await DataApiRepository.GetApiUri<IEnumerable<Lib.Plan>>(AppSet.ApiUrlBase + "Plan/Search" + urlParams).ConfigureAwait(false);
             }
             return PlansList;
         }
@@ -31,7 +31,7 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<ExcuteResult> AddNewPlan(Lib.Plan PEntity)
         {
-            ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(AppSettings.ApiUrlBase + "Plan", PEntity).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(AppSet.ApiUrlBase + "Plan", PEntity).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -41,7 +41,7 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<ExcuteResult> UpdatePlan(Lib.Plan PEntity)
         {
-            ExcuteResult JsonResult = await DataApiRepository.PutApiUriAsync(AppSettings.ApiUrlBase + "Plan", PEntity).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.PutApiUriAsync(AppSet.ApiUrlBase + "Plan", PEntity).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -51,7 +51,7 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<ExcuteResult> DeletePlan(Lib.Plan DelePlan)
         {
-            ExcuteResult JsonResult = await DataApiRepository.DeleteApiUri<ExcuteResult>(AppSettings.ApiUrlBase + "Plan/" + DelePlan.Id).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.DeleteApiUri<ExcuteResult>(AppSet.ApiUrlBase + "Plan/" + DelePlan.Id).ConfigureAwait(false);
             return JsonResult;
         }
     }

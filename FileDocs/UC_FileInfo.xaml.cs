@@ -68,9 +68,9 @@ namespace Office.Work.Platform.FileDocs
             ExcuteResult JsonResult = await DataFileDocRepository.UpdateFileInfo(_UCFileInfoVM.CurFile);
             if (JsonResult.State == 0)
             {
-                AppSettings.AppMainWindow.lblCursorPosition.Text = JsonResult.Msg;
+                AppFuns.SetStateBarText(JsonResult.Msg);
             }
-               (new WinMsgDialog(JsonResult.Msg, "消息")).ShowDialog();
+            AppFuns.ShowMessage(JsonResult.Msg, "消息");
         }
         private async void btn_DeleFile(object sender, RoutedEventArgs e)
         {
@@ -78,7 +78,7 @@ namespace Office.Work.Platform.FileDocs
             if (JsonResult.State == 0)
             {
                 _DelFileCallBackFun?.Invoke(_UCFileInfoVM.CurFile);
-                AppSettings.SetStateBarText(JsonResult.Msg);
+                AppFuns.SetStateBarText(JsonResult.Msg);
             }
             else
             {
@@ -137,14 +137,14 @@ namespace Office.Work.Platform.FileDocs
         {
             if (PFile == null) return;
             CurFile = PFile;
-            OperateGrant = new FileOperateGrant(AppSettings.LoginUser, PFile);
+            OperateGrant = new FileOperateGrant(AppSet.LoginUser, PFile);
             if (PFile.CanReadUserIds != null)
             {
-                CurFileHasGrantNames = string.Join(",", AppSettings.SysUsers.Where(e => PFile.CanReadUserIds.Contains(e.Id, System.StringComparison.Ordinal)).Select(x => x.Name)?.ToArray());
+                CurFileHasGrantNames = string.Join(",", AppSet.SysUsers.Where(e => PFile.CanReadUserIds.Contains(e.Id, System.StringComparison.Ordinal)).Select(x => x.Name)?.ToArray());
             }
             if (PFile.UserId != null)
             {
-                CurFileCreateUserName = string.Join(",", AppSettings.SysUsers.Where(e => PFile.UserId.Equals(e.Id, System.StringComparison.Ordinal)).Select(x => x.Name)?.ToArray());
+                CurFileCreateUserName = string.Join(",", AppSet.SysUsers.Where(e => PFile.UserId.Equals(e.Id, System.StringComparison.Ordinal)).Select(x => x.Name)?.ToArray());
             }
         }
 
@@ -166,11 +166,11 @@ namespace Office.Work.Platform.FileDocs
                 {
                     CanRead = CanUpdate = "Visible";
                 }
-                else if (P_CurFile.UserId.Equals(AppSettings.LoginUser.Id, System.StringComparison.Ordinal))
+                else if (P_CurFile.UserId.Equals(AppSet.LoginUser.Id, System.StringComparison.Ordinal))
                 {
                     CanRead = CanUpdate = "Visible";
                 }
-                else if (P_CurFile.CanReadUserIds.Contains(AppSettings.LoginUser.Id, System.StringComparison.Ordinal))
+                else if (P_CurFile.CanReadUserIds.Contains(AppSet.LoginUser.Id, System.StringComparison.Ordinal))
                 {
                     CanRead = "Visible";
                 }

@@ -20,7 +20,7 @@ namespace Office.Work.Platform.FileDocs
 
         public WinUpLoadFile(Action<FileDoc> P_CallBackFunc, FileInfo P_FileInfo, string P_OwnerType, string P_OwnerId,string P_OwnerContentType)
         {
-            this.Owner =AppSettings.AppMainWindow;
+            this.Owner =AppSet.AppMainWindow;
             this.Height = 300;
             InitializeComponent();
             _WinUpLoadFileVM = new WinUpLoadFileVM(P_FileInfo, P_OwnerType, P_OwnerId, P_OwnerContentType);
@@ -40,7 +40,7 @@ namespace Office.Work.Platform.FileDocs
             }
             _WinUpLoadFileVM.EntityFile.CanReadUserIds = _WinUpLoadFileVM.GetSelectUserIds();
 
-            if (!_WinUpLoadFileVM.EntityFile.CanReadUserIds.Contains(AppSettings.LoginUser.Id))
+            if (!_WinUpLoadFileVM.EntityFile.CanReadUserIds.Contains(AppSet.LoginUser.Id))
             {
                 if(!(new WinMsgDialog("你本人没有读取该文件的权限？", Caption: "确认", showYesNo: true)).ShowDialog().Value)
                 {
@@ -104,7 +104,7 @@ namespace Office.Work.Platform.FileDocs
                 ContentType = P_OwnerContentType,
                 OwnerId = P_OwnerId,
                 Name = UpFileInfo.Name.Substring(0, P_FileInfo.Name.LastIndexOf('.')),
-                UserId = AppSettings.LoginUser.Id,
+                UserId = AppSet.LoginUser.Id,
                 Length = UpFileInfo.Length,
                 ExtendName = UpFileInfo.Extension,
                 UpIntProgress = 0,
@@ -124,7 +124,7 @@ namespace Office.Work.Platform.FileDocs
             }
             else
             {
-                FileContentTypes = AppSettings.ServerSetting.WorkContentType.Split(',', System.StringSplitOptions.RemoveEmptyEntries);
+                FileContentTypes = AppSet.ServerSetting.WorkContentType.Split(',', System.StringSplitOptions.RemoveEmptyEntries);
             }
         }
         public string[] FileContentTypes { get; set; }
@@ -152,7 +152,7 @@ namespace Office.Work.Platform.FileDocs
         public void InitUserList()
         {
             UserSelectList = new List<SelectObj<User>>();
-            foreach (User item in AppSettings.SysUsers)
+            foreach (User item in AppSet.SysUsers)
             {
 
                 UserSelectList.Add(new SelectObj<User>(true, item));
