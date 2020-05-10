@@ -9,32 +9,77 @@
       Title="计划编辑">
     <Grid TextElement.FontSize="14" Margin="1,1" >
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Vertical">
-            <StackPanel Orientation="Horizontal" Margin="20,15">
-                <TextBlock  Text="1、主窗口标题背景色" Margin="5"/>
-                <Ellipse Width="20" Height="20" Fill="{Binding BrushMainWinTitleBar}"  MouseLeftButtonUp="Ellipse_MouseLeftButtonUp" VerticalAlignment="Top" Margin="5,4,0,0" StrokeDashCap="Flat" Stroke="#FFEC0B0B" StrokeThickness="2" />
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="20,15">
-                <TextBlock  Text="计划内容类别" Margin="5"/>
-                <Ellipse Width="20" Height="20" Fill="Blue" VerticalAlignment="Top" Margin="5,4,0,0" />
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="20,15">
-                <TextBlock  Text="计划内容类别" Margin="5"/>
-                <Ellipse Width="20" Height="20" Fill="Blue" VerticalAlignment="Top" Margin="5,4,0,0" />
-            </StackPanel>
+            <Border Grid.Row="0" Padding="0,10" Margin="0,1" 
+                    Background="{DynamicResource ColorPageNavBar}"
+                    HorizontalAlignment="Stretch">
+                <TextBlock  VerticalAlignment="Center" Foreground="#FF495981"
+                            HorizontalAlignment="Left" FontSize="14" Padding="10,0,0,0">
+                    <Run  Text="> 系统设置—颜色主题"/>
+                </TextBlock>
+            </Border>
+        <StackPanel Grid.Row="1" Orientation="Vertical">
+            <RadioButton Margin="20,15" IsChecked="{Binding SelectColor1}">
+                <StackPanel Orientation="Horizontal" >
+                    <TextBlock  Text="主窗口顶部标题栏背景色" Margin="5"/>
+                    <Ellipse Width="20" Height="20" Fill="{Binding LocalSettings.ColorMainWinTitle}"  VerticalAlignment="Top" Margin="5,4,0,0" StrokeDashCap="Square" Stroke="#FFEC0B0B" StrokeThickness="2" />
+                </StackPanel>
+            </RadioButton>
+            <RadioButton Margin="20,15" IsChecked="{Binding SelectColor2}">
+                <StackPanel Orientation="Horizontal" >
+                    <TextBlock  Text="主窗口顶部菜单栏背景色" Margin="5"/>
+                    <Ellipse Width="20" Height="20" Fill="{Binding LocalSettings.ColorMainWinTopMenu}"  VerticalAlignment="Top" Margin="5,4,0,0" StrokeDashCap="Square" Stroke="#FFEC0B0B" StrokeThickness="2" />
+                </StackPanel>
+            </RadioButton>
+            <RadioButton Margin="20,15" IsChecked="{Binding SelectColor3}">
+                <StackPanel Orientation="Horizontal" >
+                    <TextBlock  Text="主窗口底部状态（信息）栏背景色" Margin="5"/>
+                    <Ellipse Width="20" Height="20" Fill="{Binding LocalSettings.ColorMainWinState}"  VerticalAlignment="Top" Margin="5,4,0,0" StrokeDashCap="Square" Stroke="#FFEC0B0B" StrokeThickness="2" />
+                </StackPanel>
+            </RadioButton>
+            <RadioButton Margin="20,15" IsChecked="{Binding SelectColor4}">
+                <StackPanel Orientation="Horizontal" >
+                    <TextBlock  Text="主窗口左则菜单栏背景色" Margin="5"/>
+                    <Ellipse Width="20" Height="20" Fill="{Binding LocalSettings.ColorMainWinLeftMenu}"  VerticalAlignment="Top" Margin="5,4,0,0" StrokeDashCap="Square" Stroke="#FFEC0B0B" StrokeThickness="2" />
+                </StackPanel>
+            </RadioButton>
+            <RadioButton Margin="20,15" IsChecked="{Binding SelectColor5}">
+                <StackPanel Orientation="Horizontal" >
+                    <TextBlock  Text="各子页面顶部导航信息栏背景色" Margin="5"/>
+                    <Ellipse Width="20" Height="20" Fill="{Binding LocalSettings.ColorPageNavBar}"  VerticalAlignment="Top" Margin="5,4,0,0" StrokeDashCap="Square" Stroke="#FFEC0B0B" StrokeThickness="2" />
+                </StackPanel>
+            </RadioButton>
         </StackPanel>
-        <Button Content="应用主题" Grid.Row="1" 
+        <StackPanel Orientation="Horizontal"  Grid.Row="2" HorizontalAlignment="Right" >
+            <Button Content="保存主题"
                 Margin="5,10,20,10" Height="35" Width="120" 
-                HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                Click="BtnUpdateTheme_Click"/>
-        <Canvas Width="200" Height="100" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10" Background="#FFEBF5E7">
-            <StackPanel Orientation="Vertical" Canvas.Left="60" Canvas.Top="20" >
-                <Slider Width="120" Value="{Binding RedColorValue}" Maximum="255" LargeChange="20" AutoToolTipPlacement="TopLeft" TickFrequency="10"/>
-                <Slider Width="120" Value="{Binding GreenColorValue}"  Maximum="255" LargeChange="20" AutoToolTipPlacement="TopLeft" TickFrequency="10" />
-                <Slider Width="120" Value="{Binding BlueColorValue}"  Maximum="255" LargeChange="20" AutoToolTipPlacement="TopLeft" TickFrequency="10" />
+                Click="Btn_SaveTheme_Click"/>
+            <Button Content="恢复默认" 
+                Margin="5,10,20,10" Height="35" Width="120" 
+                Click="Btn_RestoreTheme_Click"/>
+        </StackPanel>
+
+        <Canvas Grid.Row="1" Width="250" Height="150" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10" Background="#FFF3F5E7">
+            <StackPanel Orientation="Vertical" Canvas.Left="20" Canvas.Top="10" >
+                <StackPanel Orientation="Horizontal"  Margin="2" >
+                    <TextBlock Text="透明度" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                    <Slider Width="150" VerticalAlignment="Center" Value="{Binding AlphaValue}" Maximum="255" LargeChange="20" AutoToolTipPlacement="TopLeft" TickFrequency="10" Cursor="Hand" Height="25" Background="{Binding AlphaValue}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="2" >
+                    <TextBlock Text="红色值" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                    <Slider Width="150" VerticalAlignment="Center" Value="{Binding RedColorValue}" Maximum="255" LargeChange="20" AutoToolTipPlacement="TopLeft" TickFrequency="10" Cursor="Hand" Height="25" Background="{Binding RedColorBrush}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="2" >
+                    <TextBlock Text="绿色值" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                    <Slider Width="150" VerticalAlignment="Center" Value="{Binding GreenColorValue}"  Maximum="255" LargeChange="20" AutoToolTipPlacement="TopLeft" TickFrequency="10"  Cursor="Hand" Height="25" Background="{Binding GreenColorBrush}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="2" >
+                    <TextBlock Text="蓝色值" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                    <Slider Width="150" VerticalAlignment="Center" Value="{Binding BlueColorValue}"  Maximum="255" LargeChange="20" AutoToolTipPlacement="TopLeft" TickFrequency="10"  Cursor="Hand" Height="25" Background="{Binding BlueColorBrush}"/>
+                </StackPanel>
             </StackPanel>
         </Canvas>
     </Grid>

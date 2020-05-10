@@ -50,8 +50,8 @@ namespace Office.Work.Platform
             }
             else
             {
-                (new WinMsgDialog("请检查用户名或密码是否准确,如仍有问题请检查网络。", "警告", isErr: true)).ShowDialog();
                 this.CanVas_loadding.Visibility = Visibility.Collapsed;
+                AppFuns.ShowMessage("请检查用户名或密码,如仍有问题请检查网络。", "警告", isErr: true);
             }
         }
         private void Btn_Exit_Click(object sender, RoutedEventArgs e)
@@ -60,7 +60,7 @@ namespace Office.Work.Platform
         }
         private void Grid_MouseMove(object sender, MouseEventArgs e)
         {
-            if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
+            if (e.LeftButton == MouseButtonState.Pressed)
             {
                 Dispatcher.BeginInvoke(new Action(() => this.DragMove()));
             }

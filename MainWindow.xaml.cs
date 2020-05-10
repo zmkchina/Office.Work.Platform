@@ -7,13 +7,10 @@ using Office.Work.Platform.Plan;
 using Office.Work.Platform.Remuneration;
 using Office.Work.Platform.Settings;
 using System;
-using System.Globalization;
-using System.Windows;
-using System.Windows.Data;
-using System.Windows.Input;
-using System.Windows.Forms;
-using MessageBox = System.Windows.MessageBox;
 using System.IO;
+using System.Windows;
+using System.Windows.Forms;
+using System.Windows.Input;
 
 namespace Office.Work.Platform
 {
@@ -75,7 +72,7 @@ namespace Office.Work.Platform
             //1.检查是否需要更新。
             if (await CheckUpdate.CheckAppUpdateAsync())
             {
-                (new WinMsgDialog("发现新版本。", "更新")).ShowDialog();
+                AppFuns.ShowMessage("发现新版本，系统需要更新。", "更新");
                 //升级程序路径。
                 string updateProgram = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Office.Work.Platform.Update.exe");
                 if (File.Exists(updateProgram))
@@ -85,7 +82,7 @@ namespace Office.Work.Platform
                 }
                 else
                 {
-                    (new WinMsgDialog("未找到更新程序,请与开发人员联系。", "错误", isErr: true)).ShowDialog();
+                    AppFuns.ShowMessage("未找到更新程序,请与开发人员联系。", "错误", isErr: true);
                 }
                 //关闭本程序
                 ShutDownApp();
