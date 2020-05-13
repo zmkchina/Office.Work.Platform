@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using NPOI.HSSF.UserModel;
+using NPOI.SS.UserModel;
 using Office.Work.Platform.AppCodes;
 using Office.Work.Platform.AppDataService;
 using Office.Work.Platform.Lib;
@@ -127,9 +131,64 @@ namespace Office.Work.Platform.Member
             AppSet.AppMainWindow.lblCursorPosition.Text = "就绪";
         }
 
+        private void btn_Export_ClickAsync(object sender, RoutedEventArgs e)
+        {
+            ExportToExcel(_PageViewModel.EntityList.ToList(), "PersonsInfo");
+        }
 
         /// <summary>
-        /// 本页面的查询类
+        /// NPOI导出Excel，不依赖本地是否装有Excel，导出速度快
+        /// </summary>
+        /// <param name="dataGridView1">要导出的dataGridView控件</param>
+        /// <param name="sheetName">sheet表名</param>
+        private void ExportToExcel(List<Lib.Member> EntityList, string sheetName)
+        {
+            System.Windows.Forms.SaveFileDialog fileDialog = new System.Windows.Forms.SaveFileDialog();
+            fileDialog.Filter = "Excel|*.xls";
+            if (fileDialog.ShowDialog() == System.Windows.Forms.DialogResult.Cancel)
+            {
+                return;
+            }
+            //不允许dataGridView显示添加行，负责导出时会报最后一行未实例化错误
+            HSSFWorkbook workbook = new HSSFWorkbook();
+            ISheet sheet = workbook.CreateSheet(sheetName);
+            IRow rowHead = sheet.CreateRow(0);
+            PropertyInfo[] EntityProps = EntityList[0].GetType().GetProperties();
+            //填写表头
+            for (int i = 0; i < EntityProps.Count(); i++)
+            {
+                rowHead.CreateCell(i, CellType.String).SetCellValue(EntityProps[i].Name);
+            }
+            //填写内容
+            for (int i = 0; i < EntityList.Count; i++)
+            {
+                IRow row = sheet.CreateRow(i + 1);
+                for (int j = 0; j < EntityProps.Count(); j++)
+                {
+                    object TempObj = EntityProps[j].GetValue(EntityList[i]);
+                    if (TempObj != null)
+                    {
+                        row.CreateCell(j, CellType.String).SetCellValue(EntityProps[j].GetValue(EntityList[i]).ToString());
+                    }
+                    else
+                    {
+                        row.CreateCell(j, CellType.String).SetCellValue("");
+
+                    }
+                }
+            }
+
+            using (FileStream stream = File.OpenWrite(fileDialog.FileName))
+            {
+                workbook.Write(stream);
+                stream.Close();
+            }
+            AppFuns.ShowMessage("导出数据成功!", "提示");
+            GC.Collect();
+        }
+
+        /// <summary>
+        /// 本页面的视图模型类
         /// </summary>
         public class PageViewModel : NotificationObject
         {
@@ -157,5 +216,7 @@ namespace Office.Work.Platform.Member
             }
             #endregion
         }
+
+
     }
 }

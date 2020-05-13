@@ -10,14 +10,24 @@ namespace Office.Work.Platform.AppDataService
     /// </summary>
     public static class DataMemberPaySheetRepository
     {
+        private static string _ApiUrlBase = AppSet.LocalSetting.ResApiUrl;
         /// <summary>
-        /// 获取所有待遇表类型
+        /// 获取所有已生成的待遇表类型
         /// </summary>
         /// <param name="SearchCondition"></param>
         /// <returns></returns>
         public static async Task<string[]> GetPayTableTypes()
         {
-            return await DataApiRepository.GetApiUri<string[]>(AppSet.ApiUrlBase + $"MemberPaySheet/GetPayTableTypes").ConfigureAwait(false);
+            return await DataApiRepository.GetApiUri<string[]>(_ApiUrlBase + $"MemberPaySheet/GetPayTableTypes").ConfigureAwait(false);
+        }
+        /// <summary>
+        /// 获取所有已生成的待遇表中人员的类型
+        /// </summary>
+        /// <param name="SearchCondition"></param>
+        /// <returns></returns>
+        public static async Task<string[]> GetPayTableMemberTypes()
+        {
+            return await DataApiRepository.GetApiUri<string[]>(_ApiUrlBase + $"MemberPaySheet/GetPayTableMemberTypes").ConfigureAwait(false);
         }
 
         /// <summary>
@@ -32,7 +42,7 @@ namespace Office.Work.Platform.AppDataService
 
             if (urlParams.Length > 0)
             {
-                return await DataApiRepository.GetApiUri<string>(AppSet.ApiUrlBase + "MemberPaySheet/GetMemberPaySheet" + urlParams).ConfigureAwait(false);
+                return await DataApiRepository.GetApiUri<string>(_ApiUrlBase + "MemberPaySheet/GetMemberPaySheet" + urlParams).ConfigureAwait(false);
             }
             return null;
         }
@@ -43,7 +53,7 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<ExcuteResult> PostMemberPaySheet(MemberPayFastByPaySet PayFastInfo)
         {
-            return await DataApiRepository.PostApiUriAsync(AppSet.ApiUrlBase + $"MemberPaySheet/PostMemberPaySheet", PayFastInfo, null).ConfigureAwait(false);
+            return await DataApiRepository.PostApiUriAsync(_ApiUrlBase + $"MemberPaySheet/PostMemberPaySheet", PayFastInfo, null).ConfigureAwait(false);
         }
     }
 }

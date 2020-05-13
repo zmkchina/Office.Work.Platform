@@ -16,7 +16,7 @@ namespace Office.Work.Platform.Settings
         }
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            ListBoxItem_MouseLeftButtonUp_0(null, null);
+            ListBoxItem_SetTheme_MouseLeftButtonUp(null, null);
         }
 
         /// <summary>
@@ -28,22 +28,7 @@ namespace Office.Work.Platform.Settings
         {
             AppSet.AppMainWindow.FrameContentPage.Content = new PageSettingsSys();
         }
-        /// <summary>
-        /// 个人中心
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ListBoxItem_MouseLeftButtonUp_1(object sender, MouseButtonEventArgs e)
-        {
-        }
-        /// <summary>
-        /// 常用软件
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ListBoxItem_MouseLeftButtonUp_2(object sender, MouseButtonEventArgs e)
-        {
-        }
+
         /// <summary>
         /// 实用工具
         /// </summary>
@@ -53,6 +38,7 @@ namespace Office.Work.Platform.Settings
         {
             AppSet.AppMainWindow.FrameContentPage.Content = new PageSettingsTools(null);
         }
+
         /// <summary>
         /// 设置主题
         /// </summary>
@@ -61,6 +47,16 @@ namespace Office.Work.Platform.Settings
         private void ListBoxItem_SetTheme_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             AppSet.AppMainWindow.FrameContentPage.Content = new PageSettingsTheme();
+        }
+
+        /// <summary>
+        /// 个人中心
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ListBoxItem_PersonCenter_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            AppSet.AppMainWindow.FrameContentPage.Content = new PagePersonCenter();
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using Office.Work.Platform.AppCodes;
 using Office.Work.Platform.AppDataService;
 using Office.Work.Platform.Lib;
@@ -13,47 +12,53 @@ namespace Office.Work.Platform.Settings
     /// </summary>
     public partial class PageSettingsSys : Page
     {
-        private PageSettingsSysVM _PageSettingsSysVM = null;
+        private PageViewModel _PageViewModel = null;
         public PageSettingsSys()
         {
             InitializeComponent();
         }
         private async void Page_LoadedAsync(object sender, RoutedEventArgs e)
         {
-            _PageSettingsSysVM = new PageSettingsSysVM();
-            await _PageSettingsSysVM.GetEntityInfoAsync();
-            this.DataContext = _PageSettingsSysVM;
+            _PageViewModel = new PageViewModel();
+            await _PageViewModel.GetEntityInfoAsync();
+            this.DataContext = _PageViewModel;
+            if (AppSet.LoginUser.Post.Equals("管理员"))
+            {
+                BtnUpdateSettings.IsEnabled = true;
+            }
         }
 
-        private void BtnUpdateSettings_Click(object sender, RoutedEventArgs e)
+        private void Btn_UpdateSettings_Click(object sender, RoutedEventArgs e)
+        {
+            _PageViewModel.UpdateEntityInfoAsync();
+        }
+
+        private class PageViewModel : NotificationObject
         {
 
+            public string[] FileContentTypes => AppSet.ServerSetting.WorkContentType.Split(',', System.StringSplitOptions.RemoveEmptyEntries);
+            public SettingServer EntitySettingServer { get; set; }
+
+            #region "方法"
+            /// <summary>
+            /// 构造函数
+            /// </summary>
+            public PageViewModel()
+            {
+            }
+            public async Task GetEntityInfoAsync()
+            {
+                EntitySettingServer = await DataSystemRepository.ReadServerSettings();
+            }
+            public async void UpdateEntityInfoAsync()
+            {
+                ExcuteResult excute = await DataSystemRepository.UpdateServerSettings(EntitySettingServer);
+                if (excute.State == 0)
+                {
+                    AppFuns.ShowMessage("更新成功！");
+                }
+            }
+            #endregion
         }
-
-        private void BtnUpdateTheme_Click(object sender, RoutedEventArgs e)
-        {
-            Application.Current.Resources["ColorMainWinTitle"] = Brushes.Blue;
-        }
-    }
-
-
-    public class PageSettingsSysVM : NotificationObject
-    {
-
-        public string[] FileContentTypes => AppSet.ServerSetting.WorkContentType.Split(',', System.StringSplitOptions.RemoveEmptyEntries);
-        public SettingServer EntitySettingServer { get; set; }
-
-        #region "方法"
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        public PageSettingsSysVM()
-        {
-        }
-        public async Task GetEntityInfoAsync()
-        {
-            EntitySettingServer = await DataSystemRepository.ReadServerSettings();
-        }
-        #endregion
     }
 }

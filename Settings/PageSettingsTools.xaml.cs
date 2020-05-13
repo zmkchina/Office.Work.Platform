@@ -23,10 +23,14 @@ namespace Office.Work.Platform.Settings
         {
             CloseScreen.Close();
         }
-
+        /// <summary>
+        /// 锁定本软件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BtnLockApp_Click(object sender, RoutedEventArgs e)
         {
-
+            AppSet.AppMainWindow.LockApp();
         }
     }
 }

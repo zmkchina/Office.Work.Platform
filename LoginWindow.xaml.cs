@@ -20,6 +20,10 @@ namespace Office.Work.Platform
         {
             //读取本地设置
             AppSet.LocalSetting = DataRWLocalFileRepository.ReadObjFromFile<SettingLocal>(AppSet.LocalSettingFileName);
+            if (AppSet.LocalSetting == null)
+            {
+                AppSet.LocalSetting = new SettingLocal();
+            }
             Text_UserId.Text = AppSet.LocalSetting.LoginUserId;
             DataContext = AppSet.LocalSetting;
             Text_UserPwd.Focus();
@@ -35,23 +39,36 @@ namespace Office.Work.Platform
             }
             //显示Loading
             this.CanVas_loadding.Visibility = Visibility.Visible;
-            //请求token
-            await DataApiRepository.GetAccessToken(V_UserId, V_UserPwd);
-            //从服务器读取指定的用户并在服务器上登陆
-            User LoginUser = await DataApiRepository.GetApiUri<User>(AppSet.ApiUrlBase + "User/" + V_UserId);
-            if (LoginUser != null && LoginUser.PassWord.Equals(V_UserPwd))
+            try
             {
-                DataRWLocalFileRepository.SaveObjToFile<SettingLocal>(AppSet.LocalSetting, AppSet.LocalSettingFileName);
-                AppSet.LoginUser = LoginUser;
-                MainWindow mainWindow = new MainWindow();
-                mainWindow.Show();
-                mainWindow.Activate();
-                this.Close();
+                //请求token
+                string TokenResult = await DataApiRepository.GetAccessToken(V_UserId, V_UserPwd);
+                if (TokenResult != "Ok")
+                {
+                    AppFuns.ShowMessage(TokenResult);
+                    return;
+                }
+                //从服务器读取指定的用户并在服务器上登陆
+                User LoginUser = await DataUserRepository.GetOneById(V_UserId);
+                if (LoginUser != null && LoginUser.PassWord.Equals(V_UserPwd))
+                {
+                    DataRWLocalFileRepository.SaveObjToFile<SettingLocal>(AppSet.LocalSetting, AppSet.LocalSettingFileName);
+                    AppSet.LoginUser = LoginUser;
+                    MainWindow mainWindow = new MainWindow();
+                    mainWindow.Show();
+                    mainWindow.Activate();
+                    this.Close();
+                }
+                else
+                {
+                    this.CanVas_loadding.Visibility = Visibility.Collapsed;
+                    AppFuns.ShowMessage("请检查用户名或密码,如仍有问题请检查网络。", "警告");
+                }
             }
-            else
+            catch (Exception ex)
             {
                 this.CanVas_loadding.Visibility = Visibility.Collapsed;
-                AppFuns.ShowMessage("请检查用户名或密码,如仍有问题请检查网络。", "警告", isErr: true);
+                AppFuns.ShowMessage(ex.Message, "错误", isErr: true);
             }
         }
         private void Btn_Exit_Click(object sender, RoutedEventArgs e)
@@ -64,6 +81,34 @@ namespace Office.Work.Platform
             {
                 Dispatcher.BeginInvoke(new Action(() => this.DragMove()));
             }
+        }
+        /// <summary>
+        /// 显示设置网址对话框
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Btn_UrlSet_Click(object sender, RoutedEventArgs e)
+        {
+            CanVas_UrlSet.Visibility = Visibility.Visible;
+        }
+        /// <summary>
+        /// 保存设置的网址
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Btn_Save_Click(object sender, RoutedEventArgs e)
+        {
+            DataRWLocalFileRepository.SaveObjToFile<SettingLocal>(AppSet.LocalSetting, AppSet.LocalSettingFileName);
+            CanVas_UrlSet.Visibility = Visibility.Collapsed;
+        }
+        /// <summary>
+        /// 退出设置
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Btn_Return_Click(object sender, RoutedEventArgs e)
+        {
+            CanVas_UrlSet.Visibility = Visibility.Collapsed;
         }
     }
 }

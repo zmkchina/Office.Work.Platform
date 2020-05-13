@@ -1,0 +1,41 @@
+﻿<Window x:Class="Office.Work.Platform.WinLockDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Office.Work.Platform"
+        mc:Ignorable="d"
+        ShowInTaskbar="False" 
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        ForceCursor="True"
+        Unloaded="Window_Unloaded"
+        AllowsTransparency="True" BorderBrush="LightBlue" BorderThickness="1" Background="#FFE4DDD9"
+        Height="160" Width="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Border Grid.Row="0" MouseMove="Border_MouseMove" Cursor="Hand">
+            <Border.Background>
+                <LinearGradientBrush EndPoint="1,1" StartPoint="0,0">
+                    <GradientStop Color="#FFF3F0D8"/>
+                    <GradientStop Color="#FFF3F3F3" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+            <TextBlock Text="本软件已锁定" VerticalAlignment="Center" Padding="10,8,0,8"/>
+        </Border>
+        <StackPanel Grid.Row="1">
+            <StackPanel Orientation="Vertical">
+                <PasswordBox x:Name="Pwd_Box" KeyUp="Pwd_Box_KeyUp"  HorizontalAlignment="Stretch" Height="25"  FontSize="16" Margin="10,20,10,10" ForceCursor="True"/>
+                <TextBlock x:Name="Text_Result"  Margin="10"/>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="确定"  Height="25" Width="50" Click="Btn_Yes_Click" Margin="10" IsDefault="True" />
+            <Button Content="取消"  Height="25" Width="50" Click="Btn_Cancel_Click" Margin="10" />
+        </StackPanel>
+    </Grid>
+</Window>

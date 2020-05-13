@@ -7,31 +7,31 @@
         mc:Ignorable="d"
         ShowInTaskbar="False" 
         WindowStartupLocation="CenterOwner"
-        ResizeMode="CanResizeWithGrip"
         WindowStyle="None"
+        Topmost="True"
         AllowsTransparency="True" BorderBrush="LightBlue" BorderThickness="1" Background="AliceBlue"
-        MinHeight="200" MinWidth="400"
-        Loaded="Window_Loaded"
-        SizeToContent="WidthAndHeight" >
+        Height="200" Width="430"
+        Loaded="Window_Loaded" >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-
         <Border Grid.Row="0" Background="{Binding CaptionBackGround}" MouseMove="Border_MouseMove" Cursor="Hand">
             <TextBlock Text="{Binding Caption}" VerticalAlignment="Center" Foreground="White" Padding="10,8,0,8"/>
         </Border>
-        <StackPanel Grid.Row="1" >
-            <TextBlock Text="{Binding Message}"  HorizontalAlignment="Stretch" MinHeight="50" FontSize="16" Margin="20,20" TextWrapping="Wrap"/>
+        <StackPanel Grid.Row="1">
+            <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
+                <TextBlock Text="{Binding Message}"  HorizontalAlignment="Stretch" MinHeight="50" FontSize="16" Margin="20,30,10,10" TextWrapping="Wrap"/>
+            </ScrollViewer>
         </StackPanel>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Content="确定" Visibility="{Binding ShowYes}" Height="30" Width="60" Click="BtnYesClick" Margin="10" />
-            <Button Content="取消" Visibility="{Binding ShowNo}" Height="30" Width="60" Click="BtnCancelClick" Margin="10" />
+            <Button Content="取消" Visibility="{Binding ShowNo}" Height="30" Width="60" Click="BtnCancelClick" Margin="10" IsDefault="True" />
         </StackPanel>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Content="确定" Visibility="{Binding ShowOk}" Height="30" Width="60" Click="BtnOkClick" Margin="10" />
+            <Button Content="确定" Visibility="{Binding ShowOk}" Height="30" Width="60" Click="BtnOkClick" Margin="10" IsDefault="True" />
         </StackPanel>
     </Grid>
 </Window>

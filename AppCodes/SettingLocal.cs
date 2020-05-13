@@ -18,6 +18,8 @@ namespace Office.Work.Platform.AppCodes
         private string _ColorMainWinState;
         private string _ColorMainWinLeftMenu;
         private string _ColorPageNavBar;
+        private string _ResApiUrl;
+        private string _IS4SeverUrl;
 
         /// <summary>
         /// 用户Id号
@@ -26,6 +28,22 @@ namespace Office.Work.Platform.AppCodes
         {
             get { return _LoginUserId; }
             set { _LoginUserId = value; OnPropertyChanged(); }
+        }
+        /// <summary>
+        /// 系统授权认证服务器地址
+        /// </summary>
+        public string IS4SeverUrl
+        {
+            get { return _IS4SeverUrl; }
+            set { _IS4SeverUrl = value; OnPropertyChanged(); }
+        }
+        /// <summary>
+        /// 资源API访问根地上
+        /// </summary>
+        public string ResApiUrl
+        {
+            get { return _ResApiUrl; }
+            set { _ResApiUrl = value; OnPropertyChanged(); }
         }
         /// <summary>
         /// 该人员设定的休息时间间隔
@@ -106,14 +124,19 @@ namespace Office.Work.Platform.AppCodes
         /// </summary>
         public SettingLocal()
         {
+            IS4SeverUrl = "http://localhost:8989";
+            ResApiUrl = "http://localhost:8989/Api/";
             RestInterval = 20;
+            ResetColorTheme();
+        }
+        public void ResetColorTheme()
+        {
             ColorMainWinTitle = "#EAEAEAEA";
             ColorMainWinTopMenu = "#EADFEECB";
-            ColorMainWinState = "#EAF3E797";
-            ColorMainWinLeftMenu = "#CCD1CFCF";
+            ColorMainWinState = "#EAF1EED8";
+            ColorMainWinLeftMenu = "#FFEFEFEF";
             ColorPageNavBar = "#EAFFFCDA";
         }
-
         /// <summary>
         /// 属性改变事件
         /// </summary>

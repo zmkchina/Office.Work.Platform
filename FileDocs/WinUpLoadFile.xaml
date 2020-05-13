@@ -100,7 +100,27 @@
                          IsEnabled="{Binding Path=SelectFileBool}"
                          Text="{Binding Path=EntityFile.Describe}" 
                          HorizontalAlignment="Left" 
-                         Margin="10,3"/>
+                         Margin="10,3">
+                    <TextBox.Resources>
+                        <VisualBrush x:Key="HintText" TileMode="None" Opacity="0.5" Stretch="None" AlignmentX="Left">
+                            <VisualBrush.Visual>
+                                <TextBlock FontStyle="Italic" Text="请输入文件描述，尽量包含搜索关键字"/>
+                            </VisualBrush.Visual>
+                        </VisualBrush>
+                    </TextBox.Resources>
+                    <TextBox.Style>
+                        <Style TargetType="TextBox">
+                            <Style.Triggers>
+                                <Trigger Property="Text" Value="{x:Null}">
+                                    <Setter Property="Background" Value="{StaticResource HintText}"/>
+                                </Trigger>
+                                <Trigger Property="Text" Value="">
+                                    <Setter Property="Background" Value="{StaticResource HintText}"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
             </GroupBox>
             <GroupBox>
                 <GroupBox.Header>
@@ -133,6 +153,5 @@
             </StackPanel>
             <TextBlock Background="Transparent"></TextBlock>
         </DockPanel>
-
     </Grid>
 </Window>

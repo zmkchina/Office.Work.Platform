@@ -52,7 +52,11 @@ namespace Office.Work.Platform.Remuneration
 
             //1.查询所有可发放的待遇项目信息
             JArray PaySetJArray = new JArray();
-            IEnumerable<MemberPayItem> PayItems = await DataMemberPayItemRepository.GetRecords(new MemberPayItemSearch(AppSet.LoginUser.UnitName, AppSet.LoginUser.Id)).ConfigureAwait(false);
+            IEnumerable<MemberPayItem> PayItems = await DataMemberPayItemRepository.GetRecords(new Lib.MemberPayItemSearch()
+            {
+                PayUnitName = AppSet.LoginUser.UnitName,
+                UserId = AppSet.LoginUser.Id
+            }).ConfigureAwait(false);
 
             PayItemNameList = PayItems.Select(x => x.Name).ToList();
 
@@ -63,7 +67,11 @@ namespace Office.Work.Platform.Remuneration
 
 
             //2.查询已经配置的拷贝项目数据信息
-            IEnumerable<MemberPaySet> OldPaySets = await DataMemberPaySetRepository.GetRecords(new MemberPaySetSearch(AppSet.LoginUser.UnitName, AppSet.LoginUser.Id)).ConfigureAwait(false);
+            IEnumerable<MemberPaySet> OldPaySets = await DataMemberPaySetRepository.GetRecords(new MemberPaySetSearch()
+            {
+                PayUnitName = AppSet.LoginUser.UnitName,
+                UserId = AppSet.LoginUser.Id
+            }).ConfigureAwait(false);
 
             //3.定义绑定到界面的数据对象。
             if (OldPaySets != null && OldPaySets.Count() > 0)

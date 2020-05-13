@@ -7,9 +7,9 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ApplicationIcon>AppRes\Images\App.ico</ApplicationIcon>
     <StartupObject>Office.Work.Platform.App</StartupObject>
-    <Version>1.0.0</Version>
-    <AssemblyVersion>1.0.0.1</AssemblyVersion>
-    <FileVersion>1.0.0.1</FileVersion>
+    <Version>2.0.0.0</Version>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <FileVersion>2.0.0.0</FileVersion>
     <NoWin32Manifest>true</NoWin32Manifest>
     <Platforms>AnyCPU;x64;x86</Platforms>
   </PropertyGroup>
@@ -213,6 +213,9 @@
     <Compile Update="PageHome.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Settings\PagePersonCenter.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Settings\PageSettingsTheme.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -277,6 +280,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Remuneration\PageMemberPayFastWin.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Settings\PagePersonCenter.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Settings\PageSettingsTheme.xaml">

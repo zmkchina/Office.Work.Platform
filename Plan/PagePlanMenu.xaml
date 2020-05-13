@@ -40,31 +40,31 @@
                     </Setter>
                 </Style>
             </ListBox.ItemContainerStyle>
-            <ListBoxItem IsSelected="True"  MouseLeftButtonUp="ListBoxItem_MouseLeftButtonUp_0">
+            <ListBoxItem  MouseLeftButtonUp="ListBoxItem_EditPlan_MouseLeftButtonUp">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="&#xe643;" Style="{StaticResource FIcon}" FontSize="18" Margin="0,0,5,0" Foreground="Green"></TextBlock>
                     <TextBlock  Text="新增计划" VerticalAlignment="Center"/>
                 </StackPanel>
             </ListBoxItem>
-            <ListBoxItem MouseLeftButtonUp="ListBoxItem_MouseLeftButtonUp_1">
+            <ListBoxItem MouseLeftButtonUp="ListBoxItem_MyPlan_MouseLeftButtonUp" IsSelected="True">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="&#xe643;" Style="{StaticResource FIcon}" FontSize="18" Margin="0,0,5,0" Foreground="Green"></TextBlock>
                     <TextBlock  Text="我的待办" VerticalAlignment="Center"/>
                 </StackPanel>
             </ListBoxItem>
-            <ListBoxItem MouseLeftButtonUp="ListBoxItem_MouseLeftButtonUp_2">
+            <ListBoxItem MouseLeftButtonUp="ListBoxItem_AllWaitPlan_MouseLeftButtonUp">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="&#xe643;" Style="{StaticResource FIcon}" FontSize="18" Margin="0,0,5,0" Foreground="Green"></TextBlock>
                     <TextBlock  Text="全部待办" VerticalAlignment="Center"/>
                 </StackPanel>
             </ListBoxItem>
-            <ListBoxItem MouseLeftButtonUp="ListBoxItem_MouseLeftButtonUp_3">
+            <ListBoxItem MouseLeftButtonUp="ListBoxItem_AllFinish_MouseLeftButtonUp">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="&#xe643;" Style="{StaticResource FIcon}" FontSize="18" Margin="0,0,5,0" Foreground="Green"></TextBlock>
                     <TextBlock  Text="已经完成" VerticalAlignment="Center"/>
                 </StackPanel>
             </ListBoxItem>
-            <ListBoxItem MouseLeftButtonUp="ListBoxItem_MouseLeftButtonUp_4">
+            <ListBoxItem MouseLeftButtonUp="ListBoxItem_AllPlan_MouseLeftButtonUp">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="&#xe653;" Style="{StaticResource FIcon}" FontSize="18" Margin="0,0,5,0" Foreground="Green"></TextBlock>
                     <TextBlock  Text="全部计划" VerticalAlignment="Center"/>

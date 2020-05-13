@@ -12,7 +12,10 @@ namespace Office.Work.Platform.Remuneration
         public PagePlayMenu()
         {
             InitializeComponent();
-            //AppSettings.AppMainWindow;
+        }
+        private void Page_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            MemberPay_MouseLeftButtonUp(null, null);
         }
         /// <summary>
         /// 打印待遇表格
@@ -55,5 +58,7 @@ namespace Office.Work.Platform.Remuneration
             PageMemberPay CurPage = new PageMemberPay();
             AppSet.AppMainWindow.FrameContentPage.Content = CurPage;
         }
+
+      
     }
 }

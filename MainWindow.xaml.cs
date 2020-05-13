@@ -2,7 +2,7 @@
 using Office.Work.Platform.AppDataService;
 using Office.Work.Platform.FileDocs;
 using Office.Work.Platform.Member;
-using Office.Work.Platform.Node;
+using Office.Work.Platform.Note;
 using Office.Work.Platform.Plan;
 using Office.Work.Platform.Remuneration;
 using Office.Work.Platform.Settings;
@@ -21,7 +21,7 @@ namespace Office.Work.Platform
     {
         public readonly NotifyIcon notifyIcon;
         private readonly PagePlanMenu _PagePlanMenu = null;
-        private readonly PageNodeMenu _PageNodeMenu = null;
+        private readonly PageNoteMenu _PageNodeMenu = null;
         private readonly PageFileMenu _PageFileMenu = null;
         private readonly PagePlayMenu _PagePlayMenu = null;
         private readonly PageMemberMenu _PageMemberMenu = null;
@@ -46,6 +46,21 @@ namespace Office.Work.Platform
             this.notifyIcon.ContextMenuStrip = new ContextMenuStrip();
             this.notifyIcon.ContextMenuStrip.Items.Add("显示主窗口", null, (sender, eventArgs) =>
             {
+                if (WinLockDialog.ThisWinObj != null)
+                {
+                    //说明该锁定窗口已经打开
+                    WinLockDialog.ThisWinObj.Activate();
+                    return;
+                }
+                if (AppSet.AppIsLocked)
+                {
+                    WinLockDialog wld = new WinLockDialog();
+                    if (!wld.ShowDialog().Value)
+                    {
+                        return;
+                    }
+                }
+                AppSet.AppIsLocked = false;
                 this.Visibility = System.Windows.Visibility.Visible;
                 this.ShowInTaskbar = true;
                 this.Activate();
@@ -53,6 +68,10 @@ namespace Office.Work.Platform
             this.notifyIcon.ContextMenuStrip.Items.Add("关闭显示器", null, (sender, eventArgs) =>
             {
                 CloseScreen.Close();
+            });
+            this.notifyIcon.ContextMenuStrip.Items.Add("锁定软件", null, (sender, eventArgs) =>
+            {
+                LockApp();
             });
             this.notifyIcon.ContextMenuStrip.Items.Add("关闭程序", null, (sender, eventArgs) =>
             {
@@ -66,6 +85,13 @@ namespace Office.Work.Platform
                     this.notifyIcon.ContextMenuStrip.Items[0].PerformClick();
                 }
             });
+        }
+        public void LockApp()
+        {
+            AppSet.AppIsLocked = true;
+            this.ShowInTaskbar = false;
+            this.Visibility = System.Windows.Visibility.Hidden;
+            this.notifyIcon.ShowBalloonTip(20, "信息:", "本软件已锁定。", ToolTipIcon.Info);
         }
         private async void Window_LoadedAsync(object sender, RoutedEventArgs e)
         {
@@ -88,10 +114,10 @@ namespace Office.Work.Platform
                 ShutDownApp();
             }
             //2.读取系统用户列表
-            AppSet.SysUsers = await DataSystemRepository.ReadAllSysUsers();
+            AppSet.SysUsers = await DataUserRepository.GetAllRecords();
             if (AppSet.SysUsers == null || AppSet.SysUsers.Count < 2)
             {
-                (new WinMsgDialog("读取用户列表时出错，程序无法运行。", "错误",isErr:true)).ShowDialog();
+                (new WinMsgDialog("读取用户列表时出错，程序无法运行。", "错误", isErr: true)).ShowDialog();
                 //关闭本程序
                 ShutDownApp();
             }
@@ -137,7 +163,7 @@ namespace Office.Work.Platform
         {
             LoadPageMenu(_PageFileMenu);
         }
-      
+
         /// <summary>
         /// 人事管理菜单
         /// </summary>

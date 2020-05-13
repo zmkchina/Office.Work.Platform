@@ -13,7 +13,8 @@
             <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Border Grid.Row="0" Background="#FFFAF0" Padding="0,10" Margin="0,1" HorizontalAlignment="Stretch">
+        <Border Grid.Row="0" Background="{DynamicResource ColorPageNavBar}" 
+                Padding="0,10" Margin="0,1" HorizontalAlignment="Stretch">
             <TextBlock  VerticalAlignment="Center" Foreground="#FF495981"
                         HorizontalAlignment="Left" FontSize="14" Padding="10,0,0,0">
                 <Run  Text="> 文件管理—文件列表"/>

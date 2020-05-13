@@ -10,6 +10,7 @@ namespace Office.Work.Platform.AppDataService
     /// </summary>
     public static class DataMemberPaySetRepository
     {
+        private static string _ApiUrlBase = AppSet.LocalSetting.ResApiUrl;
         /// <summary>
         /// 按条件查询数据
         /// </summary>
@@ -23,7 +24,7 @@ namespace Office.Work.Platform.AppDataService
 
             if (urlParams.Length > 0)
             {
-                RecList = await DataApiRepository.GetApiUri<IEnumerable<MemberPaySet>>(AppSet.ApiUrlBase + "MemberPaySet/Search" + urlParams).ConfigureAwait(false);
+                RecList = await DataApiRepository.GetApiUri<IEnumerable<MemberPaySet>>(_ApiUrlBase + "MemberPaySet/Search" + urlParams).ConfigureAwait(false);
             }
             return RecList;
         }
@@ -35,7 +36,7 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<ExcuteResult> AddOrUpdateRecord(List<MemberPaySet> PaySetList)
         {
-            ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(AppSet.ApiUrlBase + "MemberPaySet/AddOrUpdate", PaySetList).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(_ApiUrlBase + "MemberPaySet/AddOrUpdate", PaySetList).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -45,7 +46,7 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<ExcuteResult> AddRecord(Lib.MemberPaySet PEntity)
         {
-            ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(AppSet.ApiUrlBase + "MemberPaySet", PEntity).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(_ApiUrlBase + "MemberPaySet", PEntity).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -55,7 +56,7 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<ExcuteResult> UpdateRecord(Lib.MemberPaySet PEntity)
         {
-            ExcuteResult JsonResult = await DataApiRepository.PutApiUriAsync(AppSet.ApiUrlBase + "MemberPaySet", PEntity).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.PutApiUriAsync(_ApiUrlBase + "MemberPaySet", PEntity).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -65,7 +66,7 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<ExcuteResult> DeleteRecord(Lib.MemberPaySet PEntity)
         {
-            ExcuteResult JsonResult = await DataApiRepository.DeleteApiUri<ExcuteResult>(AppSet.ApiUrlBase + "MemberPaySet/?MemberId=" + PEntity.MemberId).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.DeleteApiUri<ExcuteResult>(_ApiUrlBase + "MemberPaySet/?MemberId=" + PEntity.MemberId).ConfigureAwait(false);
             return JsonResult;
         }
     }

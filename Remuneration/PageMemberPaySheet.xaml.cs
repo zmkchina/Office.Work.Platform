@@ -23,6 +23,7 @@ namespace Office.Work.Platform.Remuneration
         public string PayTableName { get; set; }
         public MemberSettings MemberSet { get; set; }
         public string[] PayTableTypes { get; set; }
+        public string[] PayTableMemberTypes { get; set; }
         public JArray JArrayResult { get; set; }
         public PageMemberPaySheet()
         {
@@ -36,6 +37,8 @@ namespace Office.Work.Platform.Remuneration
         {
             //获取已发放信息中所有工资表类型
             PayTableTypes = await DataMemberPaySheetRepository.GetPayTableTypes().ConfigureAwait(false);
+            //获取所有已生成的待遇表中人员的类型
+            PayTableMemberTypes = await DataMemberPaySheetRepository.GetPayTableMemberTypes().ConfigureAwait(false);
             App.Current.Dispatcher.Invoke(() =>
             {
                 this.DataContext = this;
@@ -74,6 +77,7 @@ namespace Office.Work.Platform.Remuneration
 
                         RecordDataGrid.ItemsSource = JArrayResult;
                         AppFuns.SetStateBarText($"共查询到：{JArrayResult.Count} 条数据。");
+                        Run_PayDate.Text = $"({PayMonthDate.Year}年{PayMonthDate.Month}月)";
                     }
                     catch (Exception ex)
                     {
@@ -104,12 +108,12 @@ namespace Office.Work.Platform.Remuneration
             JObject FirstJObject = (JObject)JArrayResult[0];
             List<JProperty> properties = FirstJObject.Properties().ToList();
             PropertiesNameArr = new string[properties.Count()];
-            //foreach (JProperty item in properties)
             for (int k = 0; k < properties.Count(); k++)
             {
                 //Console.WriteLine(item.Name + ":" + item.Value);
                 PropertiesNameArr[k] = properties[k].Name;
                 Paragraph TempParagraph = new Paragraph();
+                TempParagraph.Style= this.FindResource("PgStyle") as Style;
                 TempParagraph.Inlines.Add(new TextBlock() { Text = properties[k].Name });
                 TempRow.Cells.Add(new TableCell(TempParagraph));
             }
@@ -128,8 +132,6 @@ namespace Office.Work.Platform.Remuneration
                 }
                 this.TableContentRows.Rows.Add(TempRow);
             }
-
-
 
 
             //第一种打印方式
@@ -156,23 +158,6 @@ namespace Office.Work.Platform.Remuneration
             //IDocumentPaginatorSource source = FlowDoc as IDocumentPaginatorSource;
             //printDlg.PrintDocument(source.DocumentPaginator, "sum");
         }
-
-        ///// <summary>
-        ///// 克隆一个对象
-        ///// </summary>
-        ///// <param name="sampleObject"></param>
-        ///// <returns></returns>
-        //private T Clone<T>(T RealObject)
-        //{
-        //    using (Stream objectStream = new MemoryStream())
-        //    {
-        //        //利用 System.Runtime.Serialization序列化与反序列化完成引用对象的复制
-        //        System.Runtime.Serialization.IFormatter formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-        //        formatter.Serialize(objectStream, RealObject);
-        //        objectStream.Seek(0, SeekOrigin.Begin);
-        //        return (T)formatter.Deserialize(objectStream);
-        //    }
-        //}
 
     }
 }

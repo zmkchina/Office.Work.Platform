@@ -19,20 +19,32 @@ namespace Office.Work.Platform.Settings
         {
             InitializeComponent();
         }
-        private async void Page_LoadedAsync(object sender, RoutedEventArgs e)
+        private void Page_LoadedAsync(object sender, RoutedEventArgs e)
         {
             _PageViewModel = new PageViewModel();
             this.DataContext = _PageViewModel;
         }
 
-        private void BtnUpdateSettings_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// 保存主题
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Btn_SaveTheme_Click(object sender, RoutedEventArgs e)
         {
-
+            if (DataRWLocalFileRepository.SaveObjToFile<SettingLocal>(_PageViewModel.LocalSettings, AppSet.LocalSettingFileName))
+            {
+                AppFuns.ShowMessage("颜色主题保存成功！");
+            }
         }
-
-        private void BtnUpdateTheme_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// 恢复默认主题
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Btn_RestoreTheme_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Resources["ColorMainWinTitle"] = Brushes.Blue;
+            _PageViewModel.LocalSettings.ResetColorTheme();
         }
 
 
@@ -41,6 +53,10 @@ namespace Office.Work.Platform.Settings
         /// </summary>
         private class PageViewModel : NotificationObject
         {
+            private bool _SetAlphaValue;
+            private bool _SetRedValue;
+            private bool _SetGreenValue;
+            private bool _SetBlueValue;
             private byte _RedColorValue;
             private byte _GreenColorValue;
             private byte _BlueColorValue;
@@ -63,7 +79,8 @@ namespace Office.Work.Platform.Settings
                 set
                 {
                     _AlphaValue = value;
-                    SetMixColorBrush();
+                    if (!_SetAlphaValue) { SetMixColorBrush(); }
+                    _SetAlphaValue = false;
                     RaisePropertyChanged();
                 }
             }
@@ -74,7 +91,8 @@ namespace Office.Work.Platform.Settings
                 set
                 {
                     _RedColorValue = value;
-                    SetMixColorBrush();
+                    if (!_SetRedValue) { SetMixColorBrush(); }
+                    _SetRedValue = false;
                     RedColorBrush.Color = Color.FromArgb(0xFF, value, 0, 0);
                     RaisePropertyChanged();
                 }
@@ -88,13 +106,16 @@ namespace Office.Work.Platform.Settings
                 }
             }
 
+
+
             public byte GreenColorValue
             {
                 get { return _GreenColorValue; }
                 set
                 {
                     _GreenColorValue = value;
-                    SetMixColorBrush();
+                    if (!_SetGreenValue) { SetMixColorBrush(); }
+                    _SetGreenValue = false;
                     GreenColorBrush.Color = Color.FromArgb(0xFF, 0, value, 0);
                     RaisePropertyChanged();
                 }
@@ -114,7 +135,8 @@ namespace Office.Work.Platform.Settings
                 set
                 {
                     _BlueColorValue = value;
-                    SetMixColorBrush();
+                    if (!_SetBlueValue) { SetMixColorBrush(); }
+                    _SetBlueValue = false;
                     BlueColorBrush.Color = Color.FromArgb(0xFF, 0, 0, value);
                     RaisePropertyChanged();
                 }
@@ -136,6 +158,7 @@ namespace Office.Work.Platform.Settings
                     _SelectColor1 = value;
                     if (value)
                     {
+                        SetArgbValueTrue();
                         SetSoliderValue(LocalSettings.ColorMainWinTitle);
                     }
                 }
@@ -148,6 +171,7 @@ namespace Office.Work.Platform.Settings
                     _SelectColor2 = value;
                     if (value)
                     {
+                        SetArgbValueTrue();
                         SetSoliderValue(LocalSettings.ColorMainWinTopMenu);
                     }
                 }
@@ -160,6 +184,7 @@ namespace Office.Work.Platform.Settings
                     _SelectColor3 = value;
                     if (value)
                     {
+                        SetArgbValueTrue();
                         SetSoliderValue(LocalSettings.ColorMainWinState);
                     }
                 }
@@ -172,6 +197,7 @@ namespace Office.Work.Platform.Settings
                     _SelectColor4 = value;
                     if (value)
                     {
+                        SetArgbValueTrue();
                         SetSoliderValue(LocalSettings.ColorMainWinLeftMenu);
                     }
                 }
@@ -184,11 +210,16 @@ namespace Office.Work.Platform.Settings
                     _SelectColor5 = value;
                     if (value)
                     {
+                        SetArgbValueTrue();
                         SetSoliderValue(LocalSettings.ColorPageNavBar);
                     }
                 }
             }
 
+            private void SetArgbValueTrue()
+            {
+                _SetAlphaValue = _SetRedValue = _SetGreenValue = _SetBlueValue = true;
+            }
 
             public SettingLocal LocalSettings { get; set; }
             /// <summary>
@@ -233,24 +264,7 @@ namespace Office.Work.Platform.Settings
                 }
             }
         }
-        /// <summary>
-        /// 保存主题
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Btn_SaveTheme_Click(object sender, RoutedEventArgs e)
-        {
-            DataRWLocalFileRepository.SaveObjToFile<SettingLocal>(_PageViewModel.LocalSettings, AppSet.LocalSettingFileName);
-        }
-        /// <summary>
-        /// 恢复默认主题
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Btn_RestoreTheme_Click(object sender, RoutedEventArgs e)
-        {
 
-        }
     }
 }
 

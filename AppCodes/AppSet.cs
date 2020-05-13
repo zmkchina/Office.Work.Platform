@@ -26,6 +26,10 @@ namespace Office.Work.Platform.AppCodes
         /// </summary>
         public static MainWindow AppMainWindow { get; set; }
         /// <summary>
+        /// 用户是否已锁定本软件
+        /// </summary>
+        public static bool AppIsLocked { get; set; } = false;
+        /// <summary>
         /// 存储本地设置的文件名称。存在主程序目录下
         /// </summary>
         public static string LocalSettingFileName = "LocalSettings.zgk";
@@ -33,12 +37,5 @@ namespace Office.Work.Platform.AppCodes
         /// 存储需要升级的文件列表的文件名称。存在主程序目录下
         /// </summary>
         public static string LocalUpdateFileName = "LocalUpdate.zgk";
-        /// <summary>
-        /// 请求API的基础路径
-        /// </summary>
-        //public static string ApiUrlBase = @"http://Localhost/Api/";
-        public static string ApiUrlBase = @"http://Localhost:5000/Api/";
-        //public static string ApiUrlBase = @"http://172.16.0.9/Api/";
-
     }
 }

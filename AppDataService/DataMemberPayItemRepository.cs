@@ -10,6 +10,7 @@ namespace Office.Work.Platform.AppDataService
     /// </summary>
     public static class DataMemberPayItemRepository
     {
+        private static string _ApiUrlBase = AppSet.LocalSetting.ResApiUrl;
         /// <summary>
         /// 按条件查询数据
         /// </summary>
@@ -23,7 +24,7 @@ namespace Office.Work.Platform.AppDataService
 
             if (urlParams.Length > 0)
             {
-                RecList = await DataApiRepository.GetApiUri<IEnumerable<MemberPayItem>>(AppSet.ApiUrlBase + "MemberPayItem/Search" + urlParams).ConfigureAwait(false);
+                RecList = await DataApiRepository.GetApiUri<IEnumerable<MemberPayItem>>(_ApiUrlBase + "MemberPayItem/Search" + urlParams).ConfigureAwait(false);
             }
             return RecList;
         }
@@ -34,7 +35,7 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<ExcuteResult> AddRecord(Lib.MemberPayItem PEntity)
         {
-            ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(AppSet.ApiUrlBase + "MemberPayItem", PEntity).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(_ApiUrlBase + "MemberPayItem", PEntity).ConfigureAwait(false);
             return JsonResult;
         }
         
@@ -45,7 +46,7 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<ExcuteResult> UpdateRecord(Lib.MemberPayItem PEntity)
         {
-            ExcuteResult JsonResult = await DataApiRepository.PutApiUriAsync(AppSet.ApiUrlBase + "MemberPayItem", PEntity).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.PutApiUriAsync(_ApiUrlBase + "MemberPayItem", PEntity).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -55,7 +56,7 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<ExcuteResult> DeleteRecord(Lib.MemberPayItem PEntity)
         {
-            ExcuteResult JsonResult = await DataApiRepository.DeleteApiUri<ExcuteResult>(AppSet.ApiUrlBase + "MemberPayItem/?Name=" + PEntity.Name).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.DeleteApiUri<ExcuteResult>(_ApiUrlBase + "MemberPayItem/?Name=" + PEntity.Name).ConfigureAwait(false);
             return JsonResult;
         }
     }

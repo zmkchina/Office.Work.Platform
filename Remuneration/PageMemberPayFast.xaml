@@ -39,7 +39,7 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Border Grid.Row="0" Background="#FFFAF0" Padding="0,10" HorizontalAlignment="Stretch">
+        <Border Grid.Row="0" Background="{DynamicResource ColorPageNavBar}" Padding="0,10" HorizontalAlignment="Stretch">
             <TextBlock  VerticalAlignment="Center" Foreground="#FF495981"
                         HorizontalAlignment="Left" FontSize="14" Padding="10,0,0,0">
                 <Run  Text="> 劳资管理—快速发放"/>

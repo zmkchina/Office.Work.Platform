@@ -83,7 +83,7 @@
             <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Border Grid.Row="0" Background="#FFFAF0" Padding="0,10" Margin="0,1" HorizontalAlignment="Stretch">
+        <Border Grid.Row="0" Background="{DynamicResource ColorPageNavBar}" Padding="0,10" Margin="0,1" HorizontalAlignment="Stretch">
             <TextBlock  VerticalAlignment="Center" Foreground="#FF495981"
                         HorizontalAlignment="Left" FontSize="14" Padding="10,0,0,0">
                 <Run  Text="> 人事管理—职工花名称"/>
@@ -101,7 +101,8 @@
                 <CheckBox Content="在结果中查询" IsChecked="{Binding SearchInResult}" />
             </StackPanel>
             <Button Content="开始查询" Name="btn_Refrash" Foreground="Blue" Margin="5,0" Click="btn_Refrash_ClickAsync" />
-            <Button Content="删除选定记录" Name="btn_Delete" Foreground="Red" Margin="5,0" Click="btn_Delete_ClickAsync" />
+            <Button Content="删除选定" Name="btn_Delete" Foreground="Red" Margin="5,0" Click="btn_Delete_ClickAsync" />
+            <Button Content="导出记录" Name="btn_Export" Foreground="Red" Margin="5,0" Click="btn_Export_ClickAsync" />
         </ToolBar>
         <DataGrid x:Name="RecordDataGrid" ItemsSource="{Binding EntityList}" Grid.Row="2"  SelectionUnit="FullRow">
             <DataGrid.Columns>

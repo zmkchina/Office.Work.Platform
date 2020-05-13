@@ -13,16 +13,8 @@ namespace Office.Work.Platform.AppDataService
 {
     public static class DataSystemRepository
     {
-        
-        /// <summary>
-        /// 读取所有用户
-        /// </summary>
-        /// <returns></returns>
-        public static async Task<List<User>> ReadAllSysUsers()
-        {
-            List<User> SysUsers = await DataApiRepository.GetApiUri<List<User>>(AppSet.ApiUrlBase + "User").ConfigureAwait(false);
-            return SysUsers;
-        }
+
+        private static string _ApiUrlBase = AppSet.LocalSetting.ResApiUrl;
 
         /// <summary>
         /// 从服务器读取系统设置
@@ -30,7 +22,7 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<SettingServer> ReadServerSettings()
         {
-            SettingServer ServerSetting = await DataApiRepository.GetApiUri<SettingServer>(AppSet.ApiUrlBase + "Settings").ConfigureAwait(false);
+            SettingServer ServerSetting = await DataApiRepository.GetApiUri<SettingServer>(_ApiUrlBase + "Settings").ConfigureAwait(false);
             return ServerSetting;
         }
 
@@ -40,7 +32,7 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<ExcuteResult> UpdateServerSettings(SettingServer PEntity)
         {
-            ExcuteResult excuteResult = await DataApiRepository.PutApiUriAsync(AppSet.ApiUrlBase + "Settings", PEntity).ConfigureAwait(false);
+            ExcuteResult excuteResult = await DataApiRepository.PutApiUriAsync(_ApiUrlBase + "Settings", PEntity).ConfigureAwait(false);
             return excuteResult;
         }
 
@@ -50,7 +42,7 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<List<UpdateFile>> GetServerUpdateFiles()
         {
-            List<UpdateFile> updateFiles = await DataApiRepository.GetApiUri<List<UpdateFile>>(AppSet.ApiUrlBase + "UpdateFile").ConfigureAwait(false);
+            List<UpdateFile> updateFiles = await DataApiRepository.GetApiUri<List<UpdateFile>>(_ApiUrlBase + "UpdateFile").ConfigureAwait(false);
             return updateFiles;
         }
     }

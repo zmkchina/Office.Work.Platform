@@ -15,6 +15,10 @@ namespace Office.Work.Platform
            
             InitializeComponent();
             this.Owner = AppSet.AppMainWindow;
+            if(this.Owner is null)
+            {
+                this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            }
             if (showYesNo) { ShowOk = false; } else { ShowOk = true; }
             this.Message = Message;
             this.Caption = Caption;
@@ -28,7 +32,6 @@ namespace Office.Work.Platform
             {
                 this.CaptionBackGround = "DodgerBlue";
             }
-            this.Height = 300;
             this.DataContext = this;
         }
 

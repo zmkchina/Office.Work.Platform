@@ -13,7 +13,7 @@
             <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Border Grid.Row="0" Background="#FFFAF0" Padding="0,10" Margin="0,1" HorizontalAlignment="Stretch">
+        <Border Grid.Row="0" Background="{DynamicResource ColorPageNavBar}" Padding="0,10" Margin="0,1" HorizontalAlignment="Stretch">
             <TextBlock  VerticalAlignment="Center" Foreground="#FF495981"
                         HorizontalAlignment="Left" FontSize="14" Padding="10,0,0,0">
                 <Run  Text="> 计划管理—计划列表"/>
@@ -50,6 +50,7 @@
                             <Image Width="24" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="{Binding Path=CurrectState,Converter={StaticResource PlanStateToImgeUri}}"/>
                             <TextBlock TextWrapping="Wrap"  Grid.Column="1" Grid.Row="0" TextAlignment="Justify" VerticalAlignment="Center" Margin="10,5,5,5">
                                 <Run Text="{Binding Path=Caption,Mode=OneWay}" />
+                                <Run Text="{Binding Path=Helpers,Converter={StaticResource GetIsHelper},StringFormat=[{0}]}" FontStyle="Italic" Foreground="Blue" FontWeight="Bold"/>
                                 <TextBlock.ToolTip>
                                     <ToolTip>
                                         <StackPanel>

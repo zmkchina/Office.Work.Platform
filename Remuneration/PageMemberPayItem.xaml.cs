@@ -22,13 +22,20 @@ namespace Office.Work.Platform.Remuneration
 
         private async void Page_LoadedAsync(object sender, System.Windows.RoutedEventArgs e)
         {
-            IEnumerable<Lib.MemberPayItem> MemberPayItems = await DataMemberPayItemRepository.GetRecords(new Lib.MemberPayItemSearch(AppSet.LoginUser.UnitName, AppSet.LoginUser.Id)).ConfigureAwait(false);
-            cvm.PayItems.Clear();
-            MemberPayItems = MemberPayItems.OrderBy(x => x.OrderIndex);
-            MemberPayItems.ToList().ForEach(e =>
+            IEnumerable<Lib.MemberPayItem> MemberPayItems = await DataMemberPayItemRepository.GetRecords(new Lib.MemberPayItemSearch()
             {
-                cvm.PayItems.Add(e);
-            });
+                PayUnitName = AppSet.LoginUser.UnitName,
+                UserId = AppSet.LoginUser.Id
+            }).ConfigureAwait(false);
+
+            if (MemberPayItems != null)
+            {
+                MemberPayItems = MemberPayItems.OrderBy(x => x.OrderIndex);
+                MemberPayItems.ToList().ForEach(e =>
+                {
+                    cvm.PayItems.Add(e);
+                });
+            }
             App.Current.Dispatcher.Invoke(() => { this.DataContext = cvm; });
         }
 
@@ -116,7 +123,5 @@ namespace Office.Work.Platform.Remuneration
             public ObservableCollection<Lib.MemberPayItem> PayItems { get; set; }
             public Lib.MemberPayItem CurPayItem { get; set; }
         }
-
-
     }
 }

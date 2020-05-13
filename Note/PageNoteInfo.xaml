@@ -1,0 +1,95 @@
+﻿<Page x:Class="Office.Work.Platform.Note.PageNoteInfo"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="d" 
+      d:DesignHeight="500" d:DesignWidth="600" Loaded="Page_Loaded"
+      Unloaded="Page_Unloaded"  
+      Title="编辑备忘信息">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Border Grid.Row="0" Background="{DynamicResource ColorPageNavBar}" Padding="0,10" Margin="0,1" HorizontalAlignment="Stretch">
+            <TextBlock  VerticalAlignment="Center" Foreground="#FF495981"
+                        HorizontalAlignment="Left" FontSize="14" Padding="10,0,0,0">
+                <Run  Text="> 工作备忘—"/>
+                <Run  Text="{Binding CurMenuText}"/>
+                <Run  Text="[查看或编辑备注事项]"/>
+            </TextBlock>
+        </Border>
+        <ToolBar Grid.Row="1" FontSize="14" Padding="0,5" Cursor="Hand">
+            <TextBox Text="{Binding NoteSearch.Caption}" Width="200"/>
+            <Button Content="开始查询" Name="btn_Refrash" Foreground="Blue" Margin="5,0" Click="btn_Search_ClickAsync" />
+            <Button Content="新增备忘" Name="btn_Add" Foreground="Red" Margin="5,0" Click="btn_Add_ClickAsync" />
+            <Button Content="删除选定" Name="btn_Delete" Foreground="Red" Margin="5,0" Click="btn_Delete_ClickAsync" />
+        </ToolBar>
+        <Grid Grid.Row="2" TextElement.FontSize="14">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition x:Name="Col_NoteInfo" Width="2*" />
+            </Grid.ColumnDefinitions>
+            <ListBox Grid.Column="0" ItemsSource="{Binding CollectNotes}"
+                     x:Name="ListBox_Notes"
+                     Margin="2,0"
+                     Padding="5,0"
+                     HorizontalAlignment="Stretch"
+                     SelectionChanged="ListBox_SelectionChangedAsync">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock FontSize="15" Margin="2,6" Cursor="Hand">
+                            <Run Text="{Binding Caption}"/>
+                        </TextBlock>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <GridSplitter Grid.Column="1" 
+                          HorizontalAlignment="Center" VerticalAlignment="Stretch"
+                          Background="SkyBlue" ShowsPreview="True"
+                          Width="2"/>
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <GroupBox Header="备忘标题" Grid.Row="0" Padding="5,10">
+                    <TextBox x:Name="TB_NoteCaption" Text="{Binding Caption}" HorizontalAlignment="Stretch" Height="25" MaxLength="100"/>
+                </GroupBox>
+                <GroupBox Header="备注内容" Grid.Row="1" Padding="5,10,5,2">
+                    <RichTextBox x:Name="RichTBox" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                              HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
+                        <RichTextBox.Resources>
+                            <Style TargetType="{x:Type Paragraph}">
+                                <Setter Property="Margin" Value="0"/>
+                                <Setter Property="LineHeight" Value="30"/>
+                            </Style>
+                        </RichTextBox.Resources>
+                    </RichTextBox>
+                </GroupBox>
+                <GroupBox Header="有限读取" Grid.Row="2" Padding="5,10,5,2">
+                    <ListBox ItemsSource="{Binding UserGrantSelectList}"  Margin="5">
+                        <ListBox.Template>
+                            <ControlTemplate TargetType="{x:Type ListBox}">
+                                <WrapPanel VerticalAlignment="Center"  IsItemsHost="True"/>
+                            </ControlTemplate>
+                        </ListBox.Template>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding IsSelect}" VerticalAlignment="Center" Content="{Binding Obj.Name}"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </GroupBox>
+                <ToolBar  Grid.Row="3" Margin="0,10" HorizontalAlignment="Right" ToolBarTray.IsLocked="True">
+                    <Button Content="保存" x:Name="Btn_Save" Click="Btn_Save_Click" Margin="0,2,10,2"/>
+                </ToolBar>
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>

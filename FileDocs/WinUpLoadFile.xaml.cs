@@ -111,7 +111,7 @@ namespace Office.Work.Platform.FileDocs
                 DownIntProgress = 100,
                 Pubdate = System.DateTime.Now,
                 UpDateTime = System.DateTime.Now,
-                Describe = "请输入文件描述，尽量包含搜索关键字",
+                Describe = "",
             };
             InitUserList();
             if (P_OwnerType.Equals("人事附件", System.StringComparison.Ordinal))

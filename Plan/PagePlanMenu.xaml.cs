@@ -16,7 +16,7 @@ namespace Office.Work.Platform.Plan
         }
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            ListBoxItem_MouseLeftButtonUp_0(null, null);
+            ListBoxItem_MyPlan_MouseLeftButtonUp(null, null);
         }
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace Office.Work.Platform.Plan
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ListBoxItem_MouseLeftButtonUp_0(object sender, MouseButtonEventArgs e)
+        private void ListBoxItem_EditPlan_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             AppSet.AppMainWindow.FrameContentPage.Content = new PageEditPlan(null);
         }
@@ -33,7 +33,7 @@ namespace Office.Work.Platform.Plan
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ListBoxItem_MouseLeftButtonUp_1(object sender, MouseButtonEventArgs e)
+        private void ListBoxItem_MyPlan_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             AppSet.AppMainWindow.FrameContentPage.Content = new PagePlansList("MyNoFinishPlans");
         }
@@ -42,7 +42,7 @@ namespace Office.Work.Platform.Plan
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ListBoxItem_MouseLeftButtonUp_2(object sender, MouseButtonEventArgs e)
+        private void ListBoxItem_AllWaitPlan_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             AppSet.AppMainWindow.FrameContentPage.Content = new PagePlansList("AllNoFinishPlans"); ;
         }
@@ -51,7 +51,7 @@ namespace Office.Work.Platform.Plan
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ListBoxItem_MouseLeftButtonUp_3(object sender, MouseButtonEventArgs e)
+        private void ListBoxItem_AllFinish_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             AppSet.AppMainWindow.FrameContentPage.Content = new PagePlansList("AllFinihPlans"); ;
         }
@@ -60,7 +60,7 @@ namespace Office.Work.Platform.Plan
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ListBoxItem_MouseLeftButtonUp_4(object sender, MouseButtonEventArgs e)
+        private void ListBoxItem_AllPlan_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             AppSet.AppMainWindow.FrameContentPage.Content = new PagePlansList("AllPlans"); ;
         }

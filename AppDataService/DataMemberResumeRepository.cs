@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Office.Work.Platform.AppCodes;
 using Office.Work.Platform.Lib;
@@ -12,6 +10,7 @@ namespace Office.Work.Platform.AppDataService
     /// </summary>
     public static class DataMemberResumeRepository
     {
+        private static string _ApiUrlBase = AppSet.LocalSetting.ResApiUrl;
         /// <summary>
         /// 按条件查询数据
         /// </summary>
@@ -25,7 +24,7 @@ namespace Office.Work.Platform.AppDataService
 
             if (urlParams.Length > 0)
             {
-                RecList = await DataApiRepository.GetApiUri<IEnumerable<MemberResume>>(AppSet.ApiUrlBase + "MemberResume/Search" + urlParams).ConfigureAwait(false);
+                RecList = await DataApiRepository.GetApiUri<IEnumerable<MemberResume>>(_ApiUrlBase + "MemberResume/Search" + urlParams).ConfigureAwait(false);
             }
             return RecList;
         }
@@ -36,7 +35,7 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<ExcuteResult> AddRecord(Lib.MemberResume PEntity)
         {
-            ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(AppSet.ApiUrlBase + "MemberResume", PEntity).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(_ApiUrlBase + "MemberResume", PEntity).ConfigureAwait(false);
             return JsonResult;
         }
 
@@ -47,7 +46,7 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<ExcuteResult> UpdateRecord(Lib.MemberResume PEntity)
         {
-            ExcuteResult JsonResult = await DataApiRepository.PutApiUriAsync(AppSet.ApiUrlBase + "MemberResume", PEntity).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.PutApiUriAsync(_ApiUrlBase + "MemberResume", PEntity).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>
@@ -57,7 +56,7 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<ExcuteResult> DeleteRecord(Lib.MemberResume PEntity)
         {
-            ExcuteResult JsonResult = await DataApiRepository.DeleteApiUri<ExcuteResult>(AppSet.ApiUrlBase + "MemberResume/?Id=" + PEntity.Id).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.DeleteApiUri<ExcuteResult>(_ApiUrlBase + "MemberResume/?Id=" + PEntity.Id).ConfigureAwait(false);
             return JsonResult;
         }
     }

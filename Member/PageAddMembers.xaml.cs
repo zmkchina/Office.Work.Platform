@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using NPOI.SS.Formula.Functions;
 using Office.Work.Platform.AppCodes;
 using Office.Work.Platform.AppDataService;
 using Office.Work.Platform.Lib;
@@ -60,26 +61,34 @@ namespace Office.Work.Platform.Member
                             {
                                 if (UserTable.Columns.Contains(item.Name) && UserTable.Rows[i][item.Name] != null)
                                 {
-                                    if (item.PropertyType.Name.Contains("DateTime"))
+                                    System.Text.StringBuilder dateStr = new StringBuilder(UserTable.Rows[i][item.Name].ToString());
+                                    switch (item.PropertyType.FullName)
                                     {
-                                        //处理一下Date值，因为Excel表中的数值格式可能不符合要求。
-                                        System.Text.StringBuilder dateStr = new StringBuilder(UserTable.Rows[i][item.Name].ToString());
-                                        if (!DateTime.TryParse(dateStr.ToString(), out DateTime tempDateTime))
-                                        {
-                                            dateStr = dateStr.Replace('.', '/');
-                                            dateStr = dateStr.Replace('-', '/');
-                                            dateStr = dateStr.Replace('—', '/');
-                                            dateStr = dateStr.Replace('。', '/');
-                                            if (dateStr.Length < 8) dateStr.Append("/01");
-                                        }
-                                        if (DateTime.TryParse(dateStr.ToString(), out tempDateTime))
-                                        {
-                                            item.SetValue(tempMember, tempDateTime);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        item.SetValue(tempMember, UserTable.Rows[i][item.Name].ToString());
+                                        case "System.DateTime":
+                                            if (!DateTime.TryParse(dateStr.ToString(), out DateTime tempDateTime))
+                                            {
+                                                dateStr = dateStr.Replace('.', '/');
+                                                dateStr = dateStr.Replace('-', '/');
+                                                dateStr = dateStr.Replace('—', '/');
+                                                dateStr = dateStr.Replace('。', '/');
+                                                if (dateStr.Length < 8) dateStr.Append("/01");
+                                            }
+                                            if (DateTime.TryParse(dateStr.ToString(), out tempDateTime))
+                                            {
+                                                item.SetValue(tempMember, tempDateTime);
+                                            }
+                                            break;
+                                        case "System.Int32":
+                                            if (int.TryParse(dateStr.ToString(), out int tempIntValue))
+                                            {
+                                                item.SetValue(tempMember, tempIntValue);
+                                            }
+                                            break;
+                                        case "System.String":
+                                            item.SetValue(tempMember, UserTable.Rows[i][item.Name].ToString());
+                                            break;
+                                        default:
+                                            continue;
                                     }
                                 }
                             }
@@ -99,8 +108,7 @@ namespace Office.Work.Platform.Member
                 }
                 catch (Exception VE)
                 {
-                    (new WinMsgDialog("出现错误：" + VE.Message, Caption: "错误", isErr: true)).ShowDialog();
-
+                    AppFuns.ShowMessage("出现错误：" + VE.Message, Caption: "错误", isErr: true);
                     return;
                 }
             }

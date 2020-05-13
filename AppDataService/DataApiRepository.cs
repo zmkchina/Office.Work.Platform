@@ -39,16 +39,24 @@ namespace Office.Work.Platform.AppDataService
         /// 获取AccessToaken
         /// </summary>
         /// <returns></returns>
-        public static async Task GetAccessToken(string P_UserName = null, string P_Pwd = null)
+        public static async Task<string> GetAccessToken(string P_UserName = null, string P_Pwd = null)
         {
             IS4_AccessToken = "";
             HttpClient _Client = CreateHttpClient();
-            var disco = await _Client.GetDiscoveryDocumentAsync("http://localhost:5000").ConfigureAwait(false);
+            //var disco = await _Client.GetDiscoveryDocumentAsync(AppSet.LocalSetting.IS4SeverUrl).ConfigureAwait(false);
+            var disco = await _Client.GetDiscoveryDocumentAsync(new DiscoveryDocumentRequest()
+            {
+                Address = AppSet.LocalSetting.IS4SeverUrl,
+                Policy = new DiscoveryPolicy()
+                {
+                    RequireHttps = false
+                }
+            }).ConfigureAwait(false);
             //发现 IS4 各类功能所在的网址和其他相关信息 
             if (disco.IsError)
             {
-                Console.WriteLine(disco.Error);
-                return;
+                //Console.WriteLine(disco.Error);
+                return disco.Error;
             }
 
             ////ClientCredentials 客户端凭据许可
@@ -75,14 +83,15 @@ namespace Office.Work.Platform.AppDataService
             if (tokenResponse.IsError)
             {
                 Console.WriteLine(tokenResponse.Error);
-                return;
+                return tokenResponse.Error;
             }
             //JObject TokenJsonObj = tokenResponse.Json;
             if (tokenResponse.AccessToken != null)
             {
                 IS4_AccessToken = tokenResponse.AccessToken;
+                return "Ok";
             }
-
+            return "未知错误！";
             //// call api
             //var Apiclient = new HttpClient();
             //Apiclient.SetBearerToken(tokenResponse.AccessToken);
@@ -108,31 +117,43 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<T> GetApiUri<T>(string ApiUri, ProgressMessageHandler processMessageHander = null)
         {
-            using HttpClient _Client = CreateHttpClient(processMessageHander);
-            Object TResult = new ExcuteResult();
-            HttpResponseMessage ResultResponse = await _Client.GetAsync(ApiUri).ConfigureAwait(false);
-            if (typeof(T) == typeof(HttpResponseMessage))
+            HttpClient _Client = CreateHttpClient(processMessageHander);
+
+            try
             {
-                TResult = ResultResponse;
+                Object TResult = null;
+                HttpResponseMessage ResultResponse = await _Client.GetAsync(ApiUri).ConfigureAwait(false);
+                if (typeof(T) == typeof(HttpResponseMessage))
+                {
+                    TResult = ResultResponse;
+                }
+                else if (typeof(T) == typeof(Stream))
+                {
+                    TResult = await ResultResponse.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                }
+                else if (typeof(T) == typeof(byte[]))
+                {
+                    TResult = await ResultResponse.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
+                }
+                else if (typeof(T) == typeof(string))
+                {
+                    TResult = await ResultResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                }
+                else
+                {
+                    string ResponseString = await ResultResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    TResult = JsonConvert.DeserializeObject<T>(ResponseString);
+                }
+                return (T)TResult;
             }
-            else if (typeof(T) == typeof(Stream))
+            catch (Exception)
             {
-                TResult = await ResultResponse.Content.ReadAsStreamAsync().ConfigureAwait(false);
             }
-            else if (typeof(T) == typeof(byte[]))
+            finally
             {
-                TResult = await ResultResponse.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
+                _Client.Dispose();
             }
-            else if (typeof(T) == typeof(string))
-            {
-                TResult = await ResultResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-            }
-            else
-            {
-                string ResponseString = await ResultResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-                TResult = JsonConvert.DeserializeObject<T>(ResponseString);
-            }
-            return (T)TResult;
+            return default(T);
         }
         public static async Task<T> DeleteApiUri<T>(string ApiUri, ProgressMessageHandler processMessageHander = null)
         {

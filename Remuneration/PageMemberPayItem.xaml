@@ -72,7 +72,7 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Border Grid.Row="0" Background="#FFFAF0" Padding="0,10" Margin="0,1" HorizontalAlignment="Stretch">
+        <Border Grid.Row="0" Background="{DynamicResource ColorPageNavBar}" Padding="0,10" Margin="0,1" HorizontalAlignment="Stretch">
             <TextBlock  VerticalAlignment="Center" Foreground="#FF495981"
                         HorizontalAlignment="Left" FontSize="14" Padding="10,0,0,0">
                 <Run  Text="> 劳资管理—待遇项目"/>
@@ -80,9 +80,9 @@
             </TextBlock>
         </Border>
         <ToolBar Grid.Row="1" FontSize="14" Cursor="Hand">
-            <Button Content="新增" Click="Btn_Add_ClickAnsyc" FontSize="15" Padding="10,5"  Margin="10,10"/>
-            <Button Content="编辑" Click="Btn_Edit_ClickAnsyc" FontSize="15" Padding="10,5"  Margin="10,10"/>
-            <Button Content="删除" Click="Btn_Del_ClickAnsyc" FontSize="15" Padding="10,5"  Margin="10,10"/>
+            <Button Content="新增" Click="Btn_Add_ClickAnsyc" Padding="10,3" />
+            <Button Content="编辑" Click="Btn_Edit_ClickAnsyc" Padding="10,3" />
+            <Button Content="删除" Click="Btn_Del_ClickAnsyc" Padding="10,3" />
         </ToolBar>
         <DataGrid x:Name="RecordDataGrid"  Grid.Row="2" ItemsSource="{Binding PayItems}" >
             <DataGrid.Columns>

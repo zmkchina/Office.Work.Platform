@@ -165,12 +165,20 @@ namespace Office.Work.Platform.Remuneration
             public async Task InitPropValuesAsync()
             {
                 //读取可发放的所有待遇项目列表
-                var TempPayItems = await DataMemberPayItemRepository.GetRecords(new MemberPayItemSearch(AppSet.LoginUser.UnitName, AppSet.LoginUser.Id)).ConfigureAwait(false);
+                var TempPayItems = await DataMemberPayItemRepository.GetRecords(new Lib.MemberPayItemSearch()
+                {
+                    PayUnitName = AppSet.LoginUser.UnitName,
+                    UserId = AppSet.LoginUser.Id
+                }).ConfigureAwait(false);
                 MemberPayItems = TempPayItems.ToList();
                 MemberPayItems.Sort((x, y) => x.OrderIndex - y.OrderIndex);
 
                 //读取可发放待遇的所有用户列表
-                var TempMemberPaySets = await DataMemberPaySetRepository.GetRecords(new MemberPaySetSearch(AppSet.LoginUser.UnitName, AppSet.LoginUser.Id)).ConfigureAwait(false);
+                var TempMemberPaySets = await DataMemberPaySetRepository.GetRecords(new MemberPaySetSearch()
+                {
+                    PayUnitName = AppSet.LoginUser.UnitName,
+                    UserId = AppSet.LoginUser.Id
+                }).ConfigureAwait(false);
                 PaySetMembers.Clear();
                 TempMemberPaySets?.ToList().ForEach(e =>
                 {

@@ -101,7 +101,7 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Border Grid.Row="0" Background="#FFFAF0" Padding="0,10" Margin="0,1" HorizontalAlignment="Stretch">
+        <Border Grid.Row="0" Background="{DynamicResource ColorPageNavBar}" Padding="0,10" Margin="0,1" HorizontalAlignment="Stretch">
             <TextBlock  VerticalAlignment="Center" Foreground="#FF495981"
                         HorizontalAlignment="Left" FontSize="14" Padding="10,0,0,0">
                 <Run  Text="> 劳资管理—打印待遇表"/>
@@ -115,7 +115,7 @@
                         AppCodes:DatePickerCalendar.IsMonthYear="True"/>
                 <ComboBox ItemsSource="{Binding PayTableTypes}" SelectedIndex="0"
                       Text="{Binding PayTableName}" Width="150" Height="30" VerticalAlignment="Center" FontSize="15"/>
-                <ComboBox ItemsSource="{Binding MemberSet.EmploymentTypeArr}"
+                <ComboBox ItemsSource="{Binding PayTableMemberTypes}"
                       Text="{Binding MemberType}" SelectedIndex="0" FontSize="15"
                       Width="150" Height="30"/>
                 <Button Click="BtnSearchClickAsync" Content="查询" Width="60" Height="30" Margin="2,0,10,0"/>
@@ -130,7 +130,7 @@
                     <!--PageHeight="21cm" PageWidth="29.7cm" ColumnWidth ="29.7cm"-->
                     <Paragraph TextAlignment="Center" FontWeight="Bold" FontSize="24" LineHeight="20">港航中心在职职工月度工资表</Paragraph>
                     <Paragraph TextAlignment="Center" FontWeight="Light" FontSize="16" >
-                        <Run x:Name="Run_PayDate" Text="（2020年4月）" FontFamily="Times New Roman"/>
+                        <Run x:Name="Run_PayDate" Text="（XXXX年YY月）" FontFamily="Times New Roman"/>
                     </Paragraph>
                     <Table  CellSpacing="0">
                         <TableRowGroup x:Name="TableRowGroupHeader" Background="LightGray" FontWeight="Bold">

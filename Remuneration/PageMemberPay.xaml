@@ -92,68 +92,68 @@
             </Style.Triggers>
         </Style>
     </Page.Resources>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <Border Grid.Row="0" Background="#FFFAF0" Padding="0,10" Margin="0,1" HorizontalAlignment="Stretch">
-            <TextBlock  VerticalAlignment="Center" Foreground="#FF495981"
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Border Grid.Row="0" Background="{DynamicResource ColorPageNavBar}" Padding="0,10" Margin="0,1" HorizontalAlignment="Stretch">
+                <TextBlock  VerticalAlignment="Center" Foreground="#FF495981"
                         HorizontalAlignment="Left" FontSize="14" Padding="10,0,0,0">
                 <Run  Text="> 劳资管理—个人明细"/>
                 <Run  Text="[查看或发放单个人员待遇]"/>
-            </TextBlock>
-        </Border>
-        <Grid Grid.Row="1" >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="1*"/>
-            </Grid.ColumnDefinitions>
-            <ListBox ItemsSource="{Binding PaySetMembers}"
+                </TextBlock>
+            </Border>
+            <Grid Grid.Row="1" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <ListBox ItemsSource="{Binding PaySetMembers}"
                      Margin="2,0"
                       Padding="5,0"
                      x:Name="ListBox_PaySetMembers" 
                      HorizontalAlignment="Center"
                      SelectionChanged="ListBox_SelectionChangedAsync">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock FontSize="15" Margin="2">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock FontSize="15" Margin="2">
                             <Run Text="{Binding MemberName}"/>
-                        </TextBlock>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-            <StackPanel Grid.Column="1"   Orientation="Vertical" 
+                            </TextBlock>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <StackPanel Grid.Column="1"   Orientation="Vertical" 
                         IsEnabled="{Binding CanOperation}"
                         HorizontalAlignment="Stretch" >
-                <ToolBar FontSize="14" Cursor="Hand">
-                    <DatePicker Style="{StaticResource DatePickerStyle}"
+                    <ToolBar FontSize="14" Cursor="Hand">
+                        <DatePicker Style="{StaticResource DatePickerStyle}"
                                 SelectedDate="{Binding SearchDate}" 
                                 AppCodes:DatePickerCalendar.IsMonthYear="True"/>
-                    <Button Click="BtnSearchClickAsync" Content="查询" Width="60" Margin="2,0,10,0"/>
-                    <Button Click="BtnAddClickAsync" Content="新增" Width="60" Margin="2,0,10,0"/>
-                    <Button Click="BtnDelClickAsync" Content="删除" Width="60" Margin="2,0,10,0"/>
-                </ToolBar>
-                <DataGrid x:Name="RecordDataGrid" ItemsSource="{Binding MemberPays}" >
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="年份" Binding="{Binding PayYear}" />
-                        <DataGridTextColumn Header="月份" Binding="{Binding PayMonth}"/>
-                        <DataGridTextColumn Header="名称" Binding="{Binding PayName}"/>
-                        <DataGridTextColumn Header="金额" Binding="{Binding Amount}"/>
-                        <DataGridTextColumn Header="增减类别" Binding="{Binding AddOrCut}"/>
-                        <DataGridTextColumn Header="计入基数" Binding="{Binding InCardinality}"/>
-                        <DataGridTextColumn Header="所属待遇表" Binding="{Binding InTableType}"/>
-                        <DataGridTextColumn Header="人员性质" Binding="{Binding MemberType}"/>
-                        <DataGridTextColumn Header="发放单位" Binding="{Binding PayUnitName}"/>
-                        <DataGridTextColumn Header="备注信息" Binding="{Binding Remark}"/>
-                        <DataGridTextColumn Header="更新日期" Binding="{Binding UpDateTime,StringFormat= {} {0:yyyy/MM/dd}}"/>
-                        <DataGridTextColumn Header="项目序号" Binding="{Binding OrderIndex}"/>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </StackPanel>
-            <GridSplitter Grid.Column="1" BorderThickness="2" BorderBrush="#FFDFF0E7"/>
-            <memberuc:UC_MemberFile x:Name="UcMemberPayFile" Grid.Column="2"  IsEnabled="{Binding CanOperation}"/>
+                        <Button Click="BtnSearchClickAsync" Content="查询" Width="60" Margin="2,0,10,0"/>
+                        <Button Click="BtnAddClickAsync" Content="新增" Width="60" Margin="2,0,10,0"/>
+                        <Button Click="BtnDelClickAsync" Content="删除" Width="60" Margin="2,0,10,0"/>
+                    </ToolBar>
+                    <DataGrid x:Name="RecordDataGrid" ItemsSource="{Binding MemberPays}" >
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="年份" Binding="{Binding PayYear}" />
+                            <DataGridTextColumn Header="月份" Binding="{Binding PayMonth}"/>
+                            <DataGridTextColumn Header="名称" Binding="{Binding PayName}"/>
+                            <DataGridTextColumn Header="金额" Binding="{Binding Amount}"/>
+                            <DataGridTextColumn Header="增减类别" Binding="{Binding AddOrCut}"/>
+                            <DataGridTextColumn Header="计入基数" Binding="{Binding InCardinality}"/>
+                            <DataGridTextColumn Header="所属待遇表" Binding="{Binding InTableType}"/>
+                            <DataGridTextColumn Header="人员性质" Binding="{Binding MemberType}"/>
+                            <DataGridTextColumn Header="发放单位" Binding="{Binding PayUnitName}"/>
+                            <DataGridTextColumn Header="备注信息" Binding="{Binding Remark}"/>
+                            <DataGridTextColumn Header="更新日期" Binding="{Binding UpDateTime,StringFormat= {} {0:yyyy/MM/dd}}"/>
+                            <DataGridTextColumn Header="项目序号" Binding="{Binding OrderIndex}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+                <GridSplitter Grid.Column="1" BorderThickness="2" BorderBrush="#FFDFF0E7"/>
+                <memberuc:UC_MemberFile x:Name="UcMemberPayFile" Grid.Column="2"  IsEnabled="{Binding CanOperation}"/>
+            </Grid>
         </Grid>
-    </Grid>
 </Page>

@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Data;
+using Office.Work.Platform.AppCodes;
 using Office.Work.Platform.Lib;
 
 namespace Office.Work.Platform.Plan
@@ -40,6 +38,23 @@ namespace Office.Work.Platform.Plan
                     break;
             }
             return V_DefaultDocImg;
+        }
+    }
+    //指定转换器源类型和目标类型
+    public class GetIsHelper : IValueConverter
+    {
+        //实现接口的两个方法
+        public object Convert(object Helpers, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (Helpers != null && Helpers.ToString().Contains(AppSet.LoginUser.Id, StringComparison.Ordinal))
+            {
+                return "协助";
+            }
+            return "";
+        }
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return "";
         }
     }
 }

@@ -8,7 +8,7 @@
       Loaded="Page_Loaded"
       Title="计划编辑">
     <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
-        <Border Background="#FFFAF0" Padding="0,10" Margin="0,1" HorizontalAlignment="Stretch">
+        <Border Background="{DynamicResource ColorPageNavBar}" Padding="0,10" Margin="0,1" HorizontalAlignment="Stretch">
             <TextBlock  VerticalAlignment="Center" Foreground="#FF495981"
                         HorizontalAlignment="Left" FontSize="14" Padding="10,0,0,0">
                 <Run  Text="> 计划管理—新增/编辑计划"/>

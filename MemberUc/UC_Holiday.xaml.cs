@@ -13,16 +13,16 @@ namespace Office.Work.Platform.MemberUc
 {
     public partial class UC_Holiday : UserControl
     {
-        private UC_HolidayVM _UCHolidayVM;
+        private UcViewModel _UcViewModel;
         public UC_Holiday()
         {
             InitializeComponent();
-            _UCHolidayVM = new UC_HolidayVM();
+            _UcViewModel = new UcViewModel();
         }
         public async void initControlAsync(Lib.Member PMember)
         {
-            await _UCHolidayVM.InitVMAsync(PMember);
-            this.DataContext = _UCHolidayVM;
+            await _UcViewModel.InitDataAsync(PMember);
+            this.DataContext = _UcViewModel;
         }
         /// <summary>
         /// 查询记录
@@ -31,7 +31,7 @@ namespace Office.Work.Platform.MemberUc
         /// <param name="e"></param>
         private async void BtnSearchClickAsync(object sender, RoutedEventArgs e)
         {
-            await _UCHolidayVM.SearchRecords();
+            await _UcViewModel.SearchRecords();
         }
         /// <summary>
         ///  新增记录
@@ -42,7 +42,7 @@ namespace Office.Work.Platform.MemberUc
         {
             Lib.MemberHoliday NewRecord = new Lib.MemberHoliday()
             {
-                MemberId = _UCHolidayVM.CurMember.Id,
+                MemberId = _UcViewModel.CurMember.Id,
                 UserId = AppSet.LoginUser.Id
             };
 
@@ -55,7 +55,7 @@ namespace Office.Work.Platform.MemberUc
                 if (excuteResult.State == 0)
                 {
                     NewRecord.Id = excuteResult.Tag;
-                    _UCHolidayVM.CurRecords.Add(NewRecord);
+                    _UcViewModel.CurRecords.Add(NewRecord);
                 }
                 else
                 {
@@ -77,7 +77,7 @@ namespace Office.Work.Platform.MemberUc
                     ExcuteResult excuteResult = await DataMemberHolidayRepository.DeleteRecord(SelectedRec);
                     if (excuteResult.State == 0)
                     {
-                        _UCHolidayVM.CurRecords.Remove(SelectedRec);
+                        _UcViewModel.CurRecords.Remove(SelectedRec);
                     }
                     else
                     {
@@ -123,58 +123,58 @@ namespace Office.Work.Platform.MemberUc
                 }
             }
         }
-    }
 
-
-
-
-    public class UC_HolidayVM : NotificationObject
-    {
-        public UC_HolidayVM()
+        /// <summary>
+        /// 本控件的视图模型
+        /// </summary>
+        private class UcViewModel : NotificationObject
         {
-            CurRecords = new ObservableCollection<MemberHoliday>();
-            SearchCondition = new MemberHolidaySearch();
-        }
-        public async System.Threading.Tasks.Task InitVMAsync(Lib.Member PMember)
-        {
-            CurMember = PMember;
-            if (PMember != null)
+            public UcViewModel()
             {
-                MemberHolidaySearch SearchCondition = new MemberHolidaySearch() { MemberId = PMember.Id, UserId = AppSet.LoginUser.Id };
-                IEnumerable<MemberHoliday> MemberHolidayss = await DataMemberHolidayRepository.GetRecords(SearchCondition);
-                CurRecords.Clear();
-                MemberHolidayss.ToList().ForEach(e =>
-                {
-                    CurRecords.Add(e);
-                });
+                CurRecords = new ObservableCollection<MemberHoliday>();
+                SearchCondition = new MemberHolidaySearch();
             }
-        }
-        public async System.Threading.Tasks.Task SearchRecords()
-        {
-            if (SearchCondition != null)
+            public async System.Threading.Tasks.Task InitDataAsync(Lib.Member PMember)
             {
-                SearchCondition.MemberId = CurMember.Id;
-                SearchCondition.UserId = AppSet.LoginUser.Id;
-
-                IEnumerable<MemberHoliday> TempRecords = await DataMemberHolidayRepository.GetRecords(SearchCondition);
-                CurRecords.Clear();
-                TempRecords.ToList().ForEach(e =>
+                CurMember = PMember;
+                if (PMember != null)
                 {
-                    CurRecords.Add(e);
-                });
+                    MemberHolidaySearch SearchCondition = new MemberHolidaySearch() { MemberId = PMember.Id, UserId = AppSet.LoginUser.Id };
+                    IEnumerable<MemberHoliday> MemberHolidayss = await DataMemberHolidayRepository.GetRecords(SearchCondition);
+                    CurRecords.Clear();
+                    MemberHolidayss.ToList().ForEach(e =>
+                    {
+                        CurRecords.Add(e);
+                    });
+                }
             }
+            public async System.Threading.Tasks.Task SearchRecords()
+            {
+                if (SearchCondition != null)
+                {
+                    SearchCondition.MemberId = CurMember.Id;
+                    SearchCondition.UserId = AppSet.LoginUser.Id;
+
+                    IEnumerable<MemberHoliday> TempRecords = await DataMemberHolidayRepository.GetRecords(SearchCondition);
+                    CurRecords.Clear();
+                    TempRecords.ToList().ForEach(e =>
+                    {
+                        CurRecords.Add(e);
+                    });
+                }
+            }
+            /// <summary>
+            /// 查询条件类对象
+            /// </summary>
+            public MemberHolidaySearch SearchCondition { get; set; }
+            /// <summary>
+            /// 当前职工信息
+            /// </summary>
+            public Lib.Member CurMember { get; set; }
+            /// <summary>
+            /// 当前职工工资月度发放记录
+            /// </summary>
+            public ObservableCollection<MemberHoliday> CurRecords { get; set; }
         }
-        /// <summary>
-        /// 查询条件类对象
-        /// </summary>
-        public MemberHolidaySearch SearchCondition { get; set; }
-        /// <summary>
-        /// 当前职工信息
-        /// </summary>
-        public Lib.Member CurMember { get; set; }
-        /// <summary>
-        /// 当前职工工资月度发放记录
-        /// </summary>
-        public ObservableCollection<MemberHoliday> CurRecords { get; set; }
     }
 }
