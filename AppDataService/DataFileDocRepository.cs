@@ -1,13 +1,12 @@
-﻿using System;
+﻿using Office.Work.Platform.AppCodes;
+using Office.Work.Platform.Lib;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Handlers;
 using System.Threading.Tasks;
-using System.Windows;
-using Office.Work.Platform.AppCodes;
-using Office.Work.Platform.Lib;
 
 namespace Office.Work.Platform.AppDataService
 {

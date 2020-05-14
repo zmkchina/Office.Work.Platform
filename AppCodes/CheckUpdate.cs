@@ -12,16 +12,12 @@ namespace Office.Work.Platform.AppCodes
     {
         public static async System.Threading.Tasks.Task<bool> CheckAppUpdateAsync()
         {
-            //1. 删除本地含有需要更新文件名称的文件
-            if (System.IO.File.Exists(AppSet.LocalUpdateFileName))
-            {
-                DataRWLocalFileRepository.DeleLocalFile(AppSet.LocalUpdateFileName);
-            }
+            
 
-            //2. 读取服务器端本系统程序的信息。
+            //1. 读取服务器端本系统程序的信息。
             List<UpdateFile> ServerUpdateFiles = await DataSystemRepository.GetServerUpdateFiles();
 
-            //3. 与本地程序文件比列，以便确定是否需要更新。
+            //2. 与本地同名文件进行比较，以便确定是否需要更新。
             if (ServerUpdateFiles != null && ServerUpdateFiles.Count > 0)
             {
                 List<string> NeedUpdateFiles = new List<string>();
@@ -43,9 +39,18 @@ namespace Office.Work.Platform.AppCodes
                         NeedUpdateFiles.Add(item.FileName);
                     }
                 }
-                //4. 将需要下载升级的文件名写入本地文件中，以便升级程序读取之。
+                //3.下载需要更新的文件，并保存在UpdateApp目录下
                 if (NeedUpdateFiles != null && NeedUpdateFiles.Count > 0)
                 {
+                    //创建下载文件存放目录
+                    DirectoryInfo directoryInfo = new DirectoryInfo("UpdateApp");
+                    directoryInfo.Delete(true);
+                    directoryInfo.Create();
+                    for (int i = 0; i < NeedUpdateFiles.Count; i++)
+                    {
+                        DataFileDocRepository.DownloadFile()
+                    }
+
                     DataRWLocalFileRepository.SaveObjToFile<List<string>>(NeedUpdateFiles, AppSet.LocalUpdateFileName);
                     if (File.Exists(AppSet.LocalUpdateFileName))
                     {

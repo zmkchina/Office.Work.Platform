@@ -33,9 +33,5 @@ namespace Office.Work.Platform.AppCodes
         /// 存储本地设置的文件名称。存在主程序目录下
         /// </summary>
         public static string LocalSettingFileName = "LocalSettings.zgk";
-        /// <summary>
-        /// 存储需要升级的文件列表的文件名称。存在主程序目录下
-        /// </summary>
-        public static string LocalUpdateFileName = "LocalUpdate.zgk";
     }
 }

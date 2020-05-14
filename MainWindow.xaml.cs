@@ -100,7 +100,7 @@ namespace Office.Work.Platform
             {
                 AppFuns.ShowMessage("发现新版本，系统需要更新。", "更新");
                 //升级程序路径。
-                string updateProgram = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Office.Work.Platform.Update.exe");
+                string updateProgram = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "UpdateApp.exe");
                 if (File.Exists(updateProgram))
                 {
                     //启动升级程序
