@@ -1,0 +1,43 @@
+﻿<Window x:Class="Office.Work.Platform.WinUpdateDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Office.Work.Platform"
+        mc:Ignorable="d"
+        ShowInTaskbar="False" 
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        ForceCursor="True"
+        Loaded="Window_LoadedAsync"
+        AllowsTransparency="True" BorderBrush="LightBlue" BorderThickness="1" Background="#FFE4DDD9"
+        Height="160" Width="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Border Grid.Row="0" MouseMove="Border_MouseMove" Cursor="Hand">
+            <Border.Background>
+                <LinearGradientBrush EndPoint="1,1" StartPoint="0,0">
+                    <GradientStop Color="#FFF3F0D8"/>
+                    <GradientStop Color="#FFF3F3F3" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+            <TextBlock Text="软件升级，正在下载新版本" VerticalAlignment="Center" Padding="10,8,0,8"/>
+        </Border>
+        <StackPanel Grid.Row="1">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Margin="10">
+                    <Run Text="{Binding DownIndex,StringFormat=已下载{0}个}"/>
+                    <Run Text="{Binding DownCount,StringFormat=，共{0}个文件}"/>
+                </TextBlock>
+                <ProgressBar  Margin="10" Height="15" Maximum="100" Value="{Binding DownIntProgress}" Foreground="Blue"/>
+                <TextBlock Margin="10">
+                    <Run Text="{Binding DownFileName,StringFormat=当前下载{0}}"/>
+                </TextBlock>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

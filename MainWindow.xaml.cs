@@ -1,12 +1,14 @@
 ﻿using Office.Work.Platform.AppCodes;
 using Office.Work.Platform.AppDataService;
 using Office.Work.Platform.FileDocs;
+using Office.Work.Platform.Lib;
 using Office.Work.Platform.Member;
 using Office.Work.Platform.Note;
 using Office.Work.Platform.Plan;
 using Office.Work.Platform.Remuneration;
 using Office.Work.Platform.Settings;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Forms;
@@ -96,9 +98,12 @@ namespace Office.Work.Platform
         private async void Window_LoadedAsync(object sender, RoutedEventArgs e)
         {
             //1.检查是否需要更新。
-            if (await CheckUpdate.CheckAppUpdateAsync())
+            List<string> NeedUpdateFiles = await GetNeedUpdateFilesAsync();
+
+            if (NeedUpdateFiles != null && NeedUpdateFiles.Count > 0)
             {
-                AppFuns.ShowMessage("发现新版本，系统需要更新。", "更新");
+                WinUpdateDialog winUpdate = new WinUpdateDialog(NeedUpdateFiles);
+                winUpdate.ShowDialog();
                 //升级程序路径。
                 string updateProgram = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "UpdateApp.exe");
                 if (File.Exists(updateProgram))
@@ -246,6 +251,40 @@ namespace Office.Work.Platform
         private void ListBoxItemPay_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             LoadPageMenu(_PagePlayMenu);
+        }
+        /// <summary>
+        /// 如有新版本则下载新程序
+        /// </summary>
+        /// <returns></returns>
+        private async System.Threading.Tasks.Task<List<string>> GetNeedUpdateFilesAsync()
+        {
+            List<string> NeedUpdateFiles = new List<string>();
+
+            //1. 读取服务器端本系统程序的信息。
+            List<UpdateFile> ServerUpdateFiles = await DataSystemRepository.GetServerUpdateFiles();
+            //2. 与本地同名文件进行比较，以便确定是否需要更新。
+            if (ServerUpdateFiles != null && ServerUpdateFiles.Count > 0)
+            {
+                foreach (UpdateFile item in ServerUpdateFiles)
+                {
+                    string localFileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, item.FileName);
+                    if (File.Exists(localFileName))
+                    {
+                        //本地有同名文件，比较其版本号差异
+                        string FileVersion = System.Diagnostics.FileVersionInfo.GetVersionInfo(localFileName).FileVersion;
+                        if (FileVersion != item.Version)// || theFile.LastWriteTime != item.LastWriteTime)
+                        {
+                            NeedUpdateFiles.Add(item.FileName);
+                        }
+                    }
+                    else
+                    {
+                        //本地无同名文件，说明是新文件需要下载。
+                        NeedUpdateFiles.Add(item.FileName);
+                    }
+                }
+            }
+            return NeedUpdateFiles;
         }
     }
 }
