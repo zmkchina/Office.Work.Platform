@@ -146,7 +146,7 @@ namespace Office.Work.Platform.MemberUc
                 MemberRelationsSearch SearchCondition = new MemberRelationsSearch() { MemberId = PMember.Id, UserId = AppSet.LoginUser.Id };
                 IEnumerable<MemberRelations> MemberRelationsss = await DataMemberRelationsRepository.GetRecords(SearchCondition);
                 CurRecords.Clear();
-                MemberRelationsss.ToList().ForEach(e =>
+                MemberRelationsss?.ToList().ForEach(e =>
                 {
                     CurRecords.Add(e);
                 });
@@ -161,7 +161,7 @@ namespace Office.Work.Platform.MemberUc
 
                 IEnumerable<MemberRelations> TempRecords = await DataMemberRelationsRepository.GetRecords(SearchCondition);
                 CurRecords.Clear();
-                TempRecords.ToList().ForEach(e =>
+                TempRecords?.ToList().ForEach(e =>
                 {
                     CurRecords.Add(e);
                 });

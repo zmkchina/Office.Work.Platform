@@ -1,0 +1,37 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              ColumnWidth="400" FontSize="14" FontFamily="宋体"
+              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" TextOptions.TextFormattingMode="Display">
+    <FlowDocument.Resources>
+        <Style TargetType="Table" x:Key="BorderedTable">
+            <Setter Property="CellSpacing" Value="0"></Setter>
+            <Setter Property="BorderThickness" Value="1"></Setter>
+            <Setter Property="BorderBrush" Value="#000"></Setter>
+        </Style>
+        <Style TargetType="TableCell" x:Key="BorderedCell">
+            <Setter Property="BorderThickness" Value="0.5"></Setter>
+            <Setter Property="BorderBrush" Value="#000"></Setter>
+            <Setter Property="Padding" Value="3"></Setter>
+        </Style>
+        <Style  TargetType="TableCell">
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="BorderBrush" Value="Black" />
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+        <Style x:Key="PgStyle" TargetType="Paragraph">
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,5"/>
+        </Style>
+    </FlowDocument.Resources>
+    <!--PageHeight="21cm" PageWidth="29.7cm" ColumnWidth ="29.7cm"-->
+    <Paragraph TextAlignment="Center" FontWeight="Bold" FontSize="24" LineHeight="20">港航中心在职职工月度工资表</Paragraph>
+    <Paragraph TextAlignment="Center" FontWeight="Light" FontSize="16" >
+        <Run x:Name="Run_PayDate" Text="（XXXX年YY月）" FontFamily="Times New Roman"/>
+    </Paragraph>
+    <Table  CellSpacing="0">
+        <TableRowGroup x:Name="TableRowGroupHeader" Background="LightGray" FontWeight="Bold">
+        </TableRowGroup>
+        <TableRowGroup x:Name="TableContentRows" FontFamily="Verdana" FontSize="12">
+        </TableRowGroup>
+    </Table>
+</FlowDocument>
+            

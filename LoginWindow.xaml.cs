@@ -34,7 +34,7 @@ namespace Office.Work.Platform
             string V_UserPwd = Text_UserPwd.Password.Trim();
             if (V_UserId.Length < 1 || V_UserPwd.Length < 1)
             {
-                (new WinMsgDialog("请输入用户名和密码。", "警告")).ShowDialog();
+                AppFuns.ShowMessage("请输入用户名和密码。", "警告");
                 return;
             }
             //显示Loading
@@ -46,6 +46,7 @@ namespace Office.Work.Platform
                 if (TokenResult != "Ok")
                 {
                     AppFuns.ShowMessage(TokenResult);
+                    this.CanVas_loadding.Visibility = Visibility.Collapsed;
                     return;
                 }
                 //从服务器读取指定的用户并在服务器上登陆
@@ -62,7 +63,7 @@ namespace Office.Work.Platform
                 else
                 {
                     this.CanVas_loadding.Visibility = Visibility.Collapsed;
-                    AppFuns.ShowMessage("请检查用户名或密码,如仍有问题请检查网络。", "警告");
+                    AppFuns.ShowMessage("请检查用户名或密码,如仍有问题请检查网络。"+ LoginUser.Id, "警告");
                 }
             }
             catch (Exception ex)
@@ -100,6 +101,7 @@ namespace Office.Work.Platform
         {
             DataRWLocalFileRepository.SaveObjToFile<SettingLocal>(AppSet.LocalSetting, AppSet.LocalSettingFileName);
             CanVas_UrlSet.Visibility = Visibility.Collapsed;
+            CanVas_loadding.Visibility = Visibility.Collapsed;
         }
         /// <summary>
         /// 退出设置
@@ -109,6 +111,7 @@ namespace Office.Work.Platform
         private void Btn_Return_Click(object sender, RoutedEventArgs e)
         {
             CanVas_UrlSet.Visibility = Visibility.Collapsed;
+            CanVas_loadding.Visibility = Visibility.Collapsed;
         }
     }
 }

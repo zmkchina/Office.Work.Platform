@@ -124,8 +124,8 @@ namespace Office.Work.Platform.AppCodes
         /// </summary>
         public SettingLocal()
         {
-            IS4SeverUrl = "http://localhost:8989";
-            ResApiUrl = "http://localhost:8989/Api/";
+            IS4SeverUrl = "http://172.16.0.9:9898";
+            ResApiUrl = "http://172.16.0.9:9898/Api/";
             RestInterval = 20;
             ResetColorTheme();
         }

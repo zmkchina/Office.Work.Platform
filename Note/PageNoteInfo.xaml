@@ -73,7 +73,7 @@
                     </RichTextBox>
                 </GroupBox>
                 <GroupBox Header="有限读取" Grid.Row="2" Padding="5,10,5,2">
-                    <ListBox ItemsSource="{Binding UserGrantSelectList}"  Margin="5">
+                    <ListBox x:Name="ListBox_Users" ItemsSource="{Binding UserGrantSelectList}"  Margin="5">
                         <ListBox.Template>
                             <ControlTemplate TargetType="{x:Type ListBox}">
                                 <WrapPanel VerticalAlignment="Center"  IsItemsHost="True"/>

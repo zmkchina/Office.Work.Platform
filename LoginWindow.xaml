@@ -53,12 +53,12 @@
             <uc:UiLoading Canvas.Left="140" Canvas.Top="40" Height="50" Width="50"/>
             <Label Canvas.Left="190" Canvas.Top="52" Margin="0,0,0,0" FontSize="15" FontWeight="DemiBold" Content="正在登陆系统...." Height="30" Foreground="Blue" />
         </Canvas>
-        <Canvas x:Name="CanVas_UrlSet" Grid.Row="0" Grid.RowSpan="3" Visibility="Collapsed" Margin="0,30,0,0" Panel.ZIndex="2" Height="280"  Background="#FF2352B8" VerticalAlignment="Center" >
+        <Canvas x:Name="CanVas_UrlSet" Grid.Row="0" Grid.RowSpan="3" Visibility="Collapsed" Margin="0,30,0,0" Panel.ZIndex="2" Height="280" TextElement.FontSize="14"  Background="#FF2352B8" VerticalAlignment="Center" >
             <GroupBox Header="身份认证服务器地址" HorizontalAlignment="Stretch" Margin="50,20,0,0" Foreground="White" Padding="20">
-                <TextBox Text="{Binding IS4SeverUrl}" Width="300" HorizontalAlignment="Center"/>
+                <TextBox Text="{Binding IS4SeverUrl}" Width="300" HorizontalAlignment="Center" Padding="3"/>
             </GroupBox>
             <GroupBox Header="数据服务器地址" HorizontalAlignment="Stretch" Margin="50,120,0,0" Foreground="White" Padding="20">
-                <TextBox Text="{Binding ResApiUrl}" Width="300" HorizontalAlignment="Center"/>
+                <TextBox Text="{Binding ResApiUrl}" Width="300" HorizontalAlignment="Center" Padding="3"/>
             </GroupBox>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch"  Margin="280,230,0,0" >
                 <Button Content="保存" Click="Btn_Save_Click" Margin="10 0" Padding="10,5" IsDefault="True" />

@@ -221,7 +221,7 @@ namespace Office.Work.Platform.Plan
                 //如果该计划的附件文件没有读取则读取之。
                 FileDocSearch mSearchFile = new FileDocSearch() { OwnerId = P_Entity.Id, UserId = AppSet.LoginUser.Id };
                 IEnumerable<FileDoc> UpFiles = await DataFileDocRepository.ReadFiles(mSearchFile);
-                UpFiles.ToList().ForEach(e =>
+                UpFiles?.ToList().ForEach(e =>
                 {
                     e.UpIntProgress = 100;
                     PlanFiles.Add(e);

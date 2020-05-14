@@ -142,7 +142,7 @@ namespace Office.Work.Platform.MemberUc
                     MemberHolidaySearch SearchCondition = new MemberHolidaySearch() { MemberId = PMember.Id, UserId = AppSet.LoginUser.Id };
                     IEnumerable<MemberHoliday> MemberHolidayss = await DataMemberHolidayRepository.GetRecords(SearchCondition);
                     CurRecords.Clear();
-                    MemberHolidayss.ToList().ForEach(e =>
+                    MemberHolidayss?.ToList().ForEach(e =>
                     {
                         CurRecords.Add(e);
                     });
@@ -157,7 +157,7 @@ namespace Office.Work.Platform.MemberUc
 
                     IEnumerable<MemberHoliday> TempRecords = await DataMemberHolidayRepository.GetRecords(SearchCondition);
                     CurRecords.Clear();
-                    TempRecords.ToList().ForEach(e =>
+                    TempRecords?.ToList().ForEach(e =>
                     {
                         CurRecords.Add(e);
                     });

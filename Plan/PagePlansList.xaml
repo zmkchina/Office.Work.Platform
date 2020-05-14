@@ -50,7 +50,7 @@
                             <Image Width="24" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="{Binding Path=CurrectState,Converter={StaticResource PlanStateToImgeUri}}"/>
                             <TextBlock TextWrapping="Wrap"  Grid.Column="1" Grid.Row="0" TextAlignment="Justify" VerticalAlignment="Center" Margin="10,5,5,5">
                                 <Run Text="{Binding Path=Caption,Mode=OneWay}" />
-                                <Run Text="{Binding Path=Helpers,Converter={StaticResource GetIsHelper},StringFormat=[{0}]}" FontStyle="Italic" Foreground="Blue" FontWeight="Bold"/>
+                                <Run Text="{Binding Path=Helpers,Converter={StaticResource GetIsHelper},StringFormat={}{0}}" FontStyle="Italic" Foreground="Blue" FontWeight="Bold"/>
                                 <TextBlock.ToolTip>
                                     <ToolTip>
                                         <StackPanel>

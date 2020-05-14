@@ -201,7 +201,7 @@ namespace Office.Work.Platform.Remuneration
                         UserId = AppSet.LoginUser.Id
                     });
                     MemberPays.Clear();
-                    MemberPlayMonths.ToList().ForEach(e =>
+                    MemberPlayMonths?.ToList().ForEach(e =>
                     {
                         MemberPays.Add(e);
                     });

@@ -104,7 +104,7 @@ namespace Office.Work.Platform.Plan
         {
             EntityPlans.Clear();
             var plans = await DataPlanRepository.ReadPlans(mSearchPlan);
-            plans.ToList().ForEach(e =>
+            plans?.ToList().ForEach(e =>
             {
                 EntityPlans.Add(e);
             });

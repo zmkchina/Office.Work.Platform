@@ -28,15 +28,16 @@ namespace Office.Work.Platform.Note
         public void Page_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
             Col_NoteInfo.Width = new System.Windows.GridLength(0, System.Windows.GridUnitType.Pixel);
+            btn_Search_ClickAsync(null, null);
         }
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
             AppFuns.SetStateBarText("就绪");
         }
-        private void btn_Search_ClickAsync(object sender, System.Windows.RoutedEventArgs e)
+        private async void btn_Search_ClickAsync(object sender, System.Windows.RoutedEventArgs e)
         {
-            _CurViewModel.SearchNodes();
             Col_NoteInfo.Width = new System.Windows.GridLength(0, System.Windows.GridUnitType.Pixel);
+            await _CurViewModel.SearchNodes();
             DataContext = _CurViewModel;
         }
         private void btn_Add_ClickAsync(object sender, System.Windows.RoutedEventArgs e)
@@ -121,6 +122,10 @@ namespace Office.Work.Platform.Note
             App.Current.Dispatcher.Invoke(async () =>
             {
                 ExcuteResult result = await _CurViewModel.DelNode();
+                if (result.State == 0)
+                {
+                    Col_NoteInfo.Width = new System.Windows.GridLength(0, System.Windows.GridUnitType.Pixel);
+                }
                 AppFuns.ShowMessage(result.Msg);
             });
         }
@@ -170,7 +175,7 @@ namespace Office.Work.Platform.Note
                 return string.Join(",", SelectIds.ToArray());
             }
 
-            public async void SearchNodes()
+            public async Task SearchNodes()
             {
                 CollectNotes.Clear();
                 IEnumerable<Lib.Note> EnuNodes = await DataNoteRepository.GetRecords(NoteSearch);

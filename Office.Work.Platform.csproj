@@ -5,13 +5,14 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
-    <ApplicationIcon>AppRes\Images\App.ico</ApplicationIcon>
+    <ApplicationIcon>App.ico</ApplicationIcon>
     <StartupObject>Office.Work.Platform.App</StartupObject>
     <Version>2.0.0.0</Version>
     <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <FileVersion>2.0.0.0</FileVersion>
     <NoWin32Manifest>true</NoWin32Manifest>
     <Platforms>AnyCPU;x64;x86</Platforms>
+    <PackageIcon>App.ico</PackageIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -92,6 +93,10 @@
     <None Remove="AppRes\Images\wcqk.png" />
     <None Remove="AppRes\Images\writepaper.png" />
     <None Remove="AppRes\Window\barbackground.png" />
+    <None Include="AppRes\Images\App.ico">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -210,9 +215,6 @@
     <Compile Update="MemberUc\UC_Resume.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="PageHome.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Settings\PagePersonCenter.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -276,10 +278,10 @@
     <Page Update="MemberUc\UC_Resume.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="PageHome.xaml">
+    <Page Update="Remuneration\PageMemberPayFastWin.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Remuneration\PageMemberPayFastWin.xaml">
+    <Page Update="Remuneration\PrintMemberPaySheetDot.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Settings\PagePersonCenter.xaml">

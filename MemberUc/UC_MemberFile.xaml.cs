@@ -38,6 +38,8 @@ namespace Office.Work.Platform.MemberUc
         {
             FileDocSearch mfsearch = new FileDocSearch()
             {
+                OwnerId=_UCMemberFileVM.MemberId,
+                ContentType= _UCMemberFileVM.ContentType,
                 SearchNameOrDesc = _UCMemberFileVM.SearchValues,
             };
             await _UCMemberFileVM.SearchMemberFiles(mfsearch);
@@ -145,7 +147,7 @@ namespace Office.Work.Platform.MemberUc
 
                 IEnumerable<FileDoc> MemberPayTemps = await DataFileDocRepository.ReadFiles(mfsearch);
                 MFiles.Clear();
-                MemberPayTemps.ToList().ForEach(e =>
+                MemberPayTemps?.ToList().ForEach(e =>
                 {
                     MFiles.Add(e);
                 });

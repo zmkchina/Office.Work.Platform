@@ -148,7 +148,7 @@ namespace Office.Work.Platform.MemberUc
                 MemberResumeSearch SearchCondition = new MemberResumeSearch() { MemberId = PMember.Id, UserId = AppSet.LoginUser.Id };
                 IEnumerable<MemberResume> MemberResumess = await DataMemberResumeRepository.GetRecords(SearchCondition);
                 CurRecords.Clear();
-                MemberResumess.ToList().ForEach(e =>
+                MemberResumess?.ToList().ForEach(e =>
                 {
                     CurRecords.Add(e);
                 });
@@ -163,7 +163,7 @@ namespace Office.Work.Platform.MemberUc
 
                 IEnumerable<MemberResume> TempRecords = await DataMemberResumeRepository.GetRecords(SearchCondition);
                 CurRecords.Clear();
-                TempRecords.ToList().ForEach(e =>
+                TempRecords?.ToList().ForEach(e =>
                 {
                     CurRecords.Add(e);
                 });

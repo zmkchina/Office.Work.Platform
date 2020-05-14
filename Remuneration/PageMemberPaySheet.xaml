@@ -86,15 +86,7 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        <Style  TargetType="TableCell">
-            <Setter Property="TextAlignment" Value="Center"/>
-            <Setter Property="BorderBrush" Value="Black" />
-            <Setter Property="BorderThickness" Value="1"/>
-        </Style>
-        <Style x:Key="PgStyle" TargetType="Paragraph">
-            <Setter Property="TextAlignment" Value="Center"/>
-            <Setter Property="Margin" Value="0,5"/>
-        </Style>
+        
     </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -124,74 +116,6 @@
             
             <DataGrid x:Name="RecordDataGrid" >
             </DataGrid>
-            
-            <RichTextBox x:Name="RichTBFlowDoc" Visibility="Collapsed">
-                <FlowDocument x:Name="FlowDoc"  Background="AliceBlue">
-                    <!--PageHeight="21cm" PageWidth="29.7cm" ColumnWidth ="29.7cm"-->
-                    <Paragraph TextAlignment="Center" FontWeight="Bold" FontSize="24" LineHeight="20">港航中心在职职工月度工资表</Paragraph>
-                    <Paragraph TextAlignment="Center" FontWeight="Light" FontSize="16" >
-                        <Run x:Name="Run_PayDate" Text="（XXXX年YY月）" FontFamily="Times New Roman"/>
-                    </Paragraph>
-                    <Table  CellSpacing="0">
-                        <TableRowGroup x:Name="TableRowGroupHeader" Background="LightGray" FontWeight="Bold">
-                            <!--<TableRow>
-                            <TableCell>
-                                <Paragraph Style="{StaticResource PgStyle}"  >
-                                    姓名
-                                </Paragraph>
-                            </TableCell>
-                            <TableCell>
-                                <Paragraph Style="{StaticResource PgStyle}">岗位工资</Paragraph>
-                            </TableCell>
-                            <TableCell>
-                                <Paragraph Style="{StaticResource PgStyle}">薪级工资</Paragraph>
-                            </TableCell>
-                            <TableCell>
-                                <Paragraph Style="{StaticResource PgStyle}">岗位津贴</Paragraph>
-                            </TableCell>
-                            <TableCell>
-                                <Paragraph Style="{StaticResource PgStyle}">生活补贴</Paragraph>
-                            </TableCell>
-                            <TableCell>
-                                <Paragraph Style="{StaticResource PgStyle}">奖励绩效(月）</Paragraph>
-                            </TableCell>
-                            <TableCell>
-                                <Paragraph Style="{StaticResource PgStyle}">应发工资</Paragraph>
-                            </TableCell>
-                            <TableCell>
-                                <Paragraph Style="{StaticResource PgStyle}">扣养老保险</Paragraph>
-                            </TableCell>
-                            <TableCell>
-                                <Paragraph Style="{StaticResource PgStyle}">扣职业年金</Paragraph>
-                            </TableCell>
-                            <TableCell>
-                                <Paragraph Style="{StaticResource PgStyle}">扣住房公积金</Paragraph>
-                            </TableCell>
-                            <TableCell>
-                                <Paragraph Style="{StaticResource PgStyle}">扣失业保险</Paragraph>
-                            </TableCell>
-                            <TableCell>
-                                <Paragraph Style="{StaticResource PgStyle}">扣医疗保险</Paragraph>
-                            </TableCell>
-                            <TableCell>
-                                <Paragraph Style="{StaticResource PgStyle}">扣工会费</Paragraph>
-                            </TableCell>
-                            <TableCell>
-                                <Paragraph Style="{StaticResource PgStyle}">应纳个税</Paragraph>
-                            </TableCell>
-                            <TableCell>
-                                <Paragraph Style="{StaticResource PgStyle}">实发工资</Paragraph>
-                            </TableCell>
-                            <TableCell>
-                                <Paragraph Style="{StaticResource PgStyle}">备注信息</Paragraph>
-                            </TableCell>
-                        </TableRow>-->
-                        </TableRowGroup>
-                        <TableRowGroup x:Name="TableContentRows" FontFamily="Verdana" FontSize="12">
-                        </TableRowGroup>
-                    </Table>
-                </FlowDocument>
-            </RichTextBox>
         </StackPanel>
     </Grid>
 </Page>
