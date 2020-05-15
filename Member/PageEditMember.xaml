@@ -92,22 +92,17 @@
                     </Grid.ColumnDefinitions>
                     <ScrollViewer Grid.Column="0" >
                         <StackPanel  Orientation="Vertical" Margin="0,5">
-                            <StackPanel Orientation="Horizontal">
-                                <GroupBox Style="{StaticResource GroupBoxStyle}">
-                                    <GroupBox.Header>
-                                        <TextBlock>
+                            <GroupBox Style="{StaticResource GroupBoxStyle}" HorizontalAlignment="Stretch">
+                                <GroupBox.Header>
+                                    <TextBlock>
                             <Run Text="身份证号"/>
                             <Run Text="{Binding Path=AddOrEditStr,StringFormat=({0})}" Foreground="Red"/>
-                                        </TextBlock>
-                                    </GroupBox.Header>
-                                    <TextBox x:Name="Tb_UserId" Text="{Binding EntityMember.Id,UpdateSourceTrigger=PropertyChanged}"
-                                     MaxLength="18"
-                                     Style="{StaticResource TextboxStyle}" LostFocus="Tb_UserId_LostFocusAsync"/>
-                                </GroupBox>
-                                <GroupBox Header="出生年月"  Style="{StaticResource GroupBoxStyle}">
-                                    <DatePicker SelectedDate="{Binding EntityMember.Birthday}" Style="{StaticResource DatePickerStyle}"/>
-                                </GroupBox>
-                            </StackPanel>
+                                    </TextBlock>
+                                </GroupBox.Header>
+                                <TextBox x:Name="Tb_UserId" Text="{Binding EntityMember.Id,UpdateSourceTrigger=PropertyChanged}"
+                                     MaxLength="18" HorizontalAlignment="Stretch" Height="30"
+                                    LostFocus="Tb_UserId_LostFocusAsync"/>
+                            </GroupBox>
                             <StackPanel Orientation="Horizontal">
                                 <GroupBox Header="员工姓名" Style="{StaticResource GroupBoxStyle}">
                                     <TextBox x:Name="Tb_UserName"  Text="{Binding EntityMember.Name}"  MaxLength="10" Style="{StaticResource TextboxStyle}"/>
@@ -117,6 +112,14 @@
                                         <ComboBoxItem>男</ComboBoxItem>
                                         <ComboBoxItem>女</ComboBoxItem>
                                     </ComboBox>
+                                </GroupBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <GroupBox Header="出生日期"  Style="{StaticResource GroupBoxStyle}">
+                                    <DatePicker SelectedDate="{Binding EntityMember.Birthday}" Style="{StaticResource DatePickerStyle}"/>
+                                </GroupBox>
+                                <GroupBox Header="档案生日"  Style="{StaticResource GroupBoxStyle}">
+                                    <DatePicker SelectedDate="{Binding EntityMember.BirthdayArchives}" Style="{StaticResource DatePickerStyle}"/>
                                 </GroupBox>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">

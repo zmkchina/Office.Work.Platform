@@ -296,14 +296,16 @@ namespace Office.Work.Platform
 
                 return false;
             }
-            string[] UpdateFiles = directoryInfo.GetFiles().Select(x => x.Name).ToArray();
-            if (appUpdateInfo.UpdateFiles.Count != UpdateFiles.Length)
+
+            FileInfo[] DFiles = directoryInfo.GetFiles();
+            if (DFiles == null || appUpdateInfo.UpdateFiles.Count != DFiles.Count())
             {
                 return false;
             }
-            foreach (string item in UpdateFiles)
+
+            foreach (FileInfo item in DFiles)
             {
-                if (!appUpdateInfo.UpdateFiles.Contains(item))
+                if (!appUpdateInfo.UpdateFiles.Contains(item.Name) || item.Length < 1)
                 {
                     return false;
                 }

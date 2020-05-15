@@ -63,7 +63,7 @@ namespace Office.Work.Platform
                 else
                 {
                     this.CanVas_loadding.Visibility = Visibility.Collapsed;
-                    AppFuns.ShowMessage("请检查用户名或密码,如仍有问题请检查网络。"+ LoginUser.Id, "警告");
+                    AppFuns.ShowMessage("请检查用户名或密码,如仍有问题请检查网络。", "警告");
                 }
             }
             catch (Exception ex)
