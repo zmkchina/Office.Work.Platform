@@ -36,14 +36,6 @@ namespace Office.Work.Platform.AppDataService
             return excuteResult;
         }
 
-        /// <summary>
-        /// 从服务器读取可能需要升级的文件信息
-        /// </summary>
-        /// <returns></returns>
-        public static async Task<List<UpdateFile>> GetServerUpdateFiles()
-        {
-            List<UpdateFile> updateFiles = await DataApiRepository.GetApiUri<List<UpdateFile>>(_ApiUrlBase + "UpdateFile").ConfigureAwait(false);
-            return updateFiles;
-        }
+        
     }
 }

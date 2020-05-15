@@ -5,8 +5,10 @@ using Office.Work.Platform.Lib;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Net.Http.Handlers;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -70,7 +72,7 @@ namespace Office.Work.Platform.Plan
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private  void BtnUpFile_Click(object sender, RoutedEventArgs e)
+        private void BtnUpFile_Click(object sender, RoutedEventArgs e)
         {
             e.Handled = true;
             System.IO.FileInfo theFile = FileOperation.SelectFile();
@@ -79,29 +81,59 @@ namespace Office.Work.Platform.Plan
                 WinUpLoadFile winUpLoadFile = new WinUpLoadFile(new Action<FileDoc>(newFile =>
                 {
                     _UCPlanInfoVM.PlanFiles.Add(newFile);
-                }), theFile, "计划附件",_UCPlanInfoVM.CurPlan.Id,_UCPlanInfoVM.CurPlan.ContentType);
+                }), theFile, "计划附件", _UCPlanInfoVM.CurPlan.Id, _UCPlanInfoVM.CurPlan.ContentType);
                 winUpLoadFile.ShowDialog();
             }
         }
 
-        private void MenuItem_ReName_Click(object sender, RoutedEventArgs e)
+
+        private async void MenuItem_CopyFile_ClickAsync(object sender, RoutedEventArgs e)
         {
+            FileDoc SelectFile = LB_FileList.SelectedItem as FileDoc;
+            string theDownFileName = await DownLoadFile(SelectFile, false);
+            if (theDownFileName != null)
+            {
+                System.Collections.Specialized.StringCollection files = new System.Collections.Specialized.StringCollection();
+                files.Add(theDownFileName);
+                Clipboard.SetFileDropList(files);
+            }
+            else
+            {
+                AppFuns.ShowMessage("文件下载失败，可能该文件已被删除！", "警告");
+            }
 
         }
 
-        private void MenuItem_CopyFile_Click(object sender, RoutedEventArgs e)
+        private async void MenuItem_ReDwonLoad_ClickAsync(object sender, RoutedEventArgs e)
         {
+            TextBlock curTextBlock = sender as TextBlock;
+            curTextBlock.IsEnabled = false;
+            FileDoc SelectFile = LB_FileList.SelectedItem as FileDoc;
 
+            string theDownFileName = await DownLoadFile(SelectFile, true);
+            if (theDownFileName != null)
+            {
+                FileOperation.UseDefaultAppOpenFile(theDownFileName);
+            }
+            else
+            {
+                AppFuns.ShowMessage("文件下载失败，可能该文件已被删除！", "警告");
+            }
+            curTextBlock.IsEnabled = true;
         }
-
-        private void MenuItem_ReDwonLoad_Click(object sender, RoutedEventArgs e)
+        //转到文件夹
+        private async void MenuItem_ToFolder_ClickAsync(object sender, RoutedEventArgs e)
         {
-
-        }
-
-        private void MenuItem_ToFolder_Click(object sender, RoutedEventArgs e)
-        {
-
+            FileDoc SelectFile = LB_FileList.SelectedItem as FileDoc;
+            string theDownFileName = await DownLoadFile(SelectFile, false);
+            if (theDownFileName != null)
+            {
+                System.Diagnostics.Process.Start("Explorer", "/select," + theDownFileName);
+            }
+            else
+            {
+                AppFuns.ShowMessage("文件下载失败，可能该文件已被删除！", "警告");
+            }
         }
         /// <summary>
         /// 从服务器删除文件
@@ -132,24 +164,42 @@ namespace Office.Work.Platform.Plan
             curTextBlock.IsEnabled = false;
             FileDoc SelectFile = LB_FileList.SelectedItem as FileDoc;
 
-            ProgressMessageHandler progress = new ProgressMessageHandler();
-
-            progress.HttpReceiveProgress += (object sender, HttpProgressEventArgs e) =>
-            {
-                SelectFile.DownIntProgress = e.ProgressPercentage;
-            };
-
-            string theDownFileName = await DataFileDocRepository.DownloadFile(SelectFile, false, progress);
+            string theDownFileName = await DownLoadFile(SelectFile, false);
             if (theDownFileName != null)
             {
-                SelectFile.DownIntProgress = 100;
                 FileOperation.UseDefaultAppOpenFile(theDownFileName);
             }
             else
             {
-                (new WinMsgDialog("文件下载失败，可能该文件已被删除！", "警告")).ShowDialog();
+                AppFuns.ShowMessage("文件下载失败，可能该文件已被删除！", "警告");
             }
             curTextBlock.IsEnabled = true;
+        }
+        /// <summary>
+        /// 下载文件，成功返回带路径的文件名，失败返回Null
+        /// </summary>
+        /// <param name="WillDownFile"></param>
+        /// <param name="ReDownLoad"></param>
+        /// <returns></returns>
+        private async Task<string> DownLoadFile(FileDoc WillDownFile, bool ReDownLoad = false)
+        {
+            ProgressMessageHandler progress = new ProgressMessageHandler();
+
+            progress.HttpReceiveProgress += (object sender, HttpProgressEventArgs e) =>
+            {
+                WillDownFile.DownIntProgress = e.ProgressPercentage;
+            };
+
+            string theDownFileName = await DataFileDocRepository.DownloadFile(WillDownFile, false, progress);
+            if (theDownFileName != null)
+            {
+                WillDownFile.DownIntProgress = 100;
+                return theDownFileName;
+            }
+            else
+            {
+                return null;
+            }
         }
         /// <summary>
         /// 更新计划进度

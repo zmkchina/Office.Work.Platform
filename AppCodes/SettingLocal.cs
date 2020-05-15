@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media;
@@ -10,7 +11,7 @@ namespace Office.Work.Platform.AppCodes
     /// </summary>
     public class SettingLocal : INotifyPropertyChanged
     {
-       
+
         private string _LoginUserId;
         private int _RestInterval;
         private string _ColorMainWinTitle;
@@ -21,6 +22,10 @@ namespace Office.Work.Platform.AppCodes
         private string _ResApiUrl;
         private string _IS4SeverUrl;
 
+        /// <summary>
+        /// 程序最后一次升级信息
+        /// </summary>
+        public DateTime AppUpDateTime { get; set; }
         /// <summary>
         /// 用户Id号
         /// </summary>
@@ -124,6 +129,7 @@ namespace Office.Work.Platform.AppCodes
         /// </summary>
         public SettingLocal()
         {
+            AppUpDateTime = DateTime.Parse("2020/05/15 9:42:20");
             IS4SeverUrl = "http://172.16.0.9:9898";
             ResApiUrl = "http://172.16.0.9:9898/Api/";
             RestInterval = 20;

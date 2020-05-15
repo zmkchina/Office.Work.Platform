@@ -6,12 +6,13 @@
         xmlns:local="clr-namespace:Office.Work.Platform"
         mc:Ignorable="d"
         ShowInTaskbar="False" 
-        WindowStartupLocation="CenterScreen"
+        WindowStartupLocation="CenterOwner"
         WindowStyle="None"
+        Topmost="True"
         ForceCursor="True"
         Loaded="Window_LoadedAsync"
         AllowsTransparency="True" BorderBrush="LightBlue" BorderThickness="1" Background="#FFE4DDD9"
-        Height="160" Width="300">
+        Height="180" Width="360">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -29,15 +30,16 @@
         </Border>
         <StackPanel Grid.Row="1">
             <StackPanel Orientation="Vertical">
-                <TextBlock Margin="10">
+                <TextBlock Margin="10,15,10,5">
                     <Run Text="{Binding DownIndex,StringFormat=已下载{0}个}"/>
                     <Run Text="{Binding DownCount,StringFormat=，共{0}个文件}"/>
                 </TextBlock>
-                <ProgressBar  Margin="10" Height="15" Maximum="100" Value="{Binding DownIntProgress}" Foreground="Blue"/>
-                <TextBlock Margin="10">
-                    <Run Text="{Binding DownFileName,StringFormat=当前下载{0}}"/>
+                <ProgressBar  Margin="10,0" Height="15" Maximum="100" Value="{Binding DownIntProgress}" Foreground="Blue"/>
+                <TextBlock Margin="10,5">
+                    <Run Text="{Binding DownFileName,StringFormat=文件{0}}"/>
                 </TextBlock>
             </StackPanel>
         </StackPanel>
+        <Button x:Name="Btn_Update" IsEnabled="False" Click="Btn_UpdateOk_Click" Grid.Row="2" Width="80" Content="完成" HorizontalAlignment="Right" Margin="10,5"/>
     </Grid>
 </Window>

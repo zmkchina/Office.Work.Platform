@@ -28,7 +28,7 @@ namespace Office.Work.Platform.Remuneration
         public PageMemberPayFast()
         {
             InitializeComponent();
-           
+
             DataGridResult.UpdateLayout();
             PayItemNameList = new List<string>();
             Run_PayUnitName.Text = AppSet.LoginUser.UnitName;
@@ -42,8 +42,8 @@ namespace Office.Work.Platform.Remuneration
             App.Current.Dispatcher.Invoke(() =>
             {
                 //DataGridResult.ItemsSource = PaySetJArray;
-                // DataGridResult.Columns.Add(new DataGridTextColumn() { Header = "身份证号", Binding = new Binding("身份证号") });
-                // DataGridResult.Columns.Add(new DataGridCheckBoxColumn() { Header = "个税", Binding = new Binding("个税") });
+                //DataGridResult.Columns.Add(new DataGridTextColumn() { Header = "身份证号", Binding = new Binding("身份证号") });
+                //DataGridResult.Columns.Add(new DataGridCheckBoxColumn() { Header = "个税", Binding = new Binding("个税") });
                 this.DataContext = this;
             });
         }
@@ -217,12 +217,12 @@ namespace Office.Work.Platform.Remuneration
             }
             if (PaySetJArray.Any(e => e["身份证号"].ToString().Equals(NewDic["身份证号"].ToString())))
             {
-                (new WinMsgDialog($"身份证号为[{NewDic["身份证号"]}]的用户已经存在。", "错误", isErr: true)).ShowDialog();
+                AppFuns.ShowMessage($"身份证号为[{NewDic["身份证号"]}]的用户已经存在。", "错误", isErr: true);
                 return;
             }
             PaySetJArray.Add(NewDic);
         }
-       
+
         /// <summary>
         /// 双击变换选中状态
         /// </summary>
@@ -279,7 +279,10 @@ namespace Office.Work.Platform.Remuneration
         {
             if (DataGridResult.SelectedItem is JObject curItem)
             {
-                PaySetJArray.Remove(curItem);
+                if (AppFuns.ShowMessage($"确定要删除所选人员？", "确认"))
+                {
+                    PaySetJArray.Remove(curItem);
+                }
             }
         }
     }

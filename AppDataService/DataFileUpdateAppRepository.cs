@@ -1,4 +1,5 @@
 ﻿using Office.Work.Platform.AppCodes;
+using Office.Work.Platform.Lib;
 using System;
 using System.IO;
 using System.Net.Http;
@@ -10,13 +11,19 @@ namespace Office.Work.Platform.AppDataService
     public static class DataFileUpdateAppRepository
     {
         private static string _ApiUrlBase = AppSet.LocalSetting.ResApiUrl;
-
-        public static async Task<string> DownLoadNewVerFile(string PFileName, ProgressMessageHandler showDownProgress = null)
+        /// <summary>
+        /// 从服务器读取本程序最新升级信息
+        /// </summary>
+        /// <returns></returns>
+        public static async Task<AppUpdateInfo> GetAppUpdateInfo()
         {
-            //合成目录
-            string tempFileDir = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "UpdateApp");
+            AppUpdateInfo UpdateInfo = await DataApiRepository.GetApiUri<AppUpdateInfo>(_ApiUrlBase + "UpdateFile/GetUpdateInfo").ConfigureAwait(false);
+            return UpdateInfo;
+        }
+        public static async Task<string> DownLoadNewVerFile(string PFileName, string TargetDir, ProgressMessageHandler showDownProgress = null)
+        {
             //合成目录+文件
-            string tempFilePath = System.IO.Path.Combine(tempFileDir, PFileName);
+            string tempFilePath = System.IO.Path.Combine(TargetDir, PFileName);
 
             HttpResponseMessage httpResponseMessage = await DataApiRepository.GetApiUri<HttpResponseMessage>(_ApiUrlBase + @"UpdateFile/DownFile/" + PFileName, showDownProgress).ConfigureAwait(false);
             if (httpResponseMessage != null && httpResponseMessage.StatusCode != System.Net.HttpStatusCode.NotFound)
@@ -26,10 +33,6 @@ namespace Office.Work.Platform.AppDataService
                 //Stream responseStream = await DataApiRepository.GetApiUri<Stream>(AppSettings.ApiUrlBase + @"FileDown/" + WillDownFile.Id, showDownProgress);
                 if (responseStream != null && responseStream.Length > 0)
                 {
-                    DirectoryInfo directoryInfo = new DirectoryInfo(tempFileDir);
-                    directoryInfo.Delete(true);
-                    directoryInfo.Create();
-
                     //创建一个文件流
                     FileStream fileStream = new FileStream(tempFilePath, FileMode.Create);
                     //await responseStream.CopyToAsync(fileStream);

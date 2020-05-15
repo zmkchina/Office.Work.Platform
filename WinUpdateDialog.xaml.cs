@@ -1,12 +1,11 @@
-﻿using Office.Work.Platform.AppCodes;
-using Office.Work.Platform.AppDataService;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http.Handlers;
 using System.Windows;
-using System.Windows.Documents;
 using System.Windows.Input;
+using Office.Work.Platform.AppCodes;
+using Office.Work.Platform.AppDataService;
 
 namespace Office.Work.Platform
 {
@@ -20,6 +19,7 @@ namespace Office.Work.Platform
         public WinUpdateDialog(List<string> PDownFiles)
         {
             InitializeComponent();
+            this.Owner = AppSet.AppMainWindow;
             _CurWinViewModel = new CurWinViewModel(PDownFiles);
             this.DataContext = _CurWinViewModel;
         }
@@ -31,26 +31,39 @@ namespace Office.Work.Platform
         private async void Window_LoadedAsync(object sender, RoutedEventArgs e)
         {
             //创建下载文件存放目录
-          
-            ProgressMessageHandler DownProgress = new ProgressMessageHandler();
+            //合成目录
+            string tempFileDir = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "UpdateApp");
 
-            DownProgress.HttpReceiveProgress += (object sender, HttpProgressEventArgs e) =>
+            DirectoryInfo directoryInfo = new DirectoryInfo(tempFileDir);
+            if (directoryInfo.Exists)
             {
-                _CurWinViewModel.DownIntProgress = e.ProgressPercentage;
-            };
+                directoryInfo.Delete(true);
+            }
+            directoryInfo.Create();
             _CurWinViewModel.DownCount = _CurWinViewModel.NeedDownFiles.Count;
             for (int i = 0; i < _CurWinViewModel.NeedDownFiles.Count; i++)
             {
-                _CurWinViewModel.DownFileName = _CurWinViewModel.NeedDownFiles[i];
+                _CurWinViewModel.DownFileName = $"{_CurWinViewModel.NeedDownFiles[i]}正在下载...。";
 
-                await DataFileUpdateAppRepository.DownLoadNewVerFile(_CurWinViewModel.NeedDownFiles[i], DownProgress);
-
-
-                _CurWinViewModel.DownIndex = i++;
+                ProgressMessageHandler DownProgress = new ProgressMessageHandler();
+                DownProgress.HttpReceiveProgress += (object sender, HttpProgressEventArgs e) =>
+                {
+                    _CurWinViewModel.DownIntProgress = e.ProgressPercentage;
+                };
+                string downFileName = await DataFileUpdateAppRepository.DownLoadNewVerFile(_CurWinViewModel.NeedDownFiles[i], tempFileDir, DownProgress);
+                if (!string.IsNullOrWhiteSpace(downFileName))
+                {
+                    _CurWinViewModel.DownIndex++;
+                    _CurWinViewModel.DownFileName = $"{_CurWinViewModel.NeedDownFiles[i]}下载完成。";
+                }
+                else
+                {
+                    _CurWinViewModel.DownFileName = $"{_CurWinViewModel.NeedDownFiles[i]}下载失败。";
+                }
             }
-            this.Close();
+            this.Btn_Update.IsEnabled = true;
         }
-        
+
         private void Border_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
@@ -110,6 +123,9 @@ namespace Office.Work.Platform
             public List<string> NeedDownFiles { get; set; }
         }
 
-
+        private void Btn_UpdateOk_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }

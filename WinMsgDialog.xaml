@@ -10,7 +10,7 @@
         WindowStyle="None"
         Topmost="True"
         AllowsTransparency="True" BorderBrush="LightBlue" BorderThickness="1" Background="AliceBlue"
-        Height="200" Width="430"
+        Height="180" Width="400"
         Loaded="Window_Loaded" >
     <Grid>
         <Grid.RowDefinitions>
@@ -22,8 +22,8 @@
             <TextBlock Text="{Binding Caption}" VerticalAlignment="Center" Foreground="White" Padding="10,8,0,8"/>
         </Border>
         <StackPanel Grid.Row="1">
-            <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
-                <TextBlock Text="{Binding Message}"  HorizontalAlignment="Stretch" MinHeight="50" FontSize="16" Margin="20,30,10,10" TextWrapping="Wrap"/>
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                <TextBlock Text="{Binding Message}"  HorizontalAlignment="Stretch" MinHeight="50" FontSize="16" Margin="20,30,20,20" TextWrapping="Wrap" />
             </ScrollViewer>
         </StackPanel>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">

@@ -10,6 +10,10 @@ using Office.Work.Platform.Settings;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Security.Policy;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
@@ -34,8 +38,9 @@ namespace Office.Work.Platform
             InitializeComponent();
             AppSet.AppMainWindow = this;
             //以下代码，修复窗体全屏时覆盖任务栏以及大小不正确问题。
-
             FullScreenManager.RepairWpfWindowFullScreenBehavior(this);
+
+            #region 显示系统托盘图标
             //系统托盘显示
             this.notifyIcon = new NotifyIcon();
             this.notifyIcon.BalloonTipText = "系统监控中... ...";
@@ -87,29 +92,43 @@ namespace Office.Work.Platform
                     this.notifyIcon.ContextMenuStrip.Items[0].PerformClick();
                 }
             });
+            #endregion
         }
-        public void LockApp()
-        {
-            AppSet.AppIsLocked = true;
-            this.ShowInTaskbar = false;
-            this.Visibility = System.Windows.Visibility.Hidden;
-            this.notifyIcon.ShowBalloonTip(20, "信息:", "本软件已锁定。", ToolTipIcon.Info);
-        }
+
         private async void Window_LoadedAsync(object sender, RoutedEventArgs e)
         {
             //1.检查是否需要更新。
-            List<string> NeedUpdateFiles = await GetNeedUpdateFilesAsync();
+            List<string> NeedUpdateFiles = new List<string>();
+            //读取服务器端本系统程序的信息。
+            AppUpdateInfo UpdateInfo = await DataFileUpdateAppRepository.GetAppUpdateInfo();
+            //如果服务器程序升级信息比本地记录的晚，则升级之。
+            if (UpdateInfo.UpdateDate > AppSet.LocalSetting.AppUpDateTime)
+            {
+                NeedUpdateFiles = UpdateInfo.UpdateFiles.ToList<string>();
+            }
 
             if (NeedUpdateFiles != null && NeedUpdateFiles.Count > 0)
             {
                 WinUpdateDialog winUpdate = new WinUpdateDialog(NeedUpdateFiles);
                 winUpdate.ShowDialog();
+                if (!CheckDownResult(UpdateInfo))
+                {
+                    AppFuns.ShowMessage("下载升级文件不正确，无法更新。", "错误", isErr: true);
+                    ShutDownApp();
+                    return;
+                }
                 //升级程序路径。
                 string updateProgram = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "UpdateApp.exe");
                 if (File.Exists(updateProgram))
                 {
                     //启动升级程序
-                    System.Diagnostics.Process.Start(updateProgram);
+                    _ = Task.Run(() =>
+                      {
+                          int UpdateExitCode = System.Diagnostics.Process.Start(updateProgram).ExitCode;
+                      });
+                    //下载成功，更新本地时间。
+                    AppSet.LocalSetting.AppUpDateTime = UpdateInfo.UpdateDate;
+                    DataRWLocalFileRepository.SaveObjToFile(AppSet.LocalSetting, AppSet.LocalSettingFileName);
                 }
                 else
                 {
@@ -136,6 +155,8 @@ namespace Office.Work.Platform
             }
             lblLoginMsg.Text = $"当前用户：{AppSet.LoginUser.Name}-{AppSet.LoginUser.UnitName}";
             ListBoxItem_MouseLeftButtonUp_0(null, null);
+
+
         }
         /// <summary>
         /// 窗体拖动
@@ -252,39 +273,42 @@ namespace Office.Work.Platform
         {
             LoadPageMenu(_PagePlayMenu);
         }
-        /// <summary>
-        /// 如有新版本则下载新程序
-        /// </summary>
-        /// <returns></returns>
-        private async System.Threading.Tasks.Task<List<string>> GetNeedUpdateFilesAsync()
+        public void LockApp()
         {
-            List<string> NeedUpdateFiles = new List<string>();
+            AppSet.AppIsLocked = true;
+            this.ShowInTaskbar = false;
+            this.Visibility = System.Windows.Visibility.Hidden;
+            this.notifyIcon.ShowBalloonTip(20, "信息:", "本软件已锁定。", ToolTipIcon.Info);
+        }
+        /// <summary>
+        /// 判断需要下载的升级文件是否已经全部正确下载。
+        /// </summary>
+        /// <param name="appUpdateInfo"></param>
+        /// <returns></returns>
+        public bool CheckDownResult(AppUpdateInfo appUpdateInfo)
+        {
+            //合成目录
+            string tempFileDir = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "UpdateApp");
+            DirectoryInfo directoryInfo = new DirectoryInfo(tempFileDir);
 
-            //1. 读取服务器端本系统程序的信息。
-            List<UpdateFile> ServerUpdateFiles = await DataSystemRepository.GetServerUpdateFiles();
-            //2. 与本地同名文件进行比较，以便确定是否需要更新。
-            if (ServerUpdateFiles != null && ServerUpdateFiles.Count > 0)
+            if (!directoryInfo.Exists)
             {
-                foreach (UpdateFile item in ServerUpdateFiles)
+
+                return false;
+            }
+            string[] UpdateFiles = directoryInfo.GetFiles().Select(x => x.Name).ToArray();
+            if (appUpdateInfo.UpdateFiles.Count != UpdateFiles.Length)
+            {
+                return false;
+            }
+            foreach (string item in UpdateFiles)
+            {
+                if (!appUpdateInfo.UpdateFiles.Contains(item))
                 {
-                    string localFileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, item.FileName);
-                    if (File.Exists(localFileName))
-                    {
-                        //本地有同名文件，比较其版本号差异
-                        string FileVersion = System.Diagnostics.FileVersionInfo.GetVersionInfo(localFileName).FileVersion;
-                        if (FileVersion != item.Version)// || theFile.LastWriteTime != item.LastWriteTime)
-                        {
-                            NeedUpdateFiles.Add(item.FileName);
-                        }
-                    }
-                    else
-                    {
-                        //本地无同名文件，说明是新文件需要下载。
-                        NeedUpdateFiles.Add(item.FileName);
-                    }
+                    return false;
                 }
             }
-            return NeedUpdateFiles;
+            return true;
         }
     }
 }

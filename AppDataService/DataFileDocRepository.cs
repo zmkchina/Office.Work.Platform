@@ -99,7 +99,7 @@ namespace Office.Work.Platform.AppDataService
         public static async Task<string> DownloadFile(FileDoc WillDownFile, bool ReDownLoad = false, ProgressMessageHandler showDownProgress = null)
         {
             //合成目录
-            string tempFileDir = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DownFiles", "PlanFiles");
+            string tempFileDir = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DownFiles", WillDownFile.ContentType);
             //合成目录+文件
             string tempFilePath = System.IO.Path.Combine(tempFileDir, WillDownFile.Name + "(" + WillDownFile.Id + ")" + WillDownFile.ExtendName);
             if (!File.Exists(tempFilePath) || ReDownLoad)
@@ -141,7 +141,5 @@ namespace Office.Work.Platform.AppDataService
                 return null;
             }
         }
-
-
     }
 }

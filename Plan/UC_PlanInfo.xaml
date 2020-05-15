@@ -93,11 +93,10 @@
                                     <Run Text="{Binding Path=DownIntProgress,StringFormat=(下载{0:F0}%)}"/>
                                     <TextBlock.ContextMenu>
                                         <ContextMenu>
-                                            <MenuItem Header="重新命名"  Tag="{Binding Id}" Click="MenuItem_ReName_Click"/>
-                                            <MenuItem Header="复制文件"  Tag="{Binding Id}" Click="MenuItem_CopyFile_Click"/>
-                                            <MenuItem Header="重新下载"  Tag="{Binding Id}" Click="MenuItem_ReDwonLoad_Click"/>
+                                            <MenuItem Header="复制文件"  Tag="{Binding Id}" Click="MenuItem_CopyFile_ClickAsync"/>
+                                            <MenuItem Header="重新下载"  Tag="{Binding Id}" Click="MenuItem_ReDwonLoad_ClickAsync"/>
                                             <Separator/>
-                                            <MenuItem Header="转到文件夹"  Tag="{Binding Id}" Click="MenuItem_ToFolder_Click"/>
+                                            <MenuItem Header="转到文件夹"  Tag="{Binding Id}" Click="MenuItem_ToFolder_ClickAsync"/>
                                         </ContextMenu>
                                     </TextBlock.ContextMenu>
                                     <TextBlock.Style>
