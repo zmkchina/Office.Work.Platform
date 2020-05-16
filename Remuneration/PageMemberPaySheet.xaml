@@ -48,7 +48,7 @@
                 <Run  Text="[打印指定月份，指定类型的待遇表]"/>
             </TextBlock>
         </Border>
-        <ToolBar FontSize="14" Cursor="Hand" HorizontalAlignment="Stretch" Grid.Row="1" >
+        <ToolBar Grid.Row="1" FontSize="14" Padding="0,2" Cursor="Hand">
             <DatePicker Style="{StaticResource DatePickerStyle}"
                         SelectedDate="{Binding PayMonthDate}" 
                         AppCodes:DatePickerCalendar.IsMonthYear="True"/>

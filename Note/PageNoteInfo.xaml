@@ -21,7 +21,7 @@
                 <Run  Text="[查看或编辑备注事项]"/>
             </TextBlock>
         </Border>
-        <ToolBar Grid.Row="1" FontSize="14" Padding="0,5" Cursor="Hand">
+        <ToolBar Grid.Row="1" FontSize="14" Padding="0,2" Cursor="Hand">
             <TextBox Text="{Binding NoteSearch.Caption}" Width="200"/>
             <Button Content="开始查询" Name="btn_Refrash" Foreground="Blue" Margin="5,0" Click="btn_Search_ClickAsync" />
             <Button Content="新增备忘" Name="btn_Add" Foreground="Red" Margin="5,0" Click="btn_Add_ClickAsync" />

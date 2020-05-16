@@ -48,9 +48,9 @@
                 <Run  Text="[打印指定人员的基本基本信息登记表]"/>
             </TextBlock>
         </Border>
-        <ToolBar FontSize="14" Cursor="Hand" HorizontalAlignment="Stretch" Grid.Row="1" >
+        <ToolBar Grid.Row="1" FontSize="14" Padding="0,2" Cursor="Hand">
             <TextBlock Text="身份证号" VerticalAlignment="Center" Margin="2"/>
-            <TextBox Text="{Binding Id}" MinWidth="200"/>
+            <TextBox Text="{Binding Id}" MinWidth="230"/>
             <Button Click="BtnSearchClickAsync" Content="查询" Width="60" Height="30" Margin="2,0,10,0"/>
         </ToolBar>
         <DocumentViewer Grid.Row="2" Name="docViewer" 

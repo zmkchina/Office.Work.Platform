@@ -103,7 +103,7 @@
                                      MaxLength="18" HorizontalAlignment="Stretch" Padding="2,5"
                                     LostFocus="Tb_UserId_LostFocusAsync"/>
                             </GroupBox>
-                            <StackPanel Orientation="Horizontal">
+                            <WrapPanel Orientation="Horizontal">
                                 <GroupBox Header="员工姓名" Style="{StaticResource GroupBoxStyle}">
                                     <TextBox x:Name="Tb_UserName"  Text="{Binding EntityMember.Name}"  MaxLength="10" Style="{StaticResource TextboxStyle}"/>
                                 </GroupBox>
@@ -113,16 +113,12 @@
                                         <ComboBoxItem>女</ComboBoxItem>
                                     </ComboBox>
                                 </GroupBox>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
                                 <GroupBox Header="出生日期"  Style="{StaticResource GroupBoxStyle}">
                                     <DatePicker SelectedDate="{Binding EntityMember.Birthday}" Style="{StaticResource DatePickerStyle}"/>
                                 </GroupBox>
                                 <GroupBox Header="档案生日"  Style="{StaticResource GroupBoxStyle}">
                                     <DatePicker SelectedDate="{Binding EntityMember.BirthdayArchives}" Style="{StaticResource DatePickerStyle}"/>
                                 </GroupBox>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
                                 <GroupBox Header="民族" Style="{StaticResource GroupBoxStyle}">
                                     <ComboBox Text="{Binding EntityMember.Nation}" Style="{StaticResource ComboBoxStyle}">
                                         <ComboBoxItem IsSelected="True">汉族</ComboBoxItem>
@@ -137,39 +133,34 @@
                                 <GroupBox Header="出生地（城市）" Style="{StaticResource GroupBoxStyle}">
                                     <TextBox Text="{Binding EntityMember.Birthplace}" Style="{StaticResource TextboxStyle}"/>
                                 </GroupBox>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
+                            
                                 <GroupBox Header="籍贯" Style="{StaticResource GroupBoxStyle}">
                                     <TextBox Text="{Binding EntityMember.NativePlace}" Style="{StaticResource TextboxStyle}"/>
                                 </GroupBox>
                                 <GroupBox Header="健康状况" Style="{StaticResource GroupBoxStyle}">
                                     <TextBox Text="{Binding EntityMember.HealthState}" Style="{StaticResource TextboxStyle}"/>
                                 </GroupBox>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
+                          
                                 <GroupBox Header="政治面貌" Style="{StaticResource GroupBoxStyle}">
                                     <TextBox Text="{Binding EntityMember.PoliticalStatus}" Style="{StaticResource TextboxStyle}"/>
                                 </GroupBox>
                                 <GroupBox Header="入党时间" Style="{StaticResource GroupBoxStyle}">
                                     <DatePicker SelectedDate="{Binding EntityMember.JoinCPC}"  Style="{StaticResource DatePickerStyle}"/>
                                 </GroupBox>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
+                            
                                 <GroupBox Header="固定电话" Style="{StaticResource GroupBoxStyle}">
                                     <TextBox Text="{Binding EntityMember.FixPhoneCode}" Style="{StaticResource TextboxStyle}"/>
                                 </GroupBox>
                                 <GroupBox Header="移动电话" Style="{StaticResource GroupBoxStyle}">
                                     <TextBox Text="{Binding EntityMember.MobileCode}" Style="{StaticResource TextboxStyle}"/>
                                 </GroupBox>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
                                 <GroupBox Header="有何特长" Style="{StaticResource GroupBoxStyle}">
                                     <TextBox Text="{Binding EntityMember.Speciality}" Style="{StaticResource TextboxStyle}"/>
                                 </GroupBox>
                                 <GroupBox Header="人员排序" Style="{StaticResource GroupBoxStyle}">
                                     <TextBox Text="{Binding EntityMember.OrderIndex}"  Style="{StaticResource TextboxStyle}"/>
                                 </GroupBox>
-                            </StackPanel>
+                            </WrapPanel>
                             <Button Content="保存" Height="30" Width="100" HorizontalAlignment="Left" Click="BtnSaveBasicClickAsync" Margin="10" />
                         </StackPanel>
                     </ScrollViewer>
@@ -185,34 +176,30 @@
                     </Grid.ColumnDefinitions>
                     <ScrollViewer Grid.Column="0"  >
                         <StackPanel  Orientation="Vertical" Margin="0,10">
-                            <GroupBox Header="单位名称" Style="{StaticResource GroupBoxStyle}">
-                                <ComboBox ItemsSource="{Binding UnitNames}" Text="{Binding EntityMember.UnitName}" Style="{StaticResource ComboBoxStyle}" Width="400"/>
+                            <GroupBox Header="单位名称" Style="{StaticResource GroupBoxStyle}" HorizontalAlignment="Stretch">
+                                <ComboBox ItemsSource="{Binding UnitNames}" Text="{Binding EntityMember.UnitName}" Style="{StaticResource ComboBoxStyle}" HorizontalAlignment="Left"/>
                             </GroupBox>
-                            <StackPanel Orientation="Horizontal">
+                            <WrapPanel Orientation="Horizontal">
                                 <GroupBox Header="参加工作时间" Style="{StaticResource GroupBoxStyle}">
                                     <DatePicker SelectedDate="{Binding EntityMember.BeginWork}"  Style="{StaticResource DatePickerStyle}"/>
                                 </GroupBox>
                                 <GroupBox Header="进入本单位时间" Style="{StaticResource GroupBoxStyle}">
                                     <DatePicker SelectedDate="{Binding EntityMember.EnterOrganization}"  Style="{StaticResource DatePickerStyle}"/>
                                 </GroupBox>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
+
                                 <GroupBox Header="所在部门" Style="{StaticResource GroupBoxStyle}">
                                     <ComboBox ItemsSource="{Binding DepartmentNames}" Text="{Binding EntityMember.Department}" Style="{StaticResource ComboBoxStyle}"/>
                                 </GroupBox>
                                 <GroupBox Header="职务" Style="{StaticResource GroupBoxStyle}">
                                     <ComboBox ItemsSource="{Binding PostNames}" Text="{Binding EntityMember.Post}" Style="{StaticResource ComboBoxStyle}"/>
                                 </GroupBox>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
+
                                 <GroupBox Header="技术职称" Style="{StaticResource GroupBoxStyle}">
                                     <TextBox Text="{Binding EntityMember.TechnicalTitle}" Style="{StaticResource TextboxStyle}"/>
                                 </GroupBox>
                                 <GroupBox Header="已聘技术职称" Style="{StaticResource GroupBoxStyle}">
                                     <TextBox Text="{Binding EntityMember.EmployTitle}" Style="{StaticResource TextboxStyle}"/>
                                 </GroupBox>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
                                 <GroupBox Header="岗位性质" Style="{StaticResource GroupBoxStyle}">
                                     <ComboBox Text="{Binding EntityMember.Job}" Style="{StaticResource ComboBoxStyle}">
                                         <ComboBoxItem IsSelected="True">专技岗</ComboBoxItem>
@@ -224,14 +211,14 @@
                                 <GroupBox Header="岗位级别" Style="{StaticResource GroupBoxStyle}">
                                     <ComboBox ItemsSource="{Binding JobGrades}" Text="{Binding EntityMember.JobGrade}" Style="{StaticResource ComboBoxStyle}"/>
                                 </GroupBox>
-                            </StackPanel>
-                            <GroupBox Header="用工性质" Style="{StaticResource GroupBoxStyle}">
-                                <ComboBox Text="{Binding EntityMember.MemberType}" Style="{StaticResource ComboBoxStyle}">
-                                    <ComboBoxItem IsSelected="True">聘用合同制</ComboBoxItem>
-                                    <ComboBoxItem>劳动合同制</ComboBoxItem>
-                                    <ComboBoxItem>劳务派遣制</ComboBoxItem>
-                                </ComboBox>
-                            </GroupBox>
+                                <GroupBox Header="用工性质" Style="{StaticResource GroupBoxStyle}">
+                                    <ComboBox Text="{Binding EntityMember.MemberType}" Style="{StaticResource ComboBoxStyle}">
+                                        <ComboBoxItem IsSelected="True">聘用合同制</ComboBoxItem>
+                                        <ComboBoxItem>劳动合同制</ComboBoxItem>
+                                        <ComboBoxItem>劳务派遣制</ComboBoxItem>
+                                    </ComboBox>
+                                </GroupBox>
+                            </WrapPanel>
                             <Button  Content="保存" Height="30" Width="100"  IsEnabled="{Binding Path=isEditFlag}" HorizontalAlignment="Left"  Click="BtnUpdateClickAsync" Margin="20,10"/>
                         </StackPanel>
                     </ScrollViewer>
@@ -247,7 +234,7 @@
                     </Grid.ColumnDefinitions>
                     <ScrollViewer Grid.Column="0"  >
                         <StackPanel Orientation="Vertical"  Margin="0,10">
-                            <StackPanel Orientation="Horizontal">
+                            <WrapPanel Orientation="Horizontal">
                                 <GroupBox Header="全日制学历"  Style="{StaticResource GroupBoxStyle}">
                                     <ComboBox Text="{Binding EntityMember.EducationDays}" Style="{StaticResource ComboBoxStyle}">
                                         <ComboBoxItem IsSelected="True">硕士</ComboBoxItem>
@@ -261,16 +248,14 @@
                                 <GroupBox Header="全日制毕业时间"  Style="{StaticResource GroupBoxStyle}">
                                     <DatePicker SelectedDate="{Binding EntityMember.GraduationDateDays}"  Style="{StaticResource DatePickerStyle}"/>
                                 </GroupBox>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
+
                                 <GroupBox Header="全日制毕业学校"  Style="{StaticResource GroupBoxStyle}">
                                     <TextBox Text="{Binding EntityMember.GraduationSchoolDays}" Style="{StaticResource TextboxStyle}"/>
                                 </GroupBox>
                                 <GroupBox Header="全日制所学专业"  Style="{StaticResource GroupBoxStyle}">
                                     <TextBox Text="{Binding EntityMember.MajorDays}" Style="{StaticResource TextboxStyle}"/>
                                 </GroupBox>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
+
                                 <GroupBox Header="最高学历"  Style="{StaticResource GroupBoxStyle}">
                                     <ComboBox Text="{Binding EntityMember.EducationTop}" Style="{StaticResource ComboBoxStyle}">
                                         <ComboBoxItem IsSelected="True">硕士</ComboBoxItem>
@@ -284,22 +269,22 @@
                                 <GroupBox Header="最高学历毕业时间"  Style="{StaticResource GroupBoxStyle}">
                                     <DatePicker SelectedDate="{Binding EntityMember.GraduationDateTop}"  Style="{StaticResource DatePickerStyle}"/>
                                 </GroupBox>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
+
                                 <GroupBox Header="最高学历毕业学校"  Style="{StaticResource GroupBoxStyle}">
                                     <TextBox Text="{Binding EntityMember.GraduationSchoolTop}" Style="{StaticResource TextboxStyle}"/>
                                 </GroupBox>
                                 <GroupBox Header="最高学历所学专业"  Style="{StaticResource GroupBoxStyle}">
                                     <TextBox Text="{Binding EntityMember.MajorTop}" Style="{StaticResource TextboxStyle}"/>
                                 </GroupBox>
-                            </StackPanel>
-                            <GroupBox Header="最高学位"  Style="{StaticResource GroupBoxStyle}">
-                                <ComboBox Text="{Binding EntityMember.DegreeTop}" Style="{StaticResource ComboBoxStyle}">
-                                    <ComboBoxItem IsSelected="True">硕士</ComboBoxItem>
-                                    <ComboBoxItem>研究生</ComboBoxItem>
-                                    <ComboBoxItem>学士</ComboBoxItem>
-                                </ComboBox>
-                            </GroupBox>
+
+                                <GroupBox Header="最高学位"  Style="{StaticResource GroupBoxStyle}">
+                                    <ComboBox Text="{Binding EntityMember.DegreeTop}" Style="{StaticResource ComboBoxStyle}">
+                                        <ComboBoxItem IsSelected="True">硕士</ComboBoxItem>
+                                        <ComboBoxItem>研究生</ComboBoxItem>
+                                        <ComboBoxItem>学士</ComboBoxItem>
+                                    </ComboBox>
+                                </GroupBox>
+                            </WrapPanel>
                             <Button Content="保存" Height="30" Width="100" Click="BtnUpdateClickAsync" HorizontalAlignment="Left" Margin="10" IsEnabled="{Binding Path=isEditFlag}" />
                         </StackPanel>
                     </ScrollViewer>

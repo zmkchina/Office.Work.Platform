@@ -25,35 +25,35 @@
             <RadioButton Margin="20,30,20,15" VerticalContentAlignment="Center"  IsChecked="{Binding SelectColor1}">
                 <StackPanel Orientation="Horizontal" >
                     <TextBlock  Text="主窗口顶部标题栏背景色" Margin="5"/>
-                    <Ellipse Width="25" Height="25" Fill="{Binding LocalSettings.ColorMainWinTitle}"  VerticalAlignment="Top" Margin="5,4,0,0" StrokeDashCap="Square" Stroke="#FFEC0B0B" StrokeThickness="2" />
+                    <Ellipse Width="20" Height="20" Fill="{Binding LocalSettings.ColorMainWinTitle}"  VerticalAlignment="Top" Margin="5,4,0,0" StrokeDashCap="Square" Stroke="#FFEC0B0B" StrokeThickness="2" />
                     <TextBox Text="{Binding LocalSettings.ColorMainWinTitle}" Margin="5,0" Padding="3,0" VerticalAlignment="Center" IsReadOnly="True" />
                 </StackPanel>
             </RadioButton>
             <RadioButton Margin="20,15" VerticalContentAlignment="Center" IsChecked="{Binding SelectColor2}">
                 <StackPanel Orientation="Horizontal" >
                     <TextBlock  Text="主窗口顶部菜单栏背景色" Margin="5"/>
-                    <Ellipse Width="25" Height="25" Fill="{Binding LocalSettings.ColorMainWinTopMenu}"  VerticalAlignment="Top" Margin="5,4,0,0" StrokeDashCap="Square" Stroke="#FFEC0B0B" StrokeThickness="2" />
+                    <Ellipse Width="20" Height="20" Fill="{Binding LocalSettings.ColorMainWinTopMenu}"  VerticalAlignment="Top" Margin="5,4,0,0" StrokeDashCap="Square" Stroke="#FFEC0B0B" StrokeThickness="2" />
                     <TextBox Text="{Binding LocalSettings.ColorMainWinTopMenu}" Margin="5,0" Padding="3,0" VerticalAlignment="Center" IsReadOnly="True" />
                 </StackPanel>
             </RadioButton>
             <RadioButton Margin="20,15" VerticalContentAlignment="Center" IsChecked="{Binding SelectColor3}">
                 <StackPanel Orientation="Horizontal" >
                     <TextBlock  Text="主窗口底部状态（信息）栏背景色" Margin="5"/>
-                    <Ellipse Width="25" Height="25" Fill="{Binding LocalSettings.ColorMainWinState}"  VerticalAlignment="Top" Margin="5,4,0,0" StrokeDashCap="Square" Stroke="#FFEC0B0B" StrokeThickness="2" />
+                    <Ellipse Width="20" Height="20" Fill="{Binding LocalSettings.ColorMainWinState}"  VerticalAlignment="Top" Margin="5,4,0,0" StrokeDashCap="Square" Stroke="#FFEC0B0B" StrokeThickness="2" />
                     <TextBox Text="{Binding LocalSettings.ColorMainWinState}" Margin="5,0" Padding="3,0" VerticalAlignment="Center" IsReadOnly="True" />
                 </StackPanel>
             </RadioButton>
             <RadioButton Margin="20,15" VerticalContentAlignment="Center" IsChecked="{Binding SelectColor4}">
                 <StackPanel Orientation="Horizontal" >
                     <TextBlock  Text="主窗口左则菜单栏背景色" Margin="5"/>
-                    <Ellipse Width="25" Height="25" Fill="{Binding LocalSettings.ColorMainWinLeftMenu}"  VerticalAlignment="Top" Margin="5,4,0,0" StrokeDashCap="Square" Stroke="#FFEC0B0B" StrokeThickness="2" />
+                    <Ellipse Width="20" Height="20" Fill="{Binding LocalSettings.ColorMainWinLeftMenu}"  VerticalAlignment="Top" Margin="5,4,0,0" StrokeDashCap="Square" Stroke="#FFEC0B0B" StrokeThickness="2" />
                     <TextBox Text="{Binding LocalSettings.ColorMainWinLeftMenu}" Margin="5,0" Padding="3,0" VerticalAlignment="Center" IsReadOnly="True" />
                 </StackPanel>
             </RadioButton>
             <RadioButton Margin="20,15" VerticalContentAlignment="Center" IsChecked="{Binding SelectColor5}">
                 <StackPanel Orientation="Horizontal" >
                     <TextBlock  Text="各子页面顶部导航信息栏背景色" Margin="5"/>
-                    <Ellipse Width="25" Height="25" Fill="{Binding LocalSettings.ColorPageNavBar}"  VerticalAlignment="Top" Margin="5,4,0,0" StrokeDashCap="Square" Stroke="#FFEC0B0B" StrokeThickness="2" />
+                    <Ellipse Width="20" Height="20" Fill="{Binding LocalSettings.ColorPageNavBar}"  VerticalAlignment="Top" Margin="5,4,0,0" StrokeDashCap="Square" Stroke="#FFEC0B0B" StrokeThickness="2" />
                     <TextBox Text="{Binding LocalSettings.ColorPageNavBar}" Margin="5,0" Padding="3,0" VerticalAlignment="Center" IsReadOnly="True" />
                 </StackPanel>
             </RadioButton>

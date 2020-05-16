@@ -20,9 +20,9 @@
                 <Run  Text="[显示指定的计划列表，并可以点击操作]"/>
             </TextBlock>
         </Border>
-        <ToolBar Grid.Row="1">
+        <ToolBar Grid.Row="1" FontSize="14" Padding="0,2" Cursor="Hand">
             <TextBox x:Name="tb_SearchKeys" Width="200"/>
-            <Button Content="刷新记录" Name="btn_Refrash" Click="btn_Refrash_ClickAsync" />
+            <Button Content="刷新记录" Name="btn_Refrash" Click="btn_Refrash_ClickAsync" Margin="5,0"/>
         </ToolBar>
         <Grid Grid.Row="2" TextElement.FontSize="15">
             <Grid.ColumnDefinitions>

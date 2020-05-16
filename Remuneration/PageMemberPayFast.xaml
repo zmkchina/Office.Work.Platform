@@ -47,7 +47,7 @@
                 <Run  x:Name="Run_PayUnitName"/>
             </TextBlock>
         </Border>
-        <ToolBar Grid.Row="1" FontSize="14" Cursor="Hand">
+        <ToolBar Grid.Row="1" FontSize="14" Padding="0,2" Cursor="Hand">
             <TextBlock  VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="20">
                     <Run Text="{Binding CurMember.UnitName,StringFormat=发放单位：{0}   发放月份：}"/>
             </TextBlock>

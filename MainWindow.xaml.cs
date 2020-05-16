@@ -58,6 +58,7 @@ namespace Office.Work.Platform
             this.notifyIcon.Visible = true;
             //托盘右键菜单项
             this.notifyIcon.ContextMenuStrip = new ContextMenuStrip();
+            this.notifyIcon.ContextMenuStrip.Height = 300;
             this.notifyIcon.ContextMenuStrip.Items.Add("显示主窗口", null, (sender, eventArgs) =>
             {
                 if (WinLockDialog.ThisWinObj != null)
@@ -219,7 +220,7 @@ namespace Office.Work.Platform
                     case "tbWinCose":
                         this.ShowInTaskbar = false;
                         this.Visibility = System.Windows.Visibility.Hidden;
-                        this.notifyIcon.ShowBalloonTip(20, "信息:", "工作平台已隐藏在这儿。", ToolTipIcon.Info);
+                        this.notifyIcon.ShowBalloonTip(50, "信息:", "工作平台已隐藏在这儿。", ToolTipIcon.Info);
                         break;
                 }
             }
@@ -248,7 +249,7 @@ namespace Office.Work.Platform
             AppSet.AppIsLocked = true;
             this.ShowInTaskbar = false;
             this.Visibility = System.Windows.Visibility.Hidden;
-            this.notifyIcon.ShowBalloonTip(20, "信息:", "本软件已锁定。", ToolTipIcon.Info);
+            this.notifyIcon.ShowBalloonTip(500, "信息:", "本软件已锁定。", ToolTipIcon.Info);
         }
 
         #region "检查是否有版本，如有则升级之"
@@ -264,8 +265,14 @@ namespace Office.Work.Platform
             List<string> NeedUpdateFiles = new List<string>();
             //读取服务器端本系统程序的信息。
             AppUpdateInfo UpdateInfo = await DataFileUpdateAppRepository.GetAppUpdateInfo();
+            if (UpdateInfo == null)
+            {
+                this.notifyIcon.ShowBalloonTip(1000, "错误", "与服务器失去链接，请检查网络。", ToolTipIcon.Error);
+                _UpdateAppTimer.Start();
+                return;
+            }
             //如果服务器程序升级信息比本地记录的晚，则升级之。
-            if (UpdateInfo != null && UpdateInfo.UpdateDate > AppSet.LocalSetting.AppUpDateTime)
+            if (UpdateInfo.UpdateDate > AppSet.LocalSetting.AppUpDateTime)
             {
                 NeedUpdateFiles = UpdateInfo.UpdateFiles.ToList<string>();
             }

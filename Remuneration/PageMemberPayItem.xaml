@@ -79,7 +79,7 @@
                 <Run  Text="[设置本单位可能发放的待遇项目]"/>
             </TextBlock>
         </Border>
-        <ToolBar Grid.Row="1" FontSize="14" Cursor="Hand">
+        <ToolBar Grid.Row="1" FontSize="14" Padding="0,2" Cursor="Hand">
             <Button Content="新增" Click="Btn_Add_ClickAnsyc" Padding="10,3" />
             <Button Content="编辑" Click="Btn_Edit_ClickAnsyc" Padding="10,3" />
             <Button Content="删除" Click="Btn_Del_ClickAnsyc" Padding="10,3" />

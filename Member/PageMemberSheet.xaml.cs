@@ -41,6 +41,7 @@ namespace Office.Work.Platform.Member
         /// <param name="e"></param>
         private async void BtnSearchClickAsync(object sender, RoutedEventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(mSearch.Id)) { return; }
             List<Lib.Member> Members = await DataMemberRepository.ReadMembers(mSearch);
             if (Members.Count > 0)
             {

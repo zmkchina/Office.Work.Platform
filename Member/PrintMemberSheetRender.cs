@@ -1,4 +1,7 @@
-﻿using System.Windows.Documents;
+﻿using System.Drawing;
+using System.Windows;
+using System.Windows.Documents;
+using System.Windows.Media;
 
 namespace Office.Work.Platform.Member
 {
@@ -19,7 +22,24 @@ namespace Office.Work.Platform.Member
                 DocVM.Caption = Caption;
             }
             DocVM.DateStr = DateStr;
-           FlowDoc.DataContext = DocVM;
+            FlowDoc.DataContext = DocVM;
+
+            TableRow TempRow = new TableRow();
+            Paragraph TempParagraph = new Paragraph(new Run("防伪标志✦☪☸☭☢"))
+            {
+                // Style = FlowDoc.FindResource("PgStyle") as Style
+            };
+            TempRow.Cells.Add(new TableCell(TempParagraph)
+            {
+                ColumnSpan = 6,
+                BorderBrush =System.Windows.Media.Brushes.Transparent,
+                Padding=new Thickness(1,20,0,0),
+                Foreground= System.Windows.Media.Brushes.Bisque
+
+            });
+            TableRowGroup TRGroupHeader = FlowDoc.FindName("TableBottomRows") as TableRowGroup;
+            TRGroupHeader.Rows.Add(TempRow);
+
         }
         private class DocViewModel
         {
