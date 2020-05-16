@@ -46,7 +46,7 @@ namespace Office.Work.Platform.Note
             _CurViewModel.UserGrantSelectList.Clear();
             foreach (User item in AppSet.SysUsers.Where(e => !e.Id.Equals("admin", StringComparison.Ordinal)).OrderBy(x => x.OrderIndex))
             {
-                _CurViewModel.UserGrantSelectList.Add(new SelectObj<User>(false, item));
+                _CurViewModel.UserGrantSelectList.Add(new SelectObj<User>(true, item));
             }
             _CurViewModel.CurNote = new Lib.Note()
             {
@@ -61,6 +61,7 @@ namespace Office.Work.Platform.Note
             if (string.IsNullOrWhiteSpace(_CurViewModel.CurNote.Caption))
             {
                 AppFuns.ShowMessage("必须输入备忘标题！", Caption: "警告");
+                TB_NoteCaption.Focus();
                 return;
             }
             _CurViewModel.CurNote.CanReadUserIds = _CurViewModel.GetSelectUserIds(_CurViewModel.UserGrantSelectList);
@@ -105,6 +106,7 @@ namespace Office.Work.Platform.Note
                 TR.Load(s, DataFormats.Rtf);
                 if (Col_NoteInfo.Width.Value == 0)
                 {
+                    Col_NoteList.Width = new System.Windows.GridLength(1, System.Windows.GridUnitType.Star);
                     Col_NoteInfo.Width = new System.Windows.GridLength(2, System.Windows.GridUnitType.Star);
                 }
                 if (!_CurViewModel.CurNote.UserId.Equals(AppSet.LoginUser.Id))

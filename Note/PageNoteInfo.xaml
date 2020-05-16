@@ -29,7 +29,7 @@
         </ToolBar>
         <Grid Grid.Row="2" TextElement.FontSize="14">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition x:Name="Col_NoteList" Width="1*"/>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition x:Name="Col_NoteInfo" Width="2*" />
             </Grid.ColumnDefinitions>
@@ -59,7 +59,9 @@
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
                 <GroupBox Header="备忘标题" Grid.Row="0" Padding="5,10">
-                    <TextBox x:Name="TB_NoteCaption" Text="{Binding Caption}" HorizontalAlignment="Stretch" Height="25" MaxLength="100"/>
+                    <TextBox x:Name="TB_NoteCaption" Text="{Binding Caption,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch" Padding="2,5" VerticalAlignment="Center" TextWrapping="Wrap"
+                             FontSize="20" FontWeight="DemiBold"
+                             MaxLength="100"/>
                 </GroupBox>
                 <GroupBox Header="备注内容" Grid.Row="1" Padding="5,10,5,2">
                     <RichTextBox x:Name="RichTBox" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
@@ -67,6 +69,7 @@
                         <RichTextBox.Resources>
                             <Style TargetType="{x:Type Paragraph}">
                                 <Setter Property="Margin" Value="0"/>
+                                <Setter Property="FontSize" Value="16"/>
                                 <Setter Property="LineHeight" Value="30"/>
                             </Style>
                         </RichTextBox.Resources>

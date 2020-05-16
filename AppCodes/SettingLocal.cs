@@ -137,11 +137,11 @@ namespace Office.Work.Platform.AppCodes
         }
         public void ResetColorTheme()
         {
-            ColorMainWinTitle = "#EAEAEAEA";
-            ColorMainWinTopMenu = "#EADFEECB";
-            ColorMainWinState = "#EAF1EED8";
+            ColorMainWinTitle = "#9FB7C0B1";
+            ColorMainWinTopMenu = "#224CA1CB";
+            ColorMainWinState = "#E6F1EED8";
             ColorMainWinLeftMenu = "#FFEFEFEF";
-            ColorPageNavBar = "#EAFFFCDA";
+            ColorPageNavBar = "#785FCADA";
         }
         /// <summary>
         /// 属性改变事件

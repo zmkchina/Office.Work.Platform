@@ -15,10 +15,6 @@ namespace Office.Work.Platform.Member
             InitializeComponent();
             //AppSettings.AppMainWindow;
         }
-
-        private void ListBoxItem_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-        }
         //新增/编辑员工
         private void ListBoxItem_MouseLeftButtonUp_0(object sender, MouseButtonEventArgs e)
         {
@@ -42,6 +38,15 @@ namespace Office.Work.Platform.Member
         {
             ListBoxItem_MouseLeftButtonUp_1(null, null);
         }
-
+        /// <summary>
+        /// 打印个人基本信息表
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ListBoxItem_BasicInfo_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            PageMemberSheet CurPage = new PageMemberSheet();
+            AppSet.AppMainWindow.FrameContentPage.Content = CurPage;
+        }
     }
 }

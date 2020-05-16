@@ -7,10 +7,9 @@
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="400" 
              Background="Transparent"
-             x:Name="UCPlanInfo"
-             Loaded="UserControl_Loaded">
+             x:Name="UCPlanInfo">
     <ScrollViewer>
-        <StackPanel TextElement.FontSize="14"  HorizontalAlignment="Stretch" Background="Transparent">
+        <StackPanel TextElement.FontSize="16"  HorizontalAlignment="Stretch" Background="Transparent">
             <GroupBox>
                 <GroupBox.Header>
                     <StackPanel Orientation="Horizontal">
@@ -18,11 +17,11 @@
                         <Label Foreground="#777777">计划标题</Label>
                     </StackPanel>
                 </GroupBox.Header>
-                <TextBlock   MinHeight="30" TextBlock.LineHeight="22"
+                <TextBlock   TextBlock.LineHeight="22" FontSize="24" FontWeight="DemiBold"
                              TextWrapping="Wrap"
                              Text="{Binding CurPlan.Caption}"
                              VerticalAlignment="Center" 
-                             Margin="5">
+                             Padding="2,20" >
                 </TextBlock>
             </GroupBox>
             <GroupBox>
@@ -32,11 +31,11 @@
                         <Label Foreground="#777777">目标要求:</Label>
                     </StackPanel>
                 </GroupBox.Header>
-                <TextBlock   MinHeight="30" TextBlock.LineHeight="22"
-                             TextWrapping="Wrap" 
+                <TextBlock   TextBlock.LineHeight="22"
+                             TextWrapping="Wrap" FontSize="18"
                              Text="{Binding CurPlan.Content}"
                              VerticalAlignment="Center" 
-                             Margin="5">
+                             Padding="2,15">
                 </TextBlock>
             </GroupBox>
             <GroupBox>
@@ -47,20 +46,23 @@
                     </StackPanel>
                 </GroupBox.Header>
                 <TextBox x:Name="Text_FinishNote"
+                         MinHeight="80"
                          BorderBrush="#EAEAEA"
                          BorderThickness="1"
-                         MinHeight="50" TextBlock.LineHeight="22"
+                         TextBlock.LineHeight="22"
                          TextWrapping="Wrap" 
+                         AcceptsReturn ="True"
+                         FontSize="18"
                          Text="{Binding CurPlan.FinishNote}"
                          VerticalAlignment="Center" 
-                         Margin="5">
+                         Padding="2,15">
                 </TextBox>
             </GroupBox>
             <GroupBox>
                 <GroupBox.Header>
                     <StackPanel Orientation="Horizontal">
                         <Image Width="24" VerticalAlignment="Center" Source="/Office.Work.Platform;component/AppRes/Images/FileAdd.png"/>
-                        <Button BorderBrush="Transparent" ToolTip="点击添加附件..."  Visibility="{Binding Path=OperateGrant.CanUpFile}"
+                        <Button BorderBrush="Transparent" ToolTip="点击添加附件..."  Visibility="{Binding Path=CanUpFile}"
                             Background="Transparent" Margin="0,5,0,5" HorizontalAlignment="Left" Click="BtnUpFile_Click">
                             <Label Foreground="#777777">计划附件:</Label>
                         </Button>
@@ -111,8 +113,9 @@
                                 </TextBlock>
                                 <Image Height="16" x:Name="Image_Delete" Width="16" Grid.Column="2" 
                                        VerticalAlignment="Center" Tag="{Binding Id}" 
+                                       Visibility="{Binding CanDelte}"
                                        Source="/Office.Work.Platform;component/AppRes/Images/delete.png" 
-                                       ToolTip="删除该文件" IsEnabled="{Binding ElementName=UCPlanInfo,Path=DataContext.UserHasGrant}"
+                                       ToolTip="删除该文件"
                                        MouseLeftButtonUp="Image_Delete_MouseLeftButtonUpAsync">
                                     <Image.Style>
                                         <Style TargetType="Image">
@@ -146,16 +149,16 @@
                             <TextBlock Text="{Binding Path=CurPlan.ContentType}"  Margin="5"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="5,0,0,0">
+                            <TextBlock Text="创建人员："  Margin="5"/>
+                            <TextBlock Text="{Binding Path=CurPlanCreateUserName}"  Margin="5"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="5,0,0,0">
                             <TextBlock Text="责任人员："   Margin="5"/>
                             <TextBlock Text="{Binding Path=CurPlanResponsibleName}"  Margin="5"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal"  Margin="5,2,0,0">
                             <TextBlock Text="协助人员：" Margin="5"/>
                             <TextBlock Text="{Binding Path=CurPlanHelperNames}"  Margin="5"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="5,0,0,0">
-                            <TextBlock Text="创建人员："  Margin="5"/>
-                            <TextBlock Text="{Binding Path=CurPlanCreateUserName}"  Margin="5"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="5,0,0,0">
                             <TextBlock Text="开始日期："  Margin="5"/>
@@ -169,11 +172,11 @@
                 </Expander.Content>
             </Expander>
             <StackPanel Orientation="Horizontal" Margin="20,15" Grid.ColumnSpan="2" HorizontalAlignment="Center"  >
-                <Button Content="修改" Padding="15,4" Margin="0,0,0,0" Height="30" Click="btn_EditPlan" Visibility="{Binding Path=OperateGrant.CanEdit}"/>
-                <Button Content="删除" Padding="15,4" Margin="5,0,0,0" Height="30" Click="btn_DelePlan"  Visibility="{Binding Path=OperateGrant.CanDelete}"/>
-                <Button Content="更新" Padding="15,4" Margin="5,0,0,0" Height="30" Click="btn_UpdatePlan" Visibility="{Binding Path=OperateGrant.CanUpdate}"/>
-                <Button Content="完结" Padding="15,4" Margin="5,0,0,0" Height="30" Click="btn_FinishPlan" Visibility="{Binding Path=OperateGrant.CanFinish}"/>
-                <Button Content="重置" Padding="15,4" Margin="5,0,0,0" Height="30" Click="btn_ResetPlan" Visibility="{Binding Path=OperateGrant.CanReset}"/>
+                <Button Content="修改" Padding="15,4" Margin="0,0,0,0" Height="30" Click="btn_EditPlan" Visibility="{Binding Path=CanEdit}"/>
+                <Button Content="删除" Padding="15,4" Margin="5,0,0,0" Height="30" Click="btn_DelePlan"  Visibility="{Binding Path=CanDelete}"/>
+                <Button Content="更新" Padding="15,4" Margin="5,0,0,0" Height="30" Click="btn_UpdatePlan" Visibility="{Binding Path=CanUpdate}"/>
+                <Button Content="完结" Padding="15,4" Margin="5,0,0,0" Height="30" Click="btn_FinishPlan" Visibility="{Binding Path=CanFinish}"/>
+                <Button Content="重置" Padding="15,4" Margin="5,0,0,0" Height="30" Click="btn_ResetPlan" Visibility="{Binding Path=CanReset}"/>
             </StackPanel>
         </StackPanel>
     </ScrollViewer>

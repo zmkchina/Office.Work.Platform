@@ -42,10 +42,11 @@ namespace Office.Work.Platform.Plan
                 BtnAddPlan.IsEnabled = true;
                 return;
             }
-            if (string.IsNullOrWhiteSpace(_PageViewModel.EntityPlan.CurrectState))
+            if (string.IsNullOrWhiteSpace(_PageViewModel.EntityPlan.Id))
             {
                 //说明是新计划
                 _PageViewModel.EntityPlan.CurrectState = PlanStatus.WaitBegin;
+                _PageViewModel.EntityPlan.UnitName = AppSet.LoginUser.UnitName;
             }
             else if (_PageViewModel.EntityPlan.CurrectState.Equals(PlanStatus.Finished))
             {

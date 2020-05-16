@@ -95,12 +95,12 @@
                             <GroupBox Style="{StaticResource GroupBoxStyle}" HorizontalAlignment="Stretch">
                                 <GroupBox.Header>
                                     <TextBlock>
-                            <Run Text="身份证号"/>
-                            <Run Text="{Binding Path=AddOrEditStr,StringFormat=({0})}" Foreground="Red"/>
+                                        <Run Text="身份证号"/>
+                                        <Run Text="{Binding Path=AddOrEditStr,StringFormat=({0})}" Foreground="Red"/>
                                     </TextBlock>
                                 </GroupBox.Header>
                                 <TextBox x:Name="Tb_UserId" Text="{Binding EntityMember.Id,UpdateSourceTrigger=PropertyChanged}"
-                                     MaxLength="18" HorizontalAlignment="Stretch" Height="30"
+                                     MaxLength="18" HorizontalAlignment="Stretch" Padding="2,5"
                                     LostFocus="Tb_UserId_LostFocusAsync"/>
                             </GroupBox>
                             <StackPanel Orientation="Horizontal">
@@ -123,6 +123,30 @@
                                 </GroupBox>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
+                                <GroupBox Header="民族" Style="{StaticResource GroupBoxStyle}">
+                                    <ComboBox Text="{Binding EntityMember.Nation}" Style="{StaticResource ComboBoxStyle}">
+                                        <ComboBoxItem IsSelected="True">汉族</ComboBoxItem>
+                                        <ComboBoxItem>满族</ComboBoxItem>
+                                        <ComboBoxItem>维吾尔族</ComboBoxItem>
+                                        <ComboBoxItem>苗族</ComboBoxItem>
+                                        <ComboBoxItem>蒙古族</ComboBoxItem>
+                                        <ComboBoxItem>羌族</ComboBoxItem>
+                                        <ComboBoxItem>白族</ComboBoxItem>
+                                    </ComboBox>
+                                </GroupBox>
+                                <GroupBox Header="出生地（城市）" Style="{StaticResource GroupBoxStyle}">
+                                    <TextBox Text="{Binding EntityMember.Birthplace}" Style="{StaticResource TextboxStyle}"/>
+                                </GroupBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <GroupBox Header="籍贯" Style="{StaticResource GroupBoxStyle}">
+                                    <TextBox Text="{Binding EntityMember.NativePlace}" Style="{StaticResource TextboxStyle}"/>
+                                </GroupBox>
+                                <GroupBox Header="健康状况" Style="{StaticResource GroupBoxStyle}">
+                                    <TextBox Text="{Binding EntityMember.HealthState}" Style="{StaticResource TextboxStyle}"/>
+                                </GroupBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
                                 <GroupBox Header="政治面貌" Style="{StaticResource GroupBoxStyle}">
                                     <TextBox Text="{Binding EntityMember.PoliticalStatus}" Style="{StaticResource TextboxStyle}"/>
                                 </GroupBox>
@@ -139,6 +163,9 @@
                                 </GroupBox>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
+                                <GroupBox Header="有何特长" Style="{StaticResource GroupBoxStyle}">
+                                    <TextBox Text="{Binding EntityMember.Speciality}" Style="{StaticResource TextboxStyle}"/>
+                                </GroupBox>
                                 <GroupBox Header="人员排序" Style="{StaticResource GroupBoxStyle}">
                                     <TextBox Text="{Binding EntityMember.OrderIndex}"  Style="{StaticResource TextboxStyle}"/>
                                 </GroupBox>

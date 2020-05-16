@@ -52,7 +52,12 @@
                     <TextBlock  Text="职工花名册" VerticalAlignment="Center"/>
                 </StackPanel>
             </ListBoxItem>
-
+            <ListBoxItem MouseLeftButtonUp="ListBoxItem_BasicInfo_MouseLeftButtonUp">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="&#xe643;" Style="{StaticResource FIcon}" FontSize="18" Margin="0,0,5,0" Foreground="Green"></TextBlock>
+                    <TextBlock  Text="个人信息表" VerticalAlignment="Center"/>
+                </StackPanel>
+            </ListBoxItem>
             <ListBoxItem MouseLeftButtonUp="ListBoxItem_MouseLeftButtonUp_2">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="&#xe643;" Style="{StaticResource FIcon}" FontSize="18" Margin="0,0,5,0" Foreground="Green"></TextBlock>

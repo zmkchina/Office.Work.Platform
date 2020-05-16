@@ -1,0 +1,134 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              ColumnWidth="400" FontSize="14" FontFamily="宋体"
+              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+              TextOptions.TextFormattingMode="Display">
+    <FlowDocument.Resources>
+        <Style TargetType="Table" x:Key="BorderedTable">
+            <Setter Property="CellSpacing" Value="0"></Setter>
+            <Setter Property="BorderThickness" Value="1"></Setter>
+            <Setter Property="BorderBrush" Value="#000"></Setter>
+        </Style>
+        <Style TargetType="TableCell" x:Key="BorderedCell">
+            <Setter Property="BorderThickness" Value="0.5"></Setter>
+            <Setter Property="BorderBrush" Value="#000"></Setter>
+            <Setter Property="Padding" Value="3"></Setter>
+        </Style>
+        <Style  TargetType="TableCell">
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="BorderBrush" Value="Black" />
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+        <Style TargetType="Paragraph">
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,5"/>
+        </Style>
+    </FlowDocument.Resources>
+    <!--PageHeight="21cm" PageWidth="29.7cm" ColumnWidth ="29.7cm"-->
+    <Paragraph TextAlignment="Center" FontWeight="ExtraBold" FontSize="24" LineHeight="20">
+        <Run Text="{Binding Caption}" FontFamily="黑体"/>
+    </Paragraph>
+    <Paragraph TextAlignment="Left" FontWeight="Light" FontSize="12" Margin="5,5,0,0">
+        <Run  Text="{Binding DateStr}"  FontFamily="Times New Roman" />
+    </Paragraph>
+    <Table  CellSpacing="0">
+        <TableRowGroup>
+            <TableRow>
+                <TableCell >
+                    <Paragraph>
+                        <Run Text="姓名"></Run>
+                    </Paragraph>
+                </TableCell>
+                <TableCell >
+                    <Paragraph>
+                        <Run Text="{Binding CurMember.Name}"></Run>
+                    </Paragraph>
+                </TableCell>
+                <TableCell >
+                    <Paragraph>
+                        <Run Text="性别"></Run>
+                    </Paragraph>
+                </TableCell>
+                <TableCell >
+                    <Paragraph>
+                        <Run Text="{Binding CurMember.Sex}"></Run>
+                    </Paragraph>
+                </TableCell>
+                <TableCell >
+                    <Paragraph>
+                        <Run Text="出生年月"></Run>
+                    </Paragraph>
+                </TableCell>
+                <TableCell >
+                    <Paragraph>
+                        <Run Text="{Binding CurMember.Birthday,StringFormat=yyyy年MM月dd日}"></Run>
+                    </Paragraph>
+                </TableCell>
+            </TableRow>
+            <TableRow>
+                <TableCell >
+                    <Paragraph>
+                        <Run Text="民族"></Run>
+                    </Paragraph>
+                </TableCell>
+                <TableCell >
+                    <Paragraph>
+                        <Run Text="{Binding CurMember.Nation}"></Run>
+                    </Paragraph>
+                </TableCell>
+                <TableCell >
+                    <Paragraph>
+                        <Run Text="籍贯"></Run>
+                    </Paragraph>
+                </TableCell>
+                <TableCell >
+                    <Paragraph>
+                        <Run Text="{Binding CurMember.NativePlace}"></Run>
+                    </Paragraph>
+                </TableCell>
+                <TableCell >
+                    <Paragraph>
+                        <Run Text="出生地"></Run>
+                    </Paragraph>
+                </TableCell>
+                <TableCell >
+                    <Paragraph>
+                        <Run Text="{Binding CurMember.Birthplace}"></Run>
+                    </Paragraph>
+                </TableCell>
+            </TableRow>
+            <TableRow>
+                <TableCell >
+                    <Paragraph>
+                        <Run Text="入党时间"></Run>
+                    </Paragraph>
+                </TableCell>
+                <TableCell >
+                    <Paragraph>
+                        <Run Text="{Binding CurMember.JoinCPC,StringFormat=yyyy年MM月}"></Run>
+                    </Paragraph>
+                </TableCell>
+                <TableCell >
+                    <Paragraph>
+                        <Run Text="参加工作时间"></Run>
+                    </Paragraph>
+                </TableCell>
+                <TableCell >
+                    <Paragraph>
+                        <Run Text="{Binding CurMember.BeginWork,StringFormat=yyyy年MM月}"></Run>
+                    </Paragraph>
+                </TableCell>
+                <TableCell >
+                    <Paragraph>
+                        <Run Text="健康状况"></Run>
+                    </Paragraph>
+                </TableCell>
+                <TableCell >
+                    <Paragraph>
+                        <Run Text="{Binding CurMember.HealthState}"></Run>
+                    </Paragraph>
+                </TableCell>
+            </TableRow>
+        </TableRowGroup>
+    </Table>
+</FlowDocument>
+            

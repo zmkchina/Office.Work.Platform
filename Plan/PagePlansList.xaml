@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:Office.Work.Platform.Plan"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="500"
-      Title="PagePlansList" Loaded="Page_Loaded">
+      Title="PagePlansList" Loaded="Page_Loaded" Unloaded="Page_Unloaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -22,12 +22,12 @@
         </Border>
         <ToolBar Grid.Row="1">
             <TextBox x:Name="tb_SearchKeys" Width="200"/>
-            <Button Content="刷新记录" Name="btn_Refrash" Click="btn_Refrash_Click" />
+            <Button Content="刷新记录" Name="btn_Refrash" Click="btn_Refrash_ClickAsync" />
         </ToolBar>
         <Grid Grid.Row="2" TextElement.FontSize="15">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" MinWidth="200"/>
-                <ColumnDefinition Width="*" x:Name="col_panInfo"/>
+                <ColumnDefinition Width="1*" x:Name="Col_PlanList"/>
+                <ColumnDefinition Width="2*" x:Name="col_panInfo"/>
             </Grid.ColumnDefinitions>
             <ListBox Grid.Column="0"  Name="LB_PlanList"
                      ItemsSource="{Binding Path=EntityPlans}"

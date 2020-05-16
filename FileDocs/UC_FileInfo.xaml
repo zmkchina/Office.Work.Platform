@@ -67,8 +67,9 @@
                 </Expander.Content>
             </Expander>
             <StackPanel Orientation="Horizontal" Margin="20,15" HorizontalAlignment="Center"  >
-                <Button Content="打开文件" Margin="0,0,5,0" Height="30" Click="btn_OpenFileAsync" Visibility="{Binding Path=OperateGrant.CanRead}"/>
-                <Button Content="保存修改" Margin="5,0,5,0" Height="30" Click="btn_SaveChange" Visibility="{Binding Path=OperateGrant.CanUpdate}"/>
+                <Button Content="打开文件" Margin="0,0,5,0" Height="30" Click="btn_OpenFileAsync" Visibility="{Binding Path=CanRead}"/>
+                <Button Content="保存修改" Margin="5,0,5,0" Height="30" Click="btn_SaveChange" Visibility="{Binding Path=CanUpdate}"/>
+                <Button Content="删除文件" Margin="5,0,5,0" Height="30" Click="btn_DeleteFileAsync" Visibility="{Binding Path=CanDelete}"/>
             </StackPanel>
         </StackPanel>
     </ScrollViewer>

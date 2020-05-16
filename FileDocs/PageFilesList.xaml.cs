@@ -15,37 +15,42 @@ namespace Office.Work.Platform.FileDocs
     /// </summary>
     public partial class PageFilesList : Page
     {
-        private PageFilesListVM _PageFilesListVM;
-        private FileDocSearch _mSearchFile;
+        private CurPageViewModel _CurPageViewModel;
 
         public PageFilesList(string FilePlanType = null)
         {
             InitializeComponent();
-            _PageFilesListVM = new PageFilesListVM();
-            _mSearchFile = new FileDocSearch();
-            _mSearchFile.UserId = AppSet.LoginUser.Id;
-            _mSearchFile.ContentType = FilePlanType;
+            _CurPageViewModel = new CurPageViewModel(FilePlanType);
+
         }
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            DataContext = _CurPageViewModel;
             btn_Refrash_ClickAsync(null, null);
+        }
 
+        private async void btn_Refrash_ClickAsync(object sender, RoutedEventArgs e)
+        {
+            await _CurPageViewModel.GetFilesAsync();
+            Col_UCFileInfo.Width = new GridLength(0);
+            AppFuns.SetStateBarText($"共查询到 :{_CurPageViewModel.FileDocs.Count}条记录！");
         }
 
         private void ListBox_FileList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            this.UCFileInfo.Init_FileInfo((FileDoc)LB_FileList.SelectedItem, (DelFile) =>
-             {
-                 _PageFilesListVM.FileDocs.Remove(DelFile);
-             });
-        }
-        private async void btn_Refrash_ClickAsync(object sender, RoutedEventArgs e)
-        {
-            string SearchNoValue = tb_search.Text.Trim().Length > 0 ? tb_search.Text.Trim() : null;
-            _mSearchFile.SearchNameOrDesc = SearchNoValue;
-            await _PageFilesListVM.GetFilesAsync(_mSearchFile);
-            AppFuns.SetStateBarText($"共查询到 :{_PageFilesListVM.FileDocs.Count}条记录！");
-            DataContext = _PageFilesListVM;
+            if (LB_FileList.SelectedItem is FileDoc curFile)
+            {
+                if (Col_UCFileInfo.Width.Value == 0)
+                {
+                    Col_UCFileInfo.Width = new System.Windows.GridLength(1, System.Windows.GridUnitType.Star);
+                    Col_FileList.Width = new System.Windows.GridLength(2, System.Windows.GridUnitType.Star);
+                }
+                this.UCFileInfo.Init_FileInfo(curFile, (DelFile) =>
+                {
+                    Col_UCFileInfo.Width = new GridLength(0, System.Windows.GridUnitType.Star);
+                    _CurPageViewModel.FileDocs.Remove(DelFile);
+                });
+            }
         }
 
         private void btn_UpLoadFile_Click(object sender, RoutedEventArgs e)
@@ -55,33 +60,40 @@ namespace Office.Work.Platform.FileDocs
             {
                 WinUpLoadFile winUpLoadFile = new WinUpLoadFile(new Action<FileDoc>(newFile =>
                 {
-                    _PageFilesListVM.FileDocs.Add(newFile);
+                    _CurPageViewModel.FileDocs.Add(newFile);
                 }), theFile, "无所有者", "000", null);
                 winUpLoadFile.ShowDialog();
             }
         }
-    }
 
 
-
-    public class PageFilesListVM : NotificationObject
-    {
-
-        public ObservableCollection<FileDoc> FileDocs { get; set; }
-        public PageFilesListVM()
+        /// <summary>
+        /// 该页面的视图类
+        /// </summary>
+        private class CurPageViewModel : NotificationObject
         {
-            FileDocs = new ObservableCollection<FileDoc>();
-        }
-        public async Task GetFilesAsync(FileDocSearch mSearchFile)
-        {
-            FileDocs.Clear();
-            var files = await DataFileDocRepository.ReadFiles(mSearchFile);
-            if (files != null)
+            public FileDocSearch SearchFile { get; set; }
+            public ObservableCollection<FileDoc> FileDocs { get; set; }
+            public CurPageViewModel(string FilePlanType)
             {
-                files.ToList().ForEach(e =>
+                SearchFile = new FileDocSearch()
                 {
-                    FileDocs.Add(e);
-                });
+                    UserId = AppSet.LoginUser.Id,
+                    ContentType = FilePlanType
+                };
+                FileDocs = new ObservableCollection<FileDoc>();
+            }
+            public async Task GetFilesAsync()
+            {
+                FileDocs.Clear();
+                var files = await DataFileDocRepository.ReadFiles(SearchFile);
+                if (files != null)
+                {
+                    files.ToList().ForEach(e =>
+                    {
+                        FileDocs.Add(e);
+                    });
+                }
             }
         }
     }

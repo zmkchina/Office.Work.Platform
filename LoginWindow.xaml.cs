@@ -45,13 +45,20 @@ namespace Office.Work.Platform
                 string TokenResult = await DataApiRepository.GetAccessToken(V_UserId, V_UserPwd);
                 if (TokenResult != "Ok")
                 {
-                    AppFuns.ShowMessage(TokenResult);
-                    this.CanVas_loadding.Visibility = Visibility.Collapsed;
+                    if (TokenResult.Trim().Equals("invalid_grant", StringComparison.Ordinal))
+                    {
+                        AppFuns.ShowMessage("用户名或密码错误！", "警告");
+                    }
+                    else
+                    {
+                        AppFuns.ShowMessage(TokenResult);
+                    }
+                    CanVas_loadding.Visibility = Visibility.Collapsed;
                     return;
                 }
                 //从服务器读取指定的用户并在服务器上登陆
                 User LoginUser = await DataUserRepository.GetOneById(V_UserId);
-                if (LoginUser != null && LoginUser.PassWord.Equals(V_UserPwd))
+                if (LoginUser != null)
                 {
                     DataRWLocalFileRepository.SaveObjToFile<SettingLocal>(AppSet.LocalSetting, AppSet.LocalSettingFileName);
                     AppSet.LoginUser = LoginUser;
@@ -63,7 +70,7 @@ namespace Office.Work.Platform
                 else
                 {
                     this.CanVas_loadding.Visibility = Visibility.Collapsed;
-                    AppFuns.ShowMessage("请检查用户名或密码,如仍有问题请检查网络。", "警告");
+                    AppFuns.ShowMessage("读取当前用户信息出错！", "警告");
                 }
             }
             catch (Exception ex)

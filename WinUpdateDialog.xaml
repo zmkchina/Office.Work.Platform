@@ -8,7 +8,6 @@
         ShowInTaskbar="False" 
         WindowStartupLocation="CenterOwner"
         WindowStyle="None"
-        Topmost="True"
         ForceCursor="True"
         Loaded="Window_LoadedAsync"
         AllowsTransparency="True" BorderBrush="LightBlue" BorderThickness="1" Background="#FFE4DDD9"
@@ -31,8 +30,8 @@
         <StackPanel Grid.Row="1">
             <StackPanel Orientation="Vertical">
                 <TextBlock Margin="10,15,10,5">
-                    <Run Text="{Binding DownIndex,StringFormat=已下载{0}个}"/>
-                    <Run Text="{Binding DownCount,StringFormat=，共{0}个文件}"/>
+                    <Run Text="{Binding DownIndex,StringFormat=已下载{0}}"/>
+                    <Run Text="{Binding DownCount,StringFormat= / {0}个文件}"/>
                 </TextBlock>
                 <ProgressBar  Margin="10,0" Height="15" Maximum="100" Value="{Binding DownIntProgress}" Foreground="Blue"/>
                 <TextBlock Margin="10,5">

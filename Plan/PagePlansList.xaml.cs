@@ -1,10 +1,11 @@
-﻿using Office.Work.Platform.AppCodes;
-using Office.Work.Platform.AppDataService;
-using Office.Work.Platform.Lib;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using Office.Work.Platform.AppCodes;
+using Office.Work.Platform.AppDataService;
+using Office.Work.Platform.Lib;
 
 namespace Office.Work.Platform.Plan
 {
@@ -13,7 +14,7 @@ namespace Office.Work.Platform.Plan
     /// </summary>
     public partial class PagePlansList : Page
     {
-        private PagePlansListVM _PagePlansListVM;
+        private CurPageViewModel _CurPageViewModel;
         private string _SearchPlanType;
 
         public PagePlansList(string SearchPlanType)
@@ -22,33 +23,35 @@ namespace Office.Work.Platform.Plan
             this.UCPlanInfo.Visibility = Visibility.Collapsed;
             col_panInfo.Width = new GridLength(0);
             _SearchPlanType = SearchPlanType;
-
         }
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             //设置查询条件类
-
-            if (_PagePlansListVM == null)
+            if (_CurPageViewModel == null)
             {
-                _PagePlansListVM = new PagePlansListVM();
-
+                _CurPageViewModel = new CurPageViewModel();
+                _CurPageViewModel.mSearchPlan.UnitName = AppSet.LoginUser.UnitName;
                 switch (_SearchPlanType)
                 {
                     case "MyNoFinishPlans":
-                        _PagePlansListVM.mSearchPlan.CreateUserId = AppSet.LoginUser.Id;
-                        _PagePlansListVM.mSearchPlan.CurrectState = PlanStatus.WaitBegin + "," + PlanStatus.Running;
+                        _CurPageViewModel.mSearchPlan.ResponsiblePerson = AppSet.LoginUser.Id;
+                        _CurPageViewModel.mSearchPlan.CurrectState = PlanStatus.WaitBegin + "," + PlanStatus.Running;
                         break;
                     case "AllNoFinishPlans":
-                        _PagePlansListVM.mSearchPlan.CurrectState = PlanStatus.WaitBegin + "," + PlanStatus.Running;
+                        _CurPageViewModel.mSearchPlan.CurrectState = PlanStatus.WaitBegin + "," + PlanStatus.Running;
                         break;
                     case "AllFinihPlans":
-                        _PagePlansListVM.mSearchPlan.CurrectState = PlanStatus.Finished;
+                        _CurPageViewModel.mSearchPlan.CurrectState = PlanStatus.Finished;
                         break;
                     case "AllPlans":
                         break;
                 }
-                btn_Refrash_Click(null, null);
+                btn_Refrash_ClickAsync(null, null);
             }
+        }
+        private void Page_Unloaded(object sender, RoutedEventArgs e)
+        {
+            AppFuns.SetStateBarText("就绪");
         }
         /// <summary>
         /// 选中一个计划，进行进一步操作。
@@ -61,16 +64,15 @@ namespace Office.Work.Platform.Plan
             {
                 UCPlanInfo.Init_PlanInfoAsync(SelectPlan, (thePlan) =>
                    {
-                       _PagePlansListVM.EntityPlans.Remove(thePlan);
+                       _CurPageViewModel.EntityPlans.Remove(thePlan);
                        col_panInfo.Width = new GridLength(0);
-                       col_panInfo.MinWidth = 0d;
                    });
                 UCPlanInfo.Visibility = Visibility.Visible;
 
                 if (col_panInfo.Width.Value == 0)
                 {
-                    col_panInfo.Width = new GridLength(1, GridUnitType.Star);
-                    col_panInfo.MinWidth = 200d;
+                    col_panInfo.Width = new GridLength(2, GridUnitType.Star);
+                    Col_PlanList.Width = new GridLength(1, GridUnitType.Star);
                 }
             }
         }
@@ -79,46 +81,44 @@ namespace Office.Work.Platform.Plan
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void btn_Refrash_Click(object sender, RoutedEventArgs e)
+        private async void btn_Refrash_ClickAsync(object sender, RoutedEventArgs e)
         {
             string SearchKeys = tb_SearchKeys.Text.Trim().Length > 0 ? tb_SearchKeys.Text.Trim() : null;
             //设置查询条件类
-            _PagePlansListVM.mSearchPlan.KeysInMultiple = SearchKeys;
-
-            _PagePlansListVM.GetPlansAsync();
-            DataContext = _PagePlansListVM;
+            _CurPageViewModel.mSearchPlan.KeysInMultiple = SearchKeys;
+            await _CurPageViewModel.GetPlansAsync();
+            AppFuns.SetStateBarText($"共查询到 {_CurPageViewModel.EntityPlans.Count} 个计划");
+            DataContext = _CurPageViewModel;
         }
-    }
 
-
-    public class PagePlansListVM : NotificationObject
-    {
-
-        public PagePlansListVM()
-        {
-            FileContentTypes = AppSet.ServerSetting.WorkContentType.Split(',', System.StringSplitOptions.RemoveEmptyEntries);
-            mSearchPlan = new PlanSearch();
-            EntityPlans = new ObservableCollection<Lib.Plan>();
-        }
-        public async void GetPlansAsync()
-        {
-            EntityPlans.Clear();
-            var plans = await DataPlanRepository.ReadPlans(mSearchPlan);
-            plans?.ToList().ForEach(e =>
-            {
-                EntityPlans.Add(e);
-            });
-        }
-        public string[] FileContentTypes { get; set; }
         /// <summary>
-        /// 查询到的计划列表
+        /// 本面页的视图模型
         /// </summary>
-        public ObservableCollection<Lib.Plan> EntityPlans { get; set; }
+        private class CurPageViewModel : NotificationObject
+        {
 
-        public PlanSearch mSearchPlan { get; set; }
-
-        #region "方法"
-
-        #endregion
+            public CurPageViewModel()
+            {
+                mSearchPlan = new PlanSearch();
+                EntityPlans = new ObservableCollection<Lib.Plan>();
+            }
+            public async Task GetPlansAsync()
+            {
+                EntityPlans.Clear();
+                var plans = await DataPlanRepository.ReadPlans(mSearchPlan);
+                plans?.ToList().ForEach(e =>
+                {
+                    EntityPlans.Add(e);
+                });
+            }
+            /// <summary>
+            /// 查询到的计划列表
+            /// </summary>
+            public ObservableCollection<Lib.Plan> EntityPlans { get; set; }
+            /// <summary>
+            /// 查询条件
+            /// </summary>
+            public PlanSearch mSearchPlan { get; set; }
+        }
     }
 }

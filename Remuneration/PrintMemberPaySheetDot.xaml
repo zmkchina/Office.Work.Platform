@@ -23,9 +23,11 @@
         </Style>
     </FlowDocument.Resources>
     <!--PageHeight="21cm" PageWidth="29.7cm" ColumnWidth ="29.7cm"-->
-    <Paragraph TextAlignment="Center" FontWeight="Bold" FontSize="24" LineHeight="20">港航中心在职职工月度工资表</Paragraph>
-    <Paragraph TextAlignment="Center" FontWeight="Light" FontSize="16" >
-        <Run x:Name="Run_PayDate" Text="（XXXX年YY月）" FontFamily="Times New Roman"/>
+    <Paragraph TextAlignment="Center" FontWeight="ExtraBold" FontSize="24" LineHeight="20">
+        <Run x:Name="Run_Caption" Text="港航中心待遇信息表打印模板" FontFamily="黑体"/>
+        </Paragraph>
+    <Paragraph TextAlignment="Left" FontWeight="Light" FontSize="14" Margin="5,5,0,2">
+        <Run x:Name="Run_PayDate" Text="未查询到数据"  FontFamily="Times New Roman" />
     </Paragraph>
     <Table  CellSpacing="0">
         <TableRowGroup x:Name="TableRowGroupHeader" Background="LightGray" FontWeight="Bold">

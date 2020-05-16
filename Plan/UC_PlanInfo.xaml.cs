@@ -1,16 +1,15 @@
-﻿using Office.Work.Platform.AppCodes;
-using Office.Work.Platform.AppDataService;
-using Office.Work.Platform.FileDocs;
-using Office.Work.Platform.Lib;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 using System.Net.Http.Handlers;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using Office.Work.Platform.AppCodes;
+using Office.Work.Platform.AppDataService;
+using Office.Work.Platform.FileDocs;
+using Office.Work.Platform.Lib;
 
 namespace Office.Work.Platform.Plan
 {
@@ -19,23 +18,86 @@ namespace Office.Work.Platform.Plan
     /// </summary>
     public partial class UC_PlanInfo : UserControl
     {
-        private UC_PlanInfoVM _UCPlanInfoVM;
+        private CurUcViewModel _UCPlanInfoVM;
         private Action<Lib.Plan> _CallBack = null;
         public UC_PlanInfo()
         {
             InitializeComponent();
         }
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
         public async void Init_PlanInfoAsync(Lib.Plan P_Entity, Action<Lib.Plan> P_CallBack = null)
         {
-            _UCPlanInfoVM = new UC_PlanInfoVM();
-            await _UCPlanInfoVM.Init_PlanInfoVMAsync(P_Entity);
             _CallBack = P_CallBack;
+            _UCPlanInfoVM = new CurUcViewModel();
+            await _UCPlanInfoVM.Init_PlanInfoVMAsync(P_Entity);
+            _UCPlanInfoVM.SetPlanOperateGrant();
+            _UCPlanInfoVM.SetPlanFileDelete();
             DataContext = _UCPlanInfoVM;
         }
+    
+
+        /// <summary>
+        /// 拷贝文件到剪贴板
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void MenuItem_CopyFile_ClickAsync(object sender, RoutedEventArgs e)
+        {
+            FileDoc SelectFile = LB_FileList.SelectedItem as FileDoc;
+            string theDownFileName = await DownLoadFile(SelectFile, false);
+            if (theDownFileName != null)
+            {
+                System.Collections.Specialized.StringCollection files = new System.Collections.Specialized.StringCollection();
+                files.Add(theDownFileName);
+                Clipboard.SetFileDropList(files);
+            }
+            else
+            {
+                AppFuns.ShowMessage("文件下载失败，可能该文件已被删除！", "警告");
+            }
+
+        }
+        /// <summary>
+        /// 重新下载并打开文件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void MenuItem_ReDwonLoad_ClickAsync(object sender, RoutedEventArgs e)
+        {
+            TextBlock curTextBlock = sender as TextBlock;
+            curTextBlock.IsEnabled = false;
+            FileDoc SelectFile = LB_FileList.SelectedItem as FileDoc;
+
+            string theDownFileName = await DownLoadFile(SelectFile, true);
+            if (theDownFileName != null)
+            {
+                FileOperation.UseDefaultAppOpenFile(theDownFileName);
+            }
+            else
+            {
+                AppFuns.ShowMessage("文件下载失败，可能该文件已被删除！", "警告");
+            }
+            curTextBlock.IsEnabled = true;
+        }
+        /// <summary>
+        /// 转到文件夹
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void MenuItem_ToFolder_ClickAsync(object sender, RoutedEventArgs e)
+        {
+            FileDoc SelectFile = LB_FileList.SelectedItem as FileDoc;
+            string theDownFileName = await DownLoadFile(SelectFile, false);
+            if (theDownFileName != null)
+            {
+                System.Diagnostics.Process.Start("Explorer", "/select," + theDownFileName);
+            }
+            else
+            {
+                AppFuns.ShowMessage("文件下载失败，可能该文件已被删除！", "警告");
+            }
+        }
+
+
         /// <summary>
         /// 编辑该计划
         /// </summary>
@@ -86,55 +148,6 @@ namespace Office.Work.Platform.Plan
             }
         }
 
-
-        private async void MenuItem_CopyFile_ClickAsync(object sender, RoutedEventArgs e)
-        {
-            FileDoc SelectFile = LB_FileList.SelectedItem as FileDoc;
-            string theDownFileName = await DownLoadFile(SelectFile, false);
-            if (theDownFileName != null)
-            {
-                System.Collections.Specialized.StringCollection files = new System.Collections.Specialized.StringCollection();
-                files.Add(theDownFileName);
-                Clipboard.SetFileDropList(files);
-            }
-            else
-            {
-                AppFuns.ShowMessage("文件下载失败，可能该文件已被删除！", "警告");
-            }
-
-        }
-
-        private async void MenuItem_ReDwonLoad_ClickAsync(object sender, RoutedEventArgs e)
-        {
-            TextBlock curTextBlock = sender as TextBlock;
-            curTextBlock.IsEnabled = false;
-            FileDoc SelectFile = LB_FileList.SelectedItem as FileDoc;
-
-            string theDownFileName = await DownLoadFile(SelectFile, true);
-            if (theDownFileName != null)
-            {
-                FileOperation.UseDefaultAppOpenFile(theDownFileName);
-            }
-            else
-            {
-                AppFuns.ShowMessage("文件下载失败，可能该文件已被删除！", "警告");
-            }
-            curTextBlock.IsEnabled = true;
-        }
-        //转到文件夹
-        private async void MenuItem_ToFolder_ClickAsync(object sender, RoutedEventArgs e)
-        {
-            FileDoc SelectFile = LB_FileList.SelectedItem as FileDoc;
-            string theDownFileName = await DownLoadFile(SelectFile, false);
-            if (theDownFileName != null)
-            {
-                System.Diagnostics.Process.Start("Explorer", "/select," + theDownFileName);
-            }
-            else
-            {
-                AppFuns.ShowMessage("文件下载失败，可能该文件已被删除！", "警告");
-            }
-        }
         /// <summary>
         /// 从服务器删除文件
         /// </summary>
@@ -153,6 +166,7 @@ namespace Office.Work.Platform.Plan
                 _UCPlanInfoVM.PlanFiles.Remove(SelectFile);
             }
         }
+
         /// <summary>
         /// 打开所选文件。
         /// </summary>
@@ -175,6 +189,7 @@ namespace Office.Work.Platform.Plan
             }
             curTextBlock.IsEnabled = true;
         }
+
         /// <summary>
         /// 下载文件，成功返回带路径的文件名，失败返回Null
         /// </summary>
@@ -201,6 +216,7 @@ namespace Office.Work.Platform.Plan
                 return null;
             }
         }
+
         /// <summary>
         /// 更新计划进度
         /// </summary>
@@ -210,7 +226,9 @@ namespace Office.Work.Platform.Plan
         {
             _UCPlanInfoVM.CurPlan.CurrectState = PlanStatus.Running;
             ExcuteResult JsonResult = await DataPlanRepository.UpdatePlan(_UCPlanInfoVM.CurPlan);
-            (new WinMsgDialog(JsonResult.Msg)).ShowDialog();
+            AppFuns.ShowMessage(JsonResult.Msg);
+            _UCPlanInfoVM.SetPlanOperateGrant();
+            _UCPlanInfoVM.SetPlanFileDelete();
         }
         /// <summary>
         /// 完结计划
@@ -230,7 +248,9 @@ namespace Office.Work.Platform.Plan
             {
                 AppSet.AppMainWindow.lblCursorPosition.Text = JsonResult.Msg;
             }
-            (new WinMsgDialog(JsonResult.Msg)).ShowDialog();
+            AppFuns.ShowMessage(JsonResult.Msg);
+            _UCPlanInfoVM.SetPlanOperateGrant();
+            _UCPlanInfoVM.SetPlanFileDelete();
         }
         /// <summary>
         /// 将计划状态重置为 正在实施
@@ -244,136 +264,190 @@ namespace Office.Work.Platform.Plan
             if (JsonResult.State == 0)
             {
                 AppSet.AppMainWindow.lblCursorPosition.Text = JsonResult.Msg;
+                AppFuns.ShowMessage("计划重置成功！");
+                _UCPlanInfoVM.SetPlanOperateGrant();
+                _UCPlanInfoVM.SetPlanFileDelete();
             }
             else
             {
-                (new WinMsgDialog(JsonResult.Msg)).ShowDialog();
+                AppFuns.ShowMessage(JsonResult.Msg);
             }
         }
-    }
 
-
-    public class UC_PlanInfoVM : NotificationObject
-    {
-        private PlanOperateGrant _OperateGrant;
-
-        public UC_PlanInfoVM()
+        /// <summary>
+        /// 本控件的视图模型
+        /// </summary>
+        private class CurUcViewModel : NotificationObject
         {
-            PlanFiles = new ObservableCollection<FileDoc>();
-        }
-        public async System.Threading.Tasks.Task Init_PlanInfoVMAsync(Lib.Plan P_Entity)
-        {
-            CurPlan = P_Entity;
-            OperateGrant = new PlanOperateGrant(AppSet.LoginUser, P_Entity);
+            private string _CanReset;
+            private string _CanFinish;
+            private string _CanUpFile;
+            private string _CanDelete;
+            private string _CanEdit;
+            private string _CanUpdate;
 
-            if (PlanFiles.Count < 1)
+            public CurUcViewModel()
             {
-                //如果该计划的附件文件没有读取则读取之。
-                FileDocSearch mSearchFile = new FileDocSearch() { OwnerId = P_Entity.Id, UserId = AppSet.LoginUser.Id };
-                IEnumerable<FileDoc> UpFiles = await DataFileDocRepository.ReadFiles(mSearchFile);
-                UpFiles?.ToList().ForEach(e =>
+                PlanFiles = new ObservableCollection<FileDoc>();
+            }
+            public async Task Init_PlanInfoVMAsync(Lib.Plan P_Entity)
+            {
+                CurPlan = P_Entity;
+                if (PlanFiles.Count < 1)
                 {
-                    e.UpIntProgress = 100;
-                    PlanFiles.Add(e);
-                });
-            }
-            if (CurPlan.CreateUserId != null)
-            {
-                CurPlanCreateUserName = AppSet.SysUsers.Where(e => CurPlan.CreateUserId.Equals(e.Id, System.StringComparison.Ordinal)).Select(x => x.Name).FirstOrDefault()?.Trim();
-            }
-            if (CurPlan.ResponsiblePerson != null)
-            {
-                CurPlanResponsibleName = AppSet.SysUsers.Where(e => CurPlan.ResponsiblePerson.Equals(e.Id, System.StringComparison.Ordinal)).Select(x => x.Name).FirstOrDefault()?.Trim();
-            }
-            if (CurPlan.ReadGrant != null)
-            {
-                CurPlanHasGrantNames = string.Join(",", AppSet.SysUsers.Where(e => CurPlan.ReadGrant.Contains(e.Id, System.StringComparison.Ordinal)).Select(x => x.Name)?.ToArray());
-            }
-            if (CurPlan.Helpers != null)
-            {
-                CurPlanHelperNames = string.Join(",", AppSet.SysUsers.Where(e => CurPlan.Helpers.Contains(e.Id, System.StringComparison.Ordinal)).Select(x => x.Name)?.ToArray());
-            }
-        }
-        /// <summary>
-        /// 当前所选计划信息
-        /// </summary>
-        public Lib.Plan CurPlan { get; set; }
-        /// <summary>
-        /// 当前计划的文件。
-        /// </summary>
-        public ObservableCollection<FileDoc> PlanFiles { get; set; }
-        /// <summary>
-        /// 计划创建者的姓名（中文）。
-        /// </summary>
-        public string CurPlanCreateUserName { get; set; }
-        /// <summary>
-        /// 计划责任者的姓名（中文）。
-        /// </summary>
-        public string CurPlanResponsibleName { get; set; }
-        /// <summary>
-        ///计划协助人员姓名列表（中文）
-        /// </summary>
-        public string CurPlanHelperNames { get; set; }
-        /// <summary>
-        /// 计划有限读取人员的姓名列表（中文）。
-        /// </summary>
-        public string CurPlanHasGrantNames { get; set; }
+                    //如果该计划的附件文件没有读取则读取之。
+                    FileDocSearch mSearchFile = new FileDocSearch() { OwnerId = P_Entity.Id, UserId = AppSet.LoginUser.Id };
+                    IEnumerable<FileDoc> UpFiles = await DataFileDocRepository.ReadFiles(mSearchFile);
+                    UpFiles?.ToList().ForEach(e =>
+                    {
+                        e.UpIntProgress = 100;
 
-        /// <summary>
-        /// 用户对此计划的操作权限类对象。
-        /// </summary>
-        public PlanOperateGrant OperateGrant
-        {
-            get { return _OperateGrant; }
-            set
-            {
-                _OperateGrant = value;
-                this.RaisePropertyChanged();
+                        PlanFiles.Add(e);
+                    });
+                }
+                if (CurPlan.CreateUserId != null)
+                {
+                    CurPlanCreateUserName = AppSet.SysUsers.Where(e => CurPlan.CreateUserId.Equals(e.Id, System.StringComparison.Ordinal)).Select(x => x.Name).FirstOrDefault()?.Trim();
+                }
+                if (CurPlan.ResponsiblePerson != null)
+                {
+                    CurPlanResponsibleName = AppSet.SysUsers.Where(e => CurPlan.ResponsiblePerson.Equals(e.Id, System.StringComparison.Ordinal)).Select(x => x.Name).FirstOrDefault()?.Trim();
+                }
+                if (CurPlan.ReadGrant != null)
+                {
+                    CurPlanHasGrantNames = string.Join(",", AppSet.SysUsers.Where(e => CurPlan.ReadGrant.Contains(e.Id, System.StringComparison.Ordinal)).Select(x => x.Name)?.ToArray());
+                }
+                if (CurPlan.Helpers != null)
+                {
+                    CurPlanHelperNames = string.Join(",", AppSet.SysUsers.Where(e => CurPlan.Helpers.Contains(e.Id, System.StringComparison.Ordinal)).Select(x => x.Name)?.ToArray());
+                }
             }
-        }
-        #region "方法"
 
-        #endregion
-        /// <summary>
-        /// 用户对该计划的权限 A:计划修改 B:计划删除 C:计划进度更新 D:上传计划附件 E:计划完结 F:计划状态重置
-        /// </summary>
-        public class PlanOperateGrant
-        {
-            public string CanEdit { get; set; }
-            public string CanDelete { get; set; }
-            public string CanUpdate { get; set; }
-            public string CanUpFile { get; set; }
-            public string CanFinish { get; set; }
-            public string CanReset { get; set; }
-            public PlanOperateGrant(User P_LoginUser, Lib.Plan P_CurPlan)
+            /// <summary>
+            /// 当前所选计划信息
+            /// </summary>
+            public Lib.Plan CurPlan { get; set; }
+            /// <summary>
+            /// 当前计划的文件。
+            /// </summary>
+            public ObservableCollection<FileDoc> PlanFiles { get; set; }
+            /// <summary>
+            /// 计划创建者的姓名（中文）。
+            /// </summary>
+            public string CurPlanCreateUserName { get; set; }
+            /// <summary>
+            /// 计划责任者的姓名（中文）。
+            /// </summary>
+            public string CurPlanResponsibleName { get; set; }
+            /// <summary>
+            ///计划协助人员姓名列表（中文）
+            /// </summary>
+            public string CurPlanHelperNames { get; set; }
+            /// <summary>
+            /// 计划有限读取人员的姓名列表（中文）。
+            /// </summary>
+            public string CurPlanHasGrantNames { get; set; }
+            /// <summary>
+            /// 设置该计划附件的可删除状态
+            /// </summary>
+            public void SetPlanFileDelete()
+            {
+                for (int i = 0; i < PlanFiles.Count; i++)
+                {
+                    PlanFiles[i].CanDelte = "Collapsed";
+                    if (AppSet.LoginUser.Post.Equals("管理员"))
+                    {
+                        PlanFiles[i].CanDelte = "Visible";
+                    }
+                    else
+                    {
+                        if (!CurPlan.CurrectState.Equals(PlanStatus.Finished))
+                        {
+                            if (CurPlan.CreateUserId.Equals(AppSet.LoginUser.Id) || CurPlan.Helpers.Contains(AppSet.LoginUser.Id))
+                            {
+                                PlanFiles[i].CanDelte = "Visible";
+                            }
+                            if (CurPlan.Department.Equals(AppSet.LoginUser.Department) && AppSet.LoginUser.Post.Equals("部门负责人"))
+                            {
+                                PlanFiles[i].CanDelte = "Visible";
+                            }
+                        }
+
+                    }
+                }
+            }
+
+
+            //用户对该计划的权限 A:计划修改 B:计划删除 C:计划进度更新 D:上传计划附件 E:计划完结 F:计划状态重置
+            public string CanEdit
+            {
+                get { return _CanEdit; }
+                set { _CanEdit = value; RaisePropertyChanged(); }
+            }
+            public string CanDelete
+            {
+                get { return _CanDelete; }
+                set { _CanDelete = value; RaisePropertyChanged(); }
+            }
+            public string CanUpdate
+            {
+                get { return _CanUpdate; }
+                set { _CanUpdate = value; RaisePropertyChanged(); }
+            }
+            public string CanUpFile
+            {
+                get { return _CanUpFile; }
+                set { _CanUpFile = value; RaisePropertyChanged(); }
+            }
+            public string CanFinish
+            {
+                get { return _CanFinish; }
+                set { _CanFinish = value; RaisePropertyChanged(); }
+            }
+            public string CanReset
+            {
+                get { return _CanReset; }
+                set { _CanReset = value; RaisePropertyChanged(); }
+            }
+            /// <summary>
+            /// 根据当前用户和计划状态，确定各类操作权限
+            /// </summary>
+            public void SetPlanOperateGrant()
             {
                 CanDelete = CanEdit = CanUpFile = CanFinish = CanReset = CanUpdate = "Collapsed";
-                if (P_LoginUser.Post.Equals("SysAdmin"))
+                User P_LoginUser = AppSet.LoginUser;
+
+                if (P_LoginUser.Post.Equals("管理员"))
                 {
                     CanDelete = CanEdit = CanUpFile = CanFinish = CanReset = CanUpdate = "Visible";
+                    return;
                 }
-                else if (P_LoginUser.Post.Equals("部门负责人"))
+                if (CurPlan.CurrectState.Equals(PlanStatus.Finished))
                 {
-                    CanDelete = CanEdit = CanUpFile = CanFinish = CanReset = CanUpdate = "Visible";
+                    if (CurPlan.Department.Equals(P_LoginUser.Department) && P_LoginUser.Post.Equals("部门负责人"))
+                    {
+                        CanReset = "Visible";
+                    }
+                    return;
                 }
-                else if (P_CurPlan.CurrectState.Contains(PlanStatus.Finished))
-                {
-                    CanDelete = CanEdit = CanUpFile = CanFinish = CanReset = CanUpdate = "Collapsed";
-                }
-                else if (P_LoginUser.Id.Equals(P_CurPlan.CreateUserId))
+
+                if (P_LoginUser.Id.Equals(CurPlan.CreateUserId))
                 {
                     //计划创建者：A—E
                     CanDelete = CanEdit = CanUpFile = CanFinish = CanUpdate = "Visible";
+                    return;
                 }
-                else if (P_LoginUser.Id.Equals(P_CurPlan.ResponsiblePerson))
+                if (P_LoginUser.Id.Equals(CurPlan.ResponsiblePerson))
                 {
                     //责任者
                     CanUpFile = CanFinish = CanUpdate = "Visible";
+                    return;
                 }
-                else if (!string.IsNullOrWhiteSpace(P_CurPlan.Helpers) && P_CurPlan.Helpers.Contains(P_LoginUser.Id))
+                if (!string.IsNullOrWhiteSpace(CurPlan.Helpers) && CurPlan.Helpers.Contains(P_LoginUser.Id))
                 {
                     //协助者
                     CanUpFile = CanUpdate = "Visible";
+                    return;
                 }
             }
         }

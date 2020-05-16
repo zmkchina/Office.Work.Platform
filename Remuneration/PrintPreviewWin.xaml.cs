@@ -11,6 +11,9 @@ using Office.Work.Platform.AppCodes;
 
 namespace Office.Work.Platform.Remuneration
 {
+    /// <summary>
+    /// 打印预览窗口，此类目前未使用。
+    /// </summary>
     partial class PrintPreviewWin : Window
     {
         private delegate void LoadXpsMethod();

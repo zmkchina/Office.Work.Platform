@@ -18,11 +18,11 @@
         <File:ConverByteLengthToMBLength x:Key="ByteLengthToMBLength"/>
         <Plan:ConverPlanStateToImgeUri x:Key="PlanStateToImgeUri"/>
         <Plan:GetIsHelper x:Key="GetIsHelper"/>
-        
-        <SolidColorBrush  x:Key="ColorMainWinTitle" Color="#EAEAEAEA"/>
-        <SolidColorBrush  x:Key="ColorMainWinTopMenu" Color="#EADFEECB"/>
-        <SolidColorBrush  x:Key="ColorMainWinState" Color="#EAF1EED8"/>
+
+        <SolidColorBrush  x:Key="ColorMainWinTitle" Color="#9FB7C0B1"/>
+        <SolidColorBrush  x:Key="ColorMainWinTopMenu" Color="#224CA1CB"/>
+        <SolidColorBrush  x:Key="ColorMainWinState" Color="#E6F1EED8"/>
         <SolidColorBrush  x:Key="ColorMainWinLeftMenu" Color="#FFEFEFEF"/>
-        <SolidColorBrush  x:Key="ColorPageNavBar" Color="#EAFFFCDA"/>
+        <SolidColorBrush  x:Key="ColorPageNavBar" Color="#785FCADA"/>
     </Application.Resources>
 </Application>

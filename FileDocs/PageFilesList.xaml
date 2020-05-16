@@ -22,14 +22,14 @@
             </TextBlock>
         </Border>
         <ToolBar Grid.Row="1">
-            <TextBox x:Name="tb_search" Width="200"/>
+            <TextBox Width="200" Text="{Binding SearchFile.SearchNameOrDesc}"/>
             <Button Content="刷新记录" Click="btn_Refrash_ClickAsync" />
             <Button Content="上传文件" Click="btn_UpLoadFile_Click" />
         </ToolBar>
         <Grid Grid.Row="2" TextElement.FontSize="15">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*" MinWidth="300"/>
-                <ColumnDefinition Width="*"  MinWidth="200"/>
+                <ColumnDefinition Width="2*" x:Name="Col_FileList"/>
+                <ColumnDefinition Width="0"  x:Name="Col_UCFileInfo"/>
             </Grid.ColumnDefinitions>
             <ListBox x:Name="LB_FileList" Grid.Column="0" 
                      ItemsSource="{Binding Path=FileDocs}"

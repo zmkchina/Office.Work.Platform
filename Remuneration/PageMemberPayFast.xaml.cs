@@ -4,14 +4,12 @@ using System.Data;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using Newtonsoft.Json.Linq;
 using Office.Work.Platform.AppCodes;
 using Office.Work.Platform.AppDataService;
 using Office.Work.Platform.Lib;
 using Button = System.Windows.Controls.Button;
-using CheckBox = System.Windows.Controls.CheckBox;
 
 namespace Office.Work.Platform.Remuneration
 {
@@ -116,7 +114,7 @@ namespace Office.Work.Platform.Remuneration
                 {
                     Lib.Member CurMember = MemberList[i];
                     JObject TempJobj = new JObject();
-                    TempJobj[PayItemNameList[0]] = CurMember.UnitName;
+                    TempJobj[PayItemNameList[0]] = AppSet.LoginUser.UnitName;
                     TempJobj[PayItemNameList[1]] = CurMember.UnitName;
                     TempJobj[PayItemNameList[2]] = CurMember.Id;
                     TempJobj[PayItemNameList[3]] = CurMember.Name;
