@@ -66,7 +66,11 @@
                 <TableCell >
                     <Paragraph>
                         <InlineUIContainer>
-                            <Label Content="{Binding CurMember.Birthday,StringFormat=yyyy年MM月dd日}" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                            <Label HorizontalAlignment="Center"  VerticalAlignment="Center">
+                                <TextBlock>
+                                    <Run Text="{Binding CurMember.Birthday,StringFormat={}{0:yyyy年MM月dd日}}"/>
+                                </TextBlock>
+                            </Label>
                         </InlineUIContainer>
                     </Paragraph>
                 </TableCell>
@@ -133,7 +137,11 @@
                 <TableCell >
                     <Paragraph>
                         <InlineUIContainer>
-                            <Label Content="{Binding CurMember.JoinCPC,StringFormat=yyyy年MM月}" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                            <Label HorizontalAlignment="Center"  VerticalAlignment="Center">
+                                <TextBlock>
+                                    <Run Text="{Binding CurMember.JoinCPC,StringFormat={}{0:yyyy年MM月}}"/>
+                                </TextBlock>
+                            </Label>
                         </InlineUIContainer>
                     </Paragraph>
                 </TableCell>
@@ -153,7 +161,11 @@
                 <TableCell >
                     <Paragraph>
                         <InlineUIContainer>
-                            <Label Content="{Binding CurMember.BeginWork,StringFormat=yyyy年MM月}" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                            <Label HorizontalAlignment="Center"  VerticalAlignment="Center">
+                                <TextBlock>
+                                    <Run Text="{Binding CurMember.BeginWork,StringFormat={}{0:yyyy年MM月}}"/>
+                                </TextBlock>
+                            </Label>
                         </InlineUIContainer>
                     </Paragraph>
                 </TableCell>
@@ -167,7 +179,7 @@
                 <TableCell >
                     <Paragraph>
                         <InlineUIContainer>
-                            <Label Content="{Binding CurMember.HealthState,StringFormat=yyyy年MM月}" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                            <Label Content="{Binding CurMember.HealthState}" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
                         </InlineUIContainer>
                     </Paragraph>
                 </TableCell>
@@ -183,21 +195,27 @@
                 <TableCell  ColumnSpan="2">
                     <Paragraph>
                         <InlineUIContainer>
-                            <Label Content="{Binding CurMember.TechnicalTitle,StringFormat=yyyy年MM月}" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                            <Label Content="{Binding CurMember.TechnicalTitle}" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
                         </InlineUIContainer>
                     </Paragraph>
                 </TableCell>
                 <TableCell >
                     <Paragraph>
                         <InlineUIContainer>
-                            <Label Content="熟悉专业\r\n有何专长" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                            <Label HorizontalAlignment="Center"  VerticalAlignment="Center">
+                                <TextBlock>
+                                    <Run Text="熟悉专业"></Run>
+                                    <LineBreak/>
+                                    <Run Text="有何专长"></Run>
+                                </TextBlock>
+                            </Label>
                         </InlineUIContainer>
                     </Paragraph>
                 </TableCell>
                 <TableCell ColumnSpan="2">
                     <Paragraph>
                         <InlineUIContainer>
-                            <Label Content="{Binding CurMember.Speciality,StringFormat=yyyy年MM月}" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                            <Label Content="{Binding CurMember.Speciality}" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
                         </InlineUIContainer>
                     </Paragraph>
                 </TableCell>
@@ -234,7 +252,13 @@
                 <TableCell >
                     <Paragraph>
                         <InlineUIContainer>
-                            <Label Content="毕业院校系及专业" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                            <Label HorizontalAlignment="Center"  VerticalAlignment="Center">
+                                <TextBlock>
+                                    <Run Text="毕业院校"></Run>
+                                    <LineBreak/>
+                                    <Run Text="所学专业"></Run>
+                                </TextBlock>
+                            </Label>
                         </InlineUIContainer>
                     </Paragraph>
                 </TableCell>
@@ -244,6 +268,7 @@
                             <Label  HorizontalAlignment="Center"  VerticalAlignment="Center">
                                 <TextBlock>
                                     <Run Text="{Binding CurMember.GraduationSchoolDays}"></Run>
+                                    <LineBreak/>
                                     <Run Text="{Binding CurMember.MajorDays}"></Run>
                                 </TextBlock>
                             </Label>
@@ -265,6 +290,7 @@
                             <Label  HorizontalAlignment="Center"  VerticalAlignment="Center">
                                 <TextBlock>
                                     <Run Text="{Binding CurMember.EducationTop}"></Run>
+                                    <LineBreak/>
                                     <Run Text="{Binding CurMember.DegreeTop}"></Run>
                                 </TextBlock>
                             </Label>
@@ -274,7 +300,13 @@
                 <TableCell >
                     <Paragraph>
                         <InlineUIContainer>
-                            <Label Content="毕业院校系及专业" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                            <Label HorizontalAlignment="Center"  VerticalAlignment="Center">
+                                <TextBlock>
+                                    <Run Text="毕业院校"></Run>
+                                    <LineBreak/>
+                                    <Run Text="所学专业"></Run>
+                                </TextBlock>
+                            </Label>
                         </InlineUIContainer>
                     </Paragraph>
                 </TableCell>
@@ -284,6 +316,7 @@
                             <Label  HorizontalAlignment="Center"  VerticalAlignment="Center">
                                 <TextBlock>
                                     <Run Text="{Binding CurMember.GraduationSchoolTop}"></Run>
+                                    <LineBreak/>
                                     <Run Text="{Binding CurMember.MajorTop}"></Run>
                                 </TextBlock>
                             </Label>
@@ -307,6 +340,7 @@
                             <Label  HorizontalAlignment="Center"  VerticalAlignment="Center">
                                 <TextBlock>
                                     <Run Text="{Binding CurMember.Department}"></Run>
+                                    <LineBreak/>
                                     <Run Text="{Binding CurMember.Post}"></Run>
                                 </TextBlock>
                             </Label>

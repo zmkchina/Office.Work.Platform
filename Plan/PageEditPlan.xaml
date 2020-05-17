@@ -29,14 +29,14 @@
                              MaxLength="100"
                              TextWrapping="Wrap"
                              VerticalAlignment="Center" 
-                             FontSize="20" FontWeight="DemiBold"
+                             FontSize="18" FontWeight="DemiBold"
                              Text="{Binding Path=EntityPlan.Caption}" />
                 </GroupBox>
                 <GroupBox>
                     <GroupBox.Header>
                         <TextBlock  Text="内容与要求" Margin="5"/>
                     </GroupBox.Header>
-                    <TextBox BorderBrush="#EAEAEA" Padding="3,10" 
+                    <TextBox BorderBrush="#EAEAEA" Padding="3,8" 
                              MaxLength="500"
                              MinHeight="60"
                              AcceptsReturn ="True"
