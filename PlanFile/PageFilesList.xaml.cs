@@ -1,14 +1,13 @@
-﻿using System;
+﻿using Office.Work.Platform.AppCodes;
+using Office.Work.Platform.AppDataService;
+using Office.Work.Platform.Lib;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using Office.Work.Platform.AppCodes;
-using Office.Work.Platform.AppDataService;
-using Office.Work.Platform.Lib;
 
-namespace Office.Work.Platform.FileDocs
+namespace Office.Work.Platform.PlanFile
 {
     /// <summary>
     /// PageFilesList.xaml 的交互逻辑
@@ -33,12 +32,12 @@ namespace Office.Work.Platform.FileDocs
         {
             await _CurPageViewModel.GetFilesAsync();
             Col_UCFileInfo.Width = new GridLength(0);
-            AppFuns.SetStateBarText($"共查询到 :{_CurPageViewModel.FileDocs.Count}条记录！");
+            AppFuns.SetStateBarText($"共查询到 :{_CurPageViewModel.PlanFiles.Count}条记录！");
         }
 
         private void ListBox_FileList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (LB_FileList.SelectedItem is FileDoc curFile)
+            if (LB_FileList.SelectedItem is Lib.PlanFile curFile)
             {
                 if (Col_UCFileInfo.Width.Value == 0)
                 {
@@ -48,21 +47,8 @@ namespace Office.Work.Platform.FileDocs
                 this.UCFileInfo.Init_FileInfo(curFile, (DelFile) =>
                 {
                     Col_UCFileInfo.Width = new GridLength(0, System.Windows.GridUnitType.Star);
-                    _CurPageViewModel.FileDocs.Remove(DelFile);
+                    _CurPageViewModel.PlanFiles.Remove(DelFile);
                 });
-            }
-        }
-
-        private void btn_UpLoadFile_Click(object sender, RoutedEventArgs e)
-        {
-            System.IO.FileInfo theFile = FileOperation.SelectFile();
-            if (theFile != null)
-            {
-                WinUpLoadFile winUpLoadFile = new WinUpLoadFile(new Action<FileDoc>(newFile =>
-                {
-                    _CurPageViewModel.FileDocs.Add(newFile);
-                }), theFile, "无所有者", "000", null);
-                winUpLoadFile.ShowDialog();
             }
         }
 
@@ -72,26 +58,26 @@ namespace Office.Work.Platform.FileDocs
         /// </summary>
         private class CurPageViewModel : NotificationObject
         {
-            public FileDocSearch SearchFile { get; set; }
-            public ObservableCollection<FileDoc> FileDocs { get; set; }
+            public PlanFileSearch SearchFile { get; set; }
+            public ObservableCollection<Lib.PlanFile> PlanFiles { get; set; }
             public CurPageViewModel(string FilePlanType)
             {
-                SearchFile = new FileDocSearch()
+                SearchFile = new PlanFileSearch()
                 {
                     UserId = AppSet.LoginUser.Id,
                     ContentType = FilePlanType
                 };
-                FileDocs = new ObservableCollection<FileDoc>();
+                PlanFiles = new ObservableCollection<Lib.PlanFile>();
             }
             public async Task GetFilesAsync()
             {
-                FileDocs.Clear();
-                var files = await DataFileDocRepository.ReadFiles(SearchFile);
+                PlanFiles.Clear();
+                var files = await DataPlanFileRepository.ReadFiles(SearchFile);
                 if (files != null)
                 {
                     files.ToList().ForEach(e =>
                     {
-                        FileDocs.Add(e);
+                        PlanFiles.Add(e);
                     });
                 }
             }

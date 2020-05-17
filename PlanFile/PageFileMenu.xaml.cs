@@ -5,7 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace Office.Work.Platform.FileDocs
+namespace Office.Work.Platform.PlanFile
 {
     /// <summary>
     /// PageFileMenu.xaml 的交互逻辑

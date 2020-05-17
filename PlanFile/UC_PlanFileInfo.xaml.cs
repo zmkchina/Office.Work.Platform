@@ -7,16 +7,16 @@ using System.Net.Http.Handlers;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Office.Work.Platform.FileDocs
+namespace Office.Work.Platform.PlanFile
 {
     /// <summary>
     /// UC_FileInfo.xaml 的交互逻辑
     /// </summary>
-    public partial class UC_FileInfo : UserControl
+    public partial class UC_PlanFileInfo : UserControl
     {
         private CurUCViewModel _CurUCViewModel;
-        private Action<FileDoc> _DelFileCallBackFun = null;
-        public UC_FileInfo()
+        private Action<Lib.PlanFile> _DelFileCallBackFun = null;
+        public UC_PlanFileInfo()
         {
             InitializeComponent();
         }
@@ -26,7 +26,7 @@ namespace Office.Work.Platform.FileDocs
         /// </summary>
         /// <param name="P_File">待修改、删除的文件对象</param>
         /// <param name="P_DelFileCallBackFun">删除文件后回调的函数</param>
-        public void Init_FileInfo(FileDoc P_File, Action<FileDoc> P_DelFileCallBackFun = null)
+        public void Init_FileInfo(Lib.PlanFile P_File, Action<Lib.PlanFile> P_DelFileCallBackFun = null)
         {
             _CurUCViewModel = new CurUCViewModel();
             _CurUCViewModel.InitPropValus(P_File);
@@ -47,7 +47,7 @@ namespace Office.Work.Platform.FileDocs
             {
                 _CurUCViewModel.CurFile.DownIntProgress = e.ProgressPercentage;// (double)(e.BytesTransferred / e.TotalBytes) * 100;
             };
-            string theDownFileName = await DataFileDocRepository.DownloadFile(_CurUCViewModel.CurFile, false, progress);
+            string theDownFileName = await DataPlanFileRepository.DownloadFile(_CurUCViewModel.CurFile, false, progress);
             if (theDownFileName == null)
             {
                 (new WinMsgDialog("文件下载失败,可能已被删除！", "警告")).ShowDialog();
@@ -55,7 +55,7 @@ namespace Office.Work.Platform.FileDocs
                 return;
             }
             _CurUCViewModel.CurFile.DownIntProgress = 100;
-            DataFileDocRepository.OpenFileInfo(theDownFileName);
+            DataPlanFileRepository.OpenFileInfo(theDownFileName);
             V_Button.IsEnabled = true;
         }
         /// <summary>
@@ -65,7 +65,7 @@ namespace Office.Work.Platform.FileDocs
         /// <param name="e"></param>
         private async void btn_SaveChange(object sender, RoutedEventArgs e)
         {
-            ExcuteResult JsonResult = await DataFileDocRepository.UpdateFileInfo(_CurUCViewModel.CurFile);
+            ExcuteResult JsonResult = await DataPlanFileRepository.UpdateFileInfo(_CurUCViewModel.CurFile);
             if (JsonResult.State == 0)
             {
                 AppFuns.SetStateBarText(JsonResult.Msg);
@@ -81,7 +81,7 @@ namespace Office.Work.Platform.FileDocs
         {
             if (AppFuns.ShowMessage($"确定要删除[{_CurUCViewModel.CurFile.Name}]文件吗？"))
             {
-                ExcuteResult JsonResult = await DataFileDocRepository.DeleteFileInfo(_CurUCViewModel.CurFile);
+                ExcuteResult JsonResult = await DataPlanFileRepository.DeleteFileInfo(_CurUCViewModel.CurFile);
                 if (JsonResult.State == 0)
                 {
                     _DelFileCallBackFun?.Invoke(_CurUCViewModel.CurFile);
@@ -96,11 +96,11 @@ namespace Office.Work.Platform.FileDocs
 
         private class CurUCViewModel : NotificationObject
         {
-            private FileDoc _CurFile;
+            private Lib.PlanFile _CurFile;
             /// <summary>
             /// 文件对象
             /// </summary>
-            public FileDoc CurFile
+            public Lib.PlanFile CurFile
             {
                 get { return _CurFile; }
                 set { _CurFile = value; this.RaisePropertyChanged(); }
@@ -130,7 +130,7 @@ namespace Office.Work.Platform.FileDocs
             {
                 CanRead = CanDelete = CanUpdate = "Collapsed";
             }
-            public void InitPropValus(FileDoc PFile)
+            public void InitPropValus(Lib.PlanFile PFile)
             {
                 if (PFile == null) return;
                 CurFile = PFile;
@@ -148,7 +148,7 @@ namespace Office.Work.Platform.FileDocs
                     CanRead = CanUpdate = CanDelete = "Visible";
                     return;
                 }
-                if (CurFile.UserId.Equals(AppSet.LoginUser.Id, System.StringComparison.Ordinal) && CurFile.OwnerType.Equals("无所有者", StringComparison.Ordinal))
+                if (CurFile.UserId.Equals(AppSet.LoginUser.Id, System.StringComparison.Ordinal))
                 {
                     CanRead = CanDelete = CanUpdate = "Visible";
                     return;

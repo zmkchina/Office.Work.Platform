@@ -69,12 +69,12 @@
                         <StackPanel>
                             <TextBlock Margin="0,5" TextWrapping="Wrap">
                                     <Run  Text="{Binding Path=OccurDate,StringFormat= {}{0:yyyy年MM月dd日}}" />
-                                    <Run  Text="{Binding Path=PrizrOrPunishType,StringFormat= [{0}]}"/>
+                                    <Run  Text="{Binding Path=PrizrOrPunishType,StringFormat= {} {0}}"/>
                                     <Run  Text="{Binding Path=PrizrOrPunishName,StringFormat= {} {0}}"/>
                                     <Run  Text="{Binding Path=PrizrOrPunishReasion,StringFormat= {} {0}}"/>
                                     <Run  Text="{Binding Path=PrizrOrPunishUnit,StringFormat= {} {0}}"/>
-                                    <Run  Text="{Binding Path=GetScore,StringFormat= 【得分 {0}】}" Foreground="Red"/>
-                                    <Run  Text="{Binding Path=Remark,StringFormat= {} ({0})}"/>
+                                    <Run  Text="{Binding Path=Remark,StringFormat= {} {0}}" Foreground="Blue"/>
+                                    <Run  Text="{Binding Path=GetScore,StringFormat= [ 得分 {0} ]}" Foreground="Red"/>
                             </TextBlock>
                         </StackPanel>
                     </DataTemplate>

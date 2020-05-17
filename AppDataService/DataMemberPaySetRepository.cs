@@ -30,7 +30,7 @@ namespace Office.Work.Platform.AppDataService
         }
        
         /// <summary>
-        /// 单个新增或者更新数据信息（如数据库中没有则新增之，如有则更新之）
+        /// 批量新增或者更新数据信息（如数据库中没有则新增之，如有则更新之）
         /// </summary>
         /// <param name="PEntity"></param>
         /// <returns></returns>

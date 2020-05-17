@@ -87,7 +87,7 @@ namespace Office.Work.Platform.Remuneration
                 string DateStr = $"发放月份：（{PayMonthDate.Year}年{PayMonthDate.Month}月）";
                 if (!PayTableTypes.Contains("月"))
                 {
-                    DateStr = $"发放时间：（{PayMonthDate.Year}年{PayMonthDate.Month}月{PayMonthDate.Day}日）";
+                    DateStr = $"发放时间：{PayMonthDate.Year}年{PayMonthDate.Month}月{PayMonthDate.Day}日";
                 }
                 CreateFlowDoc("PrintMemberPaySheetDot.xaml", Caption, DateStr, JArrayResult, P_DocWidth: 1122, P_DocHeight: 793);
             });

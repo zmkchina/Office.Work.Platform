@@ -72,7 +72,7 @@ namespace Office.Work.Platform.Member
             List<Lib.Member> MemberList = await DataMemberRepository.ReadMembers(_PageViewModel.mSearch);
 
             if (MemberList == null || MemberList.Count < 1) { return; }
-            
+
             MemberList.Sort((x, y) => x.OrderIndex - y.OrderIndex);
 
             if (MemberList != null && MemberList.Count > 0)
@@ -146,6 +146,10 @@ namespace Office.Work.Platform.Member
         /// <param name="sheetName">sheet表名</param>
         private void ExportToExcel(List<Lib.Member> EntityList, string sheetName)
         {
+            if (EntityList == null || EntityList.Count < 1)
+            {
+                return;
+            }
             System.Windows.Forms.SaveFileDialog fileDialog = new System.Windows.Forms.SaveFileDialog();
             fileDialog.Filter = "Excel|*.xls";
             if (fileDialog.ShowDialog() == System.Windows.Forms.DialogResult.Cancel)

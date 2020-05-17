@@ -140,7 +140,13 @@
                 <TableCell >
                     <Paragraph>
                         <InlineUIContainer>
-                            <Label Content="参加工作时间" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                            <Label HorizontalAlignment="Center"  VerticalAlignment="Center">
+                                <TextBlock>
+                                    <Run Text="参加工作"></Run>
+                                    <LineBreak/>
+                                    <Run Text="时间"></Run>
+                                </TextBlock>
+                            </Label>
                         </InlineUIContainer>
                     </Paragraph>
                 </TableCell>
@@ -184,7 +190,7 @@
                 <TableCell >
                     <Paragraph>
                         <InlineUIContainer>
-                            <Label Content="熟悉专业有何专长" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                            <Label Content="熟悉专业\r\n有何专长" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
                         </InlineUIContainer>
                     </Paragraph>
                 </TableCell>

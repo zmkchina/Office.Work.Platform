@@ -1,9 +1,9 @@
-﻿<UserControl x:Name="UCFileInfo" x:Class="Office.Work.Platform.FileDocs.UC_FileInfo"
+﻿<UserControl x:Name="UCFileInfo" x:Class="Office.Work.Platform.PlanFile.UC_PlanFileInfo"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Office.Work.Platform.FileDocs"
+             xmlns:local="clr-namespace:Office.Work.Platform.PlanFile"
              mc:Ignorable="d" 
              >
     <ScrollViewer>
@@ -48,7 +48,7 @@
                         </DockPanel>
                         <DockPanel>
                             <TextBlock DockPanel.Dock="Left" Text="所属计划" Margin="5"/>
-                            <TextBlock  DockPanel.Dock="Right"  Text="{Binding Path=CurFile.OwnerType}"  Margin="5"/>
+                            <TextBlock  DockPanel.Dock="Right"  Text="{Binding Path=CurFile.PlanId}"  Margin="5"/>
                         </DockPanel>
                         <DockPanel>
                             <TextBlock DockPanel.Dock="Left" Text="有权读取" Margin="5"/>

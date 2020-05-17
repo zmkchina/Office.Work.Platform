@@ -22,7 +22,7 @@
         <SolidColorBrush  x:Key="ColorMainWinTitle" Color="#9FB7C0B1"/>
         <SolidColorBrush  x:Key="ColorMainWinTopMenu" Color="#224CA1CB"/>
         <SolidColorBrush  x:Key="ColorMainWinState" Color="#E6F1EED8"/>
-        <SolidColorBrush  x:Key="ColorMainWinLeftMenu" Color="#FFEFEFEF"/>
+        <SolidColorBrush  x:Key="ColorMainWinLeftMenu" Color="#6ACEE998"/>
         <SolidColorBrush  x:Key="ColorPageNavBar" Color="#785FCADA"/>
     </Application.Resources>
 </Application>

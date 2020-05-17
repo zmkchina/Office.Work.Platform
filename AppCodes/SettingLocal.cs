@@ -140,7 +140,7 @@ namespace Office.Work.Platform.AppCodes
             ColorMainWinTitle = "#9FB7C0B1";
             ColorMainWinTopMenu = "#224CA1CB";
             ColorMainWinState = "#E6F1EED8";
-            ColorMainWinLeftMenu = "#FFEFEFEF";
+            ColorMainWinLeftMenu = "#6ACEE998";
             ColorPageNavBar = "#785FCADA";
         }
         /// <summary>

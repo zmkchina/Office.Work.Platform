@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Office.Work.Platform.AppCodes;
 using Office.Work.Platform.AppDataService;
-using Office.Work.Platform.FileDocs;
+using Office.Work.Platform.PlanFile;
 using Office.Work.Platform.Lib;
 
 namespace Office.Work.Platform.MemberUc
@@ -17,16 +17,16 @@ namespace Office.Work.Platform.MemberUc
     /// </summary>
     public partial class UC_MemberFile : UserControl
     {
-        private UC_MemberFileVM _UCMemberFileVM;
+        private CurUcViewModel _CurUcViewModel;
         public UC_MemberFile()
         {
             InitializeComponent();
-            _UCMemberFileVM = new UC_MemberFileVM();
+            _CurUcViewModel = new CurUcViewModel();
         }
         public async System.Threading.Tasks.Task InitFileDatasAsync(string PMemberId, string PContentType, bool ReadFlag = true)
         {
-            await _UCMemberFileVM.Init_MemberFileVMAsync(PMemberId, PContentType, ReadFlag);
-            DataContext = _UCMemberFileVM;
+            await _CurUcViewModel.Init_MemberFileVMAsync(PMemberId, PContentType, ReadFlag);
+            DataContext = _CurUcViewModel;
 
         }
         /// <summary>
@@ -36,13 +36,14 @@ namespace Office.Work.Platform.MemberUc
         /// <param name="e"></param>
         private async void btn_search_ClickAsync(object sender, RoutedEventArgs e)
         {
-            FileDocSearch mfsearch = new FileDocSearch()
+            MemberFileSearch mfsearch = new MemberFileSearch()
             {
-                OwnerId=_UCMemberFileVM.MemberId,
-                ContentType= _UCMemberFileVM.ContentType,
-                SearchNameOrDesc = _UCMemberFileVM.SearchValues,
+                UserId = AppSet.LoginUser.Id,
+                MemberId=_CurUcViewModel.MemberId,
+                ContentType= _CurUcViewModel.ContentType,
+                SearchNameOrDesc = _CurUcViewModel.SearchValues,
             };
-            await _UCMemberFileVM.SearchMemberFiles(mfsearch);
+            await _CurUcViewModel.SearchMemberFiles(mfsearch);
         }
         /// <summary>
         /// 上传文件到服务器
@@ -55,10 +56,10 @@ namespace Office.Work.Platform.MemberUc
             System.IO.FileInfo theFile = FileOperation.SelectFile();
             if (theFile != null)
             {
-                WinUpLoadFile winUpLoadFile = new WinUpLoadFile(new Action<FileDoc>(newFile =>
+                WinUpMemberFile winUpLoadFile = new WinUpMemberFile(new Action<Lib.MemberFile>(newFile =>
                 {
-                    _UCMemberFileVM.MFiles.Add(newFile);
-                }), theFile, "人事附件", _UCMemberFileVM.MemberId, _UCMemberFileVM.ContentType);
+                    _CurUcViewModel.MFiles.Add(newFile);
+                }), theFile, _CurUcViewModel.MemberId, _CurUcViewModel.ContentType);
 
                 winUpLoadFile.ShowDialog();
             }
@@ -71,15 +72,15 @@ namespace Office.Work.Platform.MemberUc
         /// <param name="e"></param>
         private async void Image_Delete_MouseLeftButtonUpAsync(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            FileDoc SelectFile = LB_FileList.SelectedItem as FileDoc;
+            Lib.MemberFile SelectFile = LB_FileList.SelectedItem as Lib.MemberFile;
             if (!(new WinMsgDialog($"删除文件《{ SelectFile.Name }》？", Caption: "确认", showYesNo: true)).ShowDialog().Value)
             {
                 return;
             }
-            ExcuteResult delResult = await DataFileDocRepository.DeleteFileInfo(SelectFile);
+            ExcuteResult delResult = await DataMemberFileRepository.DeleteFileInfo(SelectFile);
             if (delResult != null && delResult.State == 0)
             {
-                _UCMemberFileVM.MFiles.Remove(SelectFile);
+                _CurUcViewModel.MFiles.Remove(SelectFile);
             }
         }
         /// <summary>
@@ -91,7 +92,7 @@ namespace Office.Work.Platform.MemberUc
         {
             e.Handled = true;
             TextBlock curTextBlock = sender as TextBlock;
-            FileDoc SelectFile = curTextBlock.DataContext as FileDoc;
+            Lib.MemberFile SelectFile = curTextBlock.DataContext as Lib.MemberFile;
             if (SelectFile == null)
             {
                 (new WinMsgDialog("未读到选取文件信息！", Caption: "错误", isErr: true)).ShowDialog();
@@ -104,7 +105,7 @@ namespace Office.Work.Platform.MemberUc
                 SelectFile.DownIntProgress = e.ProgressPercentage;
             };
 
-            string theDownFileName = await DataFileDocRepository.DownloadFile(SelectFile, false, progress);
+            string theDownFileName = await DataMemberFileRepository.DownloadFile(SelectFile, false, progress);
             if (theDownFileName != null)
             {
                 SelectFile.DownIntProgress = 100;
@@ -116,52 +117,53 @@ namespace Office.Work.Platform.MemberUc
             }
             curTextBlock.IsEnabled = true;
         }
-    }
 
-
-    public class UC_MemberFileVM : NotificationObject
-    {
-        public UC_MemberFileVM()
-        {
-            MFiles = new ObservableCollection<FileDoc>();
-        }
-        public async System.Threading.Tasks.Task Init_MemberFileVMAsync(string PMemberId, string PContentType, bool ReadFlag = true)
-        {
-            MemberId = PMemberId;
-            ContentType = PContentType;
-            if (!ReadFlag) { return; }
-            FileDocSearch mfsearch = new FileDocSearch()
-            {
-                OwnerId = MemberId,
-                OwnerType = "人事附件",
-                ContentType = PContentType,
-                UserId = AppSet.LoginUser.Id
-            };
-            await SearchMemberFiles(mfsearch);
-        }
-        public async System.Threading.Tasks.Task SearchMemberFiles(FileDocSearch mfsearch)
-        {
-            if (mfsearch != null)
-            {
-                mfsearch.UserId = AppSet.LoginUser.Id;
-
-                IEnumerable<FileDoc> MemberPayTemps = await DataFileDocRepository.ReadFiles(mfsearch);
-                MFiles.Clear();
-                MemberPayTemps?.ToList().ForEach(e =>
-                {
-                    MFiles.Add(e);
-                });
-            }
-        }
         /// <summary>
-        /// 当前所选信息
+        /// 本控件的视图类
         /// </summary>
-        public string MemberId { get; set; }
-        public string ContentType { get; set; }
+        private class CurUcViewModel : NotificationObject
+        {
+            public CurUcViewModel()
+            {
+                MFiles = new ObservableCollection<Lib.MemberFile>();
+            }
+            public async System.Threading.Tasks.Task Init_MemberFileVMAsync(string PMemberId, string PContentType, bool ReadFlag = true)
+            {
+                MemberId = PMemberId;
+                ContentType = PContentType;
+                if (!ReadFlag) { return; }
+                MemberFileSearch mfsearch = new MemberFileSearch()
+                {
+                    MemberId = MemberId,
+                    ContentType = PContentType,
+                    UserId = AppSet.LoginUser.Id
+                };
+                await SearchMemberFiles(mfsearch);
+            }
+            public async System.Threading.Tasks.Task SearchMemberFiles(MemberFileSearch mfsearch)
+            {
+                if (mfsearch != null)
+                {
+                    mfsearch.UserId = AppSet.LoginUser.Id;
 
-        //定义查询内容字符串
-        public string SearchValues { get; set; }
-        public ObservableCollection<FileDoc> MFiles { get; set; }
+                    IEnumerable<Lib.MemberFile> MemberPayTemps = await DataMemberFileRepository.ReadFiles(mfsearch);
+                    MFiles.Clear();
+                    MemberPayTemps?.ToList().ForEach(e =>
+                    {
+                        MFiles.Add(e);
+                    });
+                }
+            }
+            /// <summary>
+            /// 当前所选信息
+            /// </summary>
+            public string MemberId { get; set; }
+            public string ContentType { get; set; }
 
+            //定义查询内容字符串
+            public string SearchValues { get; set; }
+            public ObservableCollection<Lib.MemberFile> MFiles { get; set; }
+
+        }
     }
 }

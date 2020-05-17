@@ -7,33 +7,36 @@
       mc:Ignorable="d"  d:DesignHeight="650" d:DesignWidth="550"
       Loaded="Page_Loaded"
       Title="计划编辑">
-    <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
-        <Border Background="{DynamicResource ColorPageNavBar}" Padding="0,10" Margin="0,1" HorizontalAlignment="Stretch">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Border Grid.Row="0" Background="{DynamicResource ColorPageNavBar}" Padding="0,10" Margin="0,1" HorizontalAlignment="Stretch">
             <TextBlock  VerticalAlignment="Center" Foreground="#FF495981"
                         HorizontalAlignment="Left" FontSize="14" Padding="10,0,0,0">
                 <Run  Text="> 计划管理—新增/编辑计划"/>
                 <Run  Text="[可以新增或编辑一个计划信息]"/>
             </TextBlock>
         </Border>
-    <ScrollViewer  Margin="5" >
-        <StackPanel TextElement.FontSize="16"  HorizontalAlignment="Stretch">
-            <GroupBox>
-                <GroupBox.Header>
-                    <TextBlock  Text="计划标题" Margin="5"/>
-                </GroupBox.Header>
-                <TextBox BorderBrush="#EAEAEA"   Padding="3,10" x:Name="TBPlanCaption"
+        <ScrollViewer  Grid.Row="1"  VerticalScrollBarVisibility="Auto" >
+            <StackPanel TextElement.FontSize="15"  HorizontalAlignment="Stretch">
+                <GroupBox>
+                    <GroupBox.Header>
+                        <TextBlock  Text="计划标题" Margin="5"/>
+                    </GroupBox.Header>
+                    <TextBox BorderBrush="#EAEAEA"  Padding="3,8" x:Name="TBPlanCaption"
                              MaxLength="100"
-                             MinHeight="30"
                              TextWrapping="Wrap"
                              VerticalAlignment="Center" 
-                             FontSize="22" FontWeight="DemiBold"
+                             FontSize="20" FontWeight="DemiBold"
                              Text="{Binding Path=EntityPlan.Caption}" />
-            </GroupBox>
-            <GroupBox>
-                <GroupBox.Header>
-                    <TextBlock  Text="内容与要求" Margin="5"/>
-                </GroupBox.Header>
-                <TextBox BorderBrush="#EAEAEA" Padding="3,10" 
+                </GroupBox>
+                <GroupBox>
+                    <GroupBox.Header>
+                        <TextBlock  Text="内容与要求" Margin="5"/>
+                    </GroupBox.Header>
+                    <TextBox BorderBrush="#EAEAEA" Padding="3,10" 
                              MaxLength="500"
                              MinHeight="60"
                              AcceptsReturn ="True"
@@ -41,82 +44,82 @@
                              VerticalAlignment="Center" 
                              TextBlock.LineHeight="25"
                              Text="{Binding Path=EntityPlan.Content}" />
-            </GroupBox>
-            <GroupBox>
-                <GroupBox.Header>
-                    <TextBlock  Text="计划类型" Margin="5"/>
-                </GroupBox.Header>
-                <ComboBox  Width="125" HorizontalAlignment="Left" Margin="10,5"
+                </GroupBox>
+                <GroupBox>
+                    <GroupBox.Header>
+                        <TextBlock  Text="计划类型" Margin="5"/>
+                    </GroupBox.Header>
+                    <ComboBox  Width="125" HorizontalAlignment="Left" Margin="10,5"
                            ItemsSource="{Binding Path=WorkContentTypes}"
                            Text="{Binding Path=EntityPlan.ContentType}"
                            VerticalAlignment="Center"  
                            Cursor="Hand"/>
-            </GroupBox>
-            <GroupBox>
-                <GroupBox.Header>
-                    <TextBlock  Text="责任人员" Margin="5"/>
-                </GroupBox.Header>
-                <ComboBox  Width="125" HorizontalAlignment="Left" Margin="10,5"
+                </GroupBox>
+                <GroupBox>
+                    <GroupBox.Header>
+                        <TextBlock  Text="责任人员" Margin="5"/>
+                    </GroupBox.Header>
+                    <ComboBox  Width="125" HorizontalAlignment="Left" Margin="10,5"
                            ItemsSource="{Binding Path=UserGrantSelectList}"
                            DisplayMemberPath="Obj.Name" 
                            SelectedValuePath="Obj.Id" 
                            SelectedValue="{Binding Path=EntityPlan.ResponsiblePerson}"
                            VerticalAlignment="Center"  
                            Cursor="Hand"/>
-            </GroupBox>
-            <GroupBox>
-                <GroupBox.Header>
-                    <TextBlock  Text="协助人员" Margin="5"/>
-                </GroupBox.Header>
-                <ListBox ItemsSource="{Binding UserHelperSelectList}"  Margin="5" >
-                    <ListBox.Template>
-                        <ControlTemplate TargetType="{x:Type ListBox}">
-                            <WrapPanel VerticalAlignment="Center"  IsItemsHost="True"/>
-                        </ControlTemplate>
-                    </ListBox.Template>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <CheckBox IsChecked="{Binding IsSelect}" VerticalAlignment="Center" Content="{Binding Obj.Name}"/>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </GroupBox>
-            <GroupBox>
-                <GroupBox.Header>
-                    <TextBlock  Text="有权读取" Margin="5"/>
-                </GroupBox.Header>
-                <ListBox ItemsSource="{Binding UserGrantSelectList}"  Margin="5">
-                    <ListBox.Template>
-                        <ControlTemplate TargetType="{x:Type ListBox}">
-                            <WrapPanel VerticalAlignment="Center"  IsItemsHost="True"/>
-                        </ControlTemplate>
-                    </ListBox.Template>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <CheckBox IsChecked="{Binding IsSelect}" VerticalAlignment="Center" Content="{Binding Obj.Name}"/>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </GroupBox>
-            <GroupBox>
-                <GroupBox.Header>
-                    <TextBlock  Text="起止时间" Margin="5"/>
-                </GroupBox.Header>
-                <DockPanel HorizontalAlignment="Left" >
-                    <DatePicker  VerticalAlignment="Center" DockPanel.Dock="Left"  SelectedDate="{Binding Path=EntityPlan.BeginDate}" Margin="10,5" MinWidth="120" />
-                    <TextBlock  VerticalAlignment="Center" Text="至" Margin="5"/>
-                    <DatePicker  VerticalAlignment="Center"  DockPanel.Dock="Right"  SelectedDate="{Binding Path=EntityPlan.EndDate}" Margin="5" MinWidth="120" />
-                </DockPanel>
-            </GroupBox>
-            <StackPanel Orientation="Horizontal" Margin="20,15" Grid.ColumnSpan="2" HorizontalAlignment="Center"  >
-                <Button Content="保存计划" Margin="5,0,5,0" Height="30" 
+                </GroupBox>
+                <GroupBox>
+                    <GroupBox.Header>
+                        <TextBlock  Text="协助人员" Margin="5"/>
+                    </GroupBox.Header>
+                    <ListBox ItemsSource="{Binding UserHelperSelectList}"  Margin="5" >
+                        <ListBox.Template>
+                            <ControlTemplate TargetType="{x:Type ListBox}">
+                                <WrapPanel VerticalAlignment="Center"  IsItemsHost="True"/>
+                            </ControlTemplate>
+                        </ListBox.Template>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding IsSelect}" VerticalAlignment="Center" Content="{Binding Obj.Name}"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </GroupBox>
+                <GroupBox>
+                    <GroupBox.Header>
+                        <TextBlock  Text="有权读取" Margin="5"/>
+                    </GroupBox.Header>
+                    <ListBox ItemsSource="{Binding UserGrantSelectList}"  Margin="5">
+                        <ListBox.Template>
+                            <ControlTemplate TargetType="{x:Type ListBox}">
+                                <WrapPanel VerticalAlignment="Center"  IsItemsHost="True"/>
+                            </ControlTemplate>
+                        </ListBox.Template>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding IsSelect}" VerticalAlignment="Center" Content="{Binding Obj.Name}"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </GroupBox>
+                <GroupBox>
+                    <GroupBox.Header>
+                        <TextBlock  Text="起止时间" Margin="5"/>
+                    </GroupBox.Header>
+                    <DockPanel HorizontalAlignment="Left" >
+                        <DatePicker  VerticalAlignment="Center" DockPanel.Dock="Left"  SelectedDate="{Binding Path=EntityPlan.BeginDate}" Margin="10,5" MinWidth="120" />
+                        <TextBlock  VerticalAlignment="Center" Text="至" Margin="5"/>
+                        <DatePicker  VerticalAlignment="Center"  DockPanel.Dock="Right"  SelectedDate="{Binding Path=EntityPlan.EndDate}" Margin="5" MinWidth="120" />
+                    </DockPanel>
+                </GroupBox>
+                <StackPanel Orientation="Horizontal" Margin="20,15" Grid.ColumnSpan="2" HorizontalAlignment="Center"  >
+                    <Button Content="保存计划" Margin="5,0,5,0" Height="30" 
                             x:Name="BtnAddPlan"
                             Click="BtnAddPlan_Click"/>
-                <Button Content="继续新增" Margin="5,0,5,0" Height="30" 
+                    <Button Content="继续新增" Margin="5,0,5,0" Height="30" 
                             x:Name="BtnAddContinue"
                             Click="BtnAddContinue_Click"/>
+                </StackPanel>
             </StackPanel>
-        </StackPanel>
-    </ScrollViewer>
-    </StackPanel>
+        </ScrollViewer>
+    </Grid>
 </Page>

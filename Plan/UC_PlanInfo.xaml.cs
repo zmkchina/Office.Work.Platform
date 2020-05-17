@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Office.Work.Platform.AppCodes;
 using Office.Work.Platform.AppDataService;
-using Office.Work.Platform.FileDocs;
+using Office.Work.Platform.PlanFile;
 using Office.Work.Platform.Lib;
 
 namespace Office.Work.Platform.Plan
@@ -42,7 +42,7 @@ namespace Office.Work.Platform.Plan
         /// <param name="e"></param>
         private async void MenuItem_CopyFile_ClickAsync(object sender, RoutedEventArgs e)
         {
-            FileDoc SelectFile = LB_FileList.SelectedItem as FileDoc;
+            Lib.PlanFile SelectFile = LB_FileList.SelectedItem as Lib.PlanFile;
             string theDownFileName = await DownLoadFile(SelectFile, false);
             if (theDownFileName != null)
             {
@@ -65,7 +65,7 @@ namespace Office.Work.Platform.Plan
         {
             TextBlock curTextBlock = sender as TextBlock;
             curTextBlock.IsEnabled = false;
-            FileDoc SelectFile = LB_FileList.SelectedItem as FileDoc;
+            Lib.PlanFile SelectFile = LB_FileList.SelectedItem as Lib.PlanFile;
 
             string theDownFileName = await DownLoadFile(SelectFile, true);
             if (theDownFileName != null)
@@ -85,7 +85,7 @@ namespace Office.Work.Platform.Plan
         /// <param name="e"></param>
         private async void MenuItem_ToFolder_ClickAsync(object sender, RoutedEventArgs e)
         {
-            FileDoc SelectFile = LB_FileList.SelectedItem as FileDoc;
+            Lib.PlanFile SelectFile = LB_FileList.SelectedItem as Lib.PlanFile;
             string theDownFileName = await DownLoadFile(SelectFile, false);
             if (theDownFileName != null)
             {
@@ -140,7 +140,7 @@ namespace Office.Work.Platform.Plan
             System.IO.FileInfo theFile = FileOperation.SelectFile();
             if (theFile != null)
             {
-                WinUpLoadFile winUpLoadFile = new WinUpLoadFile(new Action<FileDoc>(newFile =>
+                WinUpPlanFile winUpLoadFile = new WinUpPlanFile(new Action<Lib.PlanFile>(newFile =>
                 {
                     _UCPlanInfoVM.PlanFiles.Add(newFile);
                 }), theFile, "计划附件", _UCPlanInfoVM.CurPlan.Id, _UCPlanInfoVM.CurPlan.ContentType);
@@ -155,12 +155,12 @@ namespace Office.Work.Platform.Plan
         /// <param name="e"></param>
         private async void Image_Delete_MouseLeftButtonUpAsync(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            FileDoc SelectFile = LB_FileList.SelectedItem as FileDoc;
+            Lib.PlanFile SelectFile = LB_FileList.SelectedItem as Lib.PlanFile;
             if ((new WinMsgDialog($"删除文件《{SelectFile.Name}》？", "确认", showYesNo: true)).ShowDialog().Value == false)
             {
                 return;
             }
-            ExcuteResult delResult = await DataFileDocRepository.DeleteFileInfo(SelectFile);
+            ExcuteResult delResult = await DataPlanFileRepository.DeleteFileInfo(SelectFile);
             if (delResult.State == 0)
             {
                 _UCPlanInfoVM.PlanFiles.Remove(SelectFile);
@@ -176,7 +176,7 @@ namespace Office.Work.Platform.Plan
         {
             TextBlock curTextBlock = sender as TextBlock;
             curTextBlock.IsEnabled = false;
-            FileDoc SelectFile = LB_FileList.SelectedItem as FileDoc;
+            Lib.PlanFile SelectFile = LB_FileList.SelectedItem as Lib.PlanFile;
 
             string theDownFileName = await DownLoadFile(SelectFile, false);
             if (theDownFileName != null)
@@ -196,7 +196,7 @@ namespace Office.Work.Platform.Plan
         /// <param name="WillDownFile"></param>
         /// <param name="ReDownLoad"></param>
         /// <returns></returns>
-        private async Task<string> DownLoadFile(FileDoc WillDownFile, bool ReDownLoad = false)
+        private async Task<string> DownLoadFile(Lib.PlanFile WillDownFile, bool ReDownLoad = false)
         {
             ProgressMessageHandler progress = new ProgressMessageHandler();
 
@@ -205,7 +205,7 @@ namespace Office.Work.Platform.Plan
                 WillDownFile.DownIntProgress = e.ProgressPercentage;
             };
 
-            string theDownFileName = await DataFileDocRepository.DownloadFile(WillDownFile, false, progress);
+            string theDownFileName = await DataPlanFileRepository.DownloadFile(WillDownFile, false, progress);
             if (theDownFileName != null)
             {
                 WillDownFile.DownIntProgress = 100;
@@ -288,7 +288,7 @@ namespace Office.Work.Platform.Plan
 
             public CurUcViewModel()
             {
-                PlanFiles = new ObservableCollection<FileDoc>();
+                PlanFiles = new ObservableCollection<Lib.PlanFile>();
             }
             public async Task Init_PlanInfoVMAsync(Lib.Plan P_Entity)
             {
@@ -296,8 +296,8 @@ namespace Office.Work.Platform.Plan
                 if (PlanFiles.Count < 1)
                 {
                     //如果该计划的附件文件没有读取则读取之。
-                    FileDocSearch mSearchFile = new FileDocSearch() { OwnerId = P_Entity.Id, UserId = AppSet.LoginUser.Id };
-                    IEnumerable<FileDoc> UpFiles = await DataFileDocRepository.ReadFiles(mSearchFile);
+                    PlanFileSearch mSearchFile = new PlanFileSearch() { PlanId = P_Entity.Id, UserId = AppSet.LoginUser.Id };
+                    IEnumerable<Lib.PlanFile> UpFiles = await DataPlanFileRepository.ReadFiles(mSearchFile);
                     UpFiles?.ToList().ForEach(e =>
                     {
                         e.UpIntProgress = 100;
@@ -330,7 +330,7 @@ namespace Office.Work.Platform.Plan
             /// <summary>
             /// 当前计划的文件。
             /// </summary>
-            public ObservableCollection<FileDoc> PlanFiles { get; set; }
+            public ObservableCollection<Lib.PlanFile> PlanFiles { get; set; }
             /// <summary>
             /// 计划创建者的姓名（中文）。
             /// </summary>

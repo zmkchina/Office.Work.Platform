@@ -13,16 +13,16 @@ namespace Office.Work.Platform.MemberUc
 {
     public partial class UC_Relations : UserControl
     {
-        private UC_RelationsVM _UCRelationsVM;
+        private CurUcViewModel _CurUcViewModel;
         public UC_Relations()
         {
             InitializeComponent();
-            _UCRelationsVM = new UC_RelationsVM();
+            _CurUcViewModel = new CurUcViewModel();
         }
         public async void initControlAsync(Lib.Member PMember)
         {
-            await _UCRelationsVM.InitVMAsync(PMember);
-            this.DataContext = _UCRelationsVM;
+            await _CurUcViewModel.InitVMAsync(PMember);
+            this.DataContext = _CurUcViewModel;
         }
         /// <summary>
         /// 查询记录
@@ -31,7 +31,7 @@ namespace Office.Work.Platform.MemberUc
         /// <param name="e"></param>
         private async void BtnSearchClickAsync(object sender, RoutedEventArgs e)
         {
-            await _UCRelationsVM.SearchRecords();
+            await _CurUcViewModel.SearchRecords();
         }
         /// <summary>
         ///  新增记录
@@ -42,7 +42,7 @@ namespace Office.Work.Platform.MemberUc
         {
             Lib.MemberRelations NewRecord = new Lib.MemberRelations()
             {
-                MemberId = _UCRelationsVM.CurMember.Id,
+                MemberId = _CurUcViewModel.CurMember.Id,
                 UserId = AppSet.LoginUser.Id
             };
 
@@ -61,7 +61,8 @@ namespace Office.Work.Platform.MemberUc
                 if (excuteResult.State == 0)
                 {
                     NewRecord.Id = excuteResult.Tag;
-                    _UCRelationsVM.CurRecords.Add(NewRecord);
+                    _CurUcViewModel.CurRecords.Add(NewRecord);
+                    _CurUcViewModel.CurRecords.OrderBy(x => x.OrderIndex);
                 }
                 else
                 {
@@ -83,7 +84,7 @@ namespace Office.Work.Platform.MemberUc
                     ExcuteResult excuteResult = await DataMemberRelationsRepository.DeleteRecord(SelectedRec);
                     if (excuteResult.State == 0)
                     {
-                        _UCRelationsVM.CurRecords.Remove(SelectedRec);
+                        _CurUcViewModel.CurRecords.Remove(SelectedRec);
                     }
                     else
                     {
@@ -129,55 +130,60 @@ namespace Office.Work.Platform.MemberUc
                 }
             }
         }
-    }
 
-    public class UC_RelationsVM : NotificationObject
-    {
-        public UC_RelationsVM()
-        {
-            CurRecords = new ObservableCollection<MemberRelations>();
-            SearchCondition = new MemberRelationsSearch();
-        }
-        public async System.Threading.Tasks.Task InitVMAsync(Lib.Member PMember)
-        {
-            CurMember = PMember;
-            if (PMember != null)
-            {
-                MemberRelationsSearch SearchCondition = new MemberRelationsSearch() { MemberId = PMember.Id, UserId = AppSet.LoginUser.Id };
-                IEnumerable<MemberRelations> MemberRelationsss = await DataMemberRelationsRepository.GetRecords(SearchCondition);
-                CurRecords.Clear();
-                MemberRelationsss?.ToList().ForEach(e =>
-                {
-                    CurRecords.Add(e);
-                });
-            }
-        }
-        public async System.Threading.Tasks.Task SearchRecords()
-        {
-            if (SearchCondition != null)
-            {
-                SearchCondition.MemberId = CurMember.Id;
-                SearchCondition.UserId = AppSet.LoginUser.Id;
 
-                IEnumerable<MemberRelations> TempRecords = await DataMemberRelationsRepository.GetRecords(SearchCondition);
-                CurRecords.Clear();
-                TempRecords?.ToList().ForEach(e =>
-                {
-                    CurRecords.Add(e);
-                });
+        /// <summary>
+        /// 当前控件的视图模型
+        /// </summary>
+        private class CurUcViewModel : NotificationObject
+        {
+            public CurUcViewModel()
+            {
+                CurRecords = new ObservableCollection<MemberRelations>();
+                SearchCondition = new MemberRelationsSearch();
             }
+            public async System.Threading.Tasks.Task InitVMAsync(Lib.Member PMember)
+            {
+                CurMember = PMember;
+                if (PMember != null)
+                {
+                    MemberRelationsSearch SearchCondition = new MemberRelationsSearch() { MemberId = PMember.Id, UserId = AppSet.LoginUser.Id };
+                    IEnumerable<MemberRelations> MemberRelationsss = await DataMemberRelationsRepository.GetRecords(SearchCondition);
+                    MemberRelationsss = MemberRelationsss.OrderBy(x => x.OrderIndex);
+                    CurRecords.Clear();
+                    MemberRelationsss?.ToList().ForEach(e =>
+                    {
+                        CurRecords.Add(e);
+                    });
+                }
+            }
+            public async System.Threading.Tasks.Task SearchRecords()
+            {
+                if (SearchCondition != null)
+                {
+                    SearchCondition.MemberId = CurMember.Id;
+                    SearchCondition.UserId = AppSet.LoginUser.Id;
+
+                    IEnumerable<MemberRelations> TempRecords = await DataMemberRelationsRepository.GetRecords(SearchCondition);
+                    CurRecords.Clear();
+                    TempRecords?.ToList().ForEach(e =>
+                    {
+                        CurRecords.Add(e);
+                    });
+                }
+            }
+            /// <summary>
+            /// 查询条件类对象
+            /// </summary>
+            public MemberRelationsSearch SearchCondition { get; set; }
+            /// <summary>
+            /// 当前职工信息
+            /// </summary>
+            public Lib.Member CurMember { get; set; }
+            /// <summary>
+            /// 当前职工工资月度发放记录
+            /// </summary>
+            public ObservableCollection<MemberRelations> CurRecords { get; set; }
         }
-        /// <summary>
-        /// 查询条件类对象
-        /// </summary>
-        public MemberRelationsSearch SearchCondition { get; set; }
-        /// <summary>
-        /// 当前职工信息
-        /// </summary>
-        public Lib.Member CurMember { get; set; }
-        /// <summary>
-        /// 当前职工工资月度发放记录
-        /// </summary>
-        public ObservableCollection<MemberRelations> CurRecords { get; set; }
     }
 }
