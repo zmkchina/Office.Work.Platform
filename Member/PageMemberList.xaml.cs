@@ -70,6 +70,9 @@ namespace Office.Work.Platform.Member
         private async System.Threading.Tasks.Task SearchMember()
         {
             List<Lib.Member> MemberList = await DataMemberRepository.ReadMembers(_PageViewModel.mSearch);
+
+            if (MemberList == null || MemberList.Count < 1) { return; }
+            
             MemberList.Sort((x, y) => x.OrderIndex - y.OrderIndex);
 
             if (MemberList != null && MemberList.Count > 0)

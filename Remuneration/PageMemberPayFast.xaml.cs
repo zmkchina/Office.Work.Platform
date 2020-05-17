@@ -56,6 +56,8 @@ namespace Office.Work.Platform.Remuneration
                 UserId = AppSet.LoginUser.Id
             }).ConfigureAwait(false);
 
+            if (PayItems == null || PayItems.Count() < 1) { return PaySetJArray; }
+
             PayItemNameList = PayItems.Select(x => x.Name).ToList();
 
             PayItemNameList.Insert(0, "发放单位");
@@ -107,6 +109,9 @@ namespace Office.Work.Platform.Remuneration
                 {
                     UnitName = AppSet.LoginUser.UnitName
                 }).ConfigureAwait(false);
+
+                if (Members == null || Members.Count() < 1) { return PaySetJArray; }
+
                 List<Lib.Member> MemberList = Members.ToList();
                 MemberList.Sort((x, y) => x.OrderIndex - y.OrderIndex);
 

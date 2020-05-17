@@ -51,7 +51,7 @@ namespace Office.Work.Platform
                     }
                     else
                     {
-                        AppFuns.ShowMessage(TokenResult);
+                        AppFuns.ShowMessage(TokenResult,"错误", isErr: true);
                     }
                     CanVas_loadding.Visibility = Visibility.Collapsed;
                     return;

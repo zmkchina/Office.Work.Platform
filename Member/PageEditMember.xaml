@@ -256,6 +256,14 @@
                                     <TextBox Text="{Binding EntityMember.MajorDays}" Style="{StaticResource TextboxStyle}"/>
                                 </GroupBox>
 
+                                <GroupBox Header="全日制学位"  Style="{StaticResource GroupBoxStyle}">
+                                    <ComboBox Text="{Binding EntityMember.DegreeDays}" Style="{StaticResource ComboBoxStyle}">
+                                        <ComboBoxItem  IsSelected="True">学士</ComboBoxItem>
+                                        <ComboBoxItem>研究生</ComboBoxItem>
+                                        <ComboBoxItem>硕士</ComboBoxItem>
+                                    </ComboBox>
+                                </GroupBox>
+                                
                                 <GroupBox Header="最高学历"  Style="{StaticResource GroupBoxStyle}">
                                     <ComboBox Text="{Binding EntityMember.EducationTop}" Style="{StaticResource ComboBoxStyle}">
                                         <ComboBoxItem IsSelected="True">硕士</ComboBoxItem>
@@ -312,6 +320,17 @@
                     <memberuc:UC_PrizePunish x:Name="UcPrizePunish" Grid.Column="0"  HorizontalAlignment="Stretch" IsEnabled="{Binding Path=isEditFlag}"/>
                     <GridSplitter Grid.Column="0" BorderThickness="2" BorderBrush="#FFDFF0E7"/>
                     <memberuc:UC_MemberFile x:Name="UcPrizePunishFile" Grid.Column="1"  IsEnabled="{Binding Path=isEditFlag}"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="考核情况" Style="{StaticResource TabItemStyle}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <memberuc:UC_Appraise x:Name="UcAppraise" Grid.Column="0"  HorizontalAlignment="Stretch" IsEnabled="{Binding Path=isEditFlag}"/>
+                    <GridSplitter Grid.Column="0" BorderThickness="2" BorderBrush="#FFDFF0E7"/>
+                    <memberuc:UC_MemberFile x:Name="UcAppraiseFile" Grid.Column="1"  IsEnabled="{Binding Path=isEditFlag}"/>
                 </Grid>
             </TabItem>
             <TabItem Header="社会关系" Style="{StaticResource TabItemStyle}">

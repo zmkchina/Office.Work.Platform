@@ -8,15 +8,10 @@
             <Setter Property="BorderThickness" Value="1"></Setter>
             <Setter Property="BorderBrush" Value="#000"></Setter>
         </Style>
-        <Style TargetType="TableCell" x:Key="BorderedCell">
+        <Style TargetType="TableCell">
             <Setter Property="BorderThickness" Value="0.5"></Setter>
             <Setter Property="BorderBrush" Value="#000"></Setter>
             <Setter Property="Padding" Value="3"></Setter>
-        </Style>
-        <Style  TargetType="TableCell">
-            <Setter Property="TextAlignment" Value="Center"/>
-            <Setter Property="BorderBrush" Value="Black" />
-            <Setter Property="BorderThickness" Value="1"/>
         </Style>
         <Style TargetType="Paragraph">
             <Setter Property="TextAlignment" Value="Center"/>
@@ -35,102 +30,364 @@
             <TableRow>
                 <TableCell >
                     <Paragraph>
-                        <Run Text="姓名"></Run>
+                        <InlineUIContainer>
+                            <Label Content="姓名" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                        </InlineUIContainer>
                     </Paragraph>
                 </TableCell>
                 <TableCell >
                     <Paragraph>
-                        <Run Text="{Binding CurMember.Name}"></Run>
+                        <InlineUIContainer>
+                            <Label Content="{Binding CurMember.Name}" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                        </InlineUIContainer>
                     </Paragraph>
                 </TableCell>
                 <TableCell >
                     <Paragraph>
-                        <Run Text="性别"></Run>
+                        <InlineUIContainer>
+                            <Label Content="性别" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                        </InlineUIContainer>
                     </Paragraph>
                 </TableCell>
                 <TableCell >
                     <Paragraph>
-                        <Run Text="{Binding CurMember.Sex}"></Run>
+                        <InlineUIContainer>
+                            <Label Content="{Binding CurMember.Sex}" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                        </InlineUIContainer>
                     </Paragraph>
                 </TableCell>
                 <TableCell >
                     <Paragraph>
-                        <Run Text="出生年月"></Run>
+                        <InlineUIContainer>
+                            <Label Content="出生年月" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                        </InlineUIContainer>
                     </Paragraph>
                 </TableCell>
                 <TableCell >
                     <Paragraph>
-                        <Run Text="{Binding CurMember.Birthday,StringFormat=yyyy年MM月dd日}"></Run>
+                        <InlineUIContainer>
+                            <Label Content="{Binding CurMember.Birthday,StringFormat=yyyy年MM月dd日}" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                        </InlineUIContainer>
                     </Paragraph>
                 </TableCell>
-            </TableRow>
-            <TableRow>
-                <TableCell >
+                <TableCell RowSpan="4">
                     <Paragraph>
-                        <Run Text="民族"></Run>
-                    </Paragraph>
-                </TableCell>
-                <TableCell >
-                    <Paragraph>
-                        <Run Text="{Binding CurMember.Nation}"></Run>
-                    </Paragraph>
-                </TableCell>
-                <TableCell >
-                    <Paragraph>
-                        <Run Text="籍贯"></Run>
-                    </Paragraph>
-                </TableCell>
-                <TableCell >
-                    <Paragraph>
-                        <Run Text="{Binding CurMember.NativePlace}"></Run>
-                    </Paragraph>
-                </TableCell>
-                <TableCell >
-                    <Paragraph>
-                        <Run Text="出生地"></Run>
-                    </Paragraph>
-                </TableCell>
-                <TableCell >
-                    <Paragraph>
-                        <Run Text="{Binding CurMember.Birthplace}"></Run>
+                        <InlineUIContainer>
+                            <Label Content="照片" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                        </InlineUIContainer>
                     </Paragraph>
                 </TableCell>
             </TableRow>
             <TableRow>
                 <TableCell >
                     <Paragraph>
-                        <Run Text="入党时间"></Run>
+                        <InlineUIContainer>
+                            <Label Content="民族" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                        </InlineUIContainer>
                     </Paragraph>
                 </TableCell>
                 <TableCell >
                     <Paragraph>
-                        <Run Text="{Binding CurMember.JoinCPC,StringFormat=yyyy年MM月}"></Run>
+                        <InlineUIContainer>
+                            <Label Content="{Binding CurMember.Nation}" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                        </InlineUIContainer>
                     </Paragraph>
                 </TableCell>
                 <TableCell >
                     <Paragraph>
-                        <Run Text="参加工作时间"></Run>
+                        <InlineUIContainer>
+                            <Label Content="籍贯" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                        </InlineUIContainer>
                     </Paragraph>
                 </TableCell>
                 <TableCell >
                     <Paragraph>
-                        <Run Text="{Binding CurMember.BeginWork,StringFormat=yyyy年MM月}"></Run>
+                        <InlineUIContainer>
+                            <Label Content="{Binding CurMember.NativePlace}" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                        </InlineUIContainer>
                     </Paragraph>
                 </TableCell>
                 <TableCell >
                     <Paragraph>
-                        <Run Text="健康状况"></Run>
+                        <InlineUIContainer>
+                            <Label Content="出生地" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                        </InlineUIContainer>
                     </Paragraph>
                 </TableCell>
                 <TableCell >
                     <Paragraph>
-                        <Run Text="{Binding CurMember.HealthState}"></Run>
+                        <InlineUIContainer>
+                            <Label Content="{Binding CurMember.Birthplace}" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                        </InlineUIContainer>
+                    </Paragraph>
+                </TableCell>
+            </TableRow>
+            <TableRow>
+                <TableCell >
+                    <Paragraph>
+                        <InlineUIContainer>
+                            <Label Content="入党时间" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                        </InlineUIContainer>
+                    </Paragraph>
+                </TableCell>
+                <TableCell >
+                    <Paragraph>
+                        <InlineUIContainer>
+                            <Label Content="{Binding CurMember.JoinCPC,StringFormat=yyyy年MM月}" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                        </InlineUIContainer>
+                    </Paragraph>
+                </TableCell>
+                <TableCell >
+                    <Paragraph>
+                        <InlineUIContainer>
+                            <Label Content="参加工作时间" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                        </InlineUIContainer>
+                    </Paragraph>
+                </TableCell>
+                <TableCell >
+                    <Paragraph>
+                        <InlineUIContainer>
+                            <Label Content="{Binding CurMember.BeginWork,StringFormat=yyyy年MM月}" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                        </InlineUIContainer>
+                    </Paragraph>
+                </TableCell>
+                <TableCell >
+                    <Paragraph>
+                        <InlineUIContainer>
+                            <Label Content="健康状况" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                        </InlineUIContainer>
+                    </Paragraph>
+                </TableCell>
+                <TableCell >
+                    <Paragraph>
+                        <InlineUIContainer>
+                            <Label Content="{Binding CurMember.HealthState,StringFormat=yyyy年MM月}" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                        </InlineUIContainer>
+                    </Paragraph>
+                </TableCell>
+            </TableRow>
+            <TableRow>
+                <TableCell >
+                    <Paragraph>
+                        <InlineUIContainer>
+                            <Label Content="专业技术职务" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                        </InlineUIContainer>
+                    </Paragraph>
+                </TableCell>
+                <TableCell  ColumnSpan="2">
+                    <Paragraph>
+                        <InlineUIContainer>
+                            <Label Content="{Binding CurMember.TechnicalTitle,StringFormat=yyyy年MM月}" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                        </InlineUIContainer>
+                    </Paragraph>
+                </TableCell>
+                <TableCell >
+                    <Paragraph>
+                        <InlineUIContainer>
+                            <Label Content="熟悉专业有何专长" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                        </InlineUIContainer>
+                    </Paragraph>
+                </TableCell>
+                <TableCell ColumnSpan="2">
+                    <Paragraph>
+                        <InlineUIContainer>
+                            <Label Content="{Binding CurMember.Speciality,StringFormat=yyyy年MM月}" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                        </InlineUIContainer>
+                    </Paragraph>
+                </TableCell>
+            </TableRow>
+        </TableRowGroup>
+        <TableRowGroup>
+            <TableRow>
+                <TableCell RowSpan="2">
+                    <Paragraph>
+                        <InlineUIContainer>
+                            <Label Content="学历学位" HorizontalAlignment="Center"  VerticalAlignment="Stretch"  Margin="0,25,0,0"/>
+                        </InlineUIContainer>
+                    </Paragraph>
+                </TableCell>
+                <TableCell >
+                    <Paragraph>
+                        <InlineUIContainer>
+                            <Label Content="全日制教育" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                        </InlineUIContainer>
+                    </Paragraph>
+                </TableCell>
+                <TableCell ColumnSpan="2" >
+                    <Paragraph>
+                        <InlineUIContainer>
+                            <Label  HorizontalAlignment="Center"  VerticalAlignment="Center">
+                                <TextBlock>
+                                    <Run Text="{Binding CurMember.EducationDays}"></Run>
+                                    <Run Text="{Binding CurMember.DegreeDays}"></Run>
+                                </TextBlock>
+                            </Label>
+                        </InlineUIContainer>
+                    </Paragraph>
+                </TableCell>
+                <TableCell >
+                    <Paragraph>
+                        <InlineUIContainer>
+                            <Label Content="毕业院校系及专业" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                        </InlineUIContainer>
+                    </Paragraph>
+                </TableCell>
+                <TableCell ColumnSpan="2" >
+                    <Paragraph>
+                        <InlineUIContainer>
+                            <Label  HorizontalAlignment="Center"  VerticalAlignment="Center">
+                                <TextBlock>
+                                    <Run Text="{Binding CurMember.GraduationSchoolDays}"></Run>
+                                    <Run Text="{Binding CurMember.MajorDays}"></Run>
+                                </TextBlock>
+                            </Label>
+                        </InlineUIContainer>
+                    </Paragraph>
+                </TableCell>
+            </TableRow>
+            <TableRow>
+                <TableCell >
+                    <Paragraph>
+                        <InlineUIContainer>
+                            <Label Content="在职教育" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                        </InlineUIContainer>
+                    </Paragraph>
+                </TableCell>
+                <TableCell ColumnSpan="2" >
+                    <Paragraph>
+                        <InlineUIContainer>
+                            <Label  HorizontalAlignment="Center"  VerticalAlignment="Center">
+                                <TextBlock>
+                                    <Run Text="{Binding CurMember.EducationTop}"></Run>
+                                    <Run Text="{Binding CurMember.DegreeTop}"></Run>
+                                </TextBlock>
+                            </Label>
+                        </InlineUIContainer>
+                    </Paragraph>
+                </TableCell>
+                <TableCell >
+                    <Paragraph>
+                        <InlineUIContainer>
+                            <Label Content="毕业院校系及专业" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                        </InlineUIContainer>
+                    </Paragraph>
+                </TableCell>
+                <TableCell ColumnSpan="2" >
+                    <Paragraph>
+                        <InlineUIContainer>
+                            <Label  HorizontalAlignment="Center"  VerticalAlignment="Center">
+                                <TextBlock>
+                                    <Run Text="{Binding CurMember.GraduationSchoolTop}"></Run>
+                                    <Run Text="{Binding CurMember.MajorTop}"></Run>
+                                </TextBlock>
+                            </Label>
+                        </InlineUIContainer>
+                    </Paragraph>
+                </TableCell>
+            </TableRow>
+        </TableRowGroup>
+        <TableRowGroup>
+            <TableRow>
+                <TableCell ColumnSpan="2">
+                    <Paragraph>
+                        <InlineUIContainer>
+                            <Label Content="现任职务" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                        </InlineUIContainer>
+                    </Paragraph>
+                </TableCell>
+                <TableCell ColumnSpan="2">
+                    <Paragraph>
+                        <InlineUIContainer>
+                            <Label  HorizontalAlignment="Center"  VerticalAlignment="Center">
+                                <TextBlock>
+                                    <Run Text="{Binding CurMember.Department}"></Run>
+                                    <Run Text="{Binding CurMember.Post}"></Run>
+                                </TextBlock>
+                            </Label>
+                        </InlineUIContainer>
+                    </Paragraph>
+                </TableCell>
+                <TableCell>
+                    <Paragraph>
+                        <InlineUIContainer>
+                            <Label Content="身份证号码" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                        </InlineUIContainer>
+                    </Paragraph>
+                </TableCell>
+                <TableCell ColumnSpan="2">
+                    <Paragraph>
+                        <InlineUIContainer>
+                            <Label Content="{Binding CurMember.Id}" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                        </InlineUIContainer>
+                    </Paragraph>
+                </TableCell>
+            </TableRow>
+        </TableRowGroup>
+        <TableRowGroup>
+            <TableRow>
+                <TableCell>
+                    <Paragraph>
+                        <InlineUIContainer>
+                            <Label Content="个人简历" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                        </InlineUIContainer>
+                    </Paragraph>
+                </TableCell>
+                <TableCell ColumnSpan="6" x:Name="Cell_Resume">
+                    <Paragraph>
+                        <Run Text=""/>
+                    </Paragraph>
+                </TableCell>
+            </TableRow>
+        </TableRowGroup>
+        <TableRowGroup>
+            <TableRow>
+                <TableCell>
+                    <Paragraph>
+                        <InlineUIContainer>
+                            <Label Content="奖惩情况" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                        </InlineUIContainer>
+                    </Paragraph>
+                </TableCell>
+                <TableCell ColumnSpan="6" x:Name="Cell_PrizePunish">
+                    <Paragraph>
+                        <Run Text=""/>
+                    </Paragraph>
+                </TableCell>
+            </TableRow>
+        </TableRowGroup>
+        <TableRowGroup>
+            <TableRow>
+                <TableCell>
+                    <Paragraph>
+                        <InlineUIContainer>
+                            <Label Content="考核情况" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                        </InlineUIContainer>
+                    </Paragraph>
+                </TableCell>
+                <TableCell ColumnSpan="6" x:Name="Cell_Appraise">
+                    <Paragraph>
+                        <Run Text=""/>
+                    </Paragraph>
+                </TableCell>
+            </TableRow>
+        </TableRowGroup>
+        <TableRowGroup>
+            <TableRow>
+                <TableCell>
+                    <Paragraph>
+                        <InlineUIContainer>
+                            <Label Content="社会关系" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                        </InlineUIContainer>
+                    </Paragraph>
+                </TableCell>
+                <TableCell ColumnSpan="6" x:Name="Cell_Relations">
+                    <Paragraph>
+                        <Run Text=""/>
                     </Paragraph>
                 </TableCell>
             </TableRow>
         </TableRowGroup>
         <TableRowGroup x:Name="TableBottomRows">
-            
         </TableRowGroup>
     </Table>
 </FlowDocument>

@@ -185,6 +185,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="MemberUc\UC_Appraise.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="MemberUc\UC_AppraiseWin.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="MemberUc\UC_Relations.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -248,6 +254,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="MemberUc\UC_Appraise.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="MemberUc\UC_AppraiseWin.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="MemberUc\UC_Relations.xaml">
       <SubType>Designer</SubType>
     </Page>

@@ -121,7 +121,7 @@ namespace Office.Work.Platform.AppDataService
 
             try
             {
-                Object TResult = null;
+                object TResult = null;
                 HttpResponseMessage ResultResponse = await _Client.GetAsync(ApiUri).ConfigureAwait(false);
                 if (typeof(T) == typeof(HttpResponseMessage))
                 {

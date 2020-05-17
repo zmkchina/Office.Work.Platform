@@ -62,7 +62,7 @@ namespace Office.Work.Platform.Member
             PrintMemberSheetRender renderer = new PrintMemberSheetRender();
             if (renderer != null)
             {
-                renderer.Render(m_doc, Caption, DateStr, data);
+                renderer.RenderAsync(m_doc, Caption, DateStr, data);
             }
             //必须这样操作，否则m_doc中绑定的数据不显示，可能是未及时更新原因。
             //也就是说，等上面的Render完成后再，再构造内存中的Xps Document

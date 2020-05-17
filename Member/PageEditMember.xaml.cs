@@ -94,6 +94,10 @@ namespace Office.Work.Platform.Member
                         UcPrizePunish.initControlAsync(_PageEditMemberVM.EntityMember);
                         await UcPrizePunishFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember.Id, "奖惩情况", isRead);
                         break;
+                    case "考核情况":
+                        UcAppraise.initControlAsync(_PageEditMemberVM.EntityMember);
+                        await UcAppraiseFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember.Id, "考核情况", isRead);
+                        break;
                     case "社会关系":
                         UcRelations.initControlAsync(_PageEditMemberVM.EntityMember);
                         await UcRelationsFile.InitFileDatasAsync(_PageEditMemberVM.EntityMember.Id, "社会关系", isRead);
