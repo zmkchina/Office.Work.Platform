@@ -183,11 +183,11 @@ namespace Office.Work.Platform.Remuneration
             {
                 if (excuteResult.State == 0)
                 {
-                    (new WinMsgDialog("人员待遇发放项目配置成功。")).ShowDialog();
+                    AppFuns.ShowMessage("人员待遇发放项目配置成功。");
                 }
                 else
                 {
-                    (new WinMsgDialog("保存失败，请稍候再试。", "错误", isErr: true)).ShowDialog();
+                    AppFuns.ShowMessage("保存失败，请稍候再试。", "错误", isErr: true);
                 }
                 if (curBtn != null) { curBtn.IsEnabled = true; }
             });

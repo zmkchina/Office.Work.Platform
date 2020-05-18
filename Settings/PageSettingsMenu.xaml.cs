@@ -58,5 +58,14 @@ namespace Office.Work.Platform.Settings
         {
             AppSet.AppMainWindow.FrameContentPage.Content = new PagePersonCenter();
         }
+        /// <summary>
+        /// 版权信息
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ListBoxItem_About_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            AppSet.AppMainWindow.FrameContentPage.Content = new PageAboutApp(); 
+        }
     }
 }

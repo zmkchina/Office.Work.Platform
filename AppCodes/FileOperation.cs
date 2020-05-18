@@ -26,13 +26,13 @@ namespace Office.Work.Platform.AppCodes
                     theFile = new System.IO.FileInfo(dialog.FileName);
                     if (theFile.Length > 1073741824)//1G
                     {
-                        (new WinMsgDialog("文件大于1G,无法保存！")).ShowDialog();
+                        AppFuns.ShowMessage("文件大于1G,无法保存！");
                         return null;
                     }
                 }
                 catch (Exception Error)
                 {
-                    (new WinMsgDialog("读取文件出错(正在使用？)！" + Error.Message, isErr: true)).ShowDialog();
+                    AppFuns.ShowMessage($"读取文件出错(正在使用？){Error.Message}");
                     return null;
                 }
             }

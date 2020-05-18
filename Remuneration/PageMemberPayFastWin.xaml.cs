@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
+using Office.Work.Platform.AppCodes;
 using Office.Work.Platform.AppDataService;
 
 namespace Office.Work.Platform.Remuneration
@@ -77,7 +78,7 @@ namespace Office.Work.Platform.Remuneration
                 }
                 else
                 {
-                    (new WinMsgDialog("未找到该身份号码的职工信息！")).ShowDialog();
+                    AppFuns.ShowMessage("未找到该身份号码的职工信息！");
                 }
             }));
         }

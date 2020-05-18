@@ -1,11 +1,11 @@
-﻿using Office.Work.Platform.AppCodes;
-using Office.Work.Platform.AppDataService;
-using Office.Work.Platform.Lib;
-using System;
+﻿using System;
 using System.Linq;
 using System.Net.Http.Handlers;
 using System.Windows;
 using System.Windows.Controls;
+using Office.Work.Platform.AppCodes;
+using Office.Work.Platform.AppDataService;
+using Office.Work.Platform.Lib;
 
 namespace Office.Work.Platform.PlanFile
 {
@@ -50,7 +50,7 @@ namespace Office.Work.Platform.PlanFile
             string theDownFileName = await DataPlanFileRepository.DownloadFile(_CurUCViewModel.CurFile, false, progress);
             if (theDownFileName == null)
             {
-                (new WinMsgDialog("文件下载失败,可能已被删除！", "警告")).ShowDialog();
+                AppFuns.ShowMessage("文件下载失败,可能已被删除！", "警告");
                 V_Button.IsEnabled = true;
                 return;
             }
@@ -79,7 +79,7 @@ namespace Office.Work.Platform.PlanFile
         /// <param name="e"></param>
         private async void btn_DeleteFileAsync(object sender, RoutedEventArgs e)
         {
-            if (AppFuns.ShowMessage($"确定要删除[{_CurUCViewModel.CurFile.Name}]文件吗？"))
+            if (AppFuns.ShowMessage($"确定要删除[{_CurUCViewModel.CurFile.Name}]文件吗？", Caption: "确认", showYesNo: true))
             {
                 ExcuteResult JsonResult = await DataPlanFileRepository.DeleteFileInfo(_CurUCViewModel.CurFile);
                 if (JsonResult.State == 0)

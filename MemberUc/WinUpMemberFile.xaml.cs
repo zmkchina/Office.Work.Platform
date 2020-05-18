@@ -35,14 +35,14 @@ namespace Office.Work.Platform.MemberUc
             ExcuteResult JsonResult = new ExcuteResult();
             if (_CurWinViewModel.EntityFile.ContentType == null)
             {
-                (new WinMsgDialog("请选择文件内容类型！", Caption: "警告")).ShowDialog();
+                 AppFuns.ShowMessage("请选择文件内容类型！", Caption: "警告");
                 return;
             }
             _CurWinViewModel.EntityFile.CanReadUserIds = _CurWinViewModel.GetSelectUserIds();
 
             if (!_CurWinViewModel.EntityFile.CanReadUserIds.Contains(AppSet.LoginUser.Id))
             {
-                if(!(new WinMsgDialog("你本人没有读取该文件的权限？", Caption: "确认", showYesNo: true)).ShowDialog().Value)
+                if(!AppFuns.ShowMessage("你本人没有读取该文件的权限？", Caption: "确认", showYesNo: true))
                 {
                     return;
                 }
@@ -66,7 +66,7 @@ namespace Office.Work.Platform.MemberUc
             }
             else
             {
-                (new WinMsgDialog(JsonResult.Msg, Caption: "错误", isErr: true)).ShowDialog();
+                 AppFuns.ShowMessage(JsonResult.Msg, Caption: "错误", isErr: true);
                 BtnUpFile.IsEnabled = true;
             }
         }

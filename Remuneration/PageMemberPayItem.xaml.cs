@@ -55,7 +55,7 @@ namespace Office.Work.Platform.Remuneration
                 }
                 else
                 {
-                    (new WinMsgDialog(excuteResult.Msg, Caption: "失败")).ShowDialog();
+                    AppFuns.ShowMessage(excuteResult.Msg, Caption: "失败");
                 }
             }
         }
@@ -69,7 +69,7 @@ namespace Office.Work.Platform.Remuneration
         {
             if (RecordDataGrid.SelectedItem is Lib.MemberPayItem SelectedRec)
             {
-                if ((new WinMsgDialog($"确认要删除该待遇项目吗？", Caption: "确认", showYesNo: true)).ShowDialog().Value)
+                if (AppFuns.ShowMessage($"确认要删除该待遇项目吗？", Caption: "确认", showYesNo: true))
                 {
                     ExcuteResult excuteResult = await DataMemberPayItemRepository.DeleteRecord(SelectedRec);
                     if (excuteResult.State == 0)
@@ -78,7 +78,7 @@ namespace Office.Work.Platform.Remuneration
                     }
                     else
                     {
-                        (new WinMsgDialog(excuteResult.Msg, Caption: "失败")).ShowDialog();
+                        AppFuns.ShowMessage(excuteResult.Msg, Caption: "失败");
                     }
                 }
             }
@@ -104,7 +104,7 @@ namespace Office.Work.Platform.Remuneration
                     }
                     else
                     {
-                        (new WinMsgDialog(excuteResult.Msg, Caption: "失败")).ShowDialog();
+                        AppFuns.ShowMessage(excuteResult.Msg, Caption: "失败");
                     }
                 }
             }

@@ -48,7 +48,7 @@
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" 
                         HorizontalAlignment="Left" VerticalAlignment="Center" >
                 <TextBlock Text="&#xe64d;" Style="{StaticResource FIcon}" FontSize="25" VerticalAlignment="Center" Margin="6,0,5,0"></TextBlock>
-                <TextBlock Text="政工业务管理平台" 
+                <TextBlock Text="政工业务工作平台" 
                        VerticalAlignment="Center" 
                        FontSize="16"/>
             </StackPanel>
@@ -137,7 +137,7 @@
                 <ListBoxItem MouseLeftButtonUp="ListBoxItem_MouseLeftButtonUp_1">
                     <StackPanel Orientation="Vertical">
                         <TextBlock Text="&#xe633;" Style="{StaticResource FIcon}" FontSize="25" Margin="0,0,0,5"></TextBlock>
-                        <TextBlock  Text="所有文件" VerticalAlignment="Center"/>
+                        <TextBlock  Text="文件档案" VerticalAlignment="Center"/>
                     </StackPanel>
                 </ListBoxItem>
                 <ListBoxItem MouseLeftButtonUp="ListBoxItem_MouseLeftButtonUp_5">

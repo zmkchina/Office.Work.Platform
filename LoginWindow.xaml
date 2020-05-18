@@ -14,7 +14,7 @@
         ShowInTaskbar="True"
         ForceCursor="True"
         ResizeMode="NoResize" 
-        Title="政工业务管理平台"
+        Title="政工业务工作平台"
         Loaded="Window_Loaded">
     <Grid Background="LightSeaGreen">
         <Grid.RowDefinitions>
@@ -25,7 +25,7 @@
         <Border  BorderBrush="YellowGreen" BorderThickness="0,0,0,2" Grid.Row="0" Background="#FF124768" Cursor="Hand"  MouseMove="Grid_MouseMove">
             <DockPanel>
                 <TextBlock Text="&#xe64d;" Style="{StaticResource FIcon}" Foreground="Yellow" FontSize="20" VerticalAlignment="Center" Margin="6,5,5,0" Cursor="Hand"></TextBlock>
-                <TextBlock x:Name="TextBlock_Ver"  Text="政工业务管理平台" Foreground="White" VerticalAlignment="Center" FontSize="14"/>
+                <TextBlock x:Name="TextBlock_Ver"  Text="政工业务工作平台" Foreground="White" VerticalAlignment="Center" FontSize="14"/>
                 <Button Content="设置" VerticalAlignment="Center" 
                            Margin="0,0,15,0" Cursor="Hand" 
                            Background="Transparent" Click="Btn_UrlSet_Click"

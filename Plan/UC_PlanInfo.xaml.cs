@@ -33,7 +33,7 @@ namespace Office.Work.Platform.Plan
             _UCPlanInfoVM.SetPlanFileDelete();
             DataContext = _UCPlanInfoVM;
         }
-    
+
 
         /// <summary>
         /// 拷贝文件到剪贴板
@@ -114,7 +114,7 @@ namespace Office.Work.Platform.Plan
         /// <param name="e"></param>
         private async void btn_DelePlan(object sender, RoutedEventArgs e)
         {
-            if ((new WinMsgDialog($"删除计划《{_UCPlanInfoVM.CurPlan.Caption }》？", "确认", showYesNo: true)).ShowDialog().Value == false)
+            if (!AppFuns.ShowMessage($"删除计划《{_UCPlanInfoVM.CurPlan.Caption }》？", "确认", showYesNo: true))
             {
                 return;
             }
@@ -126,7 +126,7 @@ namespace Office.Work.Platform.Plan
             }
             else
             {
-                (new WinMsgDialog(JsonResult.Msg, "消息")).ShowDialog();
+                AppFuns.ShowMessage(JsonResult.Msg, "消息");
             }
         }
         /// <summary>
@@ -156,7 +156,7 @@ namespace Office.Work.Platform.Plan
         private async void Image_Delete_MouseLeftButtonUpAsync(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             Lib.PlanFile SelectFile = LB_FileList.SelectedItem as Lib.PlanFile;
-            if ((new WinMsgDialog($"删除文件《{SelectFile.Name}》？", "确认", showYesNo: true)).ShowDialog().Value == false)
+            if (!AppFuns.ShowMessage($"删除文件《{SelectFile.Name}》？", "确认", showYesNo: true))
             {
                 return;
             }

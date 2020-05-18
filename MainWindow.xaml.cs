@@ -52,7 +52,7 @@ namespace Office.Work.Platform
             this.notifyIcon = new NotifyIcon();
             this.notifyIcon.BalloonTipText = "系统监控中... ...";
             this.notifyIcon.ShowBalloonTip(2000);
-            this.notifyIcon.Text = "政工科办公信息化平台";
+            this.notifyIcon.Text = "政工业务工作平台";
             //this.notifyIcon.Icon = new System.Drawing.Icon(@"AppIcon.ico");
             this.notifyIcon.Icon = System.Drawing.Icon.ExtractAssociatedIcon(System.Windows.Forms.Application.ExecutablePath);
             this.notifyIcon.Visible = true;
@@ -112,7 +112,7 @@ namespace Office.Work.Platform
             AppSet.SysUsers = await DataUserRepository.GetAllRecords();
             if (AppSet.SysUsers == null || AppSet.SysUsers.Count < 2)
             {
-                (new WinMsgDialog("读取用户列表时出错，程序无法运行。", "错误", isErr: true)).ShowDialog();
+                AppFuns.ShowMessage("读取用户列表时出错，程序无法运行。" , Caption: "错误", isErr: true);
                 //关闭本程序
                 ShutDownApp();
             }
@@ -120,7 +120,7 @@ namespace Office.Work.Platform
             AppSet.ServerSetting = await DataSystemRepository.ReadServerSettings();
             if (AppSet.ServerSetting == null)
             {
-                (new WinMsgDialog("读取系统设置信息时出错，程序无法运行。", "错误", isErr: true)).ShowDialog();
+                AppFuns.ShowMessage("读取系统设置信息时出错，程序无法运行。", Caption: "错误", isErr: true);
                 //关闭本程序
                 ShutDownApp();
             }
@@ -220,7 +220,7 @@ namespace Office.Work.Platform
                     case "tbWinCose":
                         this.ShowInTaskbar = false;
                         this.Visibility = System.Windows.Visibility.Hidden;
-                        this.notifyIcon.ShowBalloonTip(50, "信息:", "工作平台已隐藏在这儿。", ToolTipIcon.Info);
+                        this.notifyIcon.ShowBalloonTip(50, "信息:", "政工业务工作平台已隐藏在此。", ToolTipIcon.Info);
                         break;
                 }
             }
@@ -249,7 +249,7 @@ namespace Office.Work.Platform
             AppSet.AppIsLocked = true;
             this.ShowInTaskbar = false;
             this.Visibility = System.Windows.Visibility.Hidden;
-            this.notifyIcon.ShowBalloonTip(500, "信息:", "本软件已锁定。", ToolTipIcon.Info);
+            this.notifyIcon.ShowBalloonTip(500, "信息:", "政工业务工作平台已锁定。", ToolTipIcon.Info);
         }
 
         #region "检查是否有版本，如有则升级之"

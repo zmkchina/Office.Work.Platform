@@ -65,7 +65,7 @@ namespace Office.Work.Platform.MemberUc
                 }
                 else
                 {
-                    (new WinMsgDialog(excuteResult.Msg, Caption: "失败")).ShowDialog();
+                     AppFuns.ShowMessage(excuteResult.Msg, Caption: "失败");
                 }
             }
         }
@@ -79,7 +79,7 @@ namespace Office.Work.Platform.MemberUc
             if (RecordListBox.SelectedItem is Lib.MemberResume SelectedRec)
             {
 
-                if ((new WinMsgDialog($"确认要删除该条履历信息吗？", Caption: "确认", showYesNo: true)).ShowDialog().Value)
+                if ( AppFuns.ShowMessage($"确认要删除该条履历信息吗？", Caption: "确认", showYesNo: true))
                 {
                     ExcuteResult excuteResult = await DataMemberResumeRepository.DeleteRecord(SelectedRec);
                     if (excuteResult.State == 0)
@@ -88,7 +88,7 @@ namespace Office.Work.Platform.MemberUc
                     }
                     else
                     {
-                        (new WinMsgDialog(excuteResult.Msg, Caption: "失败")).ShowDialog();
+                         AppFuns.ShowMessage(excuteResult.Msg, Caption: "失败");
                     }
                 }
             }
@@ -125,7 +125,7 @@ namespace Office.Work.Platform.MemberUc
                     }
                     else
                     {
-                        (new WinMsgDialog(excuteResult.Msg, Caption: "失败")).ShowDialog();
+                         AppFuns.ShowMessage(excuteResult.Msg, Caption: "失败");
                     }
                 }
             }

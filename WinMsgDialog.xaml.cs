@@ -10,12 +10,15 @@ namespace Office.Work.Platform
     /// </summary>
     public partial class WinMsgDialog : Window
     {
-        public WinMsgDialog(string Message, string Caption = "信息", bool isErr = false, bool showYesNo = false, bool ShowOk = true)
+        public WinMsgDialog()
         {
-           
+        }
+        public void InitWinData(string Message, string Caption = "信息", bool isErr = false, bool showYesNo = false, bool ShowOk = true)
+        {
+
             InitializeComponent();
             this.Owner = AppSet.AppMainWindow;
-            if(this.Owner is null)
+            if (this.Owner is null)
             {
                 this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             }
@@ -70,7 +73,7 @@ namespace Office.Work.Platform
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            
+
         }
     }
 }

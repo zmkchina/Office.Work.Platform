@@ -1,17 +1,18 @@
-﻿using System.Collections.Generic;
-using Office.Work.Platform.Lib;
-
-namespace Office.Work.Platform.AppCodes
+﻿namespace Office.Work.Platform.AppCodes
 {
     public static class AppFuns
     {
+
         /// <summary>
         /// 设置主窗口底部状态栏信息
         /// </summary>
         /// <param name="Msg"></param>
         public static void SetStateBarText(string Msg)
         {
-            AppSet.AppMainWindow.lblCursorPosition.Text = Msg;
+            App.Current.Dispatcher.Invoke(() =>
+            {
+                AppSet.AppMainWindow.lblCursorPosition.Text = Msg;
+            });
         }
         /// <summary>
         /// 设置显示各类操作信息反馈窗口信息
@@ -24,7 +25,14 @@ namespace Office.Work.Platform.AppCodes
         /// <returns></returns>
         public static bool ShowMessage(string Message, string Caption = "信息", bool isErr = false, bool showYesNo = false, bool ShowOk = true)
         {
-            return (new WinMsgDialog(Message, Caption, isErr, showYesNo, ShowOk)).ShowDialog().Value;
+            bool Result = false;
+            App.Current.Dispatcher.Invoke(() =>
+            {
+                WinMsgDialog WinMsg = new WinMsgDialog();
+                WinMsg.InitWinData(Message, Caption, isErr, showYesNo, ShowOk);
+                Result = WinMsg.ShowDialog().Value;
+            });
+            return Result;
         }
 
         public static void ShowBalloonTip(string Message, string Caption = "消息", System.Windows.Forms.ToolTipIcon toolTipIcon = System.Windows.Forms.ToolTipIcon.Info, int TimeOut = 5)

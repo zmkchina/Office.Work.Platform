@@ -75,7 +75,7 @@ namespace Office.Work.Platform.Remuneration
                 });
                 if (MemberPlays.Count() > 0)
                 {
-                    (new WinMsgDialog($"该工作人员{NewRecord.PayYear} 年 {NewRecord.PayMonth} 月份的[{NewRecord.PayName}]已经发放。", "无法新增")).ShowDialog();
+                     AppFuns.ShowMessage($"该工作人员{NewRecord.PayYear} 年 {NewRecord.PayMonth} 月份的[{NewRecord.PayName}]已经发放。", "无法新增");
                     return;
                 }
 
@@ -89,12 +89,12 @@ namespace Office.Work.Platform.Remuneration
                     }
                     else
                     {
-                        (new WinMsgDialog(excuteResult.Msg, Caption: "失败")).ShowDialog();
+                         AppFuns.ShowMessage(excuteResult.Msg, Caption: "失败");
                     }
                 }
                 else
                 {
-                    (new WinMsgDialog("数据输入不正确！", Caption: "失败")).ShowDialog();
+                     AppFuns.ShowMessage("数据输入不正确！", Caption: "失败");
                 }
             }
         }
@@ -108,7 +108,7 @@ namespace Office.Work.Platform.Remuneration
             if (RecordDataGrid.SelectedItem is Lib.MemberPay SelectedRec)
             {
 
-                if ((new WinMsgDialog($"确认要删除 {SelectedRec.PayMonth} 月份待遇吗？", Caption: "确认", showYesNo: true)).ShowDialog().Value)
+                if ( AppFuns.ShowMessage($"确认要删除 {SelectedRec.PayMonth} 月份待遇吗？", Caption: "确认", showYesNo: true))
                 {
                     ExcuteResult excuteResult = await DataMemberPayRepository.DeleteRecord(SelectedRec);
                     if (excuteResult.State == 0)
@@ -117,7 +117,7 @@ namespace Office.Work.Platform.Remuneration
                     }
                     else
                     {
-                        (new WinMsgDialog(excuteResult.Msg, Caption: "失败")).ShowDialog();
+                         AppFuns.ShowMessage(excuteResult.Msg, Caption: "失败");
                     }
                 }
             }
@@ -172,7 +172,7 @@ namespace Office.Work.Platform.Remuneration
                 }).ConfigureAwait(false);
                 if(TempPayItems==null || TempPayItems.Count() < 1)
                 {
-                    AppFuns.ShowMessage("未读到待遇项目数据，请稍候再试！");
+                    //AppFuns.ShowMessage("未读到待遇项目数据，请稍候再试！");
                     return;
                 }
                 MemberPayItems = TempPayItems.ToList();

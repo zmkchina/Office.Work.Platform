@@ -86,7 +86,7 @@ namespace Office.Work.Platform.AppDataService
             }
             catch (Exception err)
             {
-                (new WinMsgDialog("打开文件时出错(正在使用？)" + err.Message, Caption: "错误", isErr: true)).ShowDialog();
+                AppFuns.ShowMessage("打开文件时出错(正在使用？)" + err.Message, Caption: "错误", isErr: true);
             }
         }
         /// <summary>

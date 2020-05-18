@@ -7,12 +7,14 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ApplicationIcon>App.ico</ApplicationIcon>
     <StartupObject>Office.Work.Platform.App</StartupObject>
-    <Version>2.0.0.0</Version>
-    <AssemblyVersion>2.0.0.0</AssemblyVersion>
-    <FileVersion>2.0.0.0</FileVersion>
+    <Version>2.5.0.0</Version>
+    <AssemblyVersion>2.5.0.0</AssemblyVersion>
+    <FileVersion>2.5.0.0</FileVersion>
     <NoWin32Manifest>true</NoWin32Manifest>
     <Platforms>AnyCPU;x64;x86</Platforms>
     <PackageIcon>App.ico</PackageIcon>
+    <Authors>翟明科</Authors>
+    <Product>政工业务工作平台</Product>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -92,6 +94,7 @@
     <None Remove="AppRes\Images\wanchenjidu.png" />
     <None Remove="AppRes\Images\wcqk.png" />
     <None Remove="AppRes\Images\writepaper.png" />
+    <None Remove="AppRes\Window\BanQuan.png" />
     <None Remove="AppRes\Window\barbackground.png" />
     <None Include="AppRes\Images\App.ico">
       <Pack>True</Pack>
@@ -173,6 +176,7 @@
     <Resource Include="AppRes\Images\wanchenjidu.png" />
     <Resource Include="AppRes\Images\wcqk.png" />
     <Resource Include="AppRes\Images\writepaper.png" />
+    <Resource Include="AppRes\Window\BanQuan.png" />
     <Resource Include="AppRes\Window\barbackground.png" />
   </ItemGroup>
 

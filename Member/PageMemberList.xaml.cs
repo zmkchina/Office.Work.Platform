@@ -110,7 +110,7 @@ namespace Office.Work.Platform.Member
         {
             if (RecordDataGrid.SelectedItem is Lib.Member SelectMember)
             {
-                if (SelectMember != null && (new WinMsgDialog($"确定要删除[{SelectMember.Name}]信息吗？", "确认", showYesNo: true)).ShowDialog().Value)
+                if (SelectMember != null && AppFuns.ShowMessage($"确定要删除[{SelectMember.Name}]信息吗？", "确认", showYesNo: true))
                 {
                     ExcuteResult excuteResult = await DataMemberRepository.DeleteMember(SelectMember).ConfigureAwait(false);
                     if (excuteResult.State == 0)
@@ -119,7 +119,7 @@ namespace Office.Work.Platform.Member
                     }
                     else
                     {
-                        (new WinMsgDialog(excuteResult.Msg)).ShowDialog();
+                        AppFuns.ShowMessage(excuteResult.Msg, Caption: "失败");
                     }
                 }
             }

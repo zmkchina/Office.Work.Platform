@@ -73,7 +73,7 @@ namespace Office.Work.Platform.MemberUc
         private async void Image_Delete_MouseLeftButtonUpAsync(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             Lib.MemberFile SelectFile = LB_FileList.SelectedItem as Lib.MemberFile;
-            if (!(new WinMsgDialog($"删除文件《{ SelectFile.Name }》？", Caption: "确认", showYesNo: true)).ShowDialog().Value)
+            if (! AppFuns.ShowMessage($"删除文件《{ SelectFile.Name }》？", Caption: "确认", showYesNo: true))
             {
                 return;
             }
@@ -95,7 +95,7 @@ namespace Office.Work.Platform.MemberUc
             Lib.MemberFile SelectFile = curTextBlock.DataContext as Lib.MemberFile;
             if (SelectFile == null)
             {
-                (new WinMsgDialog("未读到选取文件信息！", Caption: "错误", isErr: true)).ShowDialog();
+                AppFuns.ShowMessage("未读到选取文件信息！", Caption: "错误", isErr: true);
                 return;
             }
             ProgressMessageHandler progress = new ProgressMessageHandler();
@@ -113,7 +113,7 @@ namespace Office.Work.Platform.MemberUc
             }
             else
             {
-                (new WinMsgDialog("文件下载失败，可能该文件已被删除！", Caption: "警告")).ShowDialog();
+                 AppFuns.ShowMessage("文件下载失败，可能该文件已被删除！", Caption: "警告");
             }
             curTextBlock.IsEnabled = true;
         }

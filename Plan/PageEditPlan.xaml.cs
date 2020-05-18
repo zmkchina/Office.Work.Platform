@@ -38,7 +38,7 @@ namespace Office.Work.Platform.Plan
 
             if (!_PageViewModel.EntityPlan.ModelIsValid())
             {
-                (new WinMsgDialog("输入不正确，请完善或更正相关数据！", "警告")).ShowDialog();
+                AppFuns.ShowMessage("输入不正确，请完善或更正相关数据！", "警告");
                 BtnAddPlan.IsEnabled = true;
                 return;
             }

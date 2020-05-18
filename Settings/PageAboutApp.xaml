@@ -1,0 +1,23 @@
+﻿<Page x:Class="Office.Work.Platform.Settings.PageAboutApp"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Office.Work.Platform.Settings"
+      mc:Ignorable="d"  Loaded="Page_Loaded"
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="PageAboutApp">
+    <Grid>
+        <StackPanel Orientation="Vertical" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center" 
+                    TextElement.FontSize="15">
+            <Image Stretch="Fill" Height="60" Width="60" Margin="10,0,10,50" Source="/Office.Work.Platform;component/AppRes/Window/BanQuan.png"/>
+            <TextBlock Text="政工业务工作平台" Margin="10" HorizontalAlignment="Center"/>
+            <TextBlock Text="{Binding AppVersion}" Margin="10" HorizontalAlignment="Center"/>
+            <TextBlock Text="翟明科" Margin="10" HorizontalAlignment="Center"/>
+            <TextBlock Text="欢迎使用，保留版权 Copyright 2019-2020" Margin="10" FontWeight="Bold" Foreground="Green" HorizontalAlignment="Center"/>
+        </StackPanel>
+        
+    </Grid>
+</Page>

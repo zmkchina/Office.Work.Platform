@@ -168,7 +168,7 @@ namespace Office.Work.Platform.AppDataService
             }
             catch (Exception err)
             {
-                (new WinMsgDialog(err.Message, isErr: true)).ShowDialog();
+                AppFuns.ShowMessage(err.Message, "错误", isErr: true);
             }
             finally
             {
@@ -204,7 +204,7 @@ namespace Office.Work.Platform.AppDataService
             }
             catch (Exception err)
             {
-                (new WinMsgDialog(err.Message, isErr: true)).ShowDialog();
+                AppFuns.ShowMessage(err.Message, isErr: true);
             }
             finally
             {

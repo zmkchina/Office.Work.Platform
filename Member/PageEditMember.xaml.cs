@@ -41,7 +41,7 @@ namespace Office.Work.Platform.Member
         {
             if (string.IsNullOrEmpty(_PageEditMemberVM.EntityMember.Id))
             {
-                // (new WinMsgDialog("若要开始，请选输入员工身份证号！", "输入不正确")).ShowDialog();
+                //  AppFuns.ShowMessage("若要开始，请选输入员工身份证号！", "输入不正确")).ShowDialog();
                 return;
             }
             MemberSearch msearch = new MemberSearch() { Id = _PageEditMemberVM.EntityMember.Id };
@@ -121,13 +121,13 @@ namespace Office.Work.Platform.Member
         {
             if (string.IsNullOrWhiteSpace(_PageEditMemberVM.EntityMember.Id))
             {
-                (new WinMsgDialog("员工的身份证号必须输入！")).ShowDialog();
+                 AppFuns.ShowMessage("员工的身份证号必须输入！");
                 Tb_UserId.Focus();
                 return;
             }
             if (string.IsNullOrWhiteSpace(_PageEditMemberVM.EntityMember.Name))
             {
-                (new WinMsgDialog("员工的姓名必须输入！")).ShowDialog();
+                 AppFuns.ShowMessage("员工的姓名必须输入！");
                 Tb_UserName.Focus();
                 return;
             }
@@ -147,7 +147,7 @@ namespace Office.Work.Platform.Member
                     InitUcControlFilesAsync(false);
                 }
             }
-              (new WinMsgDialog(excuteResult.Msg)).ShowDialog();
+               AppFuns.ShowMessage(excuteResult.Msg);
         }
         /// <summary>
         /// 更新员工的工作信息、受教育信息、更新备注信息等。
@@ -157,7 +157,7 @@ namespace Office.Work.Platform.Member
         private async void BtnUpdateClickAsync(object sender, RoutedEventArgs e)
         {
             ExcuteResult excuteResult = await DataMemberRepository.UpdateMember(_PageEditMemberVM.EntityMember);
-            (new WinMsgDialog(excuteResult.Msg)).ShowDialog();
+             AppFuns.ShowMessage(excuteResult.Msg);
         }
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
