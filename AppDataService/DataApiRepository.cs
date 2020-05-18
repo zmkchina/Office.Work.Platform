@@ -224,27 +224,38 @@ namespace Office.Work.Platform.AppDataService
         {
             HttpClient _Client = CreateHttpClient(processMessageHander);
             ExcuteResult TResult = new ExcuteResult();
-            //表头参数  (添加此Headers 会导致返回的数据在解析时出问题，估计.net core 已默认为json格式，再加会画蛇添足。
-            //_Client.DefaultRequestHeaders.Accept.Clear();
-            //_Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            //转为待传输的Json字符串
-            string PostObjectJsonStr = JsonConvert.SerializeObject(PostObject);
-            HttpContent httpContent = new StringContent(PostObjectJsonStr, Encoding.UTF8, "application/json");
-            //请求
-            HttpResponseMessage ResponseMsg = await _Client.PostAsync(ApiUri, httpContent).ConfigureAwait(false);
-
-            if (ResponseMsg.IsSuccessStatusCode)
+            try
             {
-                string ResponseString = ResponseMsg.Content.ReadAsStringAsync().Result;
-                if (ResponseString.Contains("errors"))
+                //表头参数  (添加此Headers 会导致返回的数据在解析时出问题，估计.net core 已默认为json格式，再加会画蛇添足。
+                //_Client.DefaultRequestHeaders.Accept.Clear();
+                //_Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                //转为待传输的Json字符串
+                string PostObjectJsonStr = JsonConvert.SerializeObject(PostObject);
+                HttpContent httpContent = new StringContent(PostObjectJsonStr, Encoding.UTF8, "application/json");
+                //请求
+                HttpResponseMessage ResponseMsg = await _Client.PostAsync(ApiUri, httpContent).ConfigureAwait(false);
+
+                if (ResponseMsg.IsSuccessStatusCode)
                 {
-                    ResponseResult ResResult = JsonConvert.DeserializeObject<ResponseResult>(ResponseString);
-                    TResult = new ExcuteResult() { State = -1, Msg = ResResult.errors, Tag = ResResult.traceId };
+                    string ResponseString = ResponseMsg.Content.ReadAsStringAsync().Result;
+                    if (ResponseString.Contains("errors"))
+                    {
+                        ResponseResult ResResult = JsonConvert.DeserializeObject<ResponseResult>(ResponseString);
+                        TResult = new ExcuteResult() { State = -1, Msg = ResResult.errors, Tag = ResResult.traceId };
+                    }
+                    else
+                    {
+                        TResult = JsonConvert.DeserializeObject<ExcuteResult>(ResponseString);
+                    }
                 }
-                else
-                {
-                    TResult = JsonConvert.DeserializeObject<ExcuteResult>(ResponseString);
-                }
+            }
+            catch (Exception err)
+            {
+                AppFuns.ShowMessage(err.Message, isErr: true);
+            }
+            finally
+            {
+                _Client?.Dispose();
             }
             return TResult;
         }
@@ -261,27 +272,37 @@ namespace Office.Work.Platform.AppDataService
         {
             HttpClient _Client = CreateHttpClient(processMessageHander);
             ExcuteResult TResult = new ExcuteResult();
-            //表头参数  (添加此Headers 会导致返回的数据在解析时出问题，估计.net core 已默认为json格式，再加会画蛇添足。
-            //_Client.DefaultRequestHeaders.Accept.Clear();
-            //_Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-
-            //转为待传输的Json字符串
-            HttpContent httpContent = new StringContent(JsonConvert.SerializeObject(PostObject), Encoding.UTF8, "application/json");
-            //请求
-            HttpResponseMessage ResponseMsg = await _Client.PutAsync(ApiUri, httpContent).ConfigureAwait(false);
-            if (ResponseMsg.IsSuccessStatusCode)
+            try
             {
-                string ResponseString = ResponseMsg.Content.ReadAsStringAsync().Result;
-                if (ResponseString.Contains("errors"))
+                //表头参数  (添加此Headers 会导致返回的数据在解析时出问题，估计.net core 已默认为json格式，再加会画蛇添足。
+                //_Client.DefaultRequestHeaders.Accept.Clear();
+                //_Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                //转为待传输的Json字符串
+                HttpContent httpContent = new StringContent(JsonConvert.SerializeObject(PostObject), Encoding.UTF8, "application/json");
+                //请求
+                HttpResponseMessage ResponseMsg = await _Client.PutAsync(ApiUri, httpContent).ConfigureAwait(false);
+                if (ResponseMsg.IsSuccessStatusCode)
                 {
-                    ResponseResult ResResult = JsonConvert.DeserializeObject<ResponseResult>(ResponseString);
-                    TResult = new ExcuteResult() { State = -1, Msg = ResResult.errors, Tag = ResResult.traceId };
+                    string ResponseString = ResponseMsg.Content.ReadAsStringAsync().Result;
+                    if (ResponseString.Contains("errors"))
+                    {
+                        ResponseResult ResResult = JsonConvert.DeserializeObject<ResponseResult>(ResponseString);
+                        TResult = new ExcuteResult() { State = -1, Msg = ResResult.errors, Tag = ResResult.traceId };
+                    }
+                    else
+                    {
+                        TResult = JsonConvert.DeserializeObject<ExcuteResult>(ResponseString);
+                    }
                 }
-                else
-                {
-                    TResult = JsonConvert.DeserializeObject<ExcuteResult>(ResponseString);
-                }
+            }
+            catch (Exception err)
+            {
+                AppFuns.ShowMessage(err.Message, isErr: true);
+            }
+            finally
+            {
+                _Client?.Dispose();
             }
             return TResult;
         }

@@ -46,7 +46,7 @@ namespace Office.Work.Platform.Member
             }
             MemberSearch msearch = new MemberSearch() { Id = _PageEditMemberVM.EntityMember.Id };
             var members = await DataMemberRepository.ReadMembers(msearch);
-            if (members.Count > 0)  //数据表中已存在该记录。
+            if (members != null && members.Count > 0)  //数据表中已存在该记录。
             {
 
                 _PageEditMemberVM.isEditFlag = true;
@@ -121,13 +121,13 @@ namespace Office.Work.Platform.Member
         {
             if (string.IsNullOrWhiteSpace(_PageEditMemberVM.EntityMember.Id))
             {
-                 AppFuns.ShowMessage("员工的身份证号必须输入！");
+                AppFuns.ShowMessage("员工的身份证号必须输入！");
                 Tb_UserId.Focus();
                 return;
             }
             if (string.IsNullOrWhiteSpace(_PageEditMemberVM.EntityMember.Name))
             {
-                 AppFuns.ShowMessage("员工的姓名必须输入！");
+                AppFuns.ShowMessage("员工的姓名必须输入！");
                 Tb_UserName.Focus();
                 return;
             }
@@ -135,6 +135,7 @@ namespace Office.Work.Platform.Member
             if (_PageEditMemberVM.isEditFlag)
             {
                 excuteResult = await DataMemberRepository.UpdateMember(_PageEditMemberVM.EntityMember);
+                AppFuns.ShowMessage(excuteResult.Msg);
             }
             else
             {
@@ -145,9 +146,9 @@ namespace Office.Work.Platform.Member
                     _PageEditMemberVM.isEditFlag = true;
                     //只传递两个字段信息，不实际读取（因为此时没有必要读取）
                     InitUcControlFilesAsync(false);
+                    AppFuns.ShowMessage(excuteResult.Msg);
                 }
             }
-               AppFuns.ShowMessage(excuteResult.Msg);
         }
         /// <summary>
         /// 更新员工的工作信息、受教育信息、更新备注信息等。
@@ -157,7 +158,7 @@ namespace Office.Work.Platform.Member
         private async void BtnUpdateClickAsync(object sender, RoutedEventArgs e)
         {
             ExcuteResult excuteResult = await DataMemberRepository.UpdateMember(_PageEditMemberVM.EntityMember);
-             AppFuns.ShowMessage(excuteResult.Msg);
+            AppFuns.ShowMessage(excuteResult.Msg);
         }
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
