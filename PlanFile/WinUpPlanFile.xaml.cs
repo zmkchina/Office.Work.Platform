@@ -18,9 +18,9 @@ namespace Office.Work.Platform.PlanFile
         private readonly Action<Lib.PlanFile> _CallBackFunc;
         private CurWinViewModel _CurWinViewModel = null;
 
-        public WinUpPlanFile(Action<Lib.PlanFile> P_CallBackFunc, FileInfo P_FileInfo, string P_OwnerType, string P_OwnerId,string P_OwnerContentType)
+        public WinUpPlanFile(Action<Lib.PlanFile> P_CallBackFunc, FileInfo P_FileInfo, string P_OwnerType, string P_OwnerId, string P_OwnerContentType)
         {
-            this.Owner =AppSet.AppMainWindow;
+            this.Owner = AppSet.AppMainWindow;
             this.Height = 300;
             InitializeComponent();
             _CurWinViewModel = new CurWinViewModel(P_FileInfo, P_OwnerType, P_OwnerId, P_OwnerContentType);
@@ -35,14 +35,14 @@ namespace Office.Work.Platform.PlanFile
             ExcuteResult JsonResult = new ExcuteResult();
             if (_CurWinViewModel.EntityFile.ContentType == null)
             {
-               AppFuns.ShowMessage("请选择文件内容类型！", Caption: "警告");
+                AppFuns.ShowMessage("请选择文件内容类型！", Caption: "警告");
                 return;
             }
             _CurWinViewModel.EntityFile.CanReadUserIds = _CurWinViewModel.GetSelectUserIds();
 
             if (!_CurWinViewModel.EntityFile.CanReadUserIds.Contains(AppSet.LoginUser.Id))
             {
-                if(!AppFuns.ShowMessage("你本人没有读取该文件的权限？", Caption: "确认", showYesNo: true))
+                if (!AppFuns.ShowMessage("你本人没有读取该文件的权限？", Caption: "确认", showYesNo: true))
                 {
                     return;
                 }
@@ -56,7 +56,7 @@ namespace Office.Work.Platform.PlanFile
             };
 
             JsonResult = await DataPlanFileRepository.UpLoadFileInfo(_CurWinViewModel.EntityFile, _CurWinViewModel.UpFileInfo.OpenRead(), "upfilekey", "upfilename", progress);
-            if (JsonResult.State == 0)
+            if (JsonResult != null && JsonResult.State == 0)
             {
                 _CurWinViewModel.EntityFile.Id = JsonResult.Tag;
                 _CurWinViewModel.EntityFile.UpIntProgress = 100;
@@ -66,7 +66,7 @@ namespace Office.Work.Platform.PlanFile
             }
             else
             {
-                (new WinMsgDialog(JsonResult.Msg, Caption: "错误", isErr: true)).ShowDialog();
+                AppFuns.ShowMessage(JsonResult.Msg, Caption: "错误", isErr: true);
                 BtnUpFile.IsEnabled = true;
             }
         }

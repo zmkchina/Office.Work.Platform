@@ -84,12 +84,18 @@
                                 <Image Width="20" Margin="2,5,8,5" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="{Binding Path=ExtendName,Converter={StaticResource ExtentNameToImgeUri}}"/>
                                 <TextBlock Grid.Column="1"
                                            Margin="5"
-                                           ToolTip="{Binding UpDateTime}"
+                                           
                                            Tag="{Binding Id}" 
                                            TextWrapping="Wrap"
                                            Cursor="Hand" 
                                            VerticalAlignment="Center"                                              
                                            MouseLeftButtonUp="TB_OpenFile_MouseLeftButtonUpAsync">
+                                    <TextBlock.ToolTip>
+                                        <TextBlock>
+                                            <Run Text="{Binding UpDateTime, StringFormat=yyyy/MM/dd}"/>
+                                            <Run Text="{Binding ContentType}"/>
+                                        </TextBlock>
+                                    </TextBlock.ToolTip>
                                     <Run Text="{Binding Name}"/>
                                     <Run Text="{Binding ExtendName}"/>
                                     <Run Text="{Binding Path=DownIntProgress,StringFormat=(下载{0:F0}%)}"/>

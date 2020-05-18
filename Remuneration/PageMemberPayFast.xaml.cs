@@ -173,6 +173,7 @@ namespace Office.Work.Platform.Remuneration
                             break;
                     }
                 }
+                TempPaySet.Id = TempPaySet.MemberId;
                 TempPaySet.UserId = AppSet.LoginUser.Id;
                 NewPaySetList.Add(TempPaySet);
             }
@@ -206,7 +207,6 @@ namespace Office.Work.Platform.Remuneration
             {
                 return;
             }
-
             JObject NewDic = new JObject();
             NewDic.Add(PayItemNameList[0], AppSet.LoginUser.UnitName);
             NewDic.Add(PayItemNameList[1], NewMamber.UnitName);

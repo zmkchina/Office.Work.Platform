@@ -170,6 +170,11 @@ namespace Office.Work.Platform.Remuneration
                     PayUnitName = AppSet.LoginUser.UnitName,
                     UserId = AppSet.LoginUser.Id
                 }).ConfigureAwait(false);
+                if(TempPayItems==null || TempPayItems.Count() < 1)
+                {
+                    AppFuns.ShowMessage("未读到待遇项目数据，请稍候再试！");
+                    return;
+                }
                 MemberPayItems = TempPayItems.ToList();
                 MemberPayItems.Sort((x, y) => x.OrderIndex - y.OrderIndex);
 

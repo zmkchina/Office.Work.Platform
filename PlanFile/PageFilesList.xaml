@@ -42,12 +42,11 @@
                         <Grid >
                             <Grid.ToolTip>
                                 <StackPanel>
-                                    <TextBlock FontWeight="Heavy">
-                                            <Run  Text="{Binding Path=OwnerType,StringFormat= 所有者: {0}}"/>
-                                            <Run  Text="{Binding Path=DispatchUnit,StringFormat= [{0}]}"/>
-                                    </TextBlock>
-                                    <TextBlock Margin="0,5">
-                                           <Run  Text="{Binding Path=Describe}"/>
+                                    <TextBlock >
+                                        <Run  Text="{Binding Path=ContentType,StringFormat= 类型: {0}}" FontWeight="Heavy"/>
+                                        <Run  Text="{Binding Path=DispatchUnit,StringFormat= {}{0}}" FontWeight="Heavy"/>
+                                        <LineBreak/>
+                                        <Run  Text="{Binding Path=Describe}"/>
                                     </TextBlock>
                                 </StackPanel>
                             </Grid.ToolTip>
