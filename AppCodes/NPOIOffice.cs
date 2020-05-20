@@ -1,10 +1,12 @@
-﻿using NPOI.SS.UserModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.IO;
-using System.Text;
-
+using System.Linq;
+using System.Reflection;
+using NPOI.HSSF.UserModel;
+using NPOI.SS.UserModel;
 namespace Office.Work.Platform.AppCodes
 {
     public class NPOIOffice
@@ -114,8 +116,6 @@ namespace Office.Work.Platform.AppCodes
             DataTable data = new DataTable();
             //excel工作表
             ISheet sheet = null;
-            //数据开始行(排除标题行)
-            int startRow = 0;
             try
             {
                 //根据文件流创建excel数据结构,NPOI的工厂类WorkbookFactory会自动识别excel版本，创建出不同的excel数据结构
@@ -140,6 +140,8 @@ namespace Office.Work.Platform.AppCodes
                     IRow firstRow = sheet.GetRow(0);
                     //一行最后一个cell的编号 即总的列数
                     int cellCount = firstRow.LastCellNum;
+                    //数据开始行(排除标题行)
+                    int startRow;
                     //如果第一行是标题列名
                     if (isFirstRowColumn)
                     {
@@ -204,5 +206,121 @@ namespace Office.Work.Platform.AppCodes
                 throw ex;
             }
         }
+        /// <summary>
+        /// 导出EXCEL文件
+        /// </summary>
+        /// <param name="xlsName">文件名</param>
+        /// <param name="tableName">工作薄名称</param>
+        /// <param name="data">导出的数据源,数据源类在定义时必须有描述特性</param>
+        public static void ExportExcels<T>(string xlsName, string tableName, List<T> data)
+        {
+            IWorkbook workbook = new HSSFWorkbook();
+            ISheet sheet = workbook.CreateSheet(tableName);
+
+            var row = sheet.CreateRow(sheet.LastRowNum);
+
+            //创建标题行
+            int i = 0;
+            PropertyInfo[] propertyInfos = typeof(T).GetProperties();
+            foreach (var property in propertyInfos)
+            {
+                object[] objs = property.GetCustomAttributes(typeof(DescriptionAttribute), true);
+                if (objs.Length > 0)
+                {
+                    //创建一个列并且赋值
+                    row.CreateCell(i).SetCellValue(((DescriptionAttribute)objs[0]).Description);
+                    i++;
+                }
+            }
+
+            //给数据填充到表格当中
+            int j = sheet.LastRowNum + 1;
+            foreach (var item in data)
+            {
+                int n = 0;
+                row = sheet.CreateRow(j++);
+                //获取一项的所有属性
+                var itemProps = item.GetType().GetProperties();
+                foreach (var itemPropSub in itemProps)
+                {
+                    var objs = itemPropSub.GetCustomAttributes(typeof(DescriptionAttribute), true);
+                    if (objs.Length > 0)
+                    {
+                        row.CreateCell(n).SetCellValue(itemPropSub.GetValue(item, null) == null ? "" :
+                            itemPropSub.GetValue(item, null).ToString());
+                        n++;
+                    }
+                }
+            }
+
+            MemoryStream ms = new MemoryStream();
+
+            workbook.Write(ms);
+            ms.Flush();
+            ms.Position = 0;
+            FileStream fileStream = new FileStream(xlsName, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+            ms.WriteTo(fileStream);
+            ms.Close();
+            ms.Dispose();
+            fileStream.Close();
+            workbook.Close();
+        }
+
+        #region 未使用的代码
+        /// <summary>
+        /// NPOI导出Excel，不依赖本地是否装有Excel，导出速度快
+        /// </summary>
+        /// <param name="dataGridView1">要导出的dataGridView控件</param>
+        /// <param name="sheetName">sheet表名</param>
+        private void ExportToExcel(List<Lib.Member> EntityList, string sheetName)
+        {
+            if (EntityList == null || EntityList.Count < 1)
+            {
+                return;
+            }
+            System.Windows.Forms.SaveFileDialog fileDialog = new System.Windows.Forms.SaveFileDialog();
+            fileDialog.Filter = "Excel|*.xls";
+            if (fileDialog.ShowDialog() == System.Windows.Forms.DialogResult.Cancel)
+            {
+                return;
+            }
+            //不允许dataGridView显示添加行，负责导出时会报最后一行未实例化错误
+            HSSFWorkbook workbook = new HSSFWorkbook();
+            ISheet sheet = workbook.CreateSheet(sheetName);
+            IRow rowHead = sheet.CreateRow(0);
+            PropertyInfo[] EntityProps = EntityList[0].GetType().GetProperties();
+            //填写表头
+            for (int i = 0; i < EntityProps.Count(); i++)
+            {
+                rowHead.CreateCell(i, CellType.String).SetCellValue(EntityProps[i].Name);
+            }
+            //填写内容
+            for (int i = 0; i < EntityList.Count; i++)
+            {
+                IRow row = sheet.CreateRow(i + 1);
+                for (int j = 0; j < EntityProps.Count(); j++)
+                {
+                    object TempObj = EntityProps[j].GetValue(EntityList[i]);
+                    if (TempObj != null)
+                    {
+                        row.CreateCell(j, CellType.String).SetCellValue(EntityProps[j].GetValue(EntityList[i]).ToString());
+                    }
+                    else
+                    {
+                        row.CreateCell(j, CellType.String).SetCellValue("");
+
+                    }
+                }
+            }
+
+            using (FileStream stream = File.OpenWrite(fileDialog.FileName))
+            {
+                workbook.Write(stream);
+                stream.Close();
+            }
+            AppFuns.ShowMessage("导出数据成功!", "提示");
+            GC.Collect();
+        }
+        #endregion
     }
 }

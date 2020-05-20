@@ -141,5 +141,34 @@ namespace Office.Work.Platform.AppDataService
                 return null;
             }
         }
+        /// <summary>
+        /// 下载文件流。成功：返回文件流，失败：返回null
+        /// </summary>
+        /// <param name="WillDownFileName">将下载的文件名，不包括扩展名信息</param>
+        /// <param name="showDownProgress">显示下载进度的委托方法,可为空</param>
+        /// <returns>返回下载成功的文件目录（包括路径）</returns>
+        public static async Task<MemoryStream> DownloadFileStream(string WillDownFileName, ProgressMessageHandler showDownProgress = null)
+        {
+            HttpResponseMessage httpResponseMessage = await DataApiRepository.GetApiUri<HttpResponseMessage>(_ApiUrlBase + @"MemberFile/DownloadFile/" + WillDownFileName, showDownProgress).ConfigureAwait(false);
+            if (httpResponseMessage != null && httpResponseMessage.StatusCode != System.Net.HttpStatusCode.NotFound)
+            {
+                Stream responseStream = await httpResponseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                if (responseStream != null && responseStream.Length > 0)
+                {
+                    //创建一个内存流
+                    MemoryStream ms = new MemoryStream();
+                    byte[] buffer = new byte[2048];
+                    int readLength;
+                    while ((readLength = await responseStream.ReadAsync(buffer, 0, buffer.Length)) != 0)
+                    {
+                        // 写入到文件
+                        ms.Write(buffer, 0, readLength);
+                    }
+                    responseStream.Close();
+                    return ms;
+                }
+            }
+            return null;
+        }
     }
 }

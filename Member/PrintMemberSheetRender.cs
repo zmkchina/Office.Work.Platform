@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Documents;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Office.Work.Platform.AppCodes;
 using Office.Work.Platform.AppDataService;
 
@@ -11,10 +14,19 @@ namespace Office.Work.Platform.Member
     {
 
         private DocViewModel DocVM = null;
-        public void RenderAsync(FlowDocument FlowDoc, string Caption, string DateStr, Lib.Member CurMember)
+        public void Render(FlowDocument FlowDoc, string Caption, string DateStr, MemoryStream UserHeadStream, Lib.Member CurMember)
         {
             if (CurMember == null) return;
             DocVM = new DocViewModel(CurMember);
+            if (UserHeadStream != null)
+            {
+                //ImageBrush Img_UserPhotoImage = FlowDoc.FindName("Img_UserPhotoImage") as ImageBrush;
+                //ImageSourceConverter imageSourceConverter = new ImageSourceConverter();
+                //Img_UserPhotoImage.ImageSource = (ImageSource)imageSourceConverter.ConvertFrom(UserHeadStream);
+                //Img_UserPhotoImage.Freeze();
+            }
+            //设置标题
+
             if (string.IsNullOrWhiteSpace(Caption))
             {
                 DocVM.Caption = "干部（职工）基本信息登记表";
@@ -34,7 +46,7 @@ namespace Office.Work.Platform.Member
             if (TempResumes != null && TempResumes.Count() > 0)
             {
                 TableCell Cell_Resume = FlowDoc.FindName("Cell_Resume") as TableCell;
-                List<Lib.MemberResume> MemberResumes = TempResumes.OrderBy(x=>x.BeginDate).ToList();
+                List<Lib.MemberResume> MemberResumes = TempResumes.OrderBy(x => x.BeginDate).ToList();
                 for (int i = 0; i < MemberResumes.Count; i++)
                 {
                     Paragraph TParagraph = new Paragraph();
@@ -58,7 +70,7 @@ namespace Office.Work.Platform.Member
             if (TempPrizePunish != null && TempPrizePunish.Count() > 0)
             {
                 TableCell Cell_PrizePunish = FlowDoc.FindName("Cell_PrizePunish") as TableCell;
-                List<Lib.MemberPrizePunish> MemberPrizePunishs = TempPrizePunish.OrderByDescending(x=>x.PrizrOrPunishType).ToList();
+                List<Lib.MemberPrizePunish> MemberPrizePunishs = TempPrizePunish.OrderByDescending(x => x.PrizrOrPunishType).ToList();
                 for (int i = 0; i < MemberPrizePunishs.Count; i++)
                 {
                     Paragraph TParagraph = new Paragraph();
@@ -143,11 +155,15 @@ namespace Office.Work.Platform.Member
             public DocViewModel(Lib.Member CurMember)
             {
                 this.CurMember = CurMember;
+                UseHeadImage = new BitmapImage();
             }
             public string Caption { get; set; }
             public string DateStr { get; set; }
             public Lib.Member CurMember { get; set; }
-
+            /// <summary>
+            /// 显示的用户图片
+            /// </summary>
+            public BitmapImage UseHeadImage { get; set; }
         }
     }
 }

@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
-using NPOI.HSSF.UserModel;
-using NPOI.SS.UserModel;
 using Office.Work.Platform.AppCodes;
 using Office.Work.Platform.AppDataService;
 using Office.Work.Platform.Lib;
@@ -46,6 +43,7 @@ namespace Office.Work.Platform.Member
         {
             if (string.IsNullOrWhiteSpace(_PageViewModel.FieldValue))
             {
+                AppFuns.SetStateBarText("必须输入查询内容!");
                 return;
             }
             //是否在结果中查询
@@ -71,21 +69,23 @@ namespace Office.Work.Platform.Member
         {
             List<Lib.Member> MemberList = await DataMemberRepository.ReadMembers(_PageViewModel.mSearch);
 
-            if (MemberList == null || MemberList.Count < 1) { return; }
-
-            MemberList.Sort((x, y) => x.OrderIndex - y.OrderIndex);
-
-            if (MemberList != null && MemberList.Count > 0)
+            if (MemberList == null)
+            {
+                AppFuns.SetStateBarText("查询过程出现错误，请重试!");
+                return;
+            }
+            if (MemberList.Count < 1)
             {
                 _PageViewModel.EntityList.Clear();
-                MemberList.ForEach(e => { _PageViewModel.EntityList.Add(e); });
             }
             else
             {
-                _PageViewModel.EntityList.Clear();
-            }
+                MemberList.Sort((x, y) => x.OrderIndex - y.OrderIndex);
 
-            AppSet.AppMainWindow.lblCursorPosition.Text = $"共查询到记录：{_PageViewModel.EntityList.Count}条";
+                _PageViewModel.EntityList.Clear();
+                MemberList.ForEach(e => { _PageViewModel.EntityList.Add(e); });
+            }
+            AppFuns.SetStateBarText($"共查询到记录：{_PageViewModel.EntityList.Count}条");
         }
         /// <summary>
         /// 双击开始编辑职工信息
@@ -131,21 +131,12 @@ namespace Office.Work.Platform.Member
         /// <param name="e"></param>
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
-            AppSet.AppMainWindow.lblCursorPosition.Text = "就绪";
+            AppFuns.SetStateBarText("就绪");
         }
 
         private void btn_Export_ClickAsync(object sender, RoutedEventArgs e)
         {
-            ExportToExcel(_PageViewModel.EntityList.ToList(), "PersonsInfo");
-        }
-
-        /// <summary>
-        /// NPOI导出Excel，不依赖本地是否装有Excel，导出速度快
-        /// </summary>
-        /// <param name="dataGridView1">要导出的dataGridView控件</param>
-        /// <param name="sheetName">sheet表名</param>
-        private void ExportToExcel(List<Lib.Member> EntityList, string sheetName)
-        {
+            List<Lib.Member> EntityList = _PageViewModel.EntityList.ToList();
             if (EntityList == null || EntityList.Count < 1)
             {
                 return;
@@ -156,43 +147,18 @@ namespace Office.Work.Platform.Member
             {
                 return;
             }
-            //不允许dataGridView显示添加行，负责导出时会报最后一行未实例化错误
-            HSSFWorkbook workbook = new HSSFWorkbook();
-            ISheet sheet = workbook.CreateSheet(sheetName);
-            IRow rowHead = sheet.CreateRow(0);
-            PropertyInfo[] EntityProps = EntityList[0].GetType().GetProperties();
-            //填写表头
-            for (int i = 0; i < EntityProps.Count(); i++)
+            try
             {
-                rowHead.CreateCell(i, CellType.String).SetCellValue(EntityProps[i].Name);
+                NPOIOffice.ExportExcels(fileDialog.FileName, "员工信息", EntityList);
+                AppFuns.ShowMessage("数据导出成功！", Caption: "完成");
             }
-            //填写内容
-            for (int i = 0; i < EntityList.Count; i++)
+            catch (Exception Ex)
             {
-                IRow row = sheet.CreateRow(i + 1);
-                for (int j = 0; j < EntityProps.Count(); j++)
-                {
-                    object TempObj = EntityProps[j].GetValue(EntityList[i]);
-                    if (TempObj != null)
-                    {
-                        row.CreateCell(j, CellType.String).SetCellValue(EntityProps[j].GetValue(EntityList[i]).ToString());
-                    }
-                    else
-                    {
-                        row.CreateCell(j, CellType.String).SetCellValue("");
-
-                    }
-                }
+                AppFuns.ShowMessage(Ex.Message, Caption: "失败");
             }
-
-            using (FileStream stream = File.OpenWrite(fileDialog.FileName))
-            {
-                workbook.Write(stream);
-                stream.Close();
-            }
-            AppFuns.ShowMessage("导出数据成功!", "提示");
-            GC.Collect();
         }
+
+
 
         /// <summary>
         /// 本页面的视图模型类

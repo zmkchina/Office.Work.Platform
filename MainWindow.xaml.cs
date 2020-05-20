@@ -267,7 +267,17 @@ namespace Office.Work.Platform
             AppUpdateInfo UpdateInfo = await DataFileUpdateAppRepository.GetAppUpdateInfo();
             if (UpdateInfo == null)
             {
-                this.notifyIcon.ShowBalloonTip(1000, "错误", "与服务器失去链接，请检查网络。", ToolTipIcon.Error);
+                this.notifyIcon.ShowBalloonTip(1000, "错误", "与服务器失去链接，正在重连...", ToolTipIcon.Error);
+                //请求token
+                string TokenResult = await DataApiRepository.GetAccessToken(AppSet.LoginUser.Id, AppSet.LoginUser.PassWord);
+                if (TokenResult != "Ok")
+                {
+                    this.notifyIcon.ShowBalloonTip(1000, "错误", $"重连失败{TokenResult}！", ToolTipIcon.Error);
+                }
+                else
+                {
+                    this.notifyIcon.ShowBalloonTip(1000, "信息", "已重新连接到服务器！", ToolTipIcon.Info);
+                }
                 _UpdateAppTimer.Start();
                 return;
             }

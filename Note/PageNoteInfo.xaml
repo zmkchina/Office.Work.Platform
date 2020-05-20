@@ -65,7 +65,7 @@
                 </GroupBox>
                 <GroupBox Header="备注内容" Grid.Row="1" Padding="5,10,5,2">
                     <RichTextBox x:Name="RichTBox" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-                              HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
+                              HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" Margin="2,10" Padding="5">
                         <RichTextBox.Resources>
                             <Style TargetType="{x:Type Paragraph}">
                                 <Setter Property="Margin" Value="0"/>

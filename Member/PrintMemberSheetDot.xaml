@@ -27,6 +27,15 @@
         <Run  Text="{Binding DateStr}"  FontFamily="Times New Roman" />
     </Paragraph>
     <Table  CellSpacing="0">
+        <Table.Columns>
+            <TableColumn Width="85"></TableColumn>
+            <TableColumn Width="90"></TableColumn>
+            <TableColumn Width="85"></TableColumn>
+            <TableColumn Width="90"></TableColumn>
+            <TableColumn Width="85"></TableColumn>
+            <TableColumn Width="90"></TableColumn>
+            <TableColumn Width="125"></TableColumn>
+        </Table.Columns>
         <TableRowGroup>
             <TableRow>
                 <TableCell >
@@ -83,12 +92,14 @@
                         </InlineUIContainer>
                     </Paragraph>
                 </TableCell>
-                <TableCell RowSpan="4">
+                <TableCell RowSpan="4" >
                     <Paragraph>
                         <InlineUIContainer>
-                            <TextBlock HorizontalAlignment="Center"  VerticalAlignment="Center" TextWrapping="Wrap">
-                                    <Run Text="照片"/>
-                            </TextBlock>
+                            <Border Canvas.Top="0" Canvas.Left="0" Height="170" Width="120" Panel.ZIndex="2">
+                                <Border.Background>
+                                    <ImageBrush x:Name="Img_UserPhotoImage"/>
+                                </Border.Background>
+                            </Border>
                         </InlineUIContainer>
                     </Paragraph>
                 </TableCell>

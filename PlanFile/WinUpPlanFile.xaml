@@ -139,7 +139,7 @@
                 <Button Content="开始上传" x:Name="BtnUpFile"
                     Height="30" Width="60" Margin="10"
                     Click="BtnUploadFile_ClickAsync" />
-                <Button Content="关闭窗体" 
+                <Button Content="取消上传" 
                     Height="30" Width="60" Margin="10,0,30,0"
                     Click="BtnClose_Click"  />
             </StackPanel>
