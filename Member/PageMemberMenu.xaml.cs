@@ -45,7 +45,8 @@ namespace Office.Work.Platform.Member
         /// <param name="e"></param>
         private void ListBoxItem_BasicInfo_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            PageMemberSheet CurPage = new PageMemberSheet();
+            //PageMemberSheetFlow CurPage = new PageMemberSheetFlow();
+            PageMemberSheetFixed CurPage = new PageMemberSheetFixed();
             AppSet.AppMainWindow.FrameContentPage.Content = CurPage;
         }
     }

@@ -32,7 +32,7 @@ namespace Office.Work.Platform.PlanFile
         {
             await _CurPageViewModel.GetFilesAsync();
             Col_UCFileInfo.Width = new GridLength(0);
-            AppFuns.SetStateBarText($"共查询到 :{_CurPageViewModel.PlanFiles.Count}条记录！");
+            AppFuns.SetStateBarText($"共查询到 :{_CurPageViewModel.SearchPlanFile.RecordCount}条记录,每页{_CurPageViewModel.SearchPlanFile.PageSize}条，共{_CurPageViewModel.SearchPlanFile.PageCount}页！");
         }
 
         private void ListBox_FileList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -52,35 +52,72 @@ namespace Office.Work.Platform.PlanFile
             }
         }
 
+        private async void btn_PrevPage_ClickAsync(object sender, RoutedEventArgs e)
+        {
+            if (_CurPageViewModel.SearchPlanFile.PageIndex <= 1)
+            {
+                _CurPageViewModel.SearchPlanFile.PageIndex = _CurPageViewModel.SearchPlanFile.PageCount;
+            }
+            else
+            {
+                _CurPageViewModel.SearchPlanFile.PageIndex--;
+            }
+            await _CurPageViewModel.GetFilesAsync();
+        }
+
+        private async void btn_NextPage_ClickAsync(object sender, RoutedEventArgs e)
+        {
+            if (_CurPageViewModel.SearchPlanFile.PageIndex >= _CurPageViewModel.SearchPlanFile.PageCount)
+            {
+                _CurPageViewModel.SearchPlanFile.PageIndex = 1;
+            }
+            else
+            {
+                _CurPageViewModel.SearchPlanFile.PageIndex++;
+            }
+            await _CurPageViewModel.GetFilesAsync();
+        }
 
         /// <summary>
         /// 该页面的视图类
         /// </summary>
         private class CurPageViewModel : NotificationObject
         {
-            public PlanFileSearch SearchFile { get; set; }
+            public PlanFileSearch SearchPlanFile { get; set; }
             public ObservableCollection<Lib.PlanFile> PlanFiles { get; set; }
             public CurPageViewModel(string FilePlanType)
             {
-                SearchFile = new PlanFileSearch()
+                SearchPlanFile = new PlanFileSearch()
                 {
+                    PageIndex = 1,
+                    PageSize=15,
                     UserId = AppSet.LoginUser.Id,
                     ContentType = FilePlanType
+
                 };
                 PlanFiles = new ObservableCollection<Lib.PlanFile>();
             }
             public async Task GetFilesAsync()
             {
                 PlanFiles.Clear();
-                var files = await DataPlanFileRepository.ReadFiles(SearchFile);
-                if (files != null)
+                PlanFileSearchResult SearchResult = await DataPlanFileRepository.ReadFiles(SearchPlanFile);
+                if (SearchResult == null) { return; }
+                
+                SearchPlanFile.RecordCount = SearchResult.SearchCondition.RecordCount;
+                
+                if (SearchResult.RecordList != null && SearchResult.RecordList.Count > 0)
                 {
-                    files.ToList().ForEach(e =>
+                    SearchResult.RecordList.ToList().ForEach(e =>
                     {
                         PlanFiles.Add(e);
                     });
                 }
             }
+        }
+
+        private void Page_Unloaded(object sender, RoutedEventArgs e)
+        {
+            AppFuns.SetStateBarText("就绪。");
         }
     }
 }

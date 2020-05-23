@@ -127,8 +127,8 @@ namespace Office.Work.Platform.AppDataService
                             // 写入到文件
                             fileStream.Write(buffer, 0, readLength);
                         }
-                        responseStream.Close();
                         fileStream.Close();
+                        responseStream.Close();
                     }
                 }
             }

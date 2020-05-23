@@ -30,18 +30,18 @@ namespace Office.Work.Platform.Plan
             if (_CurPageViewModel == null)
             {
                 _CurPageViewModel = new CurPageViewModel();
-                _CurPageViewModel.mSearchPlan.UnitName = AppSet.LoginUser.UnitName;
+                _CurPageViewModel.SearchPlan.UnitName = AppSet.LoginUser.UnitName;
                 switch (_SearchPlanType)
                 {
                     case "MyNoFinishPlans":
-                        _CurPageViewModel.mSearchPlan.ResponsiblePerson = AppSet.LoginUser.Id;
-                        _CurPageViewModel.mSearchPlan.CurrectState = PlanStatus.WaitBegin + "," + PlanStatus.Running;
+                        _CurPageViewModel.SearchPlan.ResponsiblePerson = AppSet.LoginUser.Id;
+                        _CurPageViewModel.SearchPlan.CurrectState = PlanStatus.WaitBegin + "," + PlanStatus.Running;
                         break;
                     case "AllNoFinishPlans":
-                        _CurPageViewModel.mSearchPlan.CurrectState = PlanStatus.WaitBegin + "," + PlanStatus.Running;
+                        _CurPageViewModel.SearchPlan.CurrectState = PlanStatus.WaitBegin + "," + PlanStatus.Running;
                         break;
                     case "AllFinihPlans":
-                        _CurPageViewModel.mSearchPlan.CurrectState = PlanStatus.Finished;
+                        _CurPageViewModel.SearchPlan.CurrectState = PlanStatus.Finished;
                         break;
                     case "AllPlans":
                         break;
@@ -85,10 +85,36 @@ namespace Office.Work.Platform.Plan
         {
             string SearchKeys = tb_SearchKeys.Text.Trim().Length > 0 ? tb_SearchKeys.Text.Trim() : null;
             //设置查询条件类
-            _CurPageViewModel.mSearchPlan.KeysInMultiple = SearchKeys;
+            _CurPageViewModel.SearchPlan.KeysInMultiple = SearchKeys;
             await _CurPageViewModel.GetPlansAsync();
-            AppFuns.SetStateBarText($"共查询到 {_CurPageViewModel.EntityPlans.Count} 个计划");
             DataContext = _CurPageViewModel;
+            AppFuns.SetStateBarText($"共查询到 :{_CurPageViewModel.SearchPlan.RecordCount}条记录,每页{_CurPageViewModel.SearchPlan.PageSize}条，共{_CurPageViewModel.SearchPlan.PageCount}页！");
+        }
+
+        private async void btn_PrevPage_ClickAsync(object sender, RoutedEventArgs e)
+        {
+            if (_CurPageViewModel.SearchPlan.PageIndex <= 1)
+            {
+                _CurPageViewModel.SearchPlan.PageIndex = _CurPageViewModel.SearchPlan.PageCount;
+            }
+            else
+            {
+                _CurPageViewModel.SearchPlan.PageIndex--;
+            }
+            await _CurPageViewModel.GetPlansAsync();
+        }
+
+        private async void btn_NextPage_ClickAsync(object sender, RoutedEventArgs e)
+        {
+            if (_CurPageViewModel.SearchPlan.PageIndex >= _CurPageViewModel.SearchPlan.PageCount)
+            {
+                _CurPageViewModel.SearchPlan.PageIndex = 1;
+            }
+            else
+            {
+                _CurPageViewModel.SearchPlan.PageIndex++;
+            }
+            await _CurPageViewModel.GetPlansAsync();
         }
 
         /// <summary>
@@ -99,14 +125,22 @@ namespace Office.Work.Platform.Plan
 
             public CurPageViewModel()
             {
-                mSearchPlan = new PlanSearch();
+                SearchPlan = new PlanSearch()
+                {
+                    PageIndex = 1,
+                    PageSize = 15,
+                };
                 EntityPlans = new ObservableCollection<Lib.Plan>();
             }
             public async Task GetPlansAsync()
             {
                 EntityPlans.Clear();
-                var plans = await DataPlanRepository.ReadPlans(mSearchPlan);
-                plans?.ToList().ForEach(e =>
+                PlanSearchResult PlanSearchResult = await DataPlanRepository.ReadPlans(SearchPlan);
+                if (PlanSearchResult == null) { return; }
+                
+                SearchPlan.RecordCount = PlanSearchResult.SearchCondition.RecordCount;
+                
+                PlanSearchResult.RecordList?.ToList().ForEach(e =>
                 {
                     EntityPlans.Add(e);
                 });
@@ -118,7 +152,7 @@ namespace Office.Work.Platform.Plan
             /// <summary>
             /// 查询条件
             /// </summary>
-            public PlanSearch mSearchPlan { get; set; }
+            public PlanSearch SearchPlan { get; set; }
         }
     }
 }

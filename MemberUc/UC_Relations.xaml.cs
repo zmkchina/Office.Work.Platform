@@ -43,6 +43,7 @@ namespace Office.Work.Platform.MemberUc
             Lib.MemberRelations NewRecord = new Lib.MemberRelations()
             {
                 MemberId = _CurUcViewModel.CurMember.Id,
+                Birthday = _CurUcViewModel.CurMember.Birthday.AddYears(-25),
                 UserId = AppSet.LoginUser.Id
             };
 
@@ -51,12 +52,6 @@ namespace Office.Work.Platform.MemberUc
 
             if (AddWin.ShowDialog().Value)
             {
-                IEnumerable<MemberRelations> MemberPlayMonths = await DataMemberRelationsRepository.GetRecords(new MemberRelationsSearch()
-                {
-                    MemberId = NewRecord.MemberId,
-                    UserId = NewRecord.UserId
-                });
-
                 ExcuteResult excuteResult = await DataMemberRelationsRepository.AddRecord(NewRecord);
                 if (excuteResult.State == 0)
                 {
@@ -66,7 +61,7 @@ namespace Office.Work.Platform.MemberUc
                 }
                 else
                 {
-                     AppFuns.ShowMessage(excuteResult.Msg, Caption: "失败");
+                    AppFuns.ShowMessage(excuteResult.Msg, Caption: "失败");
                 }
             }
         }
@@ -79,7 +74,7 @@ namespace Office.Work.Platform.MemberUc
         {
             if (RecordListBox.SelectedItem is Lib.MemberRelations SelectedRec)
             {
-                if ( AppFuns.ShowMessage($"确认要删除该条社会关系吗？", Caption: "确认", showYesNo: true))
+                if (AppFuns.ShowMessage($"确认要删除该条社会关系吗？", Caption: "确认", showYesNo: true))
                 {
                     ExcuteResult excuteResult = await DataMemberRelationsRepository.DeleteRecord(SelectedRec);
                     if (excuteResult.State == 0)
@@ -88,7 +83,7 @@ namespace Office.Work.Platform.MemberUc
                     }
                     else
                     {
-                         AppFuns.ShowMessage(excuteResult.Msg, Caption: "失败");
+                        AppFuns.ShowMessage(excuteResult.Msg, Caption: "失败");
                     }
                 }
             }
@@ -125,7 +120,7 @@ namespace Office.Work.Platform.MemberUc
                     }
                     else
                     {
-                         AppFuns.ShowMessage(excuteResult.Msg, Caption: "失败");
+                        AppFuns.ShowMessage(excuteResult.Msg, Caption: "失败");
                     }
                 }
             }
@@ -145,32 +140,20 @@ namespace Office.Work.Platform.MemberUc
             public async System.Threading.Tasks.Task InitVMAsync(Lib.Member PMember)
             {
                 CurMember = PMember;
-                if (PMember != null)
-                {
-                    MemberRelationsSearch SearchCondition = new MemberRelationsSearch() { MemberId = PMember.Id, UserId = AppSet.LoginUser.Id };
-                    IEnumerable<MemberRelations> MemberRelationsss = await DataMemberRelationsRepository.GetRecords(SearchCondition);
-                    MemberRelationsss = MemberRelationsss.OrderBy(x => x.OrderIndex);
-                    CurRecords.Clear();
-                    MemberRelationsss?.ToList().ForEach(e =>
-                    {
-                        CurRecords.Add(e);
-                    });
-                }
+                CurRecords.Clear();
+                await SearchRecords();
             }
             public async System.Threading.Tasks.Task SearchRecords()
             {
-                if (SearchCondition != null)
+                if (CurMember == null) { return; }
+                CurRecords.Clear();
+                SearchCondition.MemberId = CurMember.Id;
+                SearchCondition.UserId = AppSet.LoginUser.Id;
+                IEnumerable<MemberRelations> TempRecords = await DataMemberRelationsRepository.GetRecords(SearchCondition);
+                TempRecords?.ToList().ForEach(e =>
                 {
-                    SearchCondition.MemberId = CurMember.Id;
-                    SearchCondition.UserId = AppSet.LoginUser.Id;
-
-                    IEnumerable<MemberRelations> TempRecords = await DataMemberRelationsRepository.GetRecords(SearchCondition);
-                    CurRecords.Clear();
-                    TempRecords?.ToList().ForEach(e =>
-                    {
-                        CurRecords.Add(e);
-                    });
-                }
+                    CurRecords.Add(e);
+                });
             }
             /// <summary>
             /// 查询条件类对象

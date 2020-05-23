@@ -1,4 +1,4 @@
-﻿<Page x:Class="Office.Work.Platform.Member.PageMemberSheet"
+﻿<Page x:Class="Office.Work.Platform.Member.PageMemberSheetFlow"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -52,6 +52,7 @@
             <TextBlock Text="身份证号" VerticalAlignment="Center" Margin="2"/>
             <TextBox Text="{Binding Id}" MinWidth="230"/>
             <Button Click="BtnSearchClickAsync" Content="查询" Width="60" Height="30" Margin="2,0,10,0"/>
+            <Button Click="BtnExportClickAsync" Content="导出" Width="60" Height="30" Margin="2,0,10,0"/>
         </ToolBar>
         <DocumentViewer Grid.Row="2" Name="docViewer" 
                         Background="LightSkyBlue" 

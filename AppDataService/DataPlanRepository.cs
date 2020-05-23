@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Office.Work.Platform.AppCodes;
 using Office.Work.Platform.Lib;
 
@@ -13,16 +12,16 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="mSearchPlan">查询条件类的实例</param>
         /// <returns></returns>
-        public static async Task<IEnumerable<Lib.Plan>> ReadPlans(PlanSearch mSearchPlan)
+        public static async Task<PlanSearchResult> ReadPlans(PlanSearch mSearchPlan)
         {
-            IEnumerable<Lib.Plan> PlansList = null;
+            PlanSearchResult SearchResult = null;
             string urlParams = DataApiRepository.CreateUrlParams(mSearchPlan);
 
             if (urlParams.Length > 0)
             {
-                PlansList = await DataApiRepository.GetApiUri<IEnumerable<Lib.Plan>>(_ApiUrlBase + "Plan/Search" + urlParams).ConfigureAwait(false);
+                SearchResult = await DataApiRepository.GetApiUri<PlanSearchResult>(_ApiUrlBase + "Plan/Search" + urlParams).ConfigureAwait(false);
             }
-            return PlansList;
+            return SearchResult;
         }
         /// <summary>
         /// 新增一个计划

@@ -1,6 +1,7 @@
 ﻿using Office.Work.Platform.AppCodes;
 using System;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace Office.Work.Platform.MemberUc
 {
@@ -10,16 +11,25 @@ namespace Office.Work.Platform.MemberUc
     /// </summary>
     public partial class UC_RelationsWin : Window
     {
-        public Lib.MemberRelations _CurRecord { get; set; }
+        private DispatcherTimer _UpdateInfoTimer = new System.Windows.Threading.DispatcherTimer();
+        private Lib.MemberRelations _CurRecord { get; set; }
         public UC_RelationsWin(Lib.MemberRelations ParamRecord)
         {
             InitializeComponent();
+
             this.Owner = AppSet.AppMainWindow;
+
             _CurRecord = ParamRecord;
-            DataContext = ParamRecord;
+            DataContext = _CurRecord;
         }
         private void BtnSaveClickAsync(object sender, RoutedEventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(_CurRecord.Relation) || string.IsNullOrWhiteSpace(_CurRecord.Name))
+            {
+                InputResultMsg.Text = "数据输入不正确!";
+                _UpdateInfoTimer.Start();
+                return;
+            }
             DialogResult = true;
             _CurRecord.UpDateTime = DateTime.Now;
             this.Close();
@@ -41,6 +51,17 @@ namespace Office.Work.Platform.MemberUc
             {
                 Dispatcher.BeginInvoke(new Action(() => this.DragMove()));
             }
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            _UpdateInfoTimer.Interval = new TimeSpan(0, 0, 2);
+
+            _UpdateInfoTimer.Tick += new EventHandler((x, y) =>
+            {
+                InputResultMsg.Text = "";
+                _UpdateInfoTimer.Stop();
+            });
         }
     }
 }

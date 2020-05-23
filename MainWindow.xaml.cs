@@ -45,7 +45,7 @@ namespace Office.Work.Platform
             {
                 await CheckAppUpdateAsync();
             });
-            _UpdateAppTimer.Interval = new TimeSpan(0, 5, 0);
+            _UpdateAppTimer.Interval = new TimeSpan(0, 1, 0);
 
             #region 显示系统托盘图标
             //系统托盘显示

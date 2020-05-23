@@ -18,17 +18,17 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="mSearchFile">查询条件类的实例</param>
         /// <returns></returns>
-        public static async Task<IEnumerable<Lib.PlanFile>> ReadFiles(PlanFileSearch mSearchFile)
+        public static async Task<PlanFileSearchResult> ReadFiles(PlanFileSearch mSearchFile)
         {
-            IEnumerable<Lib.PlanFile> FileList = null;
+            PlanFileSearchResult FileSearchResult = null;
             //创建查询url参数
             string urlParams = DataApiRepository.CreateUrlParams(mSearchFile);
 
             if (urlParams.Length > 0)
             {
-                FileList = await DataApiRepository.GetApiUri<IEnumerable<Lib.PlanFile>>(_ApiUrlBase + "PlanFile/Search" + urlParams).ConfigureAwait(false);
+                FileSearchResult = await DataApiRepository.GetApiUri<PlanFileSearchResult>(_ApiUrlBase + "PlanFile/Search" + urlParams).ConfigureAwait(false);
             }
-            return FileList;
+            return FileSearchResult;
         }
         /// <summary>
         /// 上传计划附件

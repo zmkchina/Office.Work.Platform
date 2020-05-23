@@ -44,7 +44,6 @@ namespace Office.Work.Platform.AppCodes
         /// <param name="FileFullPathName"></param>
         public static void UseDefaultAppOpenFile(string FileFullPathName)
         {
-            ProgressMessageHandler progress = new System.Net.Http.Handlers.ProgressMessageHandler();
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
                 UseShellExecute = true,

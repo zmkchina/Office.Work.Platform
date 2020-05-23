@@ -297,13 +297,16 @@ namespace Office.Work.Platform.Plan
                 {
                     //如果该计划的附件文件没有读取则读取之。
                     PlanFileSearch mSearchFile = new PlanFileSearch() { PlanId = P_Entity.Id, UserId = AppSet.LoginUser.Id };
-                    IEnumerable<Lib.PlanFile> UpFiles = await DataPlanFileRepository.ReadFiles(mSearchFile);
-                    UpFiles?.ToList().ForEach(e =>
+                    PlanFileSearchResult planFileSearchResult = await DataPlanFileRepository.ReadFiles(mSearchFile);
+                    if (planFileSearchResult != null && planFileSearchResult.RecordList != null)
                     {
-                        e.UpIntProgress = 100;
+                        planFileSearchResult.RecordList.ToList().ForEach(e =>
+                        {
+                            e.UpIntProgress = 100;
 
-                        PlanFiles.Add(e);
-                    });
+                            PlanFiles.Add(e);
+                        });
+                    }
                 }
                 if (CurPlan.CreateUserId != null)
                 {

@@ -13,17 +13,17 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="SearchCondition"></param>
         /// <returns></returns>
-        public static async Task<IEnumerable<Lib.Note>> GetRecords(NoteSearch SearchCondition)
+        public static async Task<NoteSearchResult> GetRecords(NoteSearch SearchCondition)
         {
-            IEnumerable<Lib.Note> RecList = null;
+            NoteSearchResult SearchResult = null;
             //创建查询url参数
             string urlParams = DataApiRepository.CreateUrlParams(SearchCondition);
 
             if (urlParams.Length > 0)
             {
-                RecList = await DataApiRepository.GetApiUri<IEnumerable<Lib.Note>>(_ApiUrlBase + "Note/Search" + urlParams).ConfigureAwait(false);
+                SearchResult = await DataApiRepository.GetApiUri<NoteSearchResult>(_ApiUrlBase + "Note/Search" + urlParams).ConfigureAwait(false);
             }
-            return RecList;
+            return SearchResult;
         }
         /// <summary>
         /// 根据ID查询指定记录信息
@@ -32,7 +32,7 @@ namespace Office.Work.Platform.AppDataService
         /// <returns></returns>
         public static async Task<Lib.Note> GetOneById(string Id)
         {
-           return await DataApiRepository.GetApiUri<Lib.Note>(_ApiUrlBase + "Note/" + Id);
+            return await DataApiRepository.GetApiUri<Lib.Note>(_ApiUrlBase + "Note/" + Id);
         }
         /// <summary>
         /// 单个新增数据
@@ -74,6 +74,6 @@ namespace Office.Work.Platform.AppDataService
             ExcuteResult JsonResult = await DataApiRepository.DeleteApiUri<ExcuteResult>(_ApiUrlBase + "Note/?Id=" + UserId).ConfigureAwait(false);
             return JsonResult;
         }
-       
+
     }
 }

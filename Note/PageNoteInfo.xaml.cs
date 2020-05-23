@@ -18,12 +18,12 @@ namespace Office.Work.Platform.Note
     /// </summary>
     public partial class PageNoteInfo : Page
     {
-        private CurViewModel _CurViewModel;
+        private CurPageViewModel _CurPageViewModel;
 
         public PageNoteInfo(bool IsMySelf)
         {
             InitializeComponent();
-            _CurViewModel = new CurViewModel(IsMySelf);
+            _CurPageViewModel = new CurPageViewModel(IsMySelf);
         }
         public void Page_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
@@ -37,43 +37,44 @@ namespace Office.Work.Platform.Note
         private async void btn_Search_ClickAsync(object sender, System.Windows.RoutedEventArgs e)
         {
             Col_NoteInfo.Width = new System.Windows.GridLength(0, System.Windows.GridUnitType.Pixel);
-            await _CurViewModel.SearchNodes();
-            DataContext = _CurViewModel;
+            await _CurPageViewModel.GetNotesAsync();
+            DataContext = _CurPageViewModel;
+            AppFuns.SetStateBarText($"共查询到 :{_CurPageViewModel.SearchNote.RecordCount}条记录,每页{_CurPageViewModel.SearchNote.PageSize}条，共{_CurPageViewModel.SearchNote.PageCount}页！");
         }
         private void btn_Add_ClickAsync(object sender, System.Windows.RoutedEventArgs e)
         {
             RichTBox.Document.Blocks.Clear();
-            _CurViewModel.UserGrantSelectList.Clear();
+            _CurPageViewModel.UserGrantSelectList.Clear();
             foreach (User item in AppSet.SysUsers.Where(e => !e.Id.Equals("admin", StringComparison.Ordinal)).OrderBy(x => x.OrderIndex))
             {
-                _CurViewModel.UserGrantSelectList.Add(new SelectObj<User>(true, item));
+                _CurPageViewModel.UserGrantSelectList.Add(new SelectObj<User>(true, item));
             }
-            _CurViewModel.CurNote = new Lib.Note()
+            _CurPageViewModel.CurNote = new Lib.Note()
             {
                 UserId = AppSet.LoginUser.Id,
                 CanReadUserIds = AppSet.LoginUser.Id
             };
-            TB_NoteCaption.DataContext = _CurViewModel.CurNote;
+            TB_NoteCaption.DataContext = _CurPageViewModel.CurNote;
             Col_NoteInfo.Width = new System.Windows.GridLength(2, System.Windows.GridUnitType.Star);
         }
         private void Btn_Save_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(_CurViewModel.CurNote.Caption))
+            if (string.IsNullOrWhiteSpace(_CurPageViewModel.CurNote.Caption))
             {
                 AppFuns.ShowMessage("必须输入备忘标题！", Caption: "警告");
                 TB_NoteCaption.Focus();
                 return;
             }
-            _CurViewModel.CurNote.CanReadUserIds = _CurViewModel.GetSelectUserIds(_CurViewModel.UserGrantSelectList);
+            _CurPageViewModel.CurNote.CanReadUserIds = _CurPageViewModel.GetSelectUserIds(_CurPageViewModel.UserGrantSelectList);
 
-            if (!_CurViewModel.CurNote.CanReadUserIds.Contains(AppSet.LoginUser.Id))
+            if (!_CurPageViewModel.CurNote.CanReadUserIds.Contains(AppSet.LoginUser.Id))
             {
                 AppFuns.ShowMessage("你本人必须有读取该计划的权限！", Caption: "警告");
                 return;
             }
             TextRange documentTextRange = new TextRange(RichTBox.Document.ContentStart, RichTBox.Document.ContentEnd);
-            _CurViewModel.CurNote.TextContent = documentTextRange.Text;
-            if (string.IsNullOrWhiteSpace(_CurViewModel.CurNote.TextContent))
+            _CurPageViewModel.CurNote.TextContent = documentTextRange.Text;
+            if (string.IsNullOrWhiteSpace(_CurPageViewModel.CurNote.TextContent))
             {
                 AppFuns.ShowMessage("必须输入备忘内容！", Caption: "警告");
                 return;
@@ -82,34 +83,34 @@ namespace Office.Work.Platform.Note
             string dataFormat = DataFormats.Rtf;
             MemoryStream mStream = new MemoryStream();
             documentTextRange.Save(mStream, dataFormat);
-            _CurViewModel.CurNote.Content = System.Convert.ToBase64String(mStream.ToArray());
+            _CurPageViewModel.CurNote.Content = System.Convert.ToBase64String(mStream.ToArray());
             App.Current.Dispatcher.Invoke(async () =>
             {
-                ExcuteResult result = await _CurViewModel.SaveNode();
+                ExcuteResult result = await _CurPageViewModel.SaveNode();
                 AppFuns.ShowMessage(result.Msg);
                 this.Btn_Save.IsEnabled = true;
             });
         }
         private void ListBox_SelectionChangedAsync(object sender, SelectionChangedEventArgs e)
         {
-            _CurViewModel.CurNote = ListBox_Notes.SelectedItem as Lib.Note;
-            if (_CurViewModel.CurNote != null)
+            _CurPageViewModel.CurNote = ListBox_Notes.SelectedItem as Lib.Note;
+            if (_CurPageViewModel.CurNote != null)
             {
-                _CurViewModel.UserGrantSelectList.Clear();
+                _CurPageViewModel.UserGrantSelectList.Clear();
                 foreach (User item in AppSet.SysUsers.Where(e => !e.Id.Equals("admin", StringComparison.Ordinal)).OrderBy(x => x.OrderIndex))
                 {
-                    _CurViewModel.UserGrantSelectList.Add(new SelectObj<User>(_CurViewModel.CurNote.CanReadUserIds != null && (_CurViewModel.CurNote.CanReadUserIds.Contains(item.Id) || _CurViewModel.CurNote.CanReadUserIds.Equals("all", StringComparison.Ordinal)), item));
+                    _CurPageViewModel.UserGrantSelectList.Add(new SelectObj<User>(_CurPageViewModel.CurNote.CanReadUserIds != null && (_CurPageViewModel.CurNote.CanReadUserIds.Contains(item.Id) || _CurPageViewModel.CurNote.CanReadUserIds.Equals("all", StringComparison.Ordinal)), item));
                 }
-                TB_NoteCaption.DataContext = _CurViewModel.CurNote;
+                TB_NoteCaption.DataContext = _CurPageViewModel.CurNote;
                 TextRange TR = new TextRange(this.RichTBox.Document.ContentStart, this.RichTBox.Document.ContentEnd);
-                MemoryStream s = new MemoryStream((System.Convert.FromBase64String(_CurViewModel.CurNote.Content)));
+                MemoryStream s = new MemoryStream((System.Convert.FromBase64String(_CurPageViewModel.CurNote.Content)));
                 TR.Load(s, DataFormats.Rtf);
                 if (Col_NoteInfo.Width.Value == 0)
                 {
                     Col_NoteList.Width = new System.Windows.GridLength(1, System.Windows.GridUnitType.Star);
                     Col_NoteInfo.Width = new System.Windows.GridLength(2, System.Windows.GridUnitType.Star);
                 }
-                if (!_CurViewModel.CurNote.UserId.Equals(AppSet.LoginUser.Id))
+                if (!_CurPageViewModel.CurNote.UserId.Equals(AppSet.LoginUser.Id))
                 {
                     this.Btn_Save.IsEnabled = false;
                 }
@@ -123,7 +124,7 @@ namespace Office.Work.Platform.Note
         {
             App.Current.Dispatcher.Invoke(async () =>
             {
-                ExcuteResult result = await _CurViewModel.DelNode();
+                ExcuteResult result = await _CurPageViewModel.DelNode();
                 if (result.State == 0)
                 {
                     Col_NoteInfo.Width = new System.Windows.GridLength(0, System.Windows.GridUnitType.Pixel);
@@ -132,39 +133,64 @@ namespace Office.Work.Platform.Note
             });
         }
 
+
+        private async void btn_PrevPage_ClickAsync(object sender, RoutedEventArgs e)
+        {
+            if (_CurPageViewModel.SearchNote.PageIndex <= 1)
+            {
+                _CurPageViewModel.SearchNote.PageIndex = _CurPageViewModel.SearchNote.PageCount;
+            }
+            else
+            {
+                _CurPageViewModel.SearchNote.PageIndex--;
+            }
+            await _CurPageViewModel.GetNotesAsync();
+        }
+
+        private async void btn_NextPage_ClickAsync(object sender, RoutedEventArgs e)
+        {
+            if (_CurPageViewModel.SearchNote.PageIndex >= _CurPageViewModel.SearchNote.PageCount)
+            {
+                _CurPageViewModel.SearchNote.PageIndex = 1;
+            }
+            else
+            {
+                _CurPageViewModel.SearchNote.PageIndex++;
+            }
+            await _CurPageViewModel.GetNotesAsync();
+        }
+
         /// <summary>
         /// 该页面的视图模型
         /// </summary>
-        private class CurViewModel : NotificationObject
+        private class CurPageViewModel : NotificationObject
         {
-            public CurViewModel(bool IsMySelf)
+            public CurPageViewModel(bool IsMySelf)
             {
                 UserGrantSelectList = new ObservableCollection<SelectObj<User>>();
                 CollectNotes = new ObservableCollection<Lib.Note>();
                 if (IsMySelf)
                 {
-                    NoteSearch = new NoteSearch()
+                    SearchNote = new NoteSearch()
                     {
+                        PageIndex = 1,
+                        PageSize = 15,
                         IsMySelft = "Yes",
                         UserId = AppSet.LoginUser.Id
                     };
                 }
                 else
                 {
-                    NoteSearch = new NoteSearch()
+                    SearchNote = new NoteSearch()
                     {
+                        PageIndex = 1,
+                        PageSize = 15,
                         IsMySelft = "No",
                         UserId = AppSet.LoginUser.Id
                     };
                 }
             }
-            /// <summary>
-            /// 有权读取该信息的用户
-            /// </summary>
-            public ObservableCollection<SelectObj<User>> UserGrantSelectList { get; set; }
-            public ObservableCollection<Lib.Note> CollectNotes { get; set; }
-            public Lib.Note CurNote { get; set; }
-            public NoteSearch NoteSearch { get; set; }
+
 
             /// <summary>
             /// 获取所有选中的用记信息
@@ -177,15 +203,18 @@ namespace Office.Work.Platform.Note
                 return string.Join(",", SelectIds.ToArray());
             }
 
-            public async Task SearchNodes()
+            public async Task GetNotesAsync()
             {
                 CollectNotes.Clear();
-                IEnumerable<Lib.Note> EnuNodes = await DataNoteRepository.GetRecords(NoteSearch);
-                EnuNodes?.ToList().ForEach(e =>
+                NoteSearchResult NoteSearchResult = await DataNoteRepository.GetRecords(SearchNote);
+                if (NoteSearchResult == null) { return; }
+                
+                SearchNote.RecordCount = NoteSearchResult.SearchCondition.RecordCount;
+
+                NoteSearchResult.RecordList?.ToList().ForEach(e =>
                 {
                     CollectNotes.Add(e);
                 });
-                AppFuns.SetStateBarText($"共查询到：{CollectNotes.Count} 条信息！");
             }
             public async Task<ExcuteResult> DelNode()
             {
@@ -218,7 +247,13 @@ namespace Office.Work.Platform.Note
                 }
                 return excuteResult;
             }
+            /// <summary>
+            /// 有权读取该信息的用户
+            /// </summary>
+            public ObservableCollection<SelectObj<User>> UserGrantSelectList { get; set; }
+            public ObservableCollection<Lib.Note> CollectNotes { get; set; }
+            public Lib.Note CurNote { get; set; }
+            public NoteSearch SearchNote { get; set; }
         }
-
     }
 }

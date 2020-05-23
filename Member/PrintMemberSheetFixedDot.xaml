@@ -1,0 +1,663 @@
+﻿<FixedDocument
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ghelper="Office.Work.Platform.Member">
+    <FixedDocument.Resources>
+        <PageContent Name="Page1" x:Key="Page1">
+            <FixedPage Width="793.76" Height="1122.56">
+                <StackPanel Width="793.76" HorizontalAlignment="Stretch">
+                    <StackPanel Margin="50,85,50,0" HorizontalAlignment="Stretch">
+                        <TextBlock  HorizontalAlignment="Center" Margin="0,50,0,30" FontSize="28" 
+                           Text="{Binding PrintCaption}"></TextBlock>
+                        <Grid HorizontalAlignment="Center" TextElement.FontSize="16" TextElement.FontFamily="宋体">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="80"></ColumnDefinition>
+                                <ColumnDefinition Width="90"></ColumnDefinition>
+                                <ColumnDefinition Width="80"></ColumnDefinition>
+                                <ColumnDefinition Width="90"></ColumnDefinition>
+                                <ColumnDefinition Width="95"></ColumnDefinition>
+                                <ColumnDefinition Width="90"></ColumnDefinition>
+                                <ColumnDefinition Width="130"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition ></RowDefinition>
+                                <RowDefinition ></RowDefinition>
+                                <RowDefinition ></RowDefinition>
+                                <RowDefinition ></RowDefinition>
+                                <RowDefinition ></RowDefinition>
+                                <RowDefinition ></RowDefinition>
+                                <RowDefinition ></RowDefinition>
+                                <RowDefinition ></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <!--GridRow=0-->
+                            <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource  GridInnerCellBorder}">
+                                <TextBlock  HorizontalAlignment="Center" Padding="0,17"
+                                            Text="姓  名"></TextBlock>
+                            </Border>
+                            <Border Grid.Row="0" Grid.Column="1" BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center"
+                                            Text="{Binding CurMember.Name}"></TextBlock>
+                            </Border>
+                            <Border Grid.Row="0" Grid.Column="2" BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center"  Padding="0,17"
+                                            Text="性  别"></TextBlock>
+                            </Border>
+                            <Border Grid.Row="0" Grid.Column="3" BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center"  VerticalAlignment="Center"
+                                            Text="{Binding CurMember.Sex}"></TextBlock>
+                            </Border>
+                            <Border Grid.Row="0" Grid.Column="4" BorderBrush="Black" BorderThickness="1">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,5,0,3">
+                                        <Run Text="出生年月"/>
+                                    </TextBlock>
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,3,0,5">
+                                        <Run Text="(岁)"/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Row="0" Grid.Column="5" BorderBrush="Black" BorderThickness="1">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,5,0,3">
+                                        <Run Text="{Binding CurMember.Birthday,StringFormat={}yyyy.MM}"/>
+                                    </TextBlock>
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,3,0,5">
+                                        <Run Text="{Binding MemberAge,StringFormat=({0})}"/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Row="0" Grid.RowSpan="4" Grid.Column="6" BorderBrush="Black" BorderThickness="1" >
+                                <Image  HorizontalAlignment="Center" Source="{Binding HeadImage}" Margin="3"></Image>
+                            </Border>
+                            <!--GridRow=1-->
+                            <Border Grid.Row="1" Grid.Column="0" BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center"  Padding="0,15"
+                                            Text="民  族"></TextBlock>
+                            </Border>
+                            <Border Grid.Row="1" Grid.Column="1" BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center"   VerticalAlignment="Center"
+                                            Text="{Binding CurMember.Nation}"></TextBlock>
+                            </Border>
+                            <Border Grid.Row="1" Grid.Column="2" BorderBrush="Black" BorderThickness="1" >
+                                <TextBlock  HorizontalAlignment="Center" Padding="0,15"
+                                            Text="籍  贯"></TextBlock>
+                            </Border>
+                            <Border Grid.Row="1" Grid.Column="3" BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center"  VerticalAlignment="Center"
+                                            Text="{Binding CurMember.NativePlace}"></TextBlock>
+                            </Border>
+                            <Border Grid.Row="1" Grid.Column="4" BorderBrush="Black" BorderThickness="1" >
+                                <TextBlock  HorizontalAlignment="Center" Padding="0,15"
+                                            Text="出 生 地"></TextBlock>
+                            </Border>
+                            <Border Grid.Row="1" Grid.Column="5" BorderBrush="Black" BorderThickness="1" >
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center"
+                                            Text="{Binding CurMember.Birthplace}"></TextBlock>
+                            </Border>
+                            <!--GridRow=2-->
+                            <Border Grid.Row="2" Grid.Column="0" BorderBrush="Black" BorderThickness="1">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,5,0,3">
+                                        <Run Text="入  党"/>
+                                    </TextBlock>
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,3,0,5">
+                                        <Run Text="时  间"/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Row="2" Grid.Column="1" BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center"
+                                            Text="{Binding CurMember.JoinCPC,StringFormat={}yyyy.MM}"/>
+                            </Border>
+                            <Border Grid.Row="2" Grid.Column="2" BorderBrush="Black" BorderThickness="1">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,8,0,3">
+                                        <Run Text="参加工"/>
+                                    </TextBlock>
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,3,0,8">
+                                        <Run Text="作时间"/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Row="2" Grid.Column="3" BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center"  VerticalAlignment="Center"
+                                            Text="{Binding CurMember.BeginWork,StringFormat={}yyyy.MM}"></TextBlock>
+                            </Border>
+                            <Border Grid.Row="2" Grid.Column="4" BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center" Padding="0,15"
+                                            Text="健康状况"></TextBlock>
+                            </Border>
+                            <Border Grid.Row="2" Grid.Column="5" BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center"   VerticalAlignment="Center"
+                                            Text="{Binding CurMember.HealthState}"></TextBlock>
+                            </Border>
+                            <!--GridRow=3-->
+                            <Border Grid.Row="3" Grid.Column="0" BorderBrush="Black" BorderThickness="1">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,8,0,3">
+                                        <Run Text="专业技"/>
+                                    </TextBlock>
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,3,0,8">
+                                        <Run Text="术职务"/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center"  VerticalAlignment="Center"
+                                            Text="{Binding CurMember.TechnicalTitle}"></TextBlock>
+                            </Border>
+                            <Border Grid.Row="3" Grid.Column="3" BorderBrush="Black" BorderThickness="1">
+                                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,0,0,3">
+                                        <Run Text="熟悉专业"/>
+                                    </TextBlock>
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,3,0,0">
+                                        <Run Text="有何特长"/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Row="3" Grid.Column="4" Grid.ColumnSpan="2" BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center"  VerticalAlignment="Center"
+                                            Text="{Binding CurMember.Speciality}"></TextBlock>
+                            </Border>
+                            <!--GridRow=4-->
+                            <Border Grid.Row="4" Grid.Column="0" Grid.RowSpan="2" BorderBrush="Black" BorderThickness="1">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,33,0,3">
+                                        <Run Text="学  历"/>
+                                    </TextBlock>
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,3,0,5">
+                                        <Run Text="学  位"/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Row="4" Grid.Column="1" BorderBrush="Black" BorderThickness="1">
+                                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,8,0,3">
+                                        <Run Text="全日制"/>
+                                    </TextBlock>
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,3,0,8">
+                                        <Run Text="教  育"/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2" BorderBrush="Black" BorderThickness="1">
+                                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,0,0,3">
+                                        <Run Text="{Binding CurMember.EducationDays}"/>
+                                    </TextBlock>
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,3,0,0">
+                                        <Run Text="{Binding CurMember.DegreeDays}"/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Row="4" Grid.Column="4" BorderBrush="Black" BorderThickness="1">
+                                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,0,0,3">
+                                        <Run Text="毕业院校"/>
+                                    </TextBlock>
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,3,0,0">
+                                        <Run Text="系及专业"/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Row="4" Grid.Column="5" Grid.ColumnSpan="2" BorderBrush="Black" BorderThickness="1">
+                                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,0,0,3">
+                                        <Run Text="{Binding CurMember.GraduationSchoolDays}"/>
+                                    </TextBlock>
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,3,0,0">
+                                        <Run Text="{Binding CurMember.MajorDays}"/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+                            <!--GridRow=5-->
+                            <Border Grid.Row="5" Grid.Column="1" BorderBrush="Black" BorderThickness="1">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,8,0,3">
+                                        <Run Text="在  职"/>
+                                    </TextBlock>
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,3,0,8">
+                                        <Run Text="教  育"/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="2" BorderBrush="Black" BorderThickness="1">
+                                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,0,0,3">
+                                        <Run Text="{Binding CurMember.EducationTop}"/>
+                                    </TextBlock>
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,3,0,0">
+                                        <Run Text="{Binding CurMember.DegreeTop}"/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Row="5" Grid.Column="4" BorderBrush="Black" BorderThickness="1">
+                                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,0,0,3">
+                                        <Run Text="毕业院校"/>
+                                    </TextBlock>
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,3,0,0">
+                                        <Run Text="系及专业"/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Row="5" Grid.Column="5" Grid.ColumnSpan="2" BorderBrush="Black" BorderThickness="1">
+                                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,0,0,3">
+                                        <Run Text="{Binding CurMember.GraduationSchoolTop}"/>
+                                    </TextBlock>
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,3,0,0">
+                                        <Run Text="{Binding CurMember.MajorTop}"/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+                            <!--GridRow=6-->
+                            <Border Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2"  BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center" Padding="0,18"
+                                            Text="现任职务"></TextBlock>
+                            </Border>
+                            <Border Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="2" BorderBrush="Black" BorderThickness="1">
+                                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,0,0,3">
+                                        <Run Text="{Binding CurMember.Post}"/>
+                                    </TextBlock>
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,3,0,0">
+                                        <Run Text="{Binding CurMember.PostInCPC}"/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Row="6" Grid.Column="4" BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center"
+                                            Text="身份证号"></TextBlock>
+                            </Border>
+
+                            <Border Grid.Row="6" Grid.Column="5" Grid.ColumnSpan="2" BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center"
+                                            Text="{Binding CurMember.Id}"></TextBlock>
+                            </Border>
+                            <!--GridRow=7 简历-->
+                            <Border Grid.Row="7" Grid.Column="0" BorderBrush="Black" BorderThickness="1">
+                                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,0,0,3">
+                                        <Run Text="简"/>
+                                    </TextBlock>
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,50,0,0">
+                                        <Run Text="历"/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="6" MinHeight="420" BorderBrush="Black" BorderThickness="1">
+                                <ListBox ItemsSource="{Binding Path=Resumes}" VerticalAlignment="Center" BorderBrush="Transparent" >
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel>
+                                                <TextBlock TextWrapping="Wrap">
+                                                    <Run  Text="{Binding Path=BeginDate,StringFormat={}{0:yyyy.MM}}" />
+                                                    <Run  Text="{Binding Path=EndDate,StringFormat=-- {0:yyyy.MM }}"/>
+                                                    <Run  Text="{Binding Path=Content}"/>
+                                                    <Run  Text="{Binding Path=Remark,StringFormat={} {0}}" />
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                    <ListBox.ItemContainerStyle>
+                                        <Style TargetType="{x:Type ListBoxItem}">
+                                            <Setter Property="Margin" Value="0,5,0,0"/>
+                                        </Style>
+                                    </ListBox.ItemContainerStyle>
+                                </ListBox>
+                            </Border>
+                        </Grid>
+                    </StackPanel>
+                </StackPanel>
+            </FixedPage>
+        </PageContent>
+        <PageContent Name="Page2" x:Key="Page2">
+            <FixedPage Width="793.76" Height="1122.56">
+                <StackPanel Width="793.76"  HorizontalAlignment="Center"  TextElement.FontSize="16" TextElement.FontFamily="宋体">
+                    <StackPanel Margin="50,100,50,0" HorizontalAlignment="Stretch">
+                        <Grid HorizontalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="80"></ColumnDefinition>
+                                <ColumnDefinition Width="80"></ColumnDefinition>
+                                <ColumnDefinition Width="80"></ColumnDefinition>
+                                <ColumnDefinition Width="80"></ColumnDefinition>
+                                <ColumnDefinition Width="90"></ColumnDefinition>
+                                <ColumnDefinition Width="250"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition ></RowDefinition>
+                                <RowDefinition ></RowDefinition>
+                                <RowDefinition ></RowDefinition>
+                                <RowDefinition ></RowDefinition>
+                                <RowDefinition ></RowDefinition>
+                                <RowDefinition ></RowDefinition>
+                                <RowDefinition ></RowDefinition>
+                                <RowDefinition ></RowDefinition>
+                                <RowDefinition ></RowDefinition>
+                                <RowDefinition ></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <!--GridRow=0 奖励情况-->
+                            <Border Grid.Row="0" Grid.Column="0" BorderBrush="Black" BorderThickness="1">
+                                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,0,0,8">
+                                        <Run Text="奖惩"/>
+                                    </TextBlock>
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,8,0,0">
+                                        <Run Text="情况"/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="5" BorderBrush="Black" MinHeight="250" BorderThickness="1">
+                                <ListBox ItemsSource="{Binding Path=PrizePunishs}" VerticalAlignment="Center" BorderBrush="Transparent">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel>
+                                                <TextBlock TextWrapping="Wrap">
+                                                    <Run  Text="{Binding Path=OccurDate,StringFormat= {}{0:yyyy.MM}}" />
+                                                    <Run  Text="{Binding Path=PrizrOrPunishName,StringFormat= {}{0}}"/>
+                                                    <Run  Text="{Binding Path=PrizrOrPunishReasion,StringFormat= {}{0}}"/>
+                                                    <Run  Text="{Binding Path=PrizrOrPunishUnit,StringFormat= {}{0}}"/>
+                                                    <Run  Text="{Binding Path=Remark,StringFormat= {} {0}}" />
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                    <ListBox.ItemContainerStyle>
+                                        <Style TargetType="{x:Type ListBoxItem}">
+                                            <Setter Property="Margin" Value="0,5,0,0"/>
+                                        </Style>
+                                    </ListBox.ItemContainerStyle>
+                                </ListBox>
+                            </Border>
+                            <!--GridRow=1 奖励情况-->
+                            <Border Grid.Row="1" Grid.Column="0" BorderBrush="Black" BorderThickness="1">
+                                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Center"  Padding="0,0,0,3">
+                                        <Run Text="度近"/>
+                                    </TextBlock>
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,3,0,3">
+                                        <Run Text="考三"/>
+                                    </TextBlock>
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,3,0,3">
+                                        <Run Text="核年"/>
+                                    </TextBlock>
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,3,0,3">
+                                        <Run Text="情来"/>
+                                    </TextBlock>
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,3,0,0">
+                                        <Run Text="况年"/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Row="1" Grid.Column="1"  Grid.ColumnSpan="5" MinHeight="180" BorderBrush="Black" BorderThickness="1">
+                                <ListBox ItemsSource="{Binding Path=Appraises}"  VerticalAlignment="Center" BorderBrush="Transparent">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel>
+                                                <TextBlock TextWrapping="Wrap">
+                                                    <Run  Text="{Binding Path=Year,StringFormat= {}{0:yyyy}}" />
+                                                    <Run  Text="{Binding Path=Result,StringFormat= {}{0}}"/>
+                                                    <Run  Text="{Binding Path=Remark,StringFormat= {}{0}}" />
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                    <ListBox.ItemContainerStyle>
+                                        <Style TargetType="{x:Type ListBoxItem}">
+                                            <Setter Property="Margin" Value="0,5,0,0"/>
+                                        </Style>
+                                    </ListBox.ItemContainerStyle>
+                                </ListBox>
+                            </Border>
+
+                            <!--GridRow=2 社会关系-->
+                            <Border Grid.Row="2" Grid.Column="0" Grid.RowSpan="7" MinHeight="350"  BorderBrush="Black" BorderThickness="1">
+                                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,0,0,0" >
+                                        <Run Text="主"/>
+                                        <LineBreak/>
+                                        <Run Text="要"/>
+                                        <LineBreak/>
+                                        <Run Text="家"/>
+                                        <LineBreak/>
+                                        <Run Text="庭"/>
+                                        <LineBreak/>
+                                        <Run Text="成"/>
+                                        <LineBreak/>
+                                        <Run Text="员"/>
+                                        <LineBreak/>
+                                        <Run Text="及"/>
+                                        <LineBreak/>
+                                        <Run Text="社"/>
+                                        <LineBreak/>
+                                        <Run Text="会"/>
+                                        <LineBreak/>
+                                        <Run Text="关"/>
+                                        <LineBreak/>
+                                        <Run Text="系"/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Row="2" Grid.Column="1" BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <Run Text="称 谓"/>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Row="2" Grid.Column="2"  BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <Run Text="姓 名"/>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Row="2" Grid.Column="3"  BorderBrush="Black" BorderThickness="1">
+                                <StackPanel Orientation="Vertical" VerticalAlignment="Center" >
+                                    <TextBlock  HorizontalAlignment="Center" >
+                                        <Run Text="出生"/>
+                                    </TextBlock>
+                                    <TextBlock  HorizontalAlignment="Center" >
+                                        <Run Text="年月"/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Row="2" Grid.Column="4" BorderBrush="Black" BorderThickness="1">
+                                <StackPanel Orientation="Vertical" VerticalAlignment="Center" >
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,3,0,2">
+                                        <Run Text="政治"/>
+                                    </TextBlock>
+                                    <TextBlock  HorizontalAlignment="Center" Padding="0,2,0,3">
+                                        <Run Text="面貌"/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Row="2" Grid.Column="5"  BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                    <Run Text="工作单位及职务"/>
+                                </TextBlock>
+                            </Border>
+                            <!--GridRow=3-->
+                            <Border Grid.Row="3" Grid.Column="1" BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center"  >
+                                    <Run Text="{Binding Relations[0].Relation}"/>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Row="3" Grid.Column="2"  BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center"  >
+                                    <Run Text="{Binding Relations[0].Name}"/>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Row="3" Grid.Column="3"  BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                    <Run Text="{Binding Relations[0].Birthday,StringFormat={}yyy.MM}"/>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Row="3" Grid.Column="4" BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                    <Run Text="{Binding Relations[0].PoliticalStatus}"/>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Row="3" Grid.Column="5"  BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center"  >
+                                    <Run Text="{Binding Relations[0].UnitName}"/>
+                                    <Run Text="{Binding Relations[0].Role}"/>
+                                </TextBlock>
+                            </Border>
+                            <!--GridRow=4-->
+                            <Border Grid.Row="4" Grid.Column="1" BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                    <Run Text="{Binding Relations[1].Relation}"/>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Row="4" Grid.Column="2"  BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center"  >
+                                    <Run Text="{Binding Relations[1].Name}"/>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Row="4" Grid.Column="3"  BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                    <Run Text="{Binding Relations[1].Birthday,StringFormat={}yyy.MM}"/>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Row="4" Grid.Column="4" BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                    <Run Text="{Binding Relations[1].PoliticalStatus}"/>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Row="4" Grid.Column="5"  BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <Run Text="{Binding Relations[1].UnitName}"/>
+                                    <Run Text="{Binding Relations[1].Role}"/>
+                                </TextBlock>
+                            </Border>
+                            <!--GridRow=5-->
+                            <Border Grid.Row="5" Grid.Column="1" BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <Run Text="{Binding Relations[2].Relation}"/>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Row="5" Grid.Column="2"  BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <Run Text="{Binding Relations[2].Name}"/>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Row="5" Grid.Column="3"  BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center"  >
+                                    <Run Text="{Binding Relations[2].Birthday,StringFormat={}yyy.MM}"/>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Row="5" Grid.Column="4" BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                    <Run Text="{Binding Relations[2].PoliticalStatus}"/>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Row="5" Grid.Column="5"  BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <Run Text="{Binding Relations[2].UnitName}"/>
+                                    <Run Text="{Binding Relations[2].Role}"/>
+                                </TextBlock>
+                            </Border>
+                            <!--GridRow=6-->
+                            <Border Grid.Row="6" Grid.Column="1" BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                    <Run Text="{Binding Relations[3].Relation}"/>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Row="6" Grid.Column="2"  BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                    <Run Text="{Binding Relations[3].Name}"/>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Row="6" Grid.Column="3"  BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                    <Run Text="{Binding Relations[3].Birthday,StringFormat={}yyy.MM}"/>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Row="6" Grid.Column="4" BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <Run Text="{Binding Relations[3].PoliticalStatus}"/>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Row="6" Grid.Column="5"  BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                    <Run Text="{Binding Relations[3].UnitName}"/>
+                                    <Run Text="{Binding Relations[3].Role}"/>
+                                </TextBlock>
+                            </Border>
+                            <!--GridRow=7-->
+                            <Border Grid.Row="7" Grid.Column="1" BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <Run Text="{Binding Relations[4].Relation}"/>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Row="7" Grid.Column="2"  BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                    <Run Text="{Binding Relations[4].Name}"/>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Row="7" Grid.Column="3"  BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                    <Run Text="{Binding Relations[4].Birthday,StringFormat={}yyy.MM}"/>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Row="7" Grid.Column="4" BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                    <Run Text="{Binding Relations[4].PoliticalStatus}"/>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Row="7" Grid.Column="5"  BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                    <Run Text="{Binding Relations[4].UnitName}"/>
+                                    <Run Text="{Binding Relations[4].Role}"/>
+                                </TextBlock>
+                            </Border>
+                            <!--GridRow=8_-->
+                            <Border Grid.Row="8" Grid.Column="1" BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                    <Run Text="{Binding Relations[5].Relation}"/>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Row="8" Grid.Column="2"  BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center"  >
+                                    <Run Text="{Binding Relations[5].Name}"/>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Row="8" Grid.Column="3"  BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                    <Run Text="{Binding Relations[5].Birthday,StringFormat={}yyy.MM}"/>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Row="8" Grid.Column="4" BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                    <Run Text="{Binding Relations[5].PoliticalStatus}"/>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Row="8" Grid.Column="5"  BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                    <Run Text="{Binding Relations[5].UnitName}"/>
+                                    <Run Text="{Binding Relations[5].Role}"/>
+                                </TextBlock>
+                            </Border>
+                            <!--GridRow=9 奖励情况-->
+                            <Border Grid.Row="9" Grid.Column="0" BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <Run Text="备注"/>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="5" MinHeight="90" BorderBrush="Black" BorderThickness="1">
+                                <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Center" Padding="10,0">
+                                        <Run Text="{Binding CurMember.Remarks}"/>
+                                </TextBlock>
+                            </Border>
+                        </Grid>
+                    </StackPanel>
+                    <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Center"  Padding="90,15,0,5">
+                            <Run Text="{Binding PrintDate,StringFormat=打印时间：yyyy年MM月dd日}"/>
+                    </TextBlock>
+                </StackPanel>
+            </FixedPage>
+        </PageContent>
+    </FixedDocument.Resources>
+
+</FixedDocument>

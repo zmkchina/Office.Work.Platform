@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.IO.Packaging;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.Windows.Xps;
 using System.Windows.Xps.Packaging;
@@ -20,10 +18,12 @@ namespace Office.Work.Platform.Member
     /// <summary>
     /// 职工基本信息表
     /// </summary>
-    public partial class PageMemberSheet : Page
+    public partial class PageMemberSheetFlow : Page
     {
         private Lib.MemberSearch mSearch;
-        public PageMemberSheet()
+        private FlowDocument m_doc = null;
+
+        public PageMemberSheetFlow()
         {
             InitializeComponent();
         }
@@ -45,19 +45,19 @@ namespace Office.Work.Platform.Member
         private async void BtnSearchClickAsync(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(mSearch.Id)) { return; }
-            List<Lib.Member> Members = await DataMemberRepository.ReadMembers(mSearch).ConfigureAwait(false);
+            List<Lib.Member> Members = await DataMemberRepository.ReadMembers(mSearch);
             if (Members == null || Members.Count < 1)
             {
                 return;
             }
             //读取用户头像信息
             MemoryStream UserHeadStream = null;
-            var UserPhotos = await DataMemberFileRepository.ReadFiles(new MemberFileSearch()
+            IEnumerable<MemberFile> UserPhotos = await DataMemberFileRepository.ReadFiles(new MemberFileSearch()
             {
                 UserId = AppSet.LoginUser.Id,
                 MemberId = Members[0].Id,
                 Name = Members[0].Id
-            }).ConfigureAwait(false);
+            });
             UserPhotos = UserPhotos.OrderByDescending(x => x.UpDateTime);
             if (UserPhotos != null && UserPhotos.Count() > 0)
             {
@@ -66,7 +66,7 @@ namespace Office.Work.Platform.Member
                 UserHeadStream = new MemoryStream();
                 bitmap.Save(UserHeadStream, System.Drawing.Imaging.ImageFormat.Png);
                 TempStream.Dispose();
-                
+
                 //TempBitMap = new BitmapImage();
                 //TempBitMap.BeginInit();
                 //TempBitMap.CacheOption = BitmapCacheOption.OnLoad;
@@ -76,11 +76,10 @@ namespace Office.Work.Platform.Member
                 //UserHeadStream.Dispose();
             }
             string DateStr = $"打印日期：{DateTime.Now:yyy-MM-dd}";
-            CreateFlowDoc("PrintMemberSheetDot.xaml", null, DateStr, UserHeadStream, Members[0], P_DocWidth: 793, P_DocHeight: 1122);
+            CreateFlowDoc("PrintMemberSheetFlowDot.xaml", null, DateStr, UserHeadStream, Members[0], P_DocWidth: 793, P_DocHeight: 1122);
         }
         private void CreateFlowDoc(string SheetTemplet, string Caption, string DateStr, MemoryStream UserHeadStream, Lib.Member data, double P_DocWidth, double P_DocHeight)
         {
-            FlowDocument m_doc = null;
             //1.导入流文件格式模板
             App.Current.Dispatcher.Invoke(() =>
             {
@@ -92,7 +91,7 @@ namespace Office.Work.Platform.Member
                 m_doc.Background = System.Windows.Media.Brushes.Transparent;
                 m_doc.PagePadding = new Thickness(60, 60, 60, 60);//设置页面与页面之间的边距宽度
                                                                   //2填充模板内容
-                PrintMemberSheetRender renderer = new PrintMemberSheetRender();
+                PrintMemberSheetFlowRender renderer = new PrintMemberSheetFlowRender();
                 if (m_doc == null || renderer == null)
                 {
                     return;
@@ -111,7 +110,7 @@ namespace Office.Work.Platform.Member
             Uri DocumentUri = new Uri("pack://InMemoryDocument.xps");
             PackageStore.RemovePackage(DocumentUri);
             PackageStore.AddPackage(DocumentUri, package);
-            XpsDocument xpsDocument = new XpsDocument(package, CompressionOption.Fast, DocumentUri.AbsoluteUri);
+            XpsDocument xpsDocument = new XpsDocument(package, CompressionOption.NotCompressed, DocumentUri.AbsoluteUri);
 
             //将flow document写入基于内存的xps document中去
             XpsDocumentWriter writer = XpsDocument.CreateXpsDocumentWriter(xpsDocument);
@@ -122,6 +121,38 @@ namespace Office.Work.Platform.Member
 
             //关闭基于内存的xps document
             xpsDocument.Close();
+        }
+
+        private void BtnExportClickAsync(object sender, RoutedEventArgs e)
+        {
+            if (m_doc == null)
+            {
+                return;
+            }
+            System.Windows.Forms.SaveFileDialog fileDialog = new System.Windows.Forms.SaveFileDialog();
+            fileDialog.Filter = "RTF|*.rtf";
+            if (fileDialog.ShowDialog() == System.Windows.Forms.DialogResult.Cancel)
+            {
+                return;
+            }
+            try
+            {
+                var content = new TextRange(m_doc.ContentStart, m_doc.ContentEnd);
+
+                if (content.CanSave(DataFormats.Rtf))
+                {
+                    using (var stream = File.OpenWrite(fileDialog.FileName))
+                    {
+                        content.Save(stream, DataFormats.Rtf);
+                    }
+                }
+                AppFuns.ShowMessage("数据导出成功！", Caption: "完成");
+            }
+            catch (Exception Ex)
+            {
+                AppFuns.ShowMessage(Ex.Message, Caption: "失败");
+            }
+            
         }
     }
 }

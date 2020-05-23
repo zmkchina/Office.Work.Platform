@@ -47,7 +47,7 @@ namespace Office.Work.Platform.Member
                 {
                     System.IO.FileInfo theExcelFile = new System.IO.FileInfo(dialog.FileName);
                     this.TB_ExcelName.Text = theExcelFile.FullName;
-                    DataTable UserTable = NPOIOffice.ReadStreamToDataTable(theExcelFile.OpenRead(), null, true);
+                    DataTable UserTable = NpoiExcel.ReadStreamToDataTable(theExcelFile.OpenRead(), null, true);
 
                     if (UserTable != null && UserTable.Rows.Count > 0)
                     {

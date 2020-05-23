@@ -88,15 +88,14 @@ namespace Office.Work.Platform.Member
                     MemoryStream PhotoStream = new MemoryStream();
                     bitmap.Save(PhotoStream, System.Drawing.Imaging.ImageFormat.Png);
                     _CurPageViewModel.UseHeadImage.BeginInit();
+                    //如果希望关闭用于创建 BitmapImage的流，请将 CacheOption 设置为 BitmapCacheOption.OnLoad。 
+                    //默认 OnDemand 缓存选项保留对流的访问权限，直到需要映像，并且清除由垃圾回收器处理
+                    _CurPageViewModel.UseHeadImage.CacheOption = BitmapCacheOption.OnLoad;
                     _CurPageViewModel.UseHeadImage.StreamSource = PhotoStream;
                     _CurPageViewModel.UseHeadImage.EndInit();
+                    PhotoStream.Dispose();
                 }
-                //if (!string.IsNullOrWhiteSpace(UserHeadFileName))
-                //{
-                //    ImageSourceConverter imageSourceConverter = new ImageSourceConverter();
-                //    BitmapImage x = new BitmapImage();
-                //    _CurPageViewModel.UseHeadImage = new BitmapImage(new Uri(UserHeadFileName, UriKind.Absolute));
-                //}
+                
                 DataContext = _CurPageViewModel;
             });
         }

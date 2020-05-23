@@ -149,7 +149,7 @@ namespace Office.Work.Platform.Member
             }
             try
             {
-                NPOIOffice.ExportExcels(fileDialog.FileName, "员工信息", EntityList);
+                NpoiExcel.ExportExcels(fileDialog.FileName, "员工信息", EntityList);
                 AppFuns.ShowMessage("数据导出成功！", Caption: "完成");
             }
             catch (Exception Ex)

@@ -9,7 +9,7 @@ using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 namespace Office.Work.Platform.AppCodes
 {
-    public class NPOIOffice
+    public class NpoiExcel
     {
         /// <summary>
         /// 将excel文件内容读取到DataTable数据表中
