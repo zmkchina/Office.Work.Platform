@@ -2,7 +2,7 @@
 using System.Windows.Input;
 using Office.Work.Platform.AppCodes;
 
-namespace Office.Work.Platform.Remuneration
+namespace Office.Work.Platform.MemberPay
 {
     /// <summary>
     /// PageMenu.xaml 的交互逻辑

@@ -26,6 +26,11 @@ namespace Office.Work.Platform.Plan
             _PageViewModel.InitPropValue();
             TBPlanCaption.Focus();
             DataContext = _PageViewModel;
+            AppFuns.SetStateBarText("录入或编辑一个工作计划。");
+        }
+        private void Page_Unloaded(object sender, RoutedEventArgs e)
+        {
+            AppFuns.SetStateBarText("就绪。");
         }
         /// <summary>
         /// 保存新增的计划
@@ -142,7 +147,13 @@ namespace Office.Work.Platform.Plan
                     UserHelperSelectList.Add(new SelectObj<User>(EntityPlan.Helpers != null && (EntityPlan.Helpers.Contains(item.Id) || EntityPlan.Helpers.Equals("all", StringComparison.Ordinal)), item));
                 }
             }
-            public string[] WorkContentTypes { get { return AppSet.ServerSetting.WorkContentType.Split(',', System.StringSplitOptions.RemoveEmptyEntries); } }
+            public string[] WorkContentTypes
+            {
+                get
+                {
+                    return AppSet.ServerSetting.WorkContentTypeArr;
+                }
+            }
             /// <summary>
             /// 是编辑还是新增一个计划。
             /// </summary>

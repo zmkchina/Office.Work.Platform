@@ -4,7 +4,7 @@ using System.Windows;
 using Office.Work.Platform.AppCodes;
 using Office.Work.Platform.Lib;
 
-namespace Office.Work.Platform.Remuneration
+namespace Office.Work.Platform.MemberPay
 {
     /// <summary>
     /// 此类用于新增或编辑月度待遇发放记录。

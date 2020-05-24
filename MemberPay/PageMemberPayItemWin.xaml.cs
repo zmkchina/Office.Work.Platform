@@ -1,33 +1,45 @@
-﻿using Office.Work.Platform.AppCodes;
-using System;
+﻿using System;
 using System.Windows;
+using Office.Work.Platform.AppCodes;
 
-namespace Office.Work.Platform.MemberUc
+namespace Office.Work.Platform.MemberPay
 {
     /// <summary>
     /// 此类用于新增或编辑月度待遇发放记录。
     /// 此窗体作为对话框使用，当DialogResult不被设为true时，将始终为false
     /// </summary>
-    public partial class UC_HolidayWin : Window
+    public partial class PageMemberPayItemWin : Window
     {
-        public Lib.MemberHoliday _CurRecord { get; set; }
-        public UC_HolidayWin(Lib.MemberHoliday ParamRecord)
+        public Lib.MemberPayItem CurPayItem { get; set; }
+        public Lib.SettingServer MemberSets { get; set; } = AppSet.ServerSetting;
+
+        public PageMemberPayItemWin(Lib.MemberPayItem PPayItem)
         {
-            InitializeComponent();
             this.Owner = AppSet.AppMainWindow;
-            _CurRecord = ParamRecord;
-            DataContext = ParamRecord;
+            InitializeComponent();
+            CurPayItem = PPayItem;
         }
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(CurPayItem.Name))
+            {
+                //说明是编辑项目。
+                Tb_ItemName.IsReadOnly = true;
+            }
+            DataContext = this;
+        }
+
         private void BtnSaveClickAsync(object sender, RoutedEventArgs e)
         {
+            CurPayItem.UnitName = AppSet.LoginUser.UnitName;
+            CurPayItem.UserId = AppSet.LoginUser.Id;
             DialogResult = true;
-            _CurRecord.UpDateTime = DateTime.Now;
             this.Close();
         }
 
         private void BtnCancelClickAsync(object sender, RoutedEventArgs e)
         {
-            _CurRecord = null;
+            DialogResult = false;
             this.Close();
         }
         /// <summary>

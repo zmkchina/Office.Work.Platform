@@ -14,8 +14,9 @@ using Office.Work.Platform.Lib;
 using Office.Work.Platform.Member;
 using Office.Work.Platform.Note;
 using Office.Work.Platform.Plan;
-using Office.Work.Platform.Remuneration;
+using Office.Work.Platform.MemberPay;
 using Office.Work.Platform.Settings;
+using Office.Work.Platform.MemberScore;
 
 namespace Office.Work.Platform
 {
@@ -30,8 +31,10 @@ namespace Office.Work.Platform
         private readonly PageFileMenu _PageFileMenu = null;
         private readonly PagePlayMenu _PagePlayMenu = null;
         private readonly PageMemberMenu _PageMemberMenu = null;
+        private readonly PageScoreMenu _PageScoreMenu = null;
         private readonly PageSettingsMenu _PageSettingsMenu = null;
         private readonly DispatcherTimer _UpdateAppTimer = null;
+        private readonly DispatcherTimer _CheckNetStateTimer = null;
 
         public MainWindow()
         {
@@ -39,13 +42,21 @@ namespace Office.Work.Platform
             AppSet.AppMainWindow = this;
             //以下代码，修复窗体全屏时覆盖任务栏以及大小不正确问题。
             FullScreenManager.RepairWpfWindowFullScreenBehavior(this);
-            //设定各类定时器
+            //设定升级检测定时器
             _UpdateAppTimer = new System.Windows.Threading.DispatcherTimer();
             _UpdateAppTimer.Tick += new EventHandler(async (x, y) =>
             {
                 await CheckAppUpdateAsync();
             });
-            _UpdateAppTimer.Interval = new TimeSpan(0, 1, 0);
+            _UpdateAppTimer.Interval = new TimeSpan(0, 10, 0);
+
+            //设定网络状态检测定时器
+            _CheckNetStateTimer = new System.Windows.Threading.DispatcherTimer();
+            _CheckNetStateTimer.Tick += new EventHandler(async (x, y) =>
+            {
+                await CheckNetStateAsync();
+            });
+            _CheckNetStateTimer.Interval = new TimeSpan(0, 0, 10);
 
             #region 显示系统托盘图标
             //系统托盘显示
@@ -103,16 +114,18 @@ namespace Office.Work.Platform
             #endregion
         }
 
+
         private async void Window_LoadedAsync(object sender, RoutedEventArgs e)
         {
+            //1.启动各类定时器
+            _UpdateAppTimer.Start();
+            _CheckNetStateTimer.Start();
 
-            //1.检查更新程序
-            await CheckAppUpdateAsync();
             //2.读取系统用户列表
             AppSet.SysUsers = await DataUserRepository.GetAllRecords();
             if (AppSet.SysUsers == null || AppSet.SysUsers.Count < 2)
             {
-                AppFuns.ShowMessage("读取用户列表时出错，程序无法运行。" , Caption: "错误", isErr: true);
+                AppFuns.ShowMessage("读取用户列表时出错，程序无法运行。", Caption: "错误", isErr: true);
                 //关闭本程序
                 ShutDownApp();
             }
@@ -126,9 +139,8 @@ namespace Office.Work.Platform
             }
             lblLoginMsg.Text = $"当前用户：{AppSet.LoginUser.Name}-{AppSet.LoginUser.UnitName}";
             ListBoxItem_MouseLeftButtonUp_0(null, null);
-
-
         }
+
         /// <summary>
         /// 窗体拖动
         /// </summary>
@@ -151,6 +163,7 @@ namespace Office.Work.Platform
         {
             LoadPageMenu(_PagePlanMenu);
         }
+
         /// <summary>
         /// 全部文件菜单
         /// </summary>
@@ -170,6 +183,7 @@ namespace Office.Work.Platform
         {
             LoadPageMenu(_PageMemberMenu);
         }
+
         /// <summary>
         /// 备忘信息菜单
         /// </summary>
@@ -179,6 +193,7 @@ namespace Office.Work.Platform
         {
             LoadPageMenu(_PageNodeMenu);
         }
+
         /// <summary>
         /// 系统设置菜单
         /// </summary>
@@ -189,43 +204,6 @@ namespace Office.Work.Platform
             LoadPageMenu(_PageSettingsMenu);
 
         }
-        private void LoadPageMenu<T>(T PageMenu) where T : class, new()
-        {
-            PageMenu ??= new T();
-            this.FrameMenuPage.Content = PageMenu;
-            this.FrameContentPage.Content = null;
-        }
-
-        #region 窗口大小、关闭控制
-        private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ClickCount == 2)
-            {
-                WindowState ^= WindowState.Maximized;
-            }
-        }
-        private void WinState_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            if (e.Source is System.Windows.Controls.Button btn)
-            {
-                string tagStr = btn.Tag.ToString();
-                switch (tagStr)
-                {
-                    case "tbWinMin":
-                        WindowState = WindowState.Minimized;
-                        break;
-                    case "tbWinMax":
-                        WindowState ^= WindowState.Maximized; //采用“或等于”可以同时执行恢复和最大化两个操作。
-                        break;
-                    case "tbWinCose":
-                        this.ShowInTaskbar = false;
-                        this.Visibility = System.Windows.Visibility.Hidden;
-                        this.notifyIcon.ShowBalloonTip(50, "信息:", "政工业务工作平台已隐藏在此。", ToolTipIcon.Info);
-                        break;
-                }
-            }
-        }
-        #endregion
 
         /// <summary>
         /// 安全关闭本程序
@@ -235,6 +213,7 @@ namespace Office.Work.Platform
             this.notifyIcon?.Dispose();
             System.Windows.Application.Current.Shutdown(0);
         }
+
         /// <summary>
         /// 劳资管理
         /// </summary>
@@ -244,12 +223,62 @@ namespace Office.Work.Platform
         {
             LoadPageMenu(_PagePlayMenu);
         }
+
+        /// <summary>
+        /// 考勤考核菜单
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ListBoxItem_Score_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            LoadPageMenu(_PageScoreMenu);
+        }
+        /// <summary>
+        /// 加载菜单
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="PageMenu"></param>
+        private void LoadPageMenu<T>(T PageMenu) where T : class, new()
+        {
+            PageMenu ??= new T();
+            this.FrameMenuPage.Content = PageMenu;
+            this.FrameContentPage.Content = null;
+        }
+
         public void LockApp()
         {
             AppSet.AppIsLocked = true;
             this.ShowInTaskbar = false;
             this.Visibility = System.Windows.Visibility.Hidden;
             this.notifyIcon.ShowBalloonTip(500, "信息:", "政工业务工作平台已锁定。", ToolTipIcon.Info);
+        }
+
+        /// <summary>
+        /// 检查网络状态，以便及时反馈
+        /// </summary>
+        /// <returns></returns>
+        private async Task CheckNetStateAsync()
+        {
+            _CheckNetStateTimer.Stop();
+            //调用服务器端相关Api,以其结果确定是否仍然在线。
+            NetState ServerState = await DataNetStateRepository.GetSeverState();
+            if (ServerState == null || ServerState.State != 200)
+            {
+                this.Run_NetState.Text = "（连接断开，正在重连....）";
+                this.notifyIcon.ShowBalloonTip(1000, "错误", "与服务器失去链接，正在重连...", ToolTipIcon.Error);
+                //请求token
+                string TokenResult = await DataApiRepository.GetAccessToken(AppSet.LoginUser.Id, AppSet.LoginUser.PassWord);
+                if (TokenResult != "Ok")
+                {
+                    this.notifyIcon.ShowBalloonTip(1000, "错误", $"重连失败{TokenResult},将继续重试！", ToolTipIcon.Error);
+                }
+                else
+                {
+                    this.Run_NetState.Text = "";
+                    this.notifyIcon.ShowBalloonTip(1000, "信息", "已重新连接到服务器！", ToolTipIcon.Info);
+                }
+            }
+            _CheckNetStateTimer.Start();
         }
 
         #region "检查是否有版本，如有则升级之"
@@ -260,24 +289,13 @@ namespace Office.Work.Platform
         private async Task CheckAppUpdateAsync()
         {
             _UpdateAppTimer.Stop();
-
             //1.检查是否需要更新。
             List<string> NeedUpdateFiles = new List<string>();
             //读取服务器端本系统程序的信息。
             AppUpdateInfo UpdateInfo = await DataFileUpdateAppRepository.GetAppUpdateInfo();
             if (UpdateInfo == null)
             {
-                this.notifyIcon.ShowBalloonTip(1000, "错误", "与服务器失去链接，正在重连...", ToolTipIcon.Error);
-                //请求token
-                string TokenResult = await DataApiRepository.GetAccessToken(AppSet.LoginUser.Id, AppSet.LoginUser.PassWord);
-                if (TokenResult != "Ok")
-                {
-                    this.notifyIcon.ShowBalloonTip(1000, "错误", $"重连失败{TokenResult}！", ToolTipIcon.Error);
-                }
-                else
-                {
-                    this.notifyIcon.ShowBalloonTip(1000, "信息", "已重新连接到服务器！", ToolTipIcon.Info);
-                }
+                this.notifyIcon.ShowBalloonTip(1000, "错误", "获取程序升级信息时出错...", ToolTipIcon.Error);
                 _UpdateAppTimer.Start();
                 return;
             }
@@ -294,7 +312,7 @@ namespace Office.Work.Platform
 
             if (NeedUpdateFiles != null && NeedUpdateFiles.Count > 0)
             {
-                AppFuns.ShowMessage($"发现新版本程序，点击确定开始升级。", $"新版本[{UpdateInfo.UpdateDate.ToString("yyyy-MM-dd HH:mm")}]");
+                AppFuns.ShowMessage($"发现新版本程序，点击确定开始升级。", $"新版本[{UpdateInfo.UpdateDate:yyyy-MM-dd HH:mm}]");
                 WinUpdateDialog winUpdate = new WinUpdateDialog(NeedUpdateFiles);
                 winUpdate.ShowDialog();
                 if (!CheckDownResult(UpdateInfo))
@@ -361,6 +379,37 @@ namespace Office.Work.Platform
                 }
             }
             return true;
+        }
+        #endregion
+
+        #region 窗口大小、关闭控制
+        private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 2)
+            {
+                WindowState ^= WindowState.Maximized;
+            }
+        }
+        private void WinState_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (e.Source is System.Windows.Controls.Button btn)
+            {
+                string tagStr = btn.Tag.ToString();
+                switch (tagStr)
+                {
+                    case "tbWinMin":
+                        WindowState = WindowState.Minimized;
+                        break;
+                    case "tbWinMax":
+                        WindowState ^= WindowState.Maximized; //采用“或等于”可以同时执行恢复和最大化两个操作。
+                        break;
+                    case "tbWinCose":
+                        this.ShowInTaskbar = false;
+                        this.Visibility = System.Windows.Visibility.Hidden;
+                        this.notifyIcon.ShowBalloonTip(50, "信息:", "政工业务工作平台已隐藏在此。", ToolTipIcon.Info);
+                        break;
+                }
+            }
         }
         #endregion
     }

@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Documents;
 using Newtonsoft.Json.Linq;
 
-namespace Office.Work.Platform.Remuneration
+namespace Office.Work.Platform.MemberPay
 {
     public class PrintMemberPaySheetRender
     {

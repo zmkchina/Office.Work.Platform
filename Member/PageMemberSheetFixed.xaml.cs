@@ -55,6 +55,7 @@ namespace Office.Work.Platform.Member
             List<Lib.Member> Members = await DataMemberRepository.ReadMembers(_MemberSearch);
             if (Members == null || Members.Count < 1)
             {
+                AppFuns.ShowMessage("未找到此用户信息！");
                 return;
             }
             AppFuns.SetStateBarText($"查看或打印[{Members[0].Name}]信息表。");
@@ -91,6 +92,7 @@ namespace Office.Work.Platform.Member
             }
             System.Windows.Forms.SaveFileDialog fileDialog = new System.Windows.Forms.SaveFileDialog();
             fileDialog.Filter = "Docx|*.Docx";
+            fileDialog.FileName = _FixedDocVM.CurMember.Name;
             if (fileDialog.ShowDialog() == System.Windows.Forms.DialogResult.Cancel)
             {
                 return;
@@ -347,7 +349,7 @@ namespace Office.Work.Platform.Member
                 if (CurPara.ParagraphText.Trim().Contains("[Relations"))
                 {
                     string tempValue = "";
-                    for (int p = 1; p <= 6; p++)
+                    for (int p = 1; p <= 7; p++)
                     {
                         for (int k = 0; k <= 4; k++)
                         {
@@ -375,7 +377,7 @@ namespace Office.Work.Platform.Member
                                     }
 
                                 }
-                                CurPara.ReplaceText($"[Relations{p}{k}]", tempValue == null ? "" : tempValue);
+                                CurPara.ReplaceText($"[Relations{p}{k}]", tempValue == null ? "" : tempValue.Trim());
                                 break;
                             }
                         }

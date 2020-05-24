@@ -9,7 +9,7 @@ using System.Windows.Xps.Packaging;
 using Newtonsoft.Json.Linq;
 using Office.Work.Platform.AppCodes;
 
-namespace Office.Work.Platform.Remuneration
+namespace Office.Work.Platform.MemberPay
 {
     /// <summary>
     /// 打印预览窗口，此类目前未使用。

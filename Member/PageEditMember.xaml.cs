@@ -95,7 +95,7 @@ namespace Office.Work.Platform.Member
                     _CurPageViewModel.UseHeadImage.EndInit();
                     PhotoStream.Dispose();
                 }
-                
+
                 DataContext = _CurPageViewModel;
             });
         }
@@ -141,10 +141,6 @@ namespace Office.Work.Platform.Member
                     case "社会关系":
                         UcRelations.initControlAsync(_CurPageViewModel.EntityMember);
                         await UcRelationsFile.InitFileDatasAsync(_CurPageViewModel.EntityMember.Id, "社会关系", isRead);
-                        break;
-                    case "休假信息":
-                        UcHoliday.initControlAsync(_CurPageViewModel.EntityMember);
-                        await UcHolidayFile.InitFileDatasAsync(_CurPageViewModel.EntityMember.Id, "休假信息", isRead);
                         break;
                     case "其他说明":
                         await UcRemarkFile.InitFileDatasAsync(_CurPageViewModel.EntityMember.Id, "其他说明", isRead);
@@ -226,7 +222,7 @@ namespace Office.Work.Platform.Member
                     EntityMember = PMember;
                 }
                 UseHeadImage = new BitmapImage();
-                MSettings = new MemberSettings();
+                MSettings = AppSet.ServerSetting;
             }
 
             #region "属性"
@@ -266,7 +262,7 @@ namespace Office.Work.Platform.Member
                 }
             }
             public Lib.Member EntityMember { get; set; }
-            public MemberSettings MSettings { get; set; }
+            public Lib.SettingServer MSettings { get; set; }
             #endregion
         }
     }

@@ -16,15 +16,15 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="SearchCondition"></param>
         /// <returns></returns>
-        public static async Task<IEnumerable<MemberPay>> GetRecords(MemberPaySearch SearchCondition)
+        public static async Task<IEnumerable<Lib.MemberPay>> GetRecords(MemberPaySearch SearchCondition)
         {
-            IEnumerable<MemberPay> RecList = null;
+            IEnumerable<Lib.MemberPay> RecList = null;
             //创建查询url参数
             string urlParams = DataApiRepository.CreateUrlParams(SearchCondition);
 
             if (urlParams.Length > 0)
             {
-                RecList = await DataApiRepository.GetApiUri<IEnumerable<MemberPay>>(_ApiUrlBase + "MemberPay/Search" + urlParams).ConfigureAwait(false);
+                RecList = await DataApiRepository.GetApiUri<IEnumerable<Lib.MemberPay>>(_ApiUrlBase + "MemberPay/Search" + urlParams).ConfigureAwait(false);
             }
             return RecList;
         }

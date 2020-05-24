@@ -331,17 +331,6 @@
                     <memberuc:UC_MemberFile x:Name="UcRelationsFile" Grid.Column="1"  IsEnabled="{Binding Path=isEditFlag}"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="休假信息" Style="{StaticResource TabItemStyle}">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*"/>
-                        <ColumnDefinition Width="1*"/>
-                    </Grid.ColumnDefinitions>
-                    <memberuc:UC_Holiday x:Name="UcHoliday" Grid.Column="0"  HorizontalAlignment="Stretch" IsEnabled="{Binding Path=isEditFlag}"/>
-                    <GridSplitter Grid.Column="0" BorderThickness="2" BorderBrush="#FFDFF0E7"/>
-                    <memberuc:UC_MemberFile x:Name="UcHolidayFile" Grid.Column="1"  IsEnabled="{Binding Path=isEditFlag}"/>
-                </Grid>
-            </TabItem>
             <TabItem Header="其他说明" Style="{StaticResource TabItemStyle}">
                 <Grid>
                     <Grid.ColumnDefinitions>

@@ -14,7 +14,7 @@ using Office.Work.Platform.AppCodes;
 using Office.Work.Platform.AppDataService;
 using Office.Work.Platform.Lib;
 
-namespace Office.Work.Platform.Remuneration
+namespace Office.Work.Platform.MemberPay
 {
     /// <summary>
     /// 正式人员月度工资查询（发放）
@@ -24,7 +24,7 @@ namespace Office.Work.Platform.Remuneration
         public PageMemberPaySheet()
         {
             InitializeComponent();
-            MemberSet = new MemberSettings();
+            MemberSet = AppSet.ServerSetting;
             JArrayResult = new JArray();
         }
 
@@ -95,7 +95,7 @@ namespace Office.Work.Platform.Remuneration
         private void CreateFlowDoc(string SheetTemplet, string Caption, string DateStr, JArray data, double P_DocWidth, double P_DocHeight)
         {
             //1.导入流文件格式模板
-            FlowDocument m_doc = (FlowDocument)Application.LoadComponent(new Uri($"/Office.Work.Platform;component/Remuneration/{SheetTemplet}", UriKind.RelativeOrAbsolute));
+            FlowDocument m_doc = (FlowDocument)Application.LoadComponent(new Uri($"/Office.Work.Platform;component/MemberPay/{SheetTemplet}", UriKind.RelativeOrAbsolute));
             m_doc.PageWidth = P_DocWidth;
             m_doc.PageHeight = P_DocHeight;
             m_doc.ColumnWidth = P_DocWidth;
@@ -135,7 +135,7 @@ namespace Office.Work.Platform.Remuneration
         public DateTime PayMonthDate { get; set; } = DateTime.Now;
         public string MemberType { get; set; }
         public string PayTableName { get; set; }
-        public MemberSettings MemberSet { get; set; }
+        public Lib.SettingServer MemberSet { get; set; }
         public string[] PayTableTypes { get; set; }
         public string[] PayTableMemberTypes { get; set; }
         public JArray JArrayResult { get; set; }

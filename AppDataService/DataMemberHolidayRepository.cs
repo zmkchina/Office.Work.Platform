@@ -17,15 +17,15 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="SearchCondition"></param>
         /// <returns></returns>
-        public static async Task<IEnumerable<MemberHoliday>> GetRecords(MemberHolidaySearch SearchCondition)
+        public static async Task<List<Lib.MemberHoliday>> GetRecords(MemberHolidaySearch SearchCondition)
         {
-            IEnumerable<MemberHoliday> RecList = null;
+            List<Lib.MemberHoliday> RecList = null;
             //创建查询url参数
             string urlParams = DataApiRepository.CreateUrlParams(SearchCondition);
 
             if (urlParams.Length > 0)
             {
-                RecList = await DataApiRepository.GetApiUri<IEnumerable<MemberHoliday>>(_ApiUrlBase + "MemberHoliday/Search" + urlParams).ConfigureAwait(false);
+                RecList = await DataApiRepository.GetApiUri<List<Lib.MemberHoliday>>(_ApiUrlBase + "MemberHoliday/Search" + urlParams).ConfigureAwait(false);
             }
             return RecList;
         }
@@ -39,7 +39,7 @@ namespace Office.Work.Platform.AppDataService
             ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(_ApiUrlBase + "MemberHoliday", PEntity).ConfigureAwait(false);
             return JsonResult;
         }
-        
+
         /// <summary>
         /// 更新信息（采用PUT）
         /// </summary>
@@ -55,9 +55,9 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="PEntity"></param>
         /// <returns></returns>
-        public static async Task<ExcuteResult> DeleteRecord(Lib.MemberHoliday PEntity)
+        public static async Task<ExcuteResult> DeleteRecord(string P_Id)
         {
-            ExcuteResult JsonResult = await DataApiRepository.DeleteApiUri<ExcuteResult>(_ApiUrlBase + "MemberHoliday/?Id=" + PEntity.Id).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.DeleteApiUri<ExcuteResult>(_ApiUrlBase + "MemberHoliday/?Id=" + P_Id).ConfigureAwait(false);
             return JsonResult;
         }
     }

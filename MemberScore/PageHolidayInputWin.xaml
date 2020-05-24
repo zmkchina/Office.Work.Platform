@@ -1,4 +1,4 @@
-﻿<Window x:Class="Office.Work.Platform.MemberUc.UC_HolidayWin"
+﻿<Window x:Class="Office.Work.Platform.MemberScore.PageHolidayInputWin"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -40,7 +40,7 @@
             <Setter Property="Control.Template">
                 <Setter.Value>
                     <ControlTemplate>
-                        <TextBox Text="{Binding Path=SelectedDate, StringFormat='yyyy/MM', RelativeSource={RelativeSource AncestorType=DatePicker}}" />
+                        <TextBox Text="{Binding Path=SelectedDate, StringFormat='yyyy/MM/dd', RelativeSource={RelativeSource AncestorType=DatePicker}}" />
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -62,24 +62,24 @@
                 <TextBlock Text="职工休假情况" VerticalAlignment="Center" Foreground="White" Padding="5,0,0,0"/>
             </Border>
             <GroupBox Header="假期类型" >
-                <ComboBox ItemsSource="{Binding HolidayTypeArr}" Text="{Binding HolidayType}"  
+                <ComboBox ItemsSource="{Binding _HolidayTypeArr}" Text="{Binding _CurRecord.HolidayType}"  
                           Width="200" HorizontalAlignment="Left" FontSize="16" Margin="5" />
             </GroupBox>
             <StackPanel Orientation="Horizontal">
                 <GroupBox Header="开始日期" Style="{StaticResource GroupBoxStyle}">
                     <DatePicker Style="{StaticResource DatePickerStyle}"
-                        SelectedDate="{Binding BeginDate}" />
+                        SelectedDate="{Binding _CurRecord.BeginDate}" />
                 </GroupBox>
                 <GroupBox Header="结束日期" Style="{StaticResource GroupBoxStyle}">
                     <DatePicker Style="{StaticResource DatePickerStyle}"
-                        SelectedDate="{Binding EndDate}"   />
+                        SelectedDate="{Binding _CurRecord.EndDate}"   />
                 </GroupBox>
             </StackPanel>
             <GroupBox Header="请假事由" >
-                <TextBox Text="{Binding HolidayReasion}"  HorizontalAlignment="Stretch" Height="50" FontSize="16" Margin="5" TextWrapping="Wrap"/>
+                <TextBox Text="{Binding _CurRecord.HolidayReasion}"  HorizontalAlignment="Stretch" Height="50" FontSize="16" Margin="5" TextWrapping="Wrap"/>
             </GroupBox>
             <GroupBox Header="备注信息" >
-                <TextBox Text="{Binding Remark}"  HorizontalAlignment="Stretch" Height="50" FontSize="16" Margin="5" TextWrapping="Wrap"/>
+                <TextBox Text="{Binding _CurRecord.Remark}"  HorizontalAlignment="Stretch" Height="50" FontSize="16" Margin="5" TextWrapping="Wrap"/>
             </GroupBox>
         </StackPanel>
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">

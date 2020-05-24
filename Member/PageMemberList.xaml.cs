@@ -134,6 +134,11 @@ namespace Office.Work.Platform.Member
             AppFuns.SetStateBarText("就绪");
         }
 
+        /// <summary>
+        /// 导出数据。
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btn_Export_ClickAsync(object sender, RoutedEventArgs e)
         {
             List<Lib.Member> EntityList = _PageViewModel.EntityList.ToList();

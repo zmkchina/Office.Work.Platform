@@ -21,8 +21,37 @@
                     <Run  Text="> 系统设置—业务参数"/>
             </TextBlock>
         </Border>
-        <StackPanel  Grid.Row="1"  Orientation="Vertical" Margin="5" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" >
-            <GroupBox>
+        <ScrollViewer Grid.Row="1"  >
+        <StackPanel  Orientation="Vertical" Margin="5" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" >
+                <GroupBox>
+                    <GroupBox.Header>
+                        <TextBlock  Text="单位名称" Margin="5"/>
+                    </GroupBox.Header>
+                    <StackPanel Orientation="Vertical">
+                        <TextBox BorderBrush="#EAEAEA" Margin="5,10"
+                     MaxLength="200"
+                     MinHeight="30"
+                     TextWrapping="Wrap" 
+                     VerticalAlignment="Center" 
+                     Padding="3" 
+                     Text="{Binding Path=EntitySettingServer.UnitNames}" />
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox>
+                    <GroupBox.Header>
+                        <TextBlock  Text="使用本系统的所有部门" Margin="5"/>
+                    </GroupBox.Header>
+                    <StackPanel Orientation="Vertical">
+                        <TextBox BorderBrush="#EAEAEA" Margin="5,10"
+                     MaxLength="200"
+                     MinHeight="30"
+                     TextWrapping="Wrap" 
+                     VerticalAlignment="Center" 
+                     Padding="3" 
+                     Text="{Binding Path=EntitySettingServer.Departments}" />
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox>
                 <GroupBox.Header>
                     <TextBlock  Text="计划内容类别" Margin="5"/>
                 </GroupBox.Header>
@@ -34,12 +63,201 @@
                      VerticalAlignment="Center" 
                      Padding="3" 
                      Text="{Binding Path=EntitySettingServer.WorkContentType}" />
-                    <Button Content="更新设置" Margin="5,10,5,10" Height="35" Width="120" HorizontalAlignment="Left"
-                            x:Name="BtnUpdateSettings" IsEnabled="False"
-                            Click="Btn_UpdateSettings_Click"/>
                 </StackPanel>
             </GroupBox>
-
-        </StackPanel>
+              
+            <GroupBox>
+                <GroupBox.Header>
+                        <TextBlock  Text="假期类型" Margin="5"/>
+                </GroupBox.Header>
+                <StackPanel Orientation="Vertical">
+                    <TextBox BorderBrush="#EAEAEA" Margin="5,10"
+                     MaxLength="200"
+                     MinHeight="30"
+                     TextWrapping="Wrap" 
+                     VerticalAlignment="Center" 
+                     Padding="3" 
+                     Text="{Binding Path=EntitySettingServer.HolidayTypes}" />
+                </StackPanel>
+            </GroupBox>
+           
+            <GroupBox>
+                <GroupBox.Header>
+                        <TextBlock  Text="待遇表类型" Margin="5"/>
+                </GroupBox.Header>
+                <StackPanel Orientation="Vertical">
+                    <TextBox BorderBrush="#EAEAEA" Margin="5,10"
+                     MaxLength="200"
+                     MinHeight="30"
+                     TextWrapping="Wrap" 
+                     VerticalAlignment="Center" 
+                     Padding="3" 
+                     Text="{Binding Path=EntitySettingServer.PayTableTypes}" />
+                </StackPanel>
+            </GroupBox>
+            <GroupBox>
+                <GroupBox.Header>
+                        <TextBlock  Text="员工职务" Margin="5"/>
+                </GroupBox.Header>
+                <StackPanel Orientation="Vertical">
+                    <TextBox BorderBrush="#EAEAEA" Margin="5,10"
+                     MaxLength="200"
+                     MinHeight="30"
+                     TextWrapping="Wrap" 
+                     VerticalAlignment="Center" 
+                     Padding="3" 
+                     Text="{Binding Path=EntitySettingServer.MemberPosts}" />
+                </StackPanel>
+            </GroupBox>
+            <GroupBox>
+                <GroupBox.Header>
+                        <TextBlock  Text="党内职务" Margin="5"/>
+                </GroupBox.Header>
+                <StackPanel Orientation="Vertical">
+                    <TextBox BorderBrush="#EAEAEA" Margin="5,10"
+                     MaxLength="200"
+                     MinHeight="30"
+                     TextWrapping="Wrap" 
+                     VerticalAlignment="Center" 
+                     Padding="3" 
+                     Text="{Binding Path=EntitySettingServer.MemberPartyPosts}" />
+                </StackPanel>
+            </GroupBox>
+            <GroupBox>
+                <GroupBox.Header>
+                        <TextBlock  Text="学历列表" Margin="5"/>
+                </GroupBox.Header>
+                <StackPanel Orientation="Vertical">
+                    <TextBox BorderBrush="#EAEAEA" Margin="5,10"
+                     MaxLength="200"
+                     MinHeight="30"
+                     TextWrapping="Wrap" 
+                     VerticalAlignment="Center" 
+                     Padding="3" 
+                     Text="{Binding Path=EntitySettingServer.Educations}" />
+                </StackPanel>
+            </GroupBox>
+            <GroupBox>
+                <GroupBox.Header>
+                        <TextBlock  Text="学位列表" Margin="5"/>
+                </GroupBox.Header>
+                <StackPanel Orientation="Vertical">
+                    <TextBox BorderBrush="#EAEAEA" Margin="5,10"
+                     MaxLength="200"
+                     MinHeight="30"
+                     TextWrapping="Wrap" 
+                     VerticalAlignment="Center" 
+                     Padding="3" 
+                     Text="{Binding Path=EntitySettingServer.Degrees}" />
+                </StackPanel>
+            </GroupBox>
+            <GroupBox>
+                <GroupBox.Header>
+                        <TextBlock  Text="岗位性质" Margin="5"/>
+                </GroupBox.Header>
+                <StackPanel Orientation="Vertical">
+                    <TextBox BorderBrush="#EAEAEA" Margin="5,10"
+                     MaxLength="200"
+                     MinHeight="30"
+                     TextWrapping="Wrap" 
+                     VerticalAlignment="Center" 
+                     Padding="3" 
+                     Text="{Binding Path=EntitySettingServer.Jobs}" />
+                </StackPanel>
+            </GroupBox>
+                <GroupBox>
+                    <GroupBox.Header>
+                        <TextBlock  Text="岗位级别" Margin="5"/>
+                    </GroupBox.Header>
+                    <StackPanel Orientation="Vertical">
+                        <TextBox BorderBrush="#EAEAEA" Margin="5,10"
+                     MaxLength="200"
+                     MinHeight="30"
+                     TextWrapping="Wrap" 
+                     VerticalAlignment="Center" 
+                     Padding="3" 
+                     Text="{Binding Path=EntitySettingServer.JobGrades}" />
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox>
+                    <GroupBox.Header>
+                        <TextBlock  Text="用工性质" Margin="5"/>
+                    </GroupBox.Header>
+                    <StackPanel Orientation="Vertical">
+                        <TextBox BorderBrush="#EAEAEA" Margin="5,10"
+                     MaxLength="200"
+                     MinHeight="30"
+                     TextWrapping="Wrap" 
+                     VerticalAlignment="Center" 
+                     Padding="3" 
+                     Text="{Binding Path=EntitySettingServer.MemberTypes}" />
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox>
+                    <GroupBox.Header>
+                        <TextBlock  Text="民族" Margin="5"/>
+                    </GroupBox.Header>
+                    <StackPanel Orientation="Vertical">
+                        <TextBox BorderBrush="#EAEAEA" Margin="5,10"
+                     MaxLength="200"
+                     MinHeight="30"
+                     TextWrapping="Wrap" 
+                     VerticalAlignment="Center" 
+                     Padding="3" 
+                     Text="{Binding Path=EntitySettingServer.NationTypes}" />
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox>
+                    <GroupBox.Header>
+                        <TextBlock  Text="奖惩具体名称" Margin="5"/>
+                    </GroupBox.Header>
+                    <StackPanel Orientation="Vertical">
+                        <TextBox BorderBrush="#EAEAEA" Margin="5,10"
+                     MaxLength="200"
+                     MinHeight="30"
+                     TextWrapping="Wrap" 
+                     VerticalAlignment="Center" 
+                     Padding="3" 
+                     Text="{Binding Path=EntitySettingServer.PrizrOrPunishNames}" />
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox>
+                    <GroupBox.Header>
+                        <TextBlock  Text="主要社会关系" Margin="5"/>
+                    </GroupBox.Header>
+                    <StackPanel Orientation="Vertical">
+                        <TextBox BorderBrush="#EAEAEA" Margin="5,10"
+                     MaxLength="200"
+                     MinHeight="30"
+                     TextWrapping="Wrap" 
+                     VerticalAlignment="Center" 
+                     Padding="3" 
+                     Text="{Binding Path=EntitySettingServer.Relations}" />
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox>
+                    <GroupBox.Header>
+                        <TextBlock  Text="绩效得分原由" Margin="5"/>
+                    </GroupBox.Header>
+                    <StackPanel Orientation="Vertical">
+                        <TextBox BorderBrush="#EAEAEA" Margin="5,10"
+                     MaxLength="200"
+                     MinHeight="30"
+                     TextWrapping="Wrap" 
+                     VerticalAlignment="Center" 
+                     Padding="3" 
+                     Text="{Binding Path=EntitySettingServer.MemberScoreTypes}" />
+                    </StackPanel>
+                </GroupBox>
+                <StackPanel Orientation="Horizontal">
+                <Button Content="更新设置" Margin="5,10,5,10" Height="35" Width="120" HorizontalAlignment="Left"
+                            IsEnabled="{Binding CanOperation}"
+                            Click="Btn_UpdateSettings_Click"/>
+                    <Button Content="恢复默认值" Margin="5,10,5,10" Height="35" Width="120" HorizontalAlignment="Left"
+                            IsEnabled="{Binding CanOperation}"
+                            Click="Btn_RestoreSettings_Click"/>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>

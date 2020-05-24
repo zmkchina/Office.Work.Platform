@@ -28,25 +28,28 @@
                                 <RowDefinition ></RowDefinition>
                                 <RowDefinition ></RowDefinition>
                                 <RowDefinition ></RowDefinition>
+                                <RowDefinition ></RowDefinition>
+                                <RowDefinition ></RowDefinition>
+                                <RowDefinition ></RowDefinition>
                             </Grid.RowDefinitions>
                             <!--GridRow=0-->
                             <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" Padding="0,17"
                                             Text="姓  名"></TextBlock>
                             </Border>
-                            <Border Grid.Row="0" Grid.Column="1" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="0" Grid.Column="1" Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center"
                                             Text="{Binding CurMember.Name}"></TextBlock>
                             </Border>
-                            <Border Grid.Row="0" Grid.Column="2" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="0" Grid.Column="2" Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center"  Padding="0,17"
                                             Text="性  别"></TextBlock>
                             </Border>
-                            <Border Grid.Row="0" Grid.Column="3" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="0" Grid.Column="3" Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center"  VerticalAlignment="Center"
                                             Text="{Binding CurMember.Sex}"></TextBlock>
                             </Border>
-                            <Border Grid.Row="0" Grid.Column="4" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="0" Grid.Column="4" Style="{StaticResource  GridInnerCellBorder}">
                                 <StackPanel Orientation="Vertical">
                                     <TextBlock  HorizontalAlignment="Center" Padding="0,5,0,3">
                                         <Run Text="出生年月"/>
@@ -56,7 +59,7 @@
                                     </TextBlock>
                                 </StackPanel>
                             </Border>
-                            <Border Grid.Row="0" Grid.Column="5" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="0" Grid.Column="5" Style="{StaticResource  GridInnerCellBorder}">
                                 <StackPanel Orientation="Vertical">
                                     <TextBlock  HorizontalAlignment="Center" Padding="0,5,0,3">
                                         <Run Text="{Binding CurMember.Birthday,StringFormat={}yyyy.MM}"/>
@@ -66,36 +69,36 @@
                                     </TextBlock>
                                 </StackPanel>
                             </Border>
-                            <Border Grid.Row="0" Grid.RowSpan="4" Grid.Column="6" BorderBrush="Black" BorderThickness="1" >
+                            <Border Grid.Row="0" Grid.RowSpan="4" Grid.Column="6" Style="{StaticResource  GridInnerCellBorder}">
                                 <Image  HorizontalAlignment="Center" Source="{Binding HeadImage}" Margin="3"></Image>
                             </Border>
                             <!--GridRow=1-->
-                            <Border Grid.Row="1" Grid.Column="0" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center"  Padding="0,15"
                                             Text="民  族"></TextBlock>
                             </Border>
-                            <Border Grid.Row="1" Grid.Column="1" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center"   VerticalAlignment="Center"
                                             Text="{Binding CurMember.Nation}"></TextBlock>
                             </Border>
-                            <Border Grid.Row="1" Grid.Column="2" BorderBrush="Black" BorderThickness="1" >
+                            <Border Grid.Row="1" Grid.Column="2" Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" Padding="0,15"
                                             Text="籍  贯"></TextBlock>
                             </Border>
-                            <Border Grid.Row="1" Grid.Column="3" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="1" Grid.Column="3" Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center"  VerticalAlignment="Center"
                                             Text="{Binding CurMember.NativePlace}"></TextBlock>
                             </Border>
-                            <Border Grid.Row="1" Grid.Column="4" BorderBrush="Black" BorderThickness="1" >
+                            <Border Grid.Row="1" Grid.Column="4" Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" Padding="0,15"
                                             Text="出 生 地"></TextBlock>
                             </Border>
-                            <Border Grid.Row="1" Grid.Column="5" BorderBrush="Black" BorderThickness="1" >
+                            <Border Grid.Row="1" Grid.Column="5" Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center"
                                             Text="{Binding CurMember.Birthplace}"></TextBlock>
                             </Border>
                             <!--GridRow=2-->
-                            <Border Grid.Row="2" Grid.Column="0" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="2" Grid.Column="0" Style="{StaticResource  GridInnerCellBorder}">
                                 <StackPanel Orientation="Vertical">
                                     <TextBlock  HorizontalAlignment="Center" Padding="0,5,0,3">
                                         <Run Text="入  党"/>
@@ -105,11 +108,11 @@
                                     </TextBlock>
                                 </StackPanel>
                             </Border>
-                            <Border Grid.Row="2" Grid.Column="1" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="2" Grid.Column="1" Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center"
                                             Text="{Binding CurMember.JoinCPC,StringFormat={}yyyy.MM}"/>
                             </Border>
-                            <Border Grid.Row="2" Grid.Column="2" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="2" Grid.Column="2" Style="{StaticResource  GridInnerCellBorder}">
                                 <StackPanel Orientation="Vertical">
                                     <TextBlock  HorizontalAlignment="Center" Padding="0,8,0,3">
                                         <Run Text="参加工"/>
@@ -119,20 +122,20 @@
                                     </TextBlock>
                                 </StackPanel>
                             </Border>
-                            <Border Grid.Row="2" Grid.Column="3" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="2" Grid.Column="3" Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center"  VerticalAlignment="Center"
                                             Text="{Binding CurMember.BeginWork,StringFormat={}yyyy.MM}"></TextBlock>
                             </Border>
-                            <Border Grid.Row="2" Grid.Column="4" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="2" Grid.Column="4" Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" Padding="0,15"
                                             Text="健康状况"></TextBlock>
                             </Border>
-                            <Border Grid.Row="2" Grid.Column="5" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="2" Grid.Column="5" Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center"   VerticalAlignment="Center"
                                             Text="{Binding CurMember.HealthState}"></TextBlock>
                             </Border>
                             <!--GridRow=3-->
-                            <Border Grid.Row="3" Grid.Column="0" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="3" Grid.Column="0" Style="{StaticResource  GridInnerCellBorder}">
                                 <StackPanel Orientation="Vertical">
                                     <TextBlock  HorizontalAlignment="Center" Padding="0,8,0,3">
                                         <Run Text="专业技"/>
@@ -142,11 +145,11 @@
                                     </TextBlock>
                                 </StackPanel>
                             </Border>
-                            <Border Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center"  VerticalAlignment="Center"
                                             Text="{Binding CurMember.TechnicalTitle}"></TextBlock>
                             </Border>
-                            <Border Grid.Row="3" Grid.Column="3" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="3" Grid.Column="3" Style="{StaticResource  GridInnerCellBorder}">
                                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                                     <TextBlock  HorizontalAlignment="Center" Padding="0,0,0,3">
                                         <Run Text="熟悉专业"/>
@@ -156,12 +159,12 @@
                                     </TextBlock>
                                 </StackPanel>
                             </Border>
-                            <Border Grid.Row="3" Grid.Column="4" Grid.ColumnSpan="2" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="3" Grid.Column="4" Grid.ColumnSpan="2" Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center"  VerticalAlignment="Center"
                                             Text="{Binding CurMember.Speciality}"></TextBlock>
                             </Border>
                             <!--GridRow=4-->
-                            <Border Grid.Row="4" Grid.Column="0" Grid.RowSpan="2" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="4" Grid.Column="0" Grid.RowSpan="2" Style="{StaticResource  GridInnerCellBorder}">
                                 <StackPanel Orientation="Vertical">
                                     <TextBlock  HorizontalAlignment="Center" Padding="0,33,0,3">
                                         <Run Text="学  历"/>
@@ -171,7 +174,7 @@
                                     </TextBlock>
                                 </StackPanel>
                             </Border>
-                            <Border Grid.Row="4" Grid.Column="1" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="4" Grid.Column="1" Style="{StaticResource  GridInnerCellBorder}">
                                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                                     <TextBlock  HorizontalAlignment="Center" Padding="0,8,0,3">
                                         <Run Text="全日制"/>
@@ -181,7 +184,7 @@
                                     </TextBlock>
                                 </StackPanel>
                             </Border>
-                            <Border Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2" Style="{StaticResource  GridInnerCellBorder}">
                                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                                     <TextBlock  HorizontalAlignment="Center" Padding="0,0,0,3">
                                         <Run Text="{Binding CurMember.EducationDays}"/>
@@ -192,7 +195,7 @@
                                 </StackPanel>
                             </Border>
 
-                            <Border Grid.Row="4" Grid.Column="4" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="4" Grid.Column="4" Style="{StaticResource  GridInnerCellBorder}">
                                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                                     <TextBlock  HorizontalAlignment="Center" Padding="0,0,0,3">
                                         <Run Text="毕业院校"/>
@@ -202,7 +205,7 @@
                                     </TextBlock>
                                 </StackPanel>
                             </Border>
-                            <Border Grid.Row="4" Grid.Column="5" Grid.ColumnSpan="2" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="4" Grid.Column="5" Grid.ColumnSpan="2" Style="{StaticResource  GridInnerCellBorder}">
                                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                                     <TextBlock  HorizontalAlignment="Center" Padding="0,0,0,3">
                                         <Run Text="{Binding CurMember.GraduationSchoolDays}"/>
@@ -213,7 +216,7 @@
                                 </StackPanel>
                             </Border>
                             <!--GridRow=5-->
-                            <Border Grid.Row="5" Grid.Column="1" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="5" Grid.Column="1" Style="{StaticResource  GridInnerCellBorder}">
                                 <StackPanel Orientation="Vertical">
                                     <TextBlock  HorizontalAlignment="Center" Padding="0,8,0,3">
                                         <Run Text="在  职"/>
@@ -223,7 +226,7 @@
                                     </TextBlock>
                                 </StackPanel>
                             </Border>
-                            <Border Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="2" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="2" Style="{StaticResource  GridInnerCellBorder}">
                                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                                     <TextBlock  HorizontalAlignment="Center" Padding="0,0,0,3">
                                         <Run Text="{Binding CurMember.EducationTop}"/>
@@ -234,7 +237,7 @@
                                 </StackPanel>
                             </Border>
 
-                            <Border Grid.Row="5" Grid.Column="4" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="5" Grid.Column="4" Style="{StaticResource  GridInnerCellBorder}">
                                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                                     <TextBlock  HorizontalAlignment="Center" Padding="0,0,0,3">
                                         <Run Text="毕业院校"/>
@@ -244,7 +247,7 @@
                                     </TextBlock>
                                 </StackPanel>
                             </Border>
-                            <Border Grid.Row="5" Grid.Column="5" Grid.ColumnSpan="2" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="5" Grid.Column="5" Grid.ColumnSpan="2" Style="{StaticResource  GridInnerCellBorder}">
                                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                                     <TextBlock  HorizontalAlignment="Center" Padding="0,0,0,3">
                                         <Run Text="{Binding CurMember.GraduationSchoolTop}"/>
@@ -255,11 +258,11 @@
                                 </StackPanel>
                             </Border>
                             <!--GridRow=6-->
-                            <Border Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2"  BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2"  Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" Padding="0,18"
                                             Text="现任职务"></TextBlock>
                             </Border>
-                            <Border Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="2" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="2" Style="{StaticResource  GridInnerCellBorder}">
                                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                                     <TextBlock  HorizontalAlignment="Center" Padding="0,0,0,3">
                                         <Run Text="{Binding CurMember.Post}"/>
@@ -269,17 +272,17 @@
                                     </TextBlock>
                                 </StackPanel>
                             </Border>
-                            <Border Grid.Row="6" Grid.Column="4" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="6" Grid.Column="4" Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center"
                                             Text="身份证号"></TextBlock>
                             </Border>
 
-                            <Border Grid.Row="6" Grid.Column="5" Grid.ColumnSpan="2" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="6" Grid.Column="5" Grid.ColumnSpan="2" Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center"
                                             Text="{Binding CurMember.Id}"></TextBlock>
                             </Border>
                             <!--GridRow=7 简历-->
-                            <Border Grid.Row="7" Grid.Column="0" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="7" Grid.Column="0" Style="{StaticResource  GridInnerCellBorder}">
                                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                                     <TextBlock  HorizontalAlignment="Center" Padding="0,0,0,3">
                                         <Run Text="简"/>
@@ -289,7 +292,7 @@
                                     </TextBlock>
                                 </StackPanel>
                             </Border>
-                            <Border Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="6" MinHeight="420" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="6" MinHeight="420" Style="{StaticResource  GridInnerCellBorder}">
                                 <ListBox ItemsSource="{Binding Path=Resumes}" VerticalAlignment="Center" BorderBrush="Transparent" >
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
@@ -339,9 +342,10 @@
                                 <RowDefinition ></RowDefinition>
                                 <RowDefinition ></RowDefinition>
                                 <RowDefinition ></RowDefinition>
+                                <RowDefinition ></RowDefinition>
                             </Grid.RowDefinitions>
                             <!--GridRow=0 奖励情况-->
-                            <Border Grid.Row="0" Grid.Column="0" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource  GridInnerCellBorder}">
                                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                                     <TextBlock  HorizontalAlignment="Center" Padding="0,0,0,8">
                                         <Run Text="奖惩"/>
@@ -351,7 +355,7 @@
                                     </TextBlock>
                                 </StackPanel>
                             </Border>
-                            <Border Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="5" BorderBrush="Black" MinHeight="250" BorderThickness="1">
+                            <Border Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="5"  MinHeight="250" Style="{StaticResource  GridInnerCellBorder}">
                                 <ListBox ItemsSource="{Binding Path=PrizePunishs}" VerticalAlignment="Center" BorderBrush="Transparent">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
@@ -374,7 +378,7 @@
                                 </ListBox>
                             </Border>
                             <!--GridRow=1 奖励情况-->
-                            <Border Grid.Row="1" Grid.Column="0" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource  GridInnerCellBorder}">
                                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                                     <TextBlock  HorizontalAlignment="Center"  Padding="0,0,0,3">
                                         <Run Text="度近"/>
@@ -393,7 +397,7 @@
                                     </TextBlock>
                                 </StackPanel>
                             </Border>
-                            <Border Grid.Row="1" Grid.Column="1"  Grid.ColumnSpan="5" MinHeight="180" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="1" Grid.Column="1"  Grid.ColumnSpan="5" MinHeight="180" Style="{StaticResource  GridInnerCellBorder}">
                                 <ListBox ItemsSource="{Binding Path=Appraises}"  VerticalAlignment="Center" BorderBrush="Transparent">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
@@ -415,7 +419,7 @@
                             </Border>
 
                             <!--GridRow=2 社会关系-->
-                            <Border Grid.Row="2" Grid.Column="0" Grid.RowSpan="7" MinHeight="350"  BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="2" Grid.Column="0" Grid.RowSpan="8" MinHeight="370"  Style="{StaticResource  GridInnerCellBorder}">
                                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                                     <TextBlock  HorizontalAlignment="Center" Padding="0,0,0,0" >
                                         <Run Text="主"/>
@@ -442,17 +446,17 @@
                                     </TextBlock>
                                 </StackPanel>
                             </Border>
-                            <Border Grid.Row="2" Grid.Column="1" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="2" Grid.Column="1" Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center">
                                     <Run Text="称 谓"/>
                                 </TextBlock>
                             </Border>
-                            <Border Grid.Row="2" Grid.Column="2"  BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="2" Grid.Column="2"  Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center">
                                     <Run Text="姓 名"/>
                                 </TextBlock>
                             </Border>
-                            <Border Grid.Row="2" Grid.Column="3"  BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="2" Grid.Column="3"  Style="{StaticResource  GridInnerCellBorder}">
                                 <StackPanel Orientation="Vertical" VerticalAlignment="Center" >
                                     <TextBlock  HorizontalAlignment="Center" >
                                         <Run Text="出生"/>
@@ -462,7 +466,7 @@
                                     </TextBlock>
                                 </StackPanel>
                             </Border>
-                            <Border Grid.Row="2" Grid.Column="4" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="2" Grid.Column="4" Style="{StaticResource  GridInnerCellBorder}">
                                 <StackPanel Orientation="Vertical" VerticalAlignment="Center" >
                                     <TextBlock  HorizontalAlignment="Center" Padding="0,3,0,2">
                                         <Run Text="政治"/>
@@ -472,180 +476,214 @@
                                     </TextBlock>
                                 </StackPanel>
                             </Border>
-                            <Border Grid.Row="2" Grid.Column="5"  BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="2" Grid.Column="5"  Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" >
                                     <Run Text="工作单位及职务"/>
                                 </TextBlock>
                             </Border>
                             <!--GridRow=3-->
-                            <Border Grid.Row="3" Grid.Column="1" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="3" Grid.Column="1" Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center"  >
                                     <Run Text="{Binding Relations[0].Relation}"/>
                                 </TextBlock>
                             </Border>
-                            <Border Grid.Row="3" Grid.Column="2"  BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="3" Grid.Column="2"  Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center"  >
                                     <Run Text="{Binding Relations[0].Name}"/>
                                 </TextBlock>
                             </Border>
-                            <Border Grid.Row="3" Grid.Column="3"  BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="3" Grid.Column="3"  Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" >
                                     <Run Text="{Binding Relations[0].Birthday,StringFormat={}yyy.MM}"/>
                                 </TextBlock>
                             </Border>
-                            <Border Grid.Row="3" Grid.Column="4" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="3" Grid.Column="4" Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" >
                                     <Run Text="{Binding Relations[0].PoliticalStatus}"/>
                                 </TextBlock>
                             </Border>
-                            <Border Grid.Row="3" Grid.Column="5"  BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="3" Grid.Column="5"  Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center"  >
                                     <Run Text="{Binding Relations[0].UnitName}"/>
                                     <Run Text="{Binding Relations[0].Role}"/>
+                                    <Run Text="{Binding Relations[0].Remark}"/>
                                 </TextBlock>
                             </Border>
                             <!--GridRow=4-->
-                            <Border Grid.Row="4" Grid.Column="1" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="4" Grid.Column="1" Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" >
                                     <Run Text="{Binding Relations[1].Relation}"/>
                                 </TextBlock>
                             </Border>
-                            <Border Grid.Row="4" Grid.Column="2"  BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="4" Grid.Column="2"  Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center"  >
                                     <Run Text="{Binding Relations[1].Name}"/>
                                 </TextBlock>
                             </Border>
-                            <Border Grid.Row="4" Grid.Column="3"  BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="4" Grid.Column="3"  Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" >
                                     <Run Text="{Binding Relations[1].Birthday,StringFormat={}yyy.MM}"/>
                                 </TextBlock>
                             </Border>
-                            <Border Grid.Row="4" Grid.Column="4" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="4" Grid.Column="4" Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" >
                                     <Run Text="{Binding Relations[1].PoliticalStatus}"/>
                                 </TextBlock>
                             </Border>
-                            <Border Grid.Row="4" Grid.Column="5"  BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="4" Grid.Column="5"  Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center">
                                     <Run Text="{Binding Relations[1].UnitName}"/>
                                     <Run Text="{Binding Relations[1].Role}"/>
+                                    <Run Text="{Binding Relations[1].Remark}"/>
                                 </TextBlock>
                             </Border>
                             <!--GridRow=5-->
-                            <Border Grid.Row="5" Grid.Column="1" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="5" Grid.Column="1" Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center">
                                     <Run Text="{Binding Relations[2].Relation}"/>
                                 </TextBlock>
                             </Border>
-                            <Border Grid.Row="5" Grid.Column="2"  BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="5" Grid.Column="2"  Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center">
                                     <Run Text="{Binding Relations[2].Name}"/>
                                 </TextBlock>
                             </Border>
-                            <Border Grid.Row="5" Grid.Column="3"  BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="5" Grid.Column="3"  Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center"  >
                                     <Run Text="{Binding Relations[2].Birthday,StringFormat={}yyy.MM}"/>
                                 </TextBlock>
                             </Border>
-                            <Border Grid.Row="5" Grid.Column="4" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="5" Grid.Column="4" Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" >
                                     <Run Text="{Binding Relations[2].PoliticalStatus}"/>
                                 </TextBlock>
                             </Border>
-                            <Border Grid.Row="5" Grid.Column="5"  BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="5" Grid.Column="5"  Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center">
                                     <Run Text="{Binding Relations[2].UnitName}"/>
                                     <Run Text="{Binding Relations[2].Role}"/>
+                                    <Run Text="{Binding Relations[2].Remark}"/>
                                 </TextBlock>
                             </Border>
                             <!--GridRow=6-->
-                            <Border Grid.Row="6" Grid.Column="1" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="6" Grid.Column="1" Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" >
                                     <Run Text="{Binding Relations[3].Relation}"/>
                                 </TextBlock>
                             </Border>
-                            <Border Grid.Row="6" Grid.Column="2"  BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="6" Grid.Column="2"  Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" >
                                     <Run Text="{Binding Relations[3].Name}"/>
                                 </TextBlock>
                             </Border>
-                            <Border Grid.Row="6" Grid.Column="3"  BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="6" Grid.Column="3"  Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" >
                                     <Run Text="{Binding Relations[3].Birthday,StringFormat={}yyy.MM}"/>
                                 </TextBlock>
                             </Border>
-                            <Border Grid.Row="6" Grid.Column="4" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="6" Grid.Column="4" Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center">
                                     <Run Text="{Binding Relations[3].PoliticalStatus}"/>
                                 </TextBlock>
                             </Border>
-                            <Border Grid.Row="6" Grid.Column="5"  BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="6" Grid.Column="5"  Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" >
                                     <Run Text="{Binding Relations[3].UnitName}"/>
                                     <Run Text="{Binding Relations[3].Role}"/>
+                                    <Run Text="{Binding Relations[3].Remark}"/>
                                 </TextBlock>
                             </Border>
                             <!--GridRow=7-->
-                            <Border Grid.Row="7" Grid.Column="1" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="7" Grid.Column="1" Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center">
                                     <Run Text="{Binding Relations[4].Relation}"/>
                                 </TextBlock>
                             </Border>
-                            <Border Grid.Row="7" Grid.Column="2"  BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="7" Grid.Column="2"  Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" >
                                     <Run Text="{Binding Relations[4].Name}"/>
                                 </TextBlock>
                             </Border>
-                            <Border Grid.Row="7" Grid.Column="3"  BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="7" Grid.Column="3"  Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" >
                                     <Run Text="{Binding Relations[4].Birthday,StringFormat={}yyy.MM}"/>
                                 </TextBlock>
                             </Border>
-                            <Border Grid.Row="7" Grid.Column="4" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="7" Grid.Column="4" Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" >
                                     <Run Text="{Binding Relations[4].PoliticalStatus}"/>
                                 </TextBlock>
                             </Border>
-                            <Border Grid.Row="7" Grid.Column="5"  BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="7" Grid.Column="5"  Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" >
                                     <Run Text="{Binding Relations[4].UnitName}"/>
                                     <Run Text="{Binding Relations[4].Role}"/>
+                                    <Run Text="{Binding Relations[4].Remark}"/>
                                 </TextBlock>
                             </Border>
                             <!--GridRow=8_-->
-                            <Border Grid.Row="8" Grid.Column="1" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="8" Grid.Column="1" Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" >
                                     <Run Text="{Binding Relations[5].Relation}"/>
                                 </TextBlock>
                             </Border>
-                            <Border Grid.Row="8" Grid.Column="2"  BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="8" Grid.Column="2"  Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center"  >
                                     <Run Text="{Binding Relations[5].Name}"/>
                                 </TextBlock>
                             </Border>
-                            <Border Grid.Row="8" Grid.Column="3"  BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="8" Grid.Column="3"  Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" >
                                     <Run Text="{Binding Relations[5].Birthday,StringFormat={}yyy.MM}"/>
                                 </TextBlock>
                             </Border>
-                            <Border Grid.Row="8" Grid.Column="4" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="8" Grid.Column="4" Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" >
                                     <Run Text="{Binding Relations[5].PoliticalStatus}"/>
                                 </TextBlock>
                             </Border>
-                            <Border Grid.Row="8" Grid.Column="5"  BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="8" Grid.Column="5"  Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" >
                                     <Run Text="{Binding Relations[5].UnitName}"/>
                                     <Run Text="{Binding Relations[5].Role}"/>
+                                    <Run Text="{Binding Relations[5].Remark}"/>
                                 </TextBlock>
                             </Border>
-                            <!--GridRow=9 奖励情况-->
-                            <Border Grid.Row="9" Grid.Column="0" BorderBrush="Black" BorderThickness="1">
+                            <!--GridRow=9_-->
+                            <Border Grid.Row="9" Grid.Column="1" Style="{StaticResource  GridInnerCellBorder}">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                    <Run Text="{Binding Relations[6].Relation}"/>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Row="9" Grid.Column="2"  Style="{StaticResource  GridInnerCellBorder}">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center"  >
+                                    <Run Text="{Binding Relations[6].Name}"/>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Row="9" Grid.Column="3"  Style="{StaticResource  GridInnerCellBorder}">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                    <Run Text="{Binding Relations[6].Birthday,StringFormat={}yyy.MM}"/>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Row="9" Grid.Column="4" Style="{StaticResource  GridInnerCellBorder}">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                    <Run Text="{Binding Relations[6].PoliticalStatus}"/>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Row="9" Grid.Column="5"  Style="{StaticResource  GridInnerCellBorder}">
+                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                    <Run Text="{Binding Relations[6].UnitName}"/>
+                                    <Run Text="{Binding Relations[6].Role}"/>
+                                    <Run Text="{Binding Relations[6].Remark}"/>
+                                </TextBlock>
+                            </Border>
+                            <!--GridRow=10 备注-->
+                            <Border Grid.Row="10" Grid.Column="0" Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center">
                                         <Run Text="备注"/>
                                 </TextBlock>
                             </Border>
-                            <Border Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="5" MinHeight="90" BorderBrush="Black" BorderThickness="1">
+                            <Border Grid.Row="10" Grid.Column="1" Grid.ColumnSpan="5" MinHeight="90" Style="{StaticResource  GridInnerCellBorder}">
                                 <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Center" Padding="10,0">
                                         <Run Text="{Binding CurMember.Remarks}"/>
                                 </TextBlock>

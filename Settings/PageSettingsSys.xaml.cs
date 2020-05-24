@@ -16,16 +16,17 @@ namespace Office.Work.Platform.Settings
         public PageSettingsSys()
         {
             InitializeComponent();
+
+            _PageViewModel = new PageViewModel();
         }
         private async void Page_LoadedAsync(object sender, RoutedEventArgs e)
         {
-            _PageViewModel = new PageViewModel();
             await _PageViewModel.GetEntityInfoAsync();
-            this.DataContext = _PageViewModel;
             if (AppSet.LoginUser.Post.Equals("管理员"))
             {
-                BtnUpdateSettings.IsEnabled = true;
+                _PageViewModel.CanOperation = true;
             }
+            this.DataContext = _PageViewModel;
         }
 
         private void Btn_UpdateSettings_Click(object sender, RoutedEventArgs e)
@@ -33,10 +34,29 @@ namespace Office.Work.Platform.Settings
             _PageViewModel.UpdateEntityInfoAsync();
         }
 
+        private void Btn_RestoreSettings_Click(object sender, RoutedEventArgs e)
+        {
+            _PageViewModel.EntitySettingServer = new SettingServer();
+            this.DataContext = null;
+            this.DataContext = _PageViewModel;
+            _PageViewModel.UpdateEntityInfoAsync();
+        }
+
         private class PageViewModel : NotificationObject
         {
+            private bool _CanOperation;
 
-            public string[] FileContentTypes => AppSet.ServerSetting.WorkContentType.Split(',', System.StringSplitOptions.RemoveEmptyEntries);
+            public bool CanOperation
+            {
+                get
+                {
+                    return _CanOperation;
+                }
+                set
+                {
+                    _CanOperation = value; RaisePropertyChanged();
+                }
+            }
             public SettingServer EntitySettingServer { get; set; }
 
             #region "方法"
@@ -45,6 +65,7 @@ namespace Office.Work.Platform.Settings
             /// </summary>
             public PageViewModel()
             {
+                CanOperation = false;
             }
             public async Task GetEntityInfoAsync()
             {
@@ -56,9 +77,12 @@ namespace Office.Work.Platform.Settings
                 if (excute.State == 0)
                 {
                     AppFuns.ShowMessage("更新成功！");
+                    AppSet.ServerSetting = EntitySettingServer;
                 }
             }
             #endregion
         }
+
+
     }
 }

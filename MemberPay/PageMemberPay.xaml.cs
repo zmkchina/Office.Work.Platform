@@ -9,7 +9,7 @@ using Office.Work.Platform.AppCodes;
 using Office.Work.Platform.AppDataService;
 using Office.Work.Platform.Lib;
 
-namespace Office.Work.Platform.Remuneration
+namespace Office.Work.Platform.MemberPay
 {
     /// <summary>
     /// PageMemberPay.xaml 的交互逻辑
@@ -65,7 +65,7 @@ namespace Office.Work.Platform.Remuneration
 
             if (AddWin.ShowDialog().Value)
             {
-                IEnumerable<MemberPay> MemberPlays = await DataMemberPayRepository.GetRecords(new MemberPaySearch()
+                IEnumerable<Lib.MemberPay> MemberPlays = await DataMemberPayRepository.GetRecords(new MemberPaySearch()
                 {
                     UserId = AppSet.LoginUser.Id,
                     MemberId = NewRecord.MemberId,
@@ -75,7 +75,7 @@ namespace Office.Work.Platform.Remuneration
                 });
                 if (MemberPlays.Count() > 0)
                 {
-                     AppFuns.ShowMessage($"该工作人员{NewRecord.PayYear} 年 {NewRecord.PayMonth} 月份的[{NewRecord.PayName}]已经发放。", "无法新增");
+                    AppFuns.ShowMessage($"该工作人员{NewRecord.PayYear} 年 {NewRecord.PayMonth} 月份的[{NewRecord.PayName}]已经发放。", "无法新增");
                     return;
                 }
 
@@ -89,12 +89,12 @@ namespace Office.Work.Platform.Remuneration
                     }
                     else
                     {
-                         AppFuns.ShowMessage(excuteResult.Msg, Caption: "失败");
+                        AppFuns.ShowMessage(excuteResult.Msg, Caption: "失败");
                     }
                 }
                 else
                 {
-                     AppFuns.ShowMessage("数据输入不正确！", Caption: "失败");
+                    AppFuns.ShowMessage("数据输入不正确！", Caption: "失败");
                 }
             }
         }
@@ -108,7 +108,7 @@ namespace Office.Work.Platform.Remuneration
             if (RecordDataGrid.SelectedItem is Lib.MemberPay SelectedRec)
             {
 
-                if ( AppFuns.ShowMessage($"确认要删除 {SelectedRec.PayMonth} 月份待遇吗？", Caption: "确认", showYesNo: true))
+                if (AppFuns.ShowMessage($"确认要删除 {SelectedRec.PayMonth} 月份待遇吗？", Caption: "确认", showYesNo: true))
                 {
                     ExcuteResult excuteResult = await DataMemberPayRepository.DeleteRecord(SelectedRec);
                     if (excuteResult.State == 0)
@@ -117,7 +117,7 @@ namespace Office.Work.Platform.Remuneration
                     }
                     else
                     {
-                         AppFuns.ShowMessage(excuteResult.Msg, Caption: "失败");
+                        AppFuns.ShowMessage(excuteResult.Msg, Caption: "失败");
                     }
                 }
             }
@@ -135,7 +135,7 @@ namespace Office.Work.Platform.Remuneration
                 _PageViewModel.CanOperation = true;
                 _PageViewModel.CurMember = MemberPset;
                 await UcMemberPayFile.InitFileDatasAsync(MemberPset.MemberId, "个人待遇", true);
-
+                await _PageViewModel.SearchRecords();
             }
             else
             {
@@ -154,7 +154,7 @@ namespace Office.Work.Platform.Remuneration
 
             public PageViewModel()
             {
-                MemberPays = new ObservableCollection<MemberPay>();
+                MemberPays = new ObservableCollection<Lib.MemberPay>();
                 PaySetMembers = new ObservableCollection<MemberPaySet>();
                 SearchCondition = new MemberPaySearch();
             }
@@ -170,7 +170,7 @@ namespace Office.Work.Platform.Remuneration
                     PayUnitName = AppSet.LoginUser.UnitName,
                     UserId = AppSet.LoginUser.Id
                 }).ConfigureAwait(false);
-                if(TempPayItems==null || TempPayItems.Count() < 1)
+                if (TempPayItems == null || TempPayItems.Count() < 1)
                 {
                     //AppFuns.ShowMessage("未读到待遇项目数据，请稍候再试！");
                     return;
@@ -198,7 +198,7 @@ namespace Office.Work.Platform.Remuneration
             {
                 if (SearchCondition != null)
                 {
-                    IEnumerable<MemberPay> MemberPlayMonths = await DataMemberPayRepository.GetRecords(new MemberPaySearch()
+                    IEnumerable<Lib.MemberPay> MemberPlayMonths = await DataMemberPayRepository.GetRecords(new MemberPaySearch()
                     {
                         PayYear = SearchDate.Year,
                         PayMonth = SearchDate.Month,
@@ -238,7 +238,7 @@ namespace Office.Work.Platform.Remuneration
             /// <summary>
             /// 当前职工工资月度发放记录
             /// </summary>
-            public ObservableCollection<MemberPay> MemberPays { get; set; }
+            public ObservableCollection<Lib.MemberPay> MemberPays { get; set; }
             /// <summary>
             /// 当前用户所在单位设置可发放待遇项目。
             /// </summary>

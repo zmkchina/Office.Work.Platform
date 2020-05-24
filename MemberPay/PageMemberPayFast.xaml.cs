@@ -11,7 +11,7 @@ using Office.Work.Platform.AppDataService;
 using Office.Work.Platform.Lib;
 using Button = System.Windows.Controls.Button;
 
-namespace Office.Work.Platform.Remuneration
+namespace Office.Work.Platform.MemberPay
 {
     /// <summary>
     /// 快速发放待遇，即拷贝上月待遇数据。

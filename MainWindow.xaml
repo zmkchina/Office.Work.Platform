@@ -39,7 +39,7 @@
             <RowDefinition Height="50"/>
             <RowDefinition Height="70" />
             <RowDefinition Height="*"/>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <DockPanel Grid.Row="0" 
               MouseMove="Grid_MouseMove" 
@@ -48,9 +48,12 @@
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" 
                         HorizontalAlignment="Left" VerticalAlignment="Center" >
                 <TextBlock Text="&#xe64d;" Style="{StaticResource FIcon}" FontSize="25" VerticalAlignment="Center" Margin="6,0,5,0"></TextBlock>
-                <TextBlock Text="政工业务工作平台" 
+                <TextBlock 
                        VerticalAlignment="Center" 
-                       FontSize="16"/>
+                       FontSize="16">
+                    <Run Text="政工业务工作平台" />
+                    <Run Text=""  x:Name="Run_NetState" Foreground="Red"/>
+                </TextBlock>
             </StackPanel>
             <StackPanel VerticalAlignment="Center" 
                         HorizontalAlignment="Right"
@@ -128,6 +131,12 @@
                         <TextBlock  Text="劳资管理" VerticalAlignment="Center"/>
                     </StackPanel>
                 </ListBoxItem>
+                <ListBoxItem MouseLeftButtonUp="ListBoxItem_Score_MouseLeftButtonUp">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="&#xe633;" Style="{StaticResource FIcon}" FontSize="25" Margin="0,0,0,5"></TextBlock>
+                        <TextBlock  Text="考勤考核" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </ListBoxItem>
                 <ListBoxItem MouseLeftButtonUp="ListBoxItem_MouseLeftButtonUp_4">
                     <StackPanel Orientation="Vertical">
                         <TextBlock Text="&#xe633;" Style="{StaticResource FIcon}" FontSize="25" Margin="0,0,0,5"></TextBlock>
@@ -162,7 +171,7 @@
             <Frame Grid.Column="1" x:Name="FrameContentPage" NavigationUIVisibility="Hidden" Background="#FFF9FAFB">
             </Frame>
         </Grid>
-        <StatusBar Grid.Row="3" VerticalAlignment="Center" Margin="0" Padding="0" Height="30" Background="{DynamicResource ColorMainWinState}">
+        <StatusBar Grid.Row="3" VerticalAlignment="Center" Margin="0,5" Padding="3,5" Background="{DynamicResource ColorMainWinState}">
             <StatusBarItem HorizontalAlignment="Left">
                     <TextBlock Name="lblCursorPosition"  Text="就绪" FontSize="14" Margin="15,0,0,0"/>
             </StatusBarItem>

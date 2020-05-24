@@ -1,26 +1,26 @@
-﻿using Office.Work.Platform.AppCodes;
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Threading;
+using Office.Work.Platform.AppCodes;
 
-namespace Office.Work.Platform.MemberUc
+namespace Office.Work.Platform.MemberScore
 {
     /// <summary>
-    /// 此类用于新增或编辑月度待遇发放记录。
+    /// 此类用于新增或编辑职工绩效考核得分记录。
     /// 此窗体作为对话框使用，当DialogResult不被设为true时，将始终为false
     /// </summary>
-    public partial class UC_RelationsWin : Window
+    public partial class PageScoreInputWin : Window
     {
+        public Lib.MemberScore _CurMemberScore { get; set; }
+        public string[] _MemberScoreTypes { get; set; } = AppSet.ServerSetting.MemberScoreTypeArr;
         private DispatcherTimer _UpdateInfoTimer = new System.Windows.Threading.DispatcherTimer();
-        private Lib.MemberRelations _CurRecord { get; set; }
-        public UC_RelationsWin(Lib.MemberRelations ParamRecord)
+        public PageScoreInputWin(Lib.MemberScore PMemberScore)
         {
             InitializeComponent();
             this.Owner = AppSet.AppMainWindow;
-            _CurRecord = ParamRecord;
+            _CurMemberScore = PMemberScore;
         }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private void Window_LoadedAsync(object sender, RoutedEventArgs e)
         {
             _UpdateInfoTimer.Interval = new TimeSpan(0, 0, 3);
 
@@ -29,27 +29,36 @@ namespace Office.Work.Platform.MemberUc
                 InputResultMsg.Text = "";
                 _UpdateInfoTimer.Stop();
             });
-            DataContext = _CurRecord;
+            DataContext = this;
         }
-
+        /// <summary>
+        /// 保存
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BtnSaveClickAsync(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(_CurRecord.Relation) || string.IsNullOrWhiteSpace(_CurRecord.Name))
+            if (!_CurMemberScore.ModelIsValid())
             {
-                InputResultMsg.Text = "数据输入不正确!";
+                InputResultMsg.Text = "数据输入不合法或不完整！";
                 _UpdateInfoTimer.Start();
                 return;
             }
             DialogResult = true;
-            _CurRecord.UpDateTime = DateTime.Now;
+            this.Close();
+        }
+        /// <summary>
+        /// 取消
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnCancelClickAsync(object sender, RoutedEventArgs e)
+        {
+            _CurMemberScore = null;
+            DialogResult = false;
             this.Close();
         }
 
-        private void BtnCancelClickAsync(object sender, RoutedEventArgs e)
-        {
-            _CurRecord = null;
-            this.Close();
-        }
         /// <summary>
         /// 拖动窗口
         /// </summary>
@@ -63,6 +72,6 @@ namespace Office.Work.Platform.MemberUc
             }
         }
 
-       
+
     }
 }

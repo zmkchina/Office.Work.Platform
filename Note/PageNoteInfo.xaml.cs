@@ -27,6 +27,7 @@ namespace Office.Work.Platform.Note
         }
         public void Page_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
+            AppFuns.SetStateBarText("查询平台备忘内容。");
             Col_NoteInfo.Width = new System.Windows.GridLength(0, System.Windows.GridUnitType.Pixel);
             btn_Search_ClickAsync(null, null);
         }
@@ -34,6 +35,12 @@ namespace Office.Work.Platform.Note
         {
             AppFuns.SetStateBarText("就绪");
         }
+
+        /// <summary>
+        /// 查询备忘录
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void btn_Search_ClickAsync(object sender, System.Windows.RoutedEventArgs e)
         {
             Col_NoteInfo.Width = new System.Windows.GridLength(0, System.Windows.GridUnitType.Pixel);
@@ -41,6 +48,12 @@ namespace Office.Work.Platform.Note
             DataContext = _CurPageViewModel;
             AppFuns.SetStateBarText($"共查询到 :{_CurPageViewModel.SearchNote.RecordCount}条记录,每页{_CurPageViewModel.SearchNote.PageSize}条，共{_CurPageViewModel.SearchNote.PageCount}页！");
         }
+
+        /// <summary>
+        /// 添加一个备忘录
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btn_Add_ClickAsync(object sender, System.Windows.RoutedEventArgs e)
         {
             RichTBox.Document.Blocks.Clear();
@@ -57,6 +70,12 @@ namespace Office.Work.Platform.Note
             TB_NoteCaption.DataContext = _CurPageViewModel.CurNote;
             Col_NoteInfo.Width = new System.Windows.GridLength(2, System.Windows.GridUnitType.Star);
         }
+
+        /// <summary>
+        /// 保存备忘录
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Btn_Save_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(_CurPageViewModel.CurNote.Caption))
@@ -91,6 +110,12 @@ namespace Office.Work.Platform.Note
                 this.Btn_Save.IsEnabled = true;
             });
         }
+
+        /// <summary>
+        /// 选中一个备忘录标题
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ListBox_SelectionChangedAsync(object sender, SelectionChangedEventArgs e)
         {
             _CurPageViewModel.CurNote = ListBox_Notes.SelectedItem as Lib.Note;
@@ -120,17 +145,26 @@ namespace Office.Work.Platform.Note
                 }
             }
         }
+
+        /// <summary>
+        /// 删除备忘录
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btn_Delete_ClickAsync(object sender, System.Windows.RoutedEventArgs e)
         {
-            App.Current.Dispatcher.Invoke(async () =>
+            if (_CurPageViewModel.CurNote != null)
             {
-                ExcuteResult result = await _CurPageViewModel.DelNode();
-                if (result.State == 0)
+                App.Current.Dispatcher.Invoke(async () =>
                 {
-                    Col_NoteInfo.Width = new System.Windows.GridLength(0, System.Windows.GridUnitType.Pixel);
-                }
-                AppFuns.ShowMessage(result.Msg);
-            });
+                    ExcuteResult result = await _CurPageViewModel.DelNode();
+                    if (result.State == 0)
+                    {
+                        Col_NoteInfo.Width = new System.Windows.GridLength(0, System.Windows.GridUnitType.Pixel);
+                    }
+                    AppFuns.ShowMessage(result.Msg);
+                });
+            }
         }
 
 
@@ -208,7 +242,7 @@ namespace Office.Work.Platform.Note
                 CollectNotes.Clear();
                 NoteSearchResult NoteSearchResult = await DataNoteRepository.GetRecords(SearchNote);
                 if (NoteSearchResult == null) { return; }
-                
+
                 SearchNote.RecordCount = NoteSearchResult.SearchCondition.RecordCount;
 
                 NoteSearchResult.RecordList?.ToList().ForEach(e =>
