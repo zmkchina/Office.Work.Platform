@@ -44,7 +44,7 @@ namespace Office.Work.Platform.AppDataService
             IS4_AccessToken = "";
             HttpClient _Client = CreateHttpClient();
             //var disco = await _Client.GetDiscoveryDocumentAsync(AppSet.LocalSetting.IS4SeverUrl).ConfigureAwait(false);
-            var disco = await _Client.GetDiscoveryDocumentAsync(new DiscoveryDocumentRequest()
+            var DiscoverUrls = await _Client.GetDiscoveryDocumentAsync(new DiscoveryDocumentRequest()
             {
                 Address = AppSet.LocalSetting.IS4SeverUrl,
                 Policy = new DiscoveryPolicy()
@@ -53,12 +53,11 @@ namespace Office.Work.Platform.AppDataService
                 }
             }).ConfigureAwait(false);
             //发现 IS4 各类功能所在的网址和其他相关信息 
-            if (disco.IsError)
+            if (DiscoverUrls.IsError)
             {
                 //Console.WriteLine(disco.Error);
-                return disco.Error;
+                return DiscoverUrls.Error;
             }
-
             ////ClientCredentials 客户端凭据许可
             //var tokenResponse = await _Client.RequestClientCredentialsTokenAsync(new ClientCredentialsTokenRequest
             //{
@@ -71,11 +70,10 @@ namespace Office.Work.Platform.AppDataService
             //ClientPassword 客户端加用户密码模式
             var tokenResponse = await _Client.RequestPasswordTokenAsync(new PasswordTokenRequest
             {
-                Address = disco.TokenEndpoint,
+                Address = DiscoverUrls.TokenEndpoint,
                 ClientId = "WorkPlatformClient",
                 ClientSecret = "Work_Platform_ClientPwd",
-                Scope = "Apis",
-
+                Scope = "PlatformApis",
                 //以下为用户与密码
                 UserName = P_UserName,
                 Password = P_Pwd
@@ -386,7 +384,13 @@ namespace Office.Work.Platform.AppDataService
             foreach (PropertyInfo item in Attri)
             {
                 object itemValue = item.GetValue(Entity);
-                //Type AttriType = itemValue.GetType();获取数据类型再作进一步处理。
+                if (item.PropertyType == typeof(DateTime))
+                {
+                    if (DateTime.TryParse(itemValue.ToString(), out DateTime tempTime))
+                    {
+                        itemValue = tempTime.ToString("yyyy/MM/dd HH:mm:ss");
+                    }
+                }
                 if (itemValue != null)
                 {
                     if (urlParams.Length < 1)
