@@ -15,18 +15,16 @@ namespace Office.Work.Platform.MemberPay
         public Lib.MemberPay CurMemberPay { get; set; }
         public List<MemberPayItem> MemberPayItems { get; set; }
         public Lib.MemberPayItem SelectPayItem { get; set; }
-        public DateTime SelectPayDate { get; set; } = DateTime.Now;
+        public DateTime SelectPayDate { get; set; }
 
-        public PageMemberPayWin(Lib.MemberPay PMemberPay, List<MemberPayItem> PMemberPayItems)
+        public PageMemberPayWin()
         {
-            InitializeComponent();
             this.Owner = AppSet.AppMainWindow;
-            CurMemberPay = PMemberPay;
-            MemberPayItems = PMemberPayItems;
-            MemberPayItems.Sort((x, y) => x.OrderIndex - y.OrderIndex);
+            InitializeComponent();
         }
         private void Window_LoadedAsync(object sender, RoutedEventArgs e)
         {
+            MemberPayItems.Sort((x, y) => x.OrderIndex - y.OrderIndex);
             DataContext = this;
             ComboBox_PayItems.SelectedIndex = 0;
         }

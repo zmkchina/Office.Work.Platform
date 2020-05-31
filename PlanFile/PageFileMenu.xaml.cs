@@ -1,9 +1,8 @@
-﻿using Office.Work.Platform.AppCodes;
-using System.Collections.Generic;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using Office.Work.Platform.AppCodes;
 
 namespace Office.Work.Platform.PlanFile
 {
@@ -20,8 +19,7 @@ namespace Office.Work.Platform.PlanFile
         {
             ListBoxItem_MouseLeftButtonUp_0(null, null);
 
-            List<string> MenuList = AppSet.ServerSetting.GetWorkContentTypes();
-            foreach (string item in MenuList)
+            foreach (string item in AppSet.ServerSetting.WorkContentTypeArr)
             {
                 ListBoxItem tempItem = new ListBoxItem();
                 tempItem.Tag = item;

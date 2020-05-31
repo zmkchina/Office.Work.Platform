@@ -155,6 +155,10 @@ namespace Office.Work.Platform.Note
         {
             if (_CurPageViewModel.CurNote != null)
             {
+                if (!AppFuns.ShowMessage($"确定要删除[{_CurPageViewModel.CurNote.Caption}]备忘信息吗？", "确认", false, true, false))
+                {
+                    return;
+                }
                 App.Current.Dispatcher.Invoke(async () =>
                 {
                     ExcuteResult result = await _CurPageViewModel.DelNode();

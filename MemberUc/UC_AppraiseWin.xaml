@@ -3,7 +3,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:AppCodes="clr-namespace:Office.Work.Platform.AppCodes"
         mc:Ignorable="d"
         ShowInTaskbar="False" 
         WindowStartupLocation="CenterOwner"
@@ -59,15 +58,15 @@
         <StackPanel Orientation="Vertical"  Margin="10,15" HorizontalAlignment="Stretch">
             <StackPanel Orientation="Horizontal">
                 <GroupBox Header="奖惩年份" >
-                    <TextBox Text="{Binding Year}"   Height="30" Width="200" FontSize="16" Margin="5" />
+                    <TextBox Text="{Binding _CurRecord.Year}"   Height="30" Width="200" FontSize="16" Margin="5" />
                 </GroupBox>
                 <GroupBox Header="奖惩类型" Style="{StaticResource GroupBoxStyle}">
-                    <ComboBox ItemsSource="{Binding AppraiseTypeArr}" Text="{Binding Result}"  
+                    <ComboBox ItemsSource="{Binding _AppraiseTypeArr}" Text="{Binding _CurRecord.Result}"  
                           Height="30"  Width="180" HorizontalAlignment="Left" FontSize="16" Margin="5" />
                 </GroupBox>
             </StackPanel>
             <GroupBox Header="备注信息" >
-                <TextBox Text="{Binding Remark}"  HorizontalAlignment="Stretch" Height="50" FontSize="16" Margin="5" TextWrapping="Wrap"/>
+                <TextBox Text="{Binding _CurRecord.Remark}"  HorizontalAlignment="Stretch" Height="50" FontSize="16" Margin="5" TextWrapping="Wrap"/>
             </GroupBox>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button Content="保存" Height="30" Width="60" Click="BtnSaveClickAsync" Margin="10" />

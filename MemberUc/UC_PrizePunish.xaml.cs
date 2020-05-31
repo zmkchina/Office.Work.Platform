@@ -109,7 +109,7 @@ namespace Office.Work.Platform.MemberUc
                 if (AddWin.ShowDialog().Value)
                 {
                     ExcuteResult excuteResult = await DataMemberPrizePunishRepository.UpdateRecord(RecCloneObj);
-                    if (excuteResult.State == 0)
+                    if (excuteResult != null && excuteResult.State == 0)
                     {
                         PropertyInfo[] TargetAttris = SelectedRec.GetType().GetProperties();
                         PropertyInfo[] SourceAttris = RecCloneObj.GetType().GetProperties();

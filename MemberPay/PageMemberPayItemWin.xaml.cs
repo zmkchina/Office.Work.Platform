@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using Office.Work.Platform.AppCodes;
 
@@ -10,14 +13,20 @@ namespace Office.Work.Platform.MemberPay
     /// </summary>
     public partial class PageMemberPayItemWin : Window
     {
+
         public Lib.MemberPayItem CurPayItem { get; set; }
         public Lib.SettingServer MemberSets { get; set; } = AppSet.ServerSetting;
+        /// <summary>
+        /// 有权读取该计划的用户选择
+        /// </summary>
+        public ObservableCollection<SelectObj<string>> MemberTypeList { get; set; }
 
         public PageMemberPayItemWin(Lib.MemberPayItem PPayItem)
         {
             this.Owner = AppSet.AppMainWindow;
             InitializeComponent();
             CurPayItem = PPayItem;
+            MemberTypeList = new ObservableCollection<SelectObj<string>>();
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -26,11 +35,24 @@ namespace Office.Work.Platform.MemberPay
                 //说明是编辑项目。
                 Tb_ItemName.IsReadOnly = true;
             }
+            foreach (string item in MemberSets.MemberTypeArr)
+            {
+                if (!string.IsNullOrEmpty(CurPayItem.MemberTypes))
+                {
+                    MemberTypeList.Add(new SelectObj<string>(CurPayItem.MemberTypes.Contains(item), item));
+                }
+                else
+                {
+                    MemberTypeList.Add(new SelectObj<string>(false, item));
+                }
+            }
+
             DataContext = this;
         }
 
         private void BtnSaveClickAsync(object sender, RoutedEventArgs e)
         {
+            CurPayItem.MemberTypes = GetSelectMemberTypes(MemberTypeList);
             CurPayItem.UnitName = AppSet.LoginUser.UnitName;
             CurPayItem.UserId = AppSet.LoginUser.Id;
             DialogResult = true;
@@ -42,6 +64,7 @@ namespace Office.Work.Platform.MemberPay
             DialogResult = false;
             this.Close();
         }
+
         /// <summary>
         /// 拖动窗口
         /// </summary>
@@ -53,6 +76,17 @@ namespace Office.Work.Platform.MemberPay
             {
                 Dispatcher.BeginInvoke(new Action(() => this.DragMove()));
             }
+        }
+
+        /// <summary>
+        /// 获取所有选中的员工类型
+        /// </summary>
+        /// <param name="UserSelectList"></param>
+        /// <returns></returns>
+        public string GetSelectMemberTypes(ObservableCollection<SelectObj<string>> MemberTypeList)
+        {
+            List<string> SelectIds = MemberTypeList.Where(x => x.IsSelect).Select(y => y.Obj).ToList();
+            return string.Join(",", SelectIds.ToArray());
         }
     }
 }

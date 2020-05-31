@@ -90,6 +90,7 @@
                 <DataGridTextColumn Header="待遇性质" Binding="{Binding AddOrCut}"/>
                 <DataGridTextColumn Header="计入基数" Binding="{Binding InCardinality}"/>
                 <DataGridTextColumn Header="所属待遇表" Binding="{Binding InTableType}"/>
+                <DataGridTextColumn Header="员工类型" Binding="{Binding MemberTypes}"/>
                 <DataGridTextColumn Header="打印排序" Binding="{Binding OrderIndex}"/>
                 <DataGridTextColumn Header="相关说明" Binding="{Binding Remark}"/>
                 <DataGridTextColumn Header="更新时间" Binding="{Binding UpDateTime,StringFormat=yyyy/MM/dd}"/>

@@ -22,63 +22,44 @@
             <Setter Property="TextAlignment" Value="Left"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Padding" Value="1,5"/>
             <Setter Property="Margin" Value="5"/>
             <Setter Property="Width" Value="115"/>
-        </Style>
-        <Style x:Key="DatePickerStyle" TargetType="DatePicker">
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="FontSize" Value="16"/>
-            <Setter Property="Margin" Value="3,5"/>
-            <Setter Property="Width" Value="135"/>
-        </Style>
-        <Style TargetType="DatePickerTextBox">
-            <Setter Property="Control.Template">
-                <Setter.Value>
-                    <ControlTemplate>
-                        <TextBox Text="{Binding Path=SelectedDate, StringFormat='yyyy/MM', RelativeSource={RelativeSource AncestorType=DatePicker}}" />
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
         </Style>
         <Style TargetType="ComboBox">
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Padding" Value="1,5"/>
             <Setter Property="Margin" Value="5,2"/>
-            <Setter Property="Width" Value="270"/>
+            <Setter Property="MinWidth" Value="150"/>
         </Style>
     </Window.Resources>
-    <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+    <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top" >
         <Border Height="30" Background="DodgerBlue" MouseMove="Border_MouseMove" Cursor="Hand">
-            <TextBlock Text="职工待遇发放" VerticalAlignment="Center" Foreground="White" Padding="5,0,0,0"/>
+            <TextBlock Text="{Binding SelectPayDate, StringFormat=职工待遇发放[yyyy/MM]}" VerticalAlignment="Center" Foreground="White" Padding="5,0,0,0"/>
         </Border>
-        <Grid>
+        <Grid  TextElement.FontSize="16">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <StackPanel Orientation="Vertical" Grid.Column="0"  Margin="10" HorizontalAlignment="Stretch">
-                <GroupBox Header="发放项目" Style="{StaticResource GroupBoxStyle}">
-                    <ComboBox  ItemsSource="{Binding MemberPayItems}"   
+                <StackPanel Orientation="Horizontal" Margin="5" >
+                    <GroupBox Header="发放项目" Style="{StaticResource GroupBoxStyle}">
+                        <ComboBox  ItemsSource="{Binding MemberPayItems}"   
                                SelectedIndex="0"
                                DisplayMemberPath="Name"
                                x:Name="ComboBox_PayItems"
                                Text="{Binding CurMemberPay.PayName}" 
                                SelectionChanged="ComboBox_SelectionChanged"
-                               HorizontalAlignment="Left" FontSize="16" Margin="5" />
-                </GroupBox>
-                <GroupBox Header="发放月份" Style="{StaticResource GroupBoxStyle}">
-                    <DatePicker Style="{StaticResource DatePickerStyle}"
-                                SelectedDate="{Binding SelectPayDate}"
-                                AppCodes:DatePickerCalendar.IsMonthYear="True"/>
-                </GroupBox>
-
-                <StackPanel Orientation="Horizontal">
+                               HorizontalAlignment="Left"  Margin="5" />
+                    </GroupBox>
                     <GroupBox Header="发放金额" Style="{StaticResource GroupBoxStyle}">
                         <TextBox Text="{Binding CurMemberPay.Amount}" Style="{StaticResource TextboxStyle}"/>
                     </GroupBox>
                 </StackPanel>
-                <GroupBox Header="备注信息" >
-                    <TextBox Text="{Binding CurMemberPay.Remark}"  HorizontalAlignment="Stretch" Height="60" FontSize="16" Margin="5" TextWrapping="Wrap"/>
+                <GroupBox Header="备注信息" Margin="5" >
+                    <TextBox Text="{Binding CurMemberPay.Remark}"  HorizontalAlignment="Stretch" Height="60" Margin="5" TextWrapping="Wrap"/>
                 </GroupBox>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button Content="保存" Height="30" Width="60" Click="BtnSaveClickAsync" Margin="10" />

@@ -32,43 +32,53 @@ namespace Office.Work.Platform.PlanFile
         }
         private async void BtnUploadFile_ClickAsync(object sender, RoutedEventArgs e)
         {
-            ExcuteResult JsonResult = new ExcuteResult();
-            if (_CurWinViewModel.EntityFile.ContentType == null)
+            try
             {
-                AppFuns.ShowMessage("请选择文件内容类型！", Caption: "警告");
-                return;
-            }
-            _CurWinViewModel.EntityFile.CanReadUserIds = _CurWinViewModel.GetSelectUserIds();
-
-            if (!_CurWinViewModel.EntityFile.CanReadUserIds.Contains(AppSet.LoginUser.Id))
-            {
-                if (!AppFuns.ShowMessage("你本人没有读取该文件的权限？", Caption: "确认", showYesNo: true))
+                ExcuteResult JsonResult = new ExcuteResult();
+                if (_CurWinViewModel.EntityFile.ContentType == null)
                 {
+                    AppFuns.ShowMessage("请选择文件内容类型！", Caption: "警告");
                     return;
                 }
+                _CurWinViewModel.EntityFile.CanReadUserIds = _CurWinViewModel.GetSelectUserIds();
+
+                if (!_CurWinViewModel.EntityFile.CanReadUserIds.Contains(AppSet.LoginUser.Id))
+                {
+                    if (!AppFuns.ShowMessage("你本人没有读取该文件的权限？", Caption: "确认", showYesNo: true))
+                    {
+                        return;
+                    }
+                }
+
+                BtnUpFile.IsEnabled = false;
+                ProgressMessageHandler progress = new ProgressMessageHandler();
+                progress.HttpSendProgress += (object sender, HttpProgressEventArgs e) =>
+                {
+                    _CurWinViewModel.EntityFile.UpIntProgress = e.ProgressPercentage;
+                };
+
+                JsonResult = await DataPlanFileRepository.UpLoadFileInfo(_CurWinViewModel.EntityFile, _CurWinViewModel.UpFileInfo.OpenRead(), "upfilekey", "upfilename", progress);
+                if (JsonResult != null && JsonResult.State == 0)
+                {
+                    _CurWinViewModel.EntityFile.Id = JsonResult.Tag;
+                    _CurWinViewModel.EntityFile.UpIntProgress = 100;
+                    _CurWinViewModel.EntityFile.DownIntProgress = 0;
+                    _CallBackFunc(_CurWinViewModel.EntityFile);
+                    this.Close();
+                }
+                else
+                {
+                    AppFuns.ShowMessage(JsonResult.Msg, Caption: "错误", isErr: true);
+                    BtnUpFile.IsEnabled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                AppFuns.ShowMessage(ex.Message, Caption: "错误", isErr: true);
             }
 
-            BtnUpFile.IsEnabled = false;
-            ProgressMessageHandler progress = new ProgressMessageHandler();
-            progress.HttpSendProgress += (object sender, HttpProgressEventArgs e) =>
-            {
-                _CurWinViewModel.EntityFile.UpIntProgress = e.ProgressPercentage;
-            };
 
-            JsonResult = await DataPlanFileRepository.UpLoadFileInfo(_CurWinViewModel.EntityFile, _CurWinViewModel.UpFileInfo.OpenRead(), "upfilekey", "upfilename", progress);
-            if (JsonResult != null && JsonResult.State == 0)
-            {
-                _CurWinViewModel.EntityFile.Id = JsonResult.Tag;
-                _CurWinViewModel.EntityFile.UpIntProgress = 100;
-                _CurWinViewModel.EntityFile.DownIntProgress = 0;
-                _CallBackFunc(_CurWinViewModel.EntityFile);
-                this.Close();
-            }
-            else
-            {
-                AppFuns.ShowMessage(JsonResult.Msg, Caption: "错误", isErr: true);
-                BtnUpFile.IsEnabled = true;
-            }
         }
         private void BtnClose_Click(object sender, RoutedEventArgs e)
         {

@@ -22,7 +22,7 @@
             </TextBlock>
         </Border>
         <ToolBar Grid.Row="1">
-            <TextBox Width="200" Text="{Binding SearchFile.SearchNameOrDesc}"/>
+            <TextBox Width="200" Text="{Binding SearchPlanFile.SearchNameOrDesc}"/>
             <Button Content="刷新记录" Click="btn_Refrash_ClickAsync" />
             <Separator />
             <TextBlock VerticalAlignment="Center" Background="#FFF6F7E7" Padding="5,0" FontSize="14">
@@ -39,6 +39,7 @@
             </Grid.ColumnDefinitions>
             <ListBox x:Name="LB_FileList" Grid.Column="0" 
                      ItemsSource="{Binding Path=PlanFiles}"
+                     SelectionMode="Single"
                      BorderBrush="Transparent"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                      ScrollViewer.VerticalScrollBarVisibility="Auto"

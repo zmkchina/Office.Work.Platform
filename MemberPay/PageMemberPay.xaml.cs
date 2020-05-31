@@ -34,16 +34,16 @@ namespace Office.Work.Platform.MemberPay
             });
 
         }
-        /// <summary>
-        /// 查询记录
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private async void BtnSearchClickAsync(object sender, RoutedEventArgs e)
-        {
-            await _PageViewModel.SearchRecords();
 
+        //选择时间发生变化
+        private async void DatePicker_SelectedDateChangedAsync(object sender, SelectionChangedEventArgs e)
+        {
+            if (_PageViewModel.CurMember != null)
+            {
+                await _PageViewModel.SearchRecords(); //查询记录
+            }
         }
+
         /// <summary>
         ///  新增记录
         /// </summary>
@@ -60,9 +60,12 @@ namespace Office.Work.Platform.MemberPay
                 UserId = AppSet.LoginUser.Id
             };
 
-            PageMemberPayWin AddWin = new PageMemberPayWin(NewRecord, _PageViewModel.MemberPayItems.ToList());
-            AddWin.Owner = AppSet.AppMainWindow;
-
+            PageMemberPayWin AddWin = new PageMemberPayWin()
+            {
+                CurMemberPay = NewRecord,
+                MemberPayItems = _PageViewModel.MemberPayItems.ToList(),
+                SelectPayDate = _PageViewModel.SearchDate
+            };
             if (AddWin.ShowDialog().Value)
             {
                 IEnumerable<Lib.MemberPay> MemberPlays = await DataMemberPayRepository.GetRecords(new MemberPaySearch()
@@ -250,6 +253,8 @@ namespace Office.Work.Platform.MemberPay
             public ObservableCollection<Lib.MemberPaySet> PaySetMembers { get; set; }
 
         }
+
+
     }
 
 

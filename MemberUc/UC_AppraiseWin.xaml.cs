@@ -10,13 +10,15 @@ namespace Office.Work.Platform.MemberUc
     /// </summary>
     public partial class UC_AppraiseWin : Window
     {
+        public string[] _AppraiseTypeArr { get; set; }
         public Lib.MemberAppraise _CurRecord { get; set; }
         public UC_AppraiseWin(Lib.MemberAppraise ParamRecord)
         {
             InitializeComponent();
             this.Owner = AppSet.AppMainWindow;
+            _AppraiseTypeArr = AppSet.ServerSetting.AppraiseTypeArr;
             _CurRecord = ParamRecord;
-            DataContext = ParamRecord;
+            DataContext = this;
         }
         private void BtnSaveClickAsync(object sender, RoutedEventArgs e)
         {

@@ -137,15 +137,23 @@ namespace Office.Work.Platform.Plan
         private void BtnUpFile_Click(object sender, RoutedEventArgs e)
         {
             e.Handled = true;
-            System.IO.FileInfo theFile = FileOperation.SelectFile();
-            if (theFile != null)
+            try
             {
-                WinUpPlanFile winUpLoadFile = new WinUpPlanFile(new Action<Lib.PlanFile>(newFile =>
+                System.IO.FileInfo theFile = FileOperation.SelectFile();
+                if (theFile != null)
                 {
-                    _UCPlanInfoVM.PlanFiles.Add(newFile);
-                }), theFile, "计划附件", _UCPlanInfoVM.CurPlan.Id, _UCPlanInfoVM.CurPlan.ContentType);
-                winUpLoadFile.ShowDialog();
+                    WinUpPlanFile winUpLoadFile = new WinUpPlanFile(new Action<Lib.PlanFile>(newFile =>
+                    {
+                        _UCPlanInfoVM.PlanFiles.Add(newFile);
+                    }), theFile, "计划附件", _UCPlanInfoVM.CurPlan.Id, _UCPlanInfoVM.CurPlan.ContentType);
+                    winUpLoadFile.ShowDialog();
+                }
             }
+            catch (Exception ex)
+            {
+                AppFuns.ShowMessage(ex.Message, "错误", isErr: true);
+            }
+
         }
 
         /// <summary>

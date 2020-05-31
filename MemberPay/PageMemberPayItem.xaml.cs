@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Controls;
 using Office.Work.Platform.AppCodes;
 using Office.Work.Platform.AppDataService;
@@ -93,14 +95,26 @@ namespace Office.Work.Platform.MemberPay
 
             if (RecordDataGrid.SelectedItem is Lib.MemberPayItem SelectedRec)
             {
-                PageMemberPayItemWin AddWin = new PageMemberPayItemWin(SelectedRec);
+                Lib.MemberPayItem RecCloneObj = CloneObject<Lib.MemberPayItem, Lib.MemberPayItem>.Trans(SelectedRec);
+
+                PageMemberPayItemWin AddWin = new PageMemberPayItemWin(RecCloneObj);
+                AddWin.Owner = AppSet.AppMainWindow;
 
                 if (AddWin.ShowDialog().Value)
                 {
-                    ExcuteResult excuteResult = await DataMemberPayItemRepository.UpdateRecord(SelectedRec);
-                    if (excuteResult == null || excuteResult.State == 0)
+                    ExcuteResult excuteResult = await DataMemberPayItemRepository.UpdateRecord(RecCloneObj);
+                    if (excuteResult != null && excuteResult.State == 0)
                     {
-                        cvm.PayItems.Add(SelectedRec);
+                        PropertyInfo[] TargetAttris = SelectedRec.GetType().GetProperties();
+                        PropertyInfo[] SourceAttris = RecCloneObj.GetType().GetProperties();
+                        foreach (PropertyInfo item in SourceAttris)
+                        {
+                            var tempObj = TargetAttris.Where(x => x.Name.Equals(item.Name, StringComparison.Ordinal)).FirstOrDefault();
+                            if (tempObj != null)
+                            {
+                                item.SetValue(SelectedRec, item.GetValue(RecCloneObj));
+                            }
+                        }
                     }
                     else
                     {

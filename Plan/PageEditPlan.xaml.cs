@@ -41,12 +41,6 @@ namespace Office.Work.Platform.Plan
         {
             BtnAddPlan.IsEnabled = false;
 
-            if (!_PageViewModel.EntityPlan.ModelIsValid())
-            {
-                AppFuns.ShowMessage("输入不正确，请完善或更正相关数据！", "警告");
-                BtnAddPlan.IsEnabled = true;
-                return;
-            }
             if (string.IsNullOrWhiteSpace(_PageViewModel.EntityPlan.Id))
             {
                 //说明是新计划
@@ -57,6 +51,14 @@ namespace Office.Work.Platform.Plan
             {
                 _PageViewModel.EntityPlan.CurrectState = PlanStatus.Running;
             }
+
+            if (!_PageViewModel.EntityPlan.ModelIsValid())
+            {
+                AppFuns.ShowMessage("输入不正确，请完善或更正相关数据！", "警告");
+                BtnAddPlan.IsEnabled = true;
+                return;
+            }
+            
 
             _PageViewModel.EntityPlan.Helpers = _PageViewModel.GetSelectUserIds(_PageViewModel.UserHelperSelectList);
 
