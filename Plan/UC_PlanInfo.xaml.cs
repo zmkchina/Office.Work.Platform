@@ -63,8 +63,8 @@ namespace Office.Work.Platform.Plan
         /// <param name="e"></param>
         private async void MenuItem_ReDwonLoad_ClickAsync(object sender, RoutedEventArgs e)
         {
-            TextBlock curTextBlock = sender as TextBlock;
-            curTextBlock.IsEnabled = false;
+            MenuItem curMenuItem = sender as MenuItem;
+            curMenuItem.IsEnabled = false;
             Lib.PlanFile SelectFile = LB_FileList.SelectedItem as Lib.PlanFile;
 
             string theDownFileName = await DownLoadFile(SelectFile, true);
@@ -76,7 +76,7 @@ namespace Office.Work.Platform.Plan
             {
                 AppFuns.ShowMessage("文件下载失败，可能该文件已被删除！", "警告");
             }
-            curTextBlock.IsEnabled = true;
+            curMenuItem.IsEnabled = true;
         }
         /// <summary>
         /// 转到文件夹

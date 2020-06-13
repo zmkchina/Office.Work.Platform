@@ -68,7 +68,7 @@
                     <DataTemplate>
                         <StackPanel>
                             <TextBlock Margin="0,5" TextWrapping="Wrap">
-                                    <Run  Text="{Binding Path=OccurDate,StringFormat= {}{0:yyyy年MM月dd日}}" />
+                                    <Run  Text="{Binding Path=OccurDate,StringFormat= {}{0:yyyy/MM/dd}}" />
                                     <Run  Text="{Binding Path=PrizrOrPunishType,StringFormat= {} {0}}"/>
                                     <Run  Text="{Binding Path=PrizrOrPunishName,StringFormat= {} {0}}"/>
                                     <Run  Text="{Binding Path=PrizrOrPunishReasion,StringFormat= {} {0}}"/>

@@ -7,9 +7,10 @@
         ShowInTaskbar="False" 
         WindowStartupLocation="CenterOwner"
         ResizeMode="CanResizeWithGrip"
-        WindowStyle="None"
         SizeToContent="WidthAndHeight"
+        WindowStyle="None"
         AllowsTransparency="True" BorderBrush="LightBlue" BorderThickness="1" Background="AliceBlue"
+        MaxWidth="700"
         Loaded="Window_Loaded"
         Title="待遇发放项目管理">
     <Window.Resources>
@@ -23,7 +24,6 @@
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="Height" Value="30"/>
             <Setter Property="Margin" Value="5"/>
-            <Setter Property="MinWidth" Value="140"/>
         </Style>
     </Window.Resources>
     <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top">
@@ -31,44 +31,44 @@
             <TextBlock Text="待遇发放项目管理" VerticalAlignment="Center" Foreground="White" Padding="5,0,0,0"/>
         </Border>
         <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
             <StackPanel Orientation="Vertical" Grid.Column="0"  Margin="10" HorizontalAlignment="Stretch">
 
                 <StackPanel Orientation="Horizontal">
                     <GroupBox Header="项目名称" Style="{StaticResource GroupBoxStyle}">
-                        <TextBox  x:Name="Tb_ItemName" Text="{Binding CurPayItem.Name}" Style="{StaticResource TextboxStyle}"/>
+                        <TextBox  x:Name="Tb_ItemName" Text="{Binding CurPayItem.Name}" 
+                                  Style="{StaticResource TextboxStyle}"
+                                  Width="100"/>
                     </GroupBox>
                     <GroupBox Header="所属待遇表" Style="{StaticResource GroupBoxStyle}">
-                        <ComboBox Width="305" ItemsSource="{Binding MemberSets.PayTableTypeArr}"   
+                        <ComboBox Width="170" ItemsSource="{Binding MemberSets.PayTableTypeArr}"   
                           Text="{Binding CurPayItem.InTableType,UpdateSourceTrigger=PropertyChanged}" 
                           HorizontalAlignment="Left" FontSize="16" Margin="5" />
                     </GroupBox>
-                   
+
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal">
                     <GroupBox Header="待遇性质" Style="{StaticResource GroupBoxStyle}">
-                        <ComboBox Width="140"
-                                  Text="{Binding CurPayItem.AddOrCut,UpdateSourceTrigger=PropertyChanged}" 
+                        <ComboBox Width="100"
+                                  Text="{Binding CurPayItem.PayType,UpdateSourceTrigger=PropertyChanged}" 
                                   HorizontalAlignment="Left" FontSize="16" Margin="5">
-                            <ComboBoxItem Content="增加"/>
-                            <ComboBoxItem Content="减少"/>
+                            <ComboBoxItem Content="应发待遇"/>
+                            <ComboBoxItem Content="单位交纳"/>
+                            <ComboBoxItem Content="个人交纳"/>
                         </ComboBox>
                     </GroupBox>
                     <GroupBox Header="计入基数" Style="{StaticResource GroupBoxStyle}">
-                        <ComboBox Width="140"
+                        <ComboBox Width="80"
                                   Text="{Binding CurPayItem.InCardinality,UpdateSourceTrigger=PropertyChanged}" 
                                   HorizontalAlignment="Left" FontSize="16" Margin="5">
                             <ComboBoxItem Content="是"/>
                             <ComboBoxItem Content="否"/>
                         </ComboBox>
                     </GroupBox>
-                    <GroupBox Header="打印排序" Style="{StaticResource GroupBoxStyle}">
-                        <TextBox Text="{Binding CurPayItem.OrderIndex}" Style="{StaticResource TextboxStyle}"/>
-                </GroupBox>
+                    <GroupBox Header="打印排序" Style="{StaticResource GroupBoxStyle}"  Width="90">
+                        <TextBox Text="{Binding CurPayItem.OrderIndex}"
+                                 Style="{StaticResource TextboxStyle}" />
+                    </GroupBox>
                 </StackPanel>
                 <GroupBox>
                     <GroupBox.Header>

@@ -50,7 +50,7 @@
                         <TextBlock  Text="计划类型" Margin="5"/>
                     </GroupBox.Header>
                     <ComboBox  Width="125" HorizontalAlignment="Left" Margin="10,5"
-                           ItemsSource="{Binding Path=WorkContentTypes}"
+                           ItemsSource="{Binding Path=ServerSettings.WorkContentTypeArr}"
                            Text="{Binding Path=EntityPlan.ContentType}"
                            VerticalAlignment="Center"  
                            Cursor="Hand"/>

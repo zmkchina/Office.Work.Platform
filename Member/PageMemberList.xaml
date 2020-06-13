@@ -100,9 +100,9 @@
             <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
                 <CheckBox Content="在结果中查询" IsChecked="{Binding SearchInResult}" />
             </StackPanel>
-            <Button Content="开始查询" Name="btn_Refrash" Foreground="Blue" Margin="5,0" Click="btn_Refrash_ClickAsync" />
-            <Button Content="删除选定" Name="btn_Delete" Foreground="Red" Margin="5,0" Click="btn_Delete_ClickAsync" />
-            <Button Content="导出记录" Name="btn_Export" Foreground="Red" Margin="5,0" Click="btn_Export_ClickAsync" />
+            <Button Content="开始查询" Name="btn_Refrash"  Margin="5,0" Click="btn_Refrash_ClickAsync" />
+            <Button Content="删除选定" Name="btn_Delete"  Margin="5,0" Click="btn_Delete_ClickAsync" />
+            <Button Content="导出记录" Name="btn_Export"  Margin="5,0" IsEnabled="{Binding _CanExportAll}" Click="btn_Export_ClickAsync" />
         </ToolBar>
         <DataGrid x:Name="RecordDataGrid" ItemsSource="{Binding EntityList}" Grid.Row="2"  SelectionUnit="FullRow">
             <DataGrid.Columns>

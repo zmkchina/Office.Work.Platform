@@ -12,12 +12,12 @@ namespace Office.Work.Platform.MemberUc
     public partial class UC_RelationsWin : Window
     {
         private DispatcherTimer _UpdateInfoTimer = new System.Windows.Threading.DispatcherTimer();
-        private Lib.MemberRelations _CurRecord { get; set; }
+        private CurWinViewModel _CurWinViewModel;
         public UC_RelationsWin(Lib.MemberRelations ParamRecord)
         {
             InitializeComponent();
             this.Owner = AppSet.AppMainWindow;
-            _CurRecord = ParamRecord;
+            _CurWinViewModel = new CurWinViewModel(ParamRecord);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -29,25 +29,25 @@ namespace Office.Work.Platform.MemberUc
                 InputResultMsg.Text = "";
                 _UpdateInfoTimer.Stop();
             });
-            DataContext = _CurRecord;
+            DataContext = _CurWinViewModel;
         }
 
         private void BtnSaveClickAsync(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(_CurRecord.Relation) || string.IsNullOrWhiteSpace(_CurRecord.Name))
+            if (string.IsNullOrWhiteSpace(_CurWinViewModel.CurRecord.Relation) || string.IsNullOrWhiteSpace(_CurWinViewModel.CurRecord.Name))
             {
                 InputResultMsg.Text = "数据输入不正确!";
                 _UpdateInfoTimer.Start();
                 return;
             }
             DialogResult = true;
-            _CurRecord.UpDateTime = DateTime.Now;
+            _CurWinViewModel.CurRecord.UpDateTime = DateTime.Now;
             this.Close();
         }
 
         private void BtnCancelClickAsync(object sender, RoutedEventArgs e)
         {
-            _CurRecord = null;
+            _CurWinViewModel.CurRecord = null;
             this.Close();
         }
         /// <summary>
@@ -63,6 +63,18 @@ namespace Office.Work.Platform.MemberUc
             }
         }
 
-       
+        /// <summary>
+        /// 当前窗口视图模型
+        /// </summary>
+        private class CurWinViewModel
+        {
+            public Lib.SettingServer ServerSettings { get; set; }
+            public Lib.MemberRelations CurRecord { get; set; }
+            public CurWinViewModel(Lib.MemberRelations ParamRecord)
+            {
+                ServerSettings = AppSet.ServerSetting;
+                CurRecord = ParamRecord;
+            }
+        }
     }
 }

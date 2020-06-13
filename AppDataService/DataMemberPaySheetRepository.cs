@@ -46,14 +46,14 @@ namespace Office.Work.Platform.AppDataService
             }
             return null;
         }
-        /// <summary>
-        /// 快速发放工资数据。
-        /// </summary>
-        /// <param name="SearchCondition"></param>
-        /// <returns></returns>
-        public static async Task<ExcuteResult> PostMemberPaySheet(MemberPayFastByPaySet PayFastInfo)
-        {
-            return await DataApiRepository.PostApiUriAsync(_ApiUrlBase + $"MemberPaySheet/PostMemberPaySheet", PayFastInfo, null).ConfigureAwait(false);
-        }
+        ///// <summary>
+        ///// 快速发放工资数据。
+        ///// </summary>
+        ///// <param name="SearchCondition"></param>
+        ///// <returns></returns>
+        //public static async Task<ExcuteResult> PostMemberPaySheet(MemberPayFastByPaySet PayFastInfo)
+        //{
+        //    return await DataApiRepository.PostApiUriAsync(_ApiUrlBase + $"MemberPaySheet/PostMemberPaySheet", PayFastInfo, null).ConfigureAwait(false);
+        //}
     }
 }

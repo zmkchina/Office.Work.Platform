@@ -23,13 +23,13 @@
         <ToolBar Grid.Row="1" FontSize="14" Padding="0,2" Cursor="Hand">
             <TextBox x:Name="tb_SearchKeys" Width="200"/>
             <Button Content="刷新记录" Name="btn_Refrash" Click="btn_Refrash_ClickAsync" Margin="5,0"/>
-            <Separator />
-            <TextBlock VerticalAlignment="Center" Background="#FFF6F7E7" Padding="5,0" FontSize="14">
+            <Separator Visibility="{Binding CanVisible}" />
+            <TextBlock VerticalAlignment="Center" Background="#FFF6F7E7" Padding="5,0" FontSize="14" Visibility="{Binding CanVisible}" >
                 <Run Text="{Binding SearchPlan.PageIndex,StringFormat=第{0}页}"/>
                 <Run Text="{Binding SearchPlan.PageCount,StringFormat=共{0}页}"/>
             </TextBlock>
-            <Button Content="上一页" Click="btn_PrevPage_ClickAsync" />
-            <Button Content="下一页" Click="btn_NextPage_ClickAsync" />
+            <Button Content="上一页" Click="btn_PrevPage_ClickAsync" Visibility="{Binding CanVisible}" />
+            <Button Content="下一页" Click="btn_NextPage_ClickAsync" Visibility="{Binding CanVisible}" />
         </ToolBar>
         <Grid Grid.Row="2" TextElement.FontSize="15">
             <Grid.ColumnDefinitions>
@@ -51,10 +51,10 @@
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="24"/>
+                                <ColumnDefinition Width="35"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Image Width="24" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="{Binding Path=CurrectState,Converter={StaticResource PlanStateToImgeUri}}"/>
+                            <Image Width="30" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Source="{Binding Path=CurrectState,Converter={StaticResource PlanStateToImgeUri}}"/>
                             <TextBlock TextWrapping="Wrap"  Grid.Column="1" Grid.Row="0" TextAlignment="Justify" VerticalAlignment="Center" Margin="10,5,5,5">
                                 <Run Text="{Binding Path=Caption,Mode=OneWay}" />
                                 <Run Text="{Binding Path=Helpers,Converter={StaticResource GetIsHelper},StringFormat={}{0}}" FontStyle="Italic" Foreground="Blue" FontWeight="Bold"/>
@@ -62,7 +62,7 @@
                                     <ToolTip>
                                         <StackPanel>
                                            <TextBlock FontWeight="Heavy">
-                                           <Run  Text="{Binding Path=PlanType}" />
+                                           <Run  Text="{Binding Path=ContentType}" />
                                            </TextBlock>
                                            <TextBlock Margin="0,5">
                                            <Run  Text="{Binding Path=Content,StringFormat=描述 : {0}}"/>
@@ -81,7 +81,7 @@
                 </ListBox.ItemTemplate>
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="{x:Type ListBoxItem}">
-                        <Setter Property="Margin" Value="0,2,0,2"/>
+                        <Setter Property="Margin" Value="0"/>
                         <Setter Property="OverridesDefaultStyle" Value="True" />
                         <Setter Property="SnapsToDevicePixels" Value="True" />
                         <Setter Property="Cursor" Value="Hand" />
@@ -89,18 +89,16 @@
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                    <Border x:Name="border" CornerRadius="0" Margin="0" BorderBrush="Black" BorderThickness="0,0,0,0.2">
+                                    <Border x:Name="border" CornerRadius="0" Margin="0" BorderBrush="#eaeaea" BorderThickness="2,5">
                                         <ContentPresenter 
                                             HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                             VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                            Margin="5,0,0,0" />
+                                            Margin="5" />
                                     </Border>
                                     <ControlTemplate.Triggers>
                                         <Trigger Property="IsSelected" Value="True">
                                             <Setter Property="Foreground" Value="Blue" />
                                             <Setter TargetName="border" Property="Background" Value="#c2f4ae" />
-                                            <Setter TargetName="border" Property="BorderBrush" Value="#FF46679A" />
-                                            <Setter TargetName="border" Property="BorderThickness" Value="1,0,0,0.5" />
                                         </Trigger>
                                         <MultiTrigger>
                                             <MultiTrigger.Conditions>
@@ -108,9 +106,7 @@
                                                 <Condition Property="IsSelected" Value="False" />
                                             </MultiTrigger.Conditions>
                                             <MultiTrigger.Setters>
-                                                <Setter TargetName="border" Property="Background" Value="#c2f4ae" />
-                                                <Setter TargetName="border" Property="BorderBrush" Value="#FF46679A" />
-                                                <Setter TargetName="border" Property="BorderThickness" Value="1,0,0,0.5" />
+                                                <Setter TargetName="border" Property="Background" Value="#E6F1EED8" />
                                             </MultiTrigger.Setters>
                                         </MultiTrigger>
                                     </ControlTemplate.Triggers>

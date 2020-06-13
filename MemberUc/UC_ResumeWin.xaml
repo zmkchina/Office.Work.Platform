@@ -10,6 +10,7 @@
         ResizeMode="CanResizeWithGrip" SizeToContent="WidthAndHeight"
         WindowStyle="None"
         AllowsTransparency="True" BorderBrush="LightBlue" BorderThickness="1" Background="AliceBlue"
+        MaxWidth="500"
         Title="职工个人简历" >
     <Window.Resources>
         <Style x:Key="GroupBoxStyle" TargetType="GroupBox">

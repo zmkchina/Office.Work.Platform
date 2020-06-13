@@ -292,23 +292,23 @@
                                     </TextBlock>
                                 </StackPanel>
                             </Border>
-                            <Border Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="6" MinHeight="420" Style="{StaticResource  GridInnerCellBorder}">
-                                <ListBox ItemsSource="{Binding Path=Resumes}" VerticalAlignment="Center" BorderBrush="Transparent" >
+                            <Border Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="6" Height="420" Style="{StaticResource  GridInnerCellBorder}" 
+                                    ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                                <ListBox ItemsSource="{Binding Path=Resumes}" VerticalAlignment="Center" BorderBrush="Transparent" HorizontalAlignment="Stretch">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
-                                            <StackPanel>
-                                                <TextBlock TextWrapping="Wrap">
+                                            <TextBlock ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                                       TextWrapping="Wrap" Padding="2,0" Width="550" HorizontalAlignment="Center" LineHeight="25">
                                                     <Run  Text="{Binding Path=BeginDate,StringFormat={}{0:yyyy.MM}}" />
                                                     <Run  Text="{Binding Path=EndDate,StringFormat=-- {0:yyyy.MM }}"/>
                                                     <Run  Text="{Binding Path=Content}"/>
                                                     <Run  Text="{Binding Path=Remark,StringFormat={} {0}}" />
-                                                </TextBlock>
-                                            </StackPanel>
+                                            </TextBlock>
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                     <ListBox.ItemContainerStyle>
                                         <Style TargetType="{x:Type ListBoxItem}">
-                                            <Setter Property="Margin" Value="0,5,0,0"/>
+                                            <Setter Property="Margin" Value="0,3,0,0"/>
                                         </Style>
                                     </ListBox.ItemContainerStyle>
                                 </ListBox>
@@ -355,24 +355,24 @@
                                     </TextBlock>
                                 </StackPanel>
                             </Border>
-                            <Border Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="5"  MinHeight="250" Style="{StaticResource  GridInnerCellBorder}">
+                            <Border Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="5"  Height="250" Style="{StaticResource  GridInnerCellBorder}"
+                                    ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled">
                                 <ListBox ItemsSource="{Binding Path=PrizePunishs}" VerticalAlignment="Center" BorderBrush="Transparent">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
-                                            <StackPanel>
-                                                <TextBlock TextWrapping="Wrap">
+                                            <TextBlock  ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                                        TextWrapping="Wrap" Padding="2,0" Width="550" HorizontalAlignment="Center" LineHeight="25">
                                                     <Run  Text="{Binding Path=OccurDate,StringFormat= {}{0:yyyy.MM}}" />
                                                     <Run  Text="{Binding Path=PrizrOrPunishName,StringFormat= {}{0}}"/>
                                                     <Run  Text="{Binding Path=PrizrOrPunishReasion,StringFormat= {}{0}}"/>
                                                     <Run  Text="{Binding Path=PrizrOrPunishUnit,StringFormat= {}{0}}"/>
                                                     <Run  Text="{Binding Path=Remark,StringFormat= {} {0}}" />
-                                                </TextBlock>
-                                            </StackPanel>
+                                            </TextBlock>
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                     <ListBox.ItemContainerStyle>
                                         <Style TargetType="{x:Type ListBoxItem}">
-                                            <Setter Property="Margin" Value="0,5,0,0"/>
+                                            <Setter Property="Margin" Value="0,3,0,0"/>
                                         </Style>
                                     </ListBox.ItemContainerStyle>
                                 </ListBox>
@@ -397,29 +397,29 @@
                                     </TextBlock>
                                 </StackPanel>
                             </Border>
-                            <Border Grid.Row="1" Grid.Column="1"  Grid.ColumnSpan="5" MinHeight="180" Style="{StaticResource  GridInnerCellBorder}">
+                            <Border Grid.Row="1" Grid.Column="1"  Grid.ColumnSpan="5" Height="180" Style="{StaticResource  GridInnerCellBorder}" 
+                                    ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled">
                                 <ListBox ItemsSource="{Binding Path=Appraises}"  VerticalAlignment="Center" BorderBrush="Transparent">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
-                                            <StackPanel>
-                                                <TextBlock TextWrapping="Wrap">
+                                            <TextBlock ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                                       TextWrapping="Wrap" Padding="2,0" Width="550" HorizontalAlignment="Center" LineHeight="25">
                                                     <Run  Text="{Binding Path=Year,StringFormat= {}{0:yyyy}}" />
                                                     <Run  Text="{Binding Path=Result,StringFormat= {}{0}}"/>
                                                     <Run  Text="{Binding Path=Remark,StringFormat= {}{0}}" />
-                                                </TextBlock>
-                                            </StackPanel>
+                                            </TextBlock>
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                     <ListBox.ItemContainerStyle>
                                         <Style TargetType="{x:Type ListBoxItem}">
-                                            <Setter Property="Margin" Value="0,5,0,0"/>
+                                            <Setter Property="Margin" Value="0,3,0,0"/>
                                         </Style>
                                     </ListBox.ItemContainerStyle>
                                 </ListBox>
                             </Border>
 
                             <!--GridRow=2 社会关系-->
-                            <Border Grid.Row="2" Grid.Column="0" Grid.RowSpan="8" MinHeight="370"  Style="{StaticResource  GridInnerCellBorder}">
+                            <Border Grid.Row="2" Grid.Column="0" Grid.RowSpan="8" Height="370"  Style="{StaticResource  GridInnerCellBorder}">
                                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                                     <TextBlock  HorizontalAlignment="Center" Padding="0,0,0,0" >
                                         <Run Text="主"/>
@@ -679,13 +679,13 @@
                             </Border>
                             <!--GridRow=10 备注-->
                             <Border Grid.Row="10" Grid.Column="0" Style="{StaticResource  GridInnerCellBorder}">
-                                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center">
-                                        <Run Text="备注"/>
+                                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" >
+                                      <Run Text="备注"/>
                                 </TextBlock>
                             </Border>
                             <Border Grid.Row="10" Grid.Column="1" Grid.ColumnSpan="5" MinHeight="90" Style="{StaticResource  GridInnerCellBorder}">
-                                <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Center" Padding="10,0">
-                                        <Run Text="{Binding CurMember.Remarks}"/>
+                                <TextBlock  TextWrapping="Wrap" Padding="2,0" Width="550" HorizontalAlignment="Center"  VerticalAlignment="Center"  LineHeight="25">
+                                      <Run Text="{Binding CurMember.Remarks}"/>
                                 </TextBlock>
                             </Border>
                         </Grid>

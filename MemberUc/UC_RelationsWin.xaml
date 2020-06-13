@@ -10,6 +10,7 @@
         WindowStyle="None" SizeToContent="WidthAndHeight"
         Loaded="Window_Loaded"
         AllowsTransparency="True" BorderBrush="LightBlue" BorderThickness="1" Background="AliceBlue"
+        MaxWidth="500"
         Title="职工主要社会关系">
     <Window.Resources>
         <Style x:Key="GroupBoxStyle" TargetType="GroupBox">
@@ -36,15 +37,6 @@
             <Setter Property="Margin" Value="3,5"/>
             <Setter Property="Width" Value="185"/>
         </Style>
-        <Style TargetType="DatePickerTextBox">
-            <Setter Property="Control.Template">
-                <Setter.Value>
-                    <ControlTemplate>
-                        <TextBox Text="{Binding Path=SelectedDate, StringFormat='yyyy/MM/dd', RelativeSource={RelativeSource AncestorType=DatePicker}}" />
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
         <Style x:Key="ComboBoxStyle" TargetType="ComboBox">
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="FontSize" Value="16"/>
@@ -59,40 +51,38 @@
         <StackPanel Orientation="Vertical"  Margin="10,15" HorizontalAlignment="Stretch">
             <StackPanel Orientation="Horizontal">
                 <GroupBox Header="关系类型" Style="{StaticResource GroupBoxStyle}">
-                    <ComboBox ItemsSource="{Binding RelationArr}" Text="{Binding Relation}"  
+                    <ComboBox ItemsSource="{Binding ServerSettings.RelationArr}" Text="{Binding CurRecord.Relation}"  
                           Padding="0,5"  Width="200" HorizontalAlignment="Left"  Margin="5" />
                 </GroupBox>
                 <GroupBox Header="关系人姓名" Style="{StaticResource GroupBoxStyle}">
-                    <TextBox Text="{Binding Name}" Padding="0,5"  Width="200"  Margin="5" />
+                    <TextBox Text="{Binding CurRecord.Name}" Padding="0,5"  Width="200"  Margin="5" />
                 </GroupBox>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <GroupBox Header="出生日期" Style="{StaticResource GroupBoxStyle}">
-                    <DatePicker SelectedDate="{Binding Birthday}" Style="{StaticResource DatePickerStyle}"/>
+                    <DatePicker SelectedDate="{Binding CurRecord.Birthday,StringFormat=yyyy/MM/dd}" Style="{StaticResource DatePickerStyle}"/>
                 </GroupBox>
                 <GroupBox Header="政治面貌" Style="{StaticResource GroupBoxStyle}">
-                    <TextBox Text="{Binding PoliticalStatus}" Padding="0,5"  Width="200"  Margin="5" />
+                    <TextBox Text="{Binding CurRecord.PoliticalStatus}" Padding="0,5"  Width="200"  Margin="5" />
                 </GroupBox>
             </StackPanel>
             <GroupBox Header="工作单位" Style="{StaticResource GroupBoxStyle}"  HorizontalAlignment="Stretch">
-                <TextBox Text="{Binding UnitName}" Padding="0,5"  HorizontalAlignment="Stretch"  Margin="5"/>
+                <TextBox Text="{Binding CurRecord.UnitName}" Padding="0,5"  HorizontalAlignment="Stretch"  Margin="5"/>
             </GroupBox>
             <StackPanel Orientation="Horizontal">
                 <GroupBox Header="部门及职务" Style="{StaticResource GroupBoxStyle}">
-                    <TextBox Text="{Binding Role}" Padding="0,5"  Width="200"  Margin="5" />
+                    <TextBox Text="{Binding CurRecord.Role}" Padding="0,5"  Width="200"  Margin="5" />
                 </GroupBox>
                 <GroupBox Header="人员排序" Style="{StaticResource GroupBoxStyle}">
-                    <TextBox Text="{Binding OrderIndex}" Padding="0,5"  Width="200"  Margin="5" />
+                    <TextBox Text="{Binding CurRecord.OrderIndex}" Padding="0,5"  Width="200"  Margin="5" />
                 </GroupBox>
             </StackPanel>
             <GroupBox Header="备注信息" >
-                <TextBox Text="{Binding Remark}"  HorizontalAlignment="Stretch" MinHeight="50"  Margin="5" TextWrapping="Wrap"/>
+                <TextBox Text="{Binding CurRecord.Remark}"  HorizontalAlignment="Stretch" MinHeight="50"  Margin="5" TextWrapping="Wrap"/>
             </GroupBox>
             <DockPanel>
-                <TextBlock x:Name="InputResultMsg" DockPanel.Dock="Left"
-                           Text="" VerticalAlignment="Center" Foreground="Red"/>
-                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" 
-                            HorizontalAlignment="Right">
+                <TextBlock x:Name="InputResultMsg" DockPanel.Dock="Left" Text="" VerticalAlignment="Center" Foreground="Red"/>
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right">
                     <Button Content="保存" Height="30" Width="60" Click="BtnSaveClickAsync"
                         Margin="10" />
                     <Button Content="取消" Height="30" Width="60" Click="BtnCancelClickAsync"

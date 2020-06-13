@@ -233,7 +233,7 @@ namespace Office.Work.Platform.AppCodes
                 }
             }
 
-            //给数据填充到表格当中
+            //将数据填充到表格当中
             int j = sheet.LastRowNum + 1;
             foreach (var item in data)
             {
@@ -246,8 +246,19 @@ namespace Office.Work.Platform.AppCodes
                     var objs = itemPropSub.GetCustomAttributes(typeof(DescriptionAttribute), true);
                     if (objs.Length > 0)
                     {
-                        row.CreateCell(n).SetCellValue(itemPropSub.GetValue(item, null) == null ? "" :
-                            itemPropSub.GetValue(item, null).ToString());
+                        if (itemPropSub.PropertyType == typeof(System.DateTime))
+                        {
+                            string DateStr = itemPropSub.GetValue(item, null).ToString();
+                            if (DateTime.TryParse(DateStr, out DateTime theDate))
+                            {
+                                row.CreateCell(n).SetCellValue(theDate.ToString("yyyy-MM-dd"));
+                            }
+                        }
+                        else
+                        {
+                            row.CreateCell(n).SetCellValue(itemPropSub.GetValue(item, null) == null ? "" :
+                                itemPropSub.GetValue(item, null).ToString());
+                        }
                         n++;
                     }
                 }

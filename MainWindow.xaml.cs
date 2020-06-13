@@ -17,6 +17,7 @@ using Office.Work.Platform.Plan;
 using Office.Work.Platform.MemberPay;
 using Office.Work.Platform.Settings;
 using Office.Work.Platform.MemberScore;
+using System.Threading;
 
 namespace Office.Work.Platform
 {
@@ -48,7 +49,7 @@ namespace Office.Work.Platform
             {
                 await CheckAppUpdateAsync();
             });
-            _UpdateAppTimer.Interval = new TimeSpan(0, 10, 0);
+            _UpdateAppTimer.Interval = new TimeSpan(0, 0,0);
 
             //设定网络状态检测定时器
             _CheckNetStateTimer = new System.Windows.Threading.DispatcherTimer();
@@ -88,7 +89,9 @@ namespace Office.Work.Platform
                 }
                 AppSet.AppIsLocked = false;
                 this.Visibility = System.Windows.Visibility.Visible;
+                this.ShowActivated = true;
                 this.ShowInTaskbar = true;
+                this.WindowState = WindowState.Maximized;
                 this.Activate();
             });
             this.notifyIcon.ContextMenuStrip.Items.Add("关闭显示器", null, (sender, eventArgs) =>
@@ -119,6 +122,7 @@ namespace Office.Work.Platform
         {
             //1.启动各类定时器
             _UpdateAppTimer.Start();
+            _UpdateAppTimer.Interval = new TimeSpan(0, 10, 0);
             _CheckNetStateTimer.Start();
 
             //2.读取系统用户列表
@@ -341,6 +345,7 @@ namespace Office.Work.Platform
                     AppFuns.ShowMessage("未找到更新程序,请与开发人员联系。", "错误", isErr: true);
                 }
                 //关闭本程序
+                Thread.Sleep(500);
                 ShutDownApp();
             }
             else

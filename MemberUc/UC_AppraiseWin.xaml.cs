@@ -1,5 +1,6 @@
 ﻿using Office.Work.Platform.AppCodes;
 using System;
+using System.Collections.ObjectModel;
 using System.Windows;
 
 namespace Office.Work.Platform.MemberUc
@@ -10,7 +11,7 @@ namespace Office.Work.Platform.MemberUc
     /// </summary>
     public partial class UC_AppraiseWin : Window
     {
-        public string[] _AppraiseTypeArr { get; set; }
+        public ReadOnlyCollection<string> _AppraiseTypeArr { get; set; }
         public Lib.MemberAppraise _CurRecord { get; set; }
         public UC_AppraiseWin(Lib.MemberAppraise ParamRecord)
         {

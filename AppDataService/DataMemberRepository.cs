@@ -35,13 +35,13 @@ namespace Office.Work.Platform.AppDataService
             return JsonResult;
         }
         /// <summary>
-        /// 批量新增数据
+        /// 新增或更新一个实体
         /// </summary>
-        /// <param name="P_Entity"></param>
+        /// <param name="PEntity"></param>
         /// <returns></returns>
-        public static async Task<ExcuteResult> AddMembers(List<Lib.Member> Entitys)
+        public static async Task<ExcuteResult> AddOrUpdate(Lib.Member PEntity)
         {
-            ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(_ApiUrlBase + "Member/AddRange", Entitys).ConfigureAwait(false);
+            ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(_ApiUrlBase + "Member/AddOrUpdate", PEntity).ConfigureAwait(false);
             return JsonResult;
         }
         /// <summary>

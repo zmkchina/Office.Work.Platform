@@ -11,12 +11,14 @@ namespace Office.Work.Platform.MemberUc
     public partial class UC_PrizePunishWin : Window
     {
         public Lib.MemberPrizePunish _CurRecord { get; set; }
+        public Lib.SettingServer _MemberSetting { get; set; }
         public UC_PrizePunishWin(Lib.MemberPrizePunish ParamRecord)
         {
             InitializeComponent();
             this.Owner = AppSet.AppMainWindow;
             _CurRecord = ParamRecord;
-            DataContext = ParamRecord;
+            _MemberSetting = AppSet.ServerSetting;
+            DataContext = this;
         }
         private void BtnSaveClickAsync(object sender, RoutedEventArgs e)
         {

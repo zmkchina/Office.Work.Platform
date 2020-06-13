@@ -1,5 +1,6 @@
 ﻿using Office.Work.Platform.AppCodes;
 using System;
+using System.Collections.ObjectModel;
 using System.Windows;
 
 namespace Office.Work.Platform.MemberScore
@@ -11,7 +12,7 @@ namespace Office.Work.Platform.MemberScore
     public partial class PageHolidayInputWin : Window
     {
         public Lib.MemberHoliday _CurRecord { get; set; }
-        public string[] _HolidayTypeArr { get; set; } = AppSet.ServerSetting.HolidayTypeArr;
+        public ReadOnlyCollection<string> _HolidayTypeArr { get; set; } = AppSet.ServerSetting.HolidayTypeArr;
         public PageHolidayInputWin(Lib.MemberHoliday ParamRecord)
         {
             InitializeComponent();

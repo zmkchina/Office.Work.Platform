@@ -71,7 +71,7 @@
                                     <Run  Text="{Binding Path=OrderIndex}" />
                                     <Run  Text="{Binding Path=Relation,StringFormat= {} {0}}" />
                                     <Run  Text="{Binding Path=Name,StringFormat= {} {0}}"/>
-                                    <Run  Text="{Binding Path=Birthday,StringFormat={}yyyy年MM月dd日}"/>
+                                    <Run  Text="{Binding Path=Birthday,StringFormat={}yyyy/MM/dd}"/>
                                     <Run  Text="{Binding Path=PoliticalStatus}"/>
                                     <Run  Text="{Binding Path=UnitName}"/>
                                     <Run  Text="{Binding Path=Role ,StringFormat= {} {0}}"/>

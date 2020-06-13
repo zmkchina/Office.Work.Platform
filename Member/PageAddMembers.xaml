@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Office.Work.Platform.Member"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="350" d:DesignWidth="500"
       Title="PageAddMembers">
     <Grid>
         <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Margin="0,0" TextElement.FontSize="14">
@@ -17,10 +17,13 @@
                 </TextBlock>
             </Border>
             <ToolBar Grid.Row="0">
-                <Button  FontSize="14" Content="选择职工数据文件"  VerticalAlignment="Center" Margin="10,5" Click="BtnSelectFile_Click"/>
+                <Button  FontSize="14" Content="导出现有数据"  VerticalAlignment="Center" Margin="10,5" 
+                         IsEnabled="{Binding _CanExportAll}" Click="BtnExport_ClickAsync"/>
+                <Button  FontSize="14" Content="导入人员信息"  VerticalAlignment="Center" Margin="10,5" 
+                         IsEnabled="{Binding _CanImportAll}" Click="BtnSelectFile_Click"/>
             </ToolBar>
-            <TextBlock x:Name="TB_ExcelName" Text="{Binding ExcelName,StringFormat=职工信息文件：{0}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="5,10"/>
-            <TextBlock x:Name="TB_AddCount"  Text="{Binding AddCount,StringFormat=正在上传第{0}个职工信息。}" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="5,10"/>
+            <TextBlock Text="{Binding OperationMsg,StringFormat=信息：{0}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="20"
+                       FontSize="16" Foreground="Red"/>
         </StackPanel>
     </Grid>
 </Page>

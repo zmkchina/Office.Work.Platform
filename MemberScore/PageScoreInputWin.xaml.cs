@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Threading;
 using Office.Work.Platform.AppCodes;
@@ -12,7 +13,7 @@ namespace Office.Work.Platform.MemberScore
     public partial class PageScoreInputWin : Window
     {
         public Lib.MemberScore _CurMemberScore { get; set; }
-        public string[] _MemberScoreTypes { get; set; } = AppSet.ServerSetting.MemberScoreTypeArr;
+        public ReadOnlyCollection<string> _MemberScoreTypes { get; set; } = AppSet.ServerSetting.MemberScoreTypeArr;
         private DispatcherTimer _UpdateInfoTimer = new System.Windows.Threading.DispatcherTimer();
         public PageScoreInputWin(Lib.MemberScore PMemberScore)
         {

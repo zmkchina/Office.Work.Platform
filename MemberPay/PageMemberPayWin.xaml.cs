@@ -12,7 +12,7 @@ namespace Office.Work.Platform.MemberPay
     /// </summary>
     public partial class PageMemberPayWin : Window
     {
-        public Lib.MemberPay CurMemberPay { get; set; }
+        public Lib.MemberSalary CurMemberSalary { get; set; }
         public List<MemberPayItem> MemberPayItems { get; set; }
         public Lib.MemberPayItem SelectPayItem { get; set; }
         public DateTime SelectPayDate { get; set; }
@@ -35,13 +35,11 @@ namespace Office.Work.Platform.MemberPay
         /// <param name="e"></param>
         private void BtnSaveClickAsync(object sender, RoutedEventArgs e)
         {
-            CurMemberPay.PayUnitName = AppSet.LoginUser.UnitName;
-            CurMemberPay.PayYear = SelectPayDate.Year;
-            CurMemberPay.PayMonth = SelectPayDate.Month;
-            CurMemberPay.AddOrCut = SelectPayItem.AddOrCut;
-            CurMemberPay.InTableType = SelectPayItem.InTableType;
-            CurMemberPay.OrderIndex = SelectPayItem.OrderIndex;
-            CurMemberPay.InCardinality = SelectPayItem.InCardinality;
+            CurMemberSalary.PayUnitName = AppSet.LoginUser.UnitName;
+            CurMemberSalary.PayYear = SelectPayDate.Year;
+            CurMemberSalary.PayMonth = SelectPayDate.Month;
+            //CurMemberPay.AddOrCut = SelectPayItem.AddOrCut;
+            CurMemberSalary.TableType = SelectPayItem.InTableType;
             DialogResult = true;
             this.Close();
         }
@@ -53,7 +51,7 @@ namespace Office.Work.Platform.MemberPay
         private void BtnCancelClickAsync(object sender, RoutedEventArgs e)
         {
 
-            CurMemberPay = null;
+            CurMemberSalary = null;
             DialogResult = false;
             this.Close();
         }

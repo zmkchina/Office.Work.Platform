@@ -9,7 +9,9 @@
         WindowStartupLocation="CenterOwner"
         ResizeMode="CanResizeWithGrip"
         WindowStyle="None" SizeToContent="WidthAndHeight"
-        AllowsTransparency="True" BorderBrush="LightBlue" BorderThickness="1" Background="AliceBlue"
+        AllowsTransparency="True" BorderBrush="LightBlue" 
+        BorderThickness="1" Background="AliceBlue"
+        MaxWidth="600"
         Title="个人奖惩情况">
     <Window.Resources>
         <Style x:Key="GroupBoxStyle" TargetType="GroupBox">
@@ -59,24 +61,38 @@
         <StackPanel Orientation="Vertical"  Margin="10,15" HorizontalAlignment="Stretch">
             <StackPanel Orientation="Horizontal">
                 <GroupBox Header="发生时间" Style="{StaticResource GroupBoxStyle}">
-                    <DatePicker Style="{StaticResource DatePickerStyle}"    SelectedDate="{Binding OccurDate}" />
+                    <DatePicker Style="{StaticResource DatePickerStyle}"    SelectedDate="{Binding _CurRecord.OccurDate}" />
                 </GroupBox>
                 <GroupBox Header="奖惩类型" Style="{StaticResource GroupBoxStyle}">
-                    <ComboBox ItemsSource="{Binding PrizrOrPunishTypeArr}" Text="{Binding PrizrOrPunishType}"  
+                    <ComboBox ItemsSource="{Binding _MemberSetting.PrizrOrPunishTypeArr}" Text="{Binding _CurRecord.PrizrOrPunishType}"  
                           Height="30"  Width="180" HorizontalAlignment="Left" FontSize="16" Margin="5" />
                 </GroupBox>
             </StackPanel>
-            <GroupBox Header="奖惩名称">
-                <TextBox Text="{Binding PrizrOrPunishName}" MinHeight="30" HorizontalAlignment="Stretch" FontSize="16" Margin="5" TextWrapping="Wrap" ToolTip="比如：提醒谈话" />
-            </GroupBox>
+            <StackPanel Orientation="Horizontal">
+                <GroupBox Header="奖惩级别" Style="{StaticResource GroupBoxStyle}">
+                    <ComboBox ItemsSource="{Binding _MemberSetting.PrizrOrPunishGradeArr}" Text="{Binding _CurRecord.PrizrOrPunishGrade}"  
+                          Height="30"  Width="180" HorizontalAlignment="Left" FontSize="16" Margin="5" />
+                </GroupBox>
+                <GroupBox Header="奖惩名称" >
+                    <ComboBox ItemsSource="{Binding _MemberSetting.PrizrOrPunishNameArr}" Text="{Binding _CurRecord.PrizrOrPunishName}"  
+                          Height="30"   Width="180" FontSize="16" Margin="5" />
+                </GroupBox>
+            </StackPanel>
+            
             <GroupBox Header="决定单位" >
-                <TextBox Text="{Binding PrizrOrPunishUnit}" MinHeight="30" HorizontalAlignment="Stretch" FontSize="16" Margin="5" TextWrapping="Wrap" />
+                <TextBox Text="{Binding _CurRecord.PrizrOrPunishUnit}" MinHeight="30" 
+                         HorizontalAlignment="Stretch" FontSize="16" Margin="5" 
+                         TextWrapping="Wrap" />
             </GroupBox>
             <GroupBox Header="奖惩事由" >
-                <TextBox Text="{Binding PrizrOrPunishReasion}"  HorizontalAlignment="Stretch" MinHeight="50" FontSize="16" Margin="5" TextWrapping="Wrap"/>
+                <TextBox Text="{Binding _CurRecord.PrizrOrPunishReasion}"  
+                         HorizontalAlignment="Stretch" MinHeight="50" FontSize="16" Margin="5" 
+                         TextWrapping="Wrap"/>
             </GroupBox>
             <GroupBox Header="备注信息" >
-                <TextBox Text="{Binding Remark}"  HorizontalAlignment="Stretch" MinHeight="50" FontSize="16" Margin="5" TextWrapping="Wrap"/>
+                <TextBox Text="{Binding _CurRecord.Remark}"  
+                         HorizontalAlignment="Stretch" MinHeight="50" FontSize="16" Margin="5" 
+                         TextWrapping="Wrap"/>
             </GroupBox>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button Content="保存" Height="30" Width="60" Click="BtnSaveClickAsync" Margin="10" />

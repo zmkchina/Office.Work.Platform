@@ -5,11 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Office.Work.Platform.Plan"
              mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="400" 
+             d:DesignHeight="500" d:DesignWidth="400" 
              Background="Transparent"
              x:Name="UCPlanInfo">
     <ScrollViewer>
-        <StackPanel TextElement.FontSize="16"  HorizontalAlignment="Stretch" Background="Transparent">
+        <StackPanel TextElement.FontSize="15"  HorizontalAlignment="Stretch" Background="Transparent">
             <GroupBox>
                 <GroupBox.Header>
                     <StackPanel Orientation="Horizontal">
@@ -17,7 +17,7 @@
                         <Label Foreground="#777777">计划标题</Label>
                     </StackPanel>
                 </GroupBox.Header>
-                <TextBlock   TextBlock.LineHeight="22" FontSize="24" FontWeight="DemiBold"
+                <TextBlock   TextBlock.LineHeight="20" FontSize="22" FontWeight="DemiBold"
                              TextWrapping="Wrap"
                              Text="{Binding CurPlan.Caption}"
                              VerticalAlignment="Center" 
@@ -32,7 +32,7 @@
                     </StackPanel>
                 </GroupBox.Header>
                 <TextBlock   TextBlock.LineHeight="22"
-                             TextWrapping="Wrap" FontSize="18"
+                             TextWrapping="Wrap" 
                              Text="{Binding CurPlan.Content}"
                              VerticalAlignment="Center" 
                              Padding="2,15">
@@ -52,7 +52,6 @@
                          TextBlock.LineHeight="22"
                          TextWrapping="Wrap" 
                          AcceptsReturn ="True"
-                         FontSize="18"
                          Text="{Binding CurPlan.FinishNote}"
                          VerticalAlignment="Center" 
                          Padding="2,15">
@@ -84,7 +83,6 @@
                                 <Image Width="20" Margin="2,5,8,5" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="{Binding Path=ExtendName,Converter={StaticResource ExtentNameToImgeUri}}"/>
                                 <TextBlock Grid.Column="1"
                                            Margin="5"
-                                           
                                            Tag="{Binding Id}" 
                                            TextWrapping="Wrap"
                                            Cursor="Hand" 
@@ -94,6 +92,8 @@
                                         <TextBlock>
                                             <Run Text="{Binding UpDateTime, StringFormat=yyyy/MM/dd}"/>
                                             <Run Text="{Binding ContentType}"/>
+                                            <LineBreak/>
+                                            <Run Text="{Binding Describe}"/>
                                         </TextBlock>
                                     </TextBlock.ToolTip>
                                     <Run Text="{Binding Name}"/>

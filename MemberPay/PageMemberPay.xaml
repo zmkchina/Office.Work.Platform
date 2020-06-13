@@ -112,7 +112,7 @@
             </Grid.ColumnDefinitions>
             <ListBox ItemsSource="{Binding PaySetMembers}"
                      Margin="2,0"
-                      Padding="5,0"
+                     Padding="5,0"
                      x:Name="ListBox_PaySetMembers" 
                      HorizontalAlignment="Center"
                      SelectionChanged="ListBox_SelectionChangedAsync">

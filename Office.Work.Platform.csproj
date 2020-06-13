@@ -65,7 +65,6 @@
     <None Remove="AppRes\iconfont.ttf" />
     <None Remove="AppRes\Images\AddNewPlan.png" />
     <None Remove="AppRes\Images\AllTasks.png" />
-    <None Remove="AppRes\Images\App.ico" />
     <None Remove="AppRes\Images\CarTea.png" />
     <None Remove="AppRes\Images\DefaultImg.png" />
     <None Remove="AppRes\Images\delete.png" />
@@ -97,10 +96,6 @@
     <None Remove="AppRes\Images\writepaper.png" />
     <None Remove="AppRes\Window\BanQuan.png" />
     <None Remove="AppRes\Window\barbackground.png" />
-    <None Include="AppRes\Images\App.ico">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -147,7 +142,6 @@
     </Resource>
     <Resource Include="AppRes\Images\AddNewPlan.png" />
     <Resource Include="AppRes\Images\AllTasks.png" />
-    <Resource Include="AppRes\Images\App.ico" />
     <Resource Include="AppRes\Images\CarTea.png" />
     <Resource Include="AppRes\Images\delete.png" />
     <Resource Include="AppRes\Images\DocExcel.png" />
@@ -232,6 +226,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Settings\PagePersonCenter.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Settings\PageSettingsGrant.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Settings\PageSettingsTheme.xaml.cs">
@@ -331,6 +328,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Settings\PagePersonCenter.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Settings\PageSettingsGrant.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Settings\PageSettingsTheme.xaml">

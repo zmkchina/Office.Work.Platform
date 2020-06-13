@@ -36,9 +36,11 @@ namespace Office.Work.Platform.Plan
                     case "MyNoFinishPlans":
                         _CurPageViewModel.SearchPlan.ResponsiblePerson = AppSet.LoginUser.Id;
                         _CurPageViewModel.SearchPlan.CurrectState = PlanStatus.WaitBegin + "," + PlanStatus.Running;
+                        _CurPageViewModel.SearchPlan.PageSize = 50;
                         break;
                     case "AllNoFinishPlans":
                         _CurPageViewModel.SearchPlan.CurrectState = PlanStatus.WaitBegin + "," + PlanStatus.Running;
+                        _CurPageViewModel.SearchPlan.PageSize = 50;
                         break;
                     case "AllFinihPlans":
                         _CurPageViewModel.SearchPlan.CurrectState = PlanStatus.Finished;
@@ -122,6 +124,7 @@ namespace Office.Work.Platform.Plan
         /// </summary>
         private class CurPageViewModel : NotificationObject
         {
+            private string _CanVisible;
 
             public CurPageViewModel()
             {
@@ -131,19 +134,28 @@ namespace Office.Work.Platform.Plan
                     PageSize = 15,
                 };
                 EntityPlans = new ObservableCollection<Lib.Plan>();
+                CanVisible = "Collapsed";
             }
             public async Task GetPlansAsync()
             {
                 EntityPlans.Clear();
                 PlanSearchResult PlanSearchResult = await DataPlanRepository.ReadPlans(SearchPlan);
                 if (PlanSearchResult == null) { return; }
-                
+
                 SearchPlan.RecordCount = PlanSearchResult.SearchCondition.RecordCount;
-                
+
                 PlanSearchResult.RecordList?.ToList().ForEach(e =>
                 {
                     EntityPlans.Add(e);
                 });
+                if (SearchPlan.PageCount > 1)
+                {
+                    CanVisible = "Visible";
+                }
+                else
+                {
+                    CanVisible = "Collapsed";
+                }
             }
             /// <summary>
             /// 查询到的计划列表
@@ -153,6 +165,15 @@ namespace Office.Work.Platform.Plan
             /// 查询条件
             /// </summary>
             public PlanSearch SearchPlan { get; set; }
+
+            /// <summary>
+            /// 上下页按钮是否可见
+            /// </summary>
+            public string CanVisible
+            {
+                get { return _CanVisible; }
+                set { _CanVisible = value; RaisePropertyChanged(); }
+            }
         }
     }
 }

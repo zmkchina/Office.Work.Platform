@@ -66,7 +66,7 @@
                                 <ColumnDefinition Width="24"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Image Width="24" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="{Binding Path=ExtendName,Converter={StaticResource ExtentNameToImgeUri}}"/>
+                            <Image Width="24" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Source="{Binding Path=ExtendName,Converter={StaticResource ExtentNameToImgeUri}}"/>
                             <TextBlock TextWrapping="Wrap"  Grid.Column="1" Grid.Row="0" TextAlignment="Justify" VerticalAlignment="Center" Margin="10,5,5,5">
                                 <Run Text="{Binding Path=Name,Mode=OneWay}" />
                             </TextBlock>
@@ -88,18 +88,16 @@
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                    <Border x:Name="border" CornerRadius="0" Margin="0" BorderBrush="Black"
-                                        BorderThickness="0,0,0,0.2">
-                                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    <Border x:Name="border" CornerRadius="0" Margin="0" BorderBrush="#eaeaea" BorderThickness="2">
+                                        <ContentPresenter 
+                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                             VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                            Margin="5,0,0,0" />
+                                            Margin="0" />
                                     </Border>
                                     <ControlTemplate.Triggers>
                                         <Trigger Property="IsSelected" Value="True">
                                             <Setter Property="Foreground" Value="Blue" />
                                             <Setter TargetName="border" Property="Background" Value="#c2f4ae" />
-                                            <Setter TargetName="border" Property="BorderBrush" Value="#FF46679A" />
-                                            <Setter TargetName="border" Property="BorderThickness" Value="1,0,0,0.5" />
                                         </Trigger>
                                         <MultiTrigger>
                                             <MultiTrigger.Conditions>
@@ -107,9 +105,7 @@
                                                 <Condition Property="IsSelected" Value="False" />
                                             </MultiTrigger.Conditions>
                                             <MultiTrigger.Setters>
-                                                <Setter TargetName="border" Property="Background" Value="#c2f4ae" />
-                                                <Setter TargetName="border" Property="BorderBrush" Value="#FF46679A" />
-                                                <Setter TargetName="border" Property="BorderThickness" Value="1,0,0,0.5" />
+                                                <Setter TargetName="border" Property="Background" Value="#E6F1EED8" />
                                             </MultiTrigger.Setters>
                                         </MultiTrigger>
                                     </ControlTemplate.Triggers>

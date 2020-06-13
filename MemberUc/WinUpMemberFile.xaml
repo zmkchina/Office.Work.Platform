@@ -11,6 +11,7 @@
         WindowStyle="None"
         SizeToContent="WidthAndHeight"
         AllowsTransparency="True" BorderBrush="LightBlue" BorderThickness="1" Background="AliceBlue"
+        MaxWidth="600"
         Title="完善文件信息" Loaded="Window_Loaded">
     <Window.Resources>
         <Style TargetType="GroupBox">

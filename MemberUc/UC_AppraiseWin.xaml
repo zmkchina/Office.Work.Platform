@@ -9,6 +9,7 @@
         ResizeMode="CanResizeWithGrip"
         WindowStyle="None" SizeToContent="WidthAndHeight"
         AllowsTransparency="True" BorderBrush="LightBlue" BorderThickness="1" Background="AliceBlue"
+        MaxWidth="500"
         Title="个人奖惩情况">
     <Window.Resources>
         <Style x:Key="GroupBoxStyle" TargetType="GroupBox">

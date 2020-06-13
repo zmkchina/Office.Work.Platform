@@ -177,6 +177,7 @@ namespace Office.Work.Platform.Member
             public string FieldEnName { get; set; }
             public string FieldValue { get; set; }
             public bool SearchInResult { get; set; }
+            public bool _CanExportAll { get; set; }
 
             #region "方法"
             /// <summary>
@@ -189,8 +190,11 @@ namespace Office.Work.Platform.Member
                     UnitName = AppSet.LoginUser.UnitName
                 };
                 EntityList = new ObservableCollection<Lib.Member>();
-                FieldCn2En = new Dictionary<string, string>() { { "Name", "姓名" }, { "UnitName", "单位" },{ "Job", "岗位性质" }, { "TechnicalTitle", "技术职称" },
-                    { "EducationTop", "最高学历" }, { "Age", "年龄" },{ "PoliticalStatus", "政治面貌"  },{ "Remarks", "备注" }  };
+                FieldCn2En = new Dictionary<string, string>() {
+                    { "Name", "姓名" }, { "UnitName", "单位" },{ "Job", "岗位性质" }, { "TechnicalTitle", "技术职称" },
+                    { "EducationTop", "最高学历" }, { "Age", "年龄" },{ "PoliticalStatus", "政治面貌"  },{ "Remarks", "备注" }
+                };
+                _CanExportAll = AppSet.LoginUser.Grants.Contains("MemberExportAll");
             }
             #endregion
         }

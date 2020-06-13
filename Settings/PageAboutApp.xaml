@@ -12,10 +12,9 @@
                     HorizontalAlignment="Center" 
                     VerticalAlignment="Center" 
                     TextElement.FontSize="15">
-            <Image Stretch="Fill" Height="60" Width="60" Margin="10,0,10,50" Source="/Office.Work.Platform;component/AppRes/Window/BanQuan.png"/>
+            <Image Stretch="Uniform" Width="100"  Margin="10,0,10,50" Source="/Office.Work.Platform;component/AppRes/Window/BanQuan.png"/>
             <TextBlock Text="政工业务工作平台" Margin="10" HorizontalAlignment="Center"/>
             <TextBlock Text="{Binding AppVersion}" Margin="10" HorizontalAlignment="Center"/>
-            <TextBlock Text="翟明科" Margin="10" HorizontalAlignment="Center"/>
             <TextBlock Text="欢迎使用，保留版权 Copyright 2019-2020" Margin="10" FontWeight="Bold" Foreground="Green" HorizontalAlignment="Center"/>
         </StackPanel>
         

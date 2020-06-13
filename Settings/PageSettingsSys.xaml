@@ -249,15 +249,15 @@
                      Text="{Binding Path=EntitySettingServer.MemberScoreTypes}" />
                     </StackPanel>
                 </GroupBox>
-                <StackPanel Orientation="Horizontal">
-                <Button Content="更新设置" Margin="5,10,5,10" Height="35" Width="120" HorizontalAlignment="Left"
-                            IsEnabled="{Binding CanOperation}"
-                            Click="Btn_UpdateSettings_Click"/>
-                    <Button Content="恢复默认值" Margin="5,10,5,10" Height="35" Width="120" HorizontalAlignment="Left"
-                            IsEnabled="{Binding CanOperation}"
-                            Click="Btn_RestoreSettings_Click"/>
-                </StackPanel>
             </StackPanel>
         </ScrollViewer>
+        <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right">
+            <Button Content="更新设置" Margin="5,10,5,10" Height="35" Width="120" HorizontalAlignment="Left"
+                            IsEnabled="{Binding CanOperation}"
+                            Click="Btn_UpdateSettings_Click"/>
+            <Button Content="恢复默认值" Margin="5,10,50,10" Height="35" Width="120" HorizontalAlignment="Left"
+                            IsEnabled="{Binding CanOperation}"
+                            Click="Btn_RestoreSettings_Click"/>
+        </StackPanel>
     </Grid>
 </Page>

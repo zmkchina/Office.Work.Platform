@@ -119,6 +119,7 @@ namespace Office.Work.Platform.Plan
             public PageViewModel(Lib.Plan CurPlan)
             {
                 EntityPlan = CurPlan;
+                ServerSettings = AppSet.ServerSetting;
             }
             /// <summary>
             /// 初始化相关属性值
@@ -149,13 +150,7 @@ namespace Office.Work.Platform.Plan
                     UserHelperSelectList.Add(new SelectObj<User>(EntityPlan.Helpers != null && (EntityPlan.Helpers.Contains(item.Id) || EntityPlan.Helpers.Equals("all", StringComparison.Ordinal)), item));
                 }
             }
-            public string[] WorkContentTypes
-            {
-                get
-                {
-                    return AppSet.ServerSetting.WorkContentTypeArr;
-                }
-            }
+          
             /// <summary>
             /// 是编辑还是新增一个计划。
             /// </summary>
@@ -164,6 +159,12 @@ namespace Office.Work.Platform.Plan
             /// 当前正在操作的计划
             /// </summary>
             public Lib.Plan EntityPlan { get; set; }
+
+            /// <summary>
+            /// 系统参数配置
+            /// </summary>
+            public Lib.SettingServer ServerSettings { get; set; }
+
             /// <summary>
             /// 有权读取该计划的用户选择
             /// </summary>
