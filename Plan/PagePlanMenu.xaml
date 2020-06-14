@@ -49,25 +49,31 @@
             <ListBoxItem MouseLeftButtonUp="ListBoxItem_MyPlan_MouseLeftButtonUp" IsSelected="True">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="&#xe643;" Style="{StaticResource FIcon}" FontSize="18" Margin="0,0,5,0" Foreground="Green"></TextBlock>
-                    <TextBlock  Text="我的待办" VerticalAlignment="Center"/>
+                    <TextBlock  Text="我的待办" VerticalAlignment="Center" ToolTip="责任人为本人的计划"/>
+                </StackPanel>
+            </ListBoxItem>
+            <ListBoxItem MouseLeftButtonUp="ListBoxItem_LongPlan_MouseLeftButtonUp">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="&#xe643;" Style="{StaticResource FIcon}" FontSize="18" Margin="0,0,5,0" Foreground="Green"></TextBlock>
+                    <TextBlock Text="长期计划" VerticalAlignment="Center" ToolTip="时间段在3个月以上的计划"/>
                 </StackPanel>
             </ListBoxItem>
             <ListBoxItem MouseLeftButtonUp="ListBoxItem_AllWaitPlan_MouseLeftButtonUp">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="&#xe643;" Style="{StaticResource FIcon}" FontSize="18" Margin="0,0,5,0" Foreground="Green"></TextBlock>
-                    <TextBlock  Text="全部待办" VerticalAlignment="Center"/>
+                    <TextBlock  Text="全部待办" VerticalAlignment="Center" ToolTip="系统中所有待办计划"/>
                 </StackPanel>
             </ListBoxItem>
             <ListBoxItem MouseLeftButtonUp="ListBoxItem_AllFinish_MouseLeftButtonUp">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="&#xe643;" Style="{StaticResource FIcon}" FontSize="18" Margin="0,0,5,0" Foreground="Green"></TextBlock>
-                    <TextBlock  Text="已经完成" VerticalAlignment="Center"/>
+                    <TextBlock  Text="已经完成" VerticalAlignment="Center" ToolTip="系统中所有已完成的计划"/>
                 </StackPanel>
             </ListBoxItem>
             <ListBoxItem MouseLeftButtonUp="ListBoxItem_AllPlan_MouseLeftButtonUp">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="&#xe653;" Style="{StaticResource FIcon}" FontSize="18" Margin="0,0,5,0" Foreground="Green"></TextBlock>
-                    <TextBlock  Text="全部计划" VerticalAlignment="Center"/>
+                    <TextBlock  Text="全部计划" VerticalAlignment="Center" ToolTip="系统中所有已完成或未完成的计划"/>
                 </StackPanel>
             </ListBoxItem>
         </ListBox>

@@ -8,7 +8,7 @@
       ShowsNavigationUI="False"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="550"
-      Loaded="Page_LoadedAsync"
+      Loaded="Page_Loaded"
       Unloaded="Page_Unloaded"
       >
     <Page.Resources>
@@ -49,15 +49,14 @@
             </TextBlock>
         </Border>
         <ToolBar Grid.Row="1" FontSize="14" Padding="0,2" Cursor="Hand">
+            <ComboBox ItemsSource="{Binding ServerSettings.PayTableTypeArr}" SelectedIndex="0"
+                                      Text="{Binding SearchCondition.TableType}" Width="150" Height="30" VerticalAlignment="Center" FontSize="15"/>
+            <ComboBox ItemsSource="{Binding  ServerSettings.MemberTypeArr}"
+                                      Text="{Binding SearchCondition.MemberType}" SelectedIndex="0" FontSize="15" Width="150" Height="30"/>
             <DatePicker Style="{StaticResource DatePickerStyle}"
-                        SelectedDate="{Binding PayMonthDate}" 
-                        AppCodes:DatePickerCalendar.IsMonthYear="True"/>
-            <ComboBox ItemsSource="{Binding PayTableTypes}" SelectedIndex="0"
-                      Text="{Binding PayTableName}" Width="150" Height="30" VerticalAlignment="Center" FontSize="15"/>
-            <ComboBox ItemsSource="{Binding PayTableMemberTypes}"
-                      Text="{Binding MemberType}" SelectedIndex="0" FontSize="15"
-                      Width="150" Height="30"/>
-            <Button Click="BtnSearchClickAsync" Content="查询" Width="60" Height="30" Margin="2,0,10,0"/>
+                                        SelectedDate="{Binding PayYearMonth}" 
+                                        AppCodes:DatePickerCalendar.IsMonthYear="True"/>
+            <Button Click="Btn_Search_ClickAsync" Content="查询" Width="60" Height="30" Margin="2,0,10,0"/>
         </ToolBar>
         <DocumentViewer Grid.Row="2" Name="docViewer" 
                         Background="LightSkyBlue" 

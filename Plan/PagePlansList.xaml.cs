@@ -35,15 +35,23 @@ namespace Office.Work.Platform.Plan
                 {
                     case "MyNoFinishPlans":
                         _CurPageViewModel.SearchPlan.ResponsiblePerson = AppSet.LoginUser.Id;
+                        _CurPageViewModel.SearchPlan.LongPlan = "no";
                         _CurPageViewModel.SearchPlan.CurrectState = PlanStatus.WaitBegin + "," + PlanStatus.Running;
                         _CurPageViewModel.SearchPlan.PageSize = 50;
                         break;
                     case "AllNoFinishPlans":
                         _CurPageViewModel.SearchPlan.CurrectState = PlanStatus.WaitBegin + "," + PlanStatus.Running;
                         _CurPageViewModel.SearchPlan.PageSize = 50;
+                        _CurPageViewModel.SearchPlan.LongPlan = "no";
+                        break;
+                    case "LongPlans":
+                        _CurPageViewModel.SearchPlan.CurrectState = PlanStatus.WaitBegin + "," + PlanStatus.Running;
+                        _CurPageViewModel.SearchPlan.PageSize = 50;
+                        _CurPageViewModel.SearchPlan.LongPlan = "yes";
                         break;
                     case "AllFinihPlans":
                         _CurPageViewModel.SearchPlan.CurrectState = PlanStatus.Finished;
+                        _CurPageViewModel.SearchPlan.LongPlan = "all";
                         break;
                     case "AllPlans":
                         break;
@@ -131,7 +139,7 @@ namespace Office.Work.Platform.Plan
                 SearchPlan = new PlanSearch()
                 {
                     PageIndex = 1,
-                    PageSize = 15,
+                    PageSize = 15
                 };
                 EntityPlans = new ObservableCollection<Lib.Plan>();
                 CanVisible = "Collapsed";

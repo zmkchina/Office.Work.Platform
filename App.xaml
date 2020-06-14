@@ -30,6 +30,7 @@
         <AppCodes:ConverByteLengthToMBLength x:Key="ByteLengthToMBLength"/>
         <Plan:ConverPlanStateToImgeUri x:Key="PlanStateToImgeUri"/>
         <Plan:GetIsHelper x:Key="GetIsHelper"/>
+        <Plan:GetIsMyPlan x:Key="GetIsMyPlan"/>        
 
         <SolidColorBrush  x:Key="ColorMainWinTitle" Color="#9FB7C0B1"/>
         <SolidColorBrush  x:Key="ColorMainWinTopMenu" Color="#224CA1CB"/>

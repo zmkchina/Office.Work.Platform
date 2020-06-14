@@ -64,5 +64,15 @@ namespace Office.Work.Platform.Plan
         {
             AppSet.AppMainWindow.FrameContentPage.Content = new PagePlansList("AllPlans"); ;
         }
+
+        /// <summary>
+        /// 长期计划
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ListBoxItem_LongPlan_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            AppSet.AppMainWindow.FrameContentPage.Content = new PagePlansList("LongPlans");
+        }
     }
 }

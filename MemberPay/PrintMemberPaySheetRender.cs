@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Documents;
+using System.Windows.Media;
 using Newtonsoft.Json.Linq;
 
 namespace Office.Work.Platform.MemberPay
@@ -52,6 +54,93 @@ namespace Office.Work.Platform.MemberPay
                 }
                 TableRowGroup TRGroupContent = FlowDoc.FindName("TableContentRows") as TableRowGroup;
                 TRGroupContent.Rows.Add(TempRow);
+            }
+
+        }
+    }
+    public class PaginatorHeaderFooter : DocumentPaginator
+    {
+        readonly DocumentPaginator m_paginator;
+
+        public PaginatorHeaderFooter(DocumentPaginator paginator)
+        {
+            m_paginator = paginator;
+        }
+
+        public override DocumentPage GetPage(int pageNumber)
+        {
+            DocumentPage page = m_paginator.GetPage(pageNumber);
+            ContainerVisual newpage = new ContainerVisual();
+
+            //页眉:公司名称
+            DrawingVisual header = new DrawingVisual();
+            using (DrawingContext ctx = header.RenderOpen())
+            {
+                string HeaderStr = "市港航中心工资福利表";
+                FormattedText formattedHeaderText = new FormattedText(HeaderStr, CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
+                    new Typeface("Verdana"), 15, Brushes.Black, VisualTreeHelper.GetDpi(page.Visual).PixelsPerDip);
+
+                ctx.DrawText(formattedHeaderText, new Point(page.ContentBox.Left, page.ContentBox.Top));
+                //ctx.DrawLine(new Pen(Brushes.Black, 0.5), new Point(page.ContentBox.Left, page.ContentBox.Top + 16), new Point(page.ContentBox.Right, page.ContentBox.Top + 16));
+            }
+
+            //页脚:第几页
+            DrawingVisual footer = new DrawingVisual();
+            using (DrawingContext ctx = footer.RenderOpen())
+            {
+                string BottomStr = $"      审核人：                              证明人：                                   制表人：                                页码：{pageNumber + 1}"; //{PageCount}";
+                FormattedText formattedBottomText = new FormattedText(BottomStr, CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
+                    new Typeface("Verdana"), 15, Brushes.Black, VisualTreeHelper.GetDpi(page.Visual).PixelsPerDip);
+                ctx.DrawText(formattedBottomText, new Point(page.ContentBox.Left, page.ContentBox.Bottom - 15));
+            }
+
+            //将原页面微略压缩(使用矩阵变换)
+            ContainerVisual mainPage = new ContainerVisual();
+            mainPage.Children.Add(page.Visual);
+            mainPage.Transform = new MatrixTransform(1, 0, 0, 0.95, 0, 0.04 * page.ContentBox.Height);
+
+            //在现页面中加入原页面，页眉和页脚
+            newpage.Children.Add(mainPage);
+            newpage.Children.Add(header);
+            newpage.Children.Add(footer);
+
+            return new DocumentPage(newpage, page.Size, page.BleedBox, page.ContentBox);
+        }
+
+        public override bool IsPageCountValid
+        {
+            get
+            {
+                return m_paginator.IsPageCountValid;
+            }
+        }
+
+        public override int PageCount
+        {
+            get
+            {
+                return m_paginator.PageCount;
+            }
+        }
+
+        public override Size PageSize
+        {
+            get
+            {
+                return m_paginator.PageSize;
+            }
+
+            set
+            {
+                m_paginator.PageSize = value;
+            }
+        }
+
+        public override IDocumentPaginatorSource Source
+        {
+            get
+            {
+                return m_paginator.Source;
             }
         }
     }

@@ -49,6 +49,18 @@ namespace Office.Work.Platform.AppDataService
             ExcuteResult JsonResult = await DataApiRepository.PutApiUriAsync(_ApiUrlBase + "MemberSalary", PEntity).ConfigureAwait(false);
             return JsonResult;
         }
+
+        /// <summary>
+        /// 新增或更新一个实体
+        /// </summary>
+        /// <param name="PEntity"></param>
+        /// <returns></returns>
+        public static async Task<ExcuteResult> AddOrUpdate(Lib.MemberSalary PEntity)
+        {
+            ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(_ApiUrlBase + "MemberSalary/AddOrUpdate", PEntity).ConfigureAwait(false);
+            return JsonResult;
+        }
+
         /// <summary>
         /// 删除一个实体
         /// </summary>

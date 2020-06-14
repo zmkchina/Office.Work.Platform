@@ -119,7 +119,8 @@
                 </ToolBar>
                 <DataGrid x:Name="RecordDataGrid" ItemsSource="{Binding MemberScores}" >
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="年份" Binding="{Binding OccurDate,StringFormat=yyyy年MM月}" />
+                        <DataGridTextColumn Header="姓名" Binding="{Binding Member.Name}" />
+                        <DataGridTextColumn Header="年月" Binding="{Binding OccurDate,StringFormat=yyyy年MM月}" />
                         <DataGridTextColumn Header="分值" Binding="{Binding Score}"/>
                         <DataGridTextColumn Header="得分情由" Binding="{Binding ScoreType}"/>
                         <DataGridTextColumn Header="考核单位" Binding="{Binding ScoreUnitName}"/>

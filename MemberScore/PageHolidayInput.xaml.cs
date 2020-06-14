@@ -60,8 +60,10 @@ namespace Office.Work.Platform.MemberScore
         {
             Lib.MemberHoliday NewRecord = new Lib.MemberHoliday()
             {
+                Member=_PageViewModel.CurMember,
                 MemberId = _PageViewModel.CurMember.Id,
                 UserId = AppSet.LoginUser.Id
+
             };
 
             PageHolidayInputWin AddWin = new PageHolidayInputWin(NewRecord);
@@ -199,6 +201,10 @@ namespace Office.Work.Platform.MemberScore
             /// <returns></returns>
             public async Task SearchRecords()
             {
+                if (string.IsNullOrWhiteSpace(SearchCondition.MemberId))
+                {
+                    return;
+                }
                 //1.先查询用户信息
                 List<Lib.Member> TempMembers = await DataMemberRepository.ReadMembers(new MemberSearch() { Id = SearchCondition.MemberId }).ConfigureAwait(false);
 
@@ -219,6 +225,7 @@ namespace Office.Work.Platform.MemberScore
                         MemberHolidays.Clear();
                         MemberHolidayList?.ToList().ForEach(e =>
                         {
+                            e.Member = CurMember;
                             MemberHolidays.Add(e);
                         });
                     });

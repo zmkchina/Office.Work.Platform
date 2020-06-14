@@ -57,4 +57,22 @@ namespace Office.Work.Platform.Plan
             return "";
         }
     }
+
+    //指定转换器源类型和目标类型
+    public class GetIsMyPlan : IValueConverter
+    {
+        //实现接口的两个方法
+        public object Convert(object ResponsiblePerson, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (ResponsiblePerson != null && ResponsiblePerson.ToString().Equals(AppSet.LoginUser.Id, StringComparison.Ordinal))
+            {
+                return "我的";
+            }
+            return "";
+        }
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return "";
+        }
+    }
 }

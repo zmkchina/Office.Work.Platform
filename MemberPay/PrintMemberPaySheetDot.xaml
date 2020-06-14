@@ -1,10 +1,11 @@
 ﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
               ColumnWidth="400" FontSize="14" FontFamily="宋体"
+              xmlns:core="clr-namespace:System;assembly=mscorlib"
               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" TextOptions.TextFormattingMode="Display">
     <FlowDocument.Resources>
         <Style TargetType="Table" x:Key="BorderedTable">
             <Setter Property="CellSpacing" Value="0"></Setter>
-            <Setter Property="BorderThickness" Value="1"></Setter>
+            <Setter Property="BorderThickness" Value="0.5"></Setter>
             <Setter Property="BorderBrush" Value="#000"></Setter>
         </Style>
         <Style TargetType="TableCell" x:Key="BorderedCell">
@@ -15,12 +16,13 @@
         <Style  TargetType="TableCell">
             <Setter Property="TextAlignment" Value="Center"/>
             <Setter Property="BorderBrush" Value="Black" />
-            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderThickness" Value="0.5"/>
         </Style>
         <Style x:Key="PgStyle" TargetType="Paragraph">
             <Setter Property="TextAlignment" Value="Center"/>
             <Setter Property="Margin" Value="0,5"/>
         </Style>
+        <core:Boolean x:Key="PrintHeaderAndFooter">True</core:Boolean>
     </FlowDocument.Resources>
     <!--PageHeight="21cm" PageWidth="29.7cm" ColumnWidth ="29.7cm"-->
     <Paragraph TextAlignment="Center" FontWeight="ExtraBold" FontSize="24" LineHeight="20">

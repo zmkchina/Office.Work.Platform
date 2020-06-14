@@ -126,12 +126,13 @@
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel>
-                                    <TextBlock Margin="0,5" TextWrapping="Wrap">
-                                    <Run  Text="{Binding Path=HolidayType}" />
-                                    <Run  Text="{Binding Path=BeginDate,StringFormat= {}{0:yyyy年MM月dd日}}" />
-                                    <Run  Text="{Binding Path=EndDate,StringFormat= 至{0:yyyy年MM月dd日}}"/>
-                                    <Run  Text="{Binding Path=HolidayReasion,StringFormat= {} {0}}"/>
-                                    <Run  Text="{Binding Path=Remark,StringFormat= {} {0}}"  Foreground="Red"/>
+                                    <TextBlock Margin="0,5" TextWrapping="Wrap"  FontSize="14">
+                                        <Run  Text="{Binding Path=Member.Name}" />
+                                        <Run  Text="{Binding Path=HolidayType}" />
+                                        <Run  Text="{Binding Path=BeginDate,StringFormat= {}{0:yyyy年MM月dd日}}" />
+                                        <Run  Text="{Binding Path=EndDate,StringFormat= 至{0:yyyy年MM月dd日}}"/>
+                                        <Run  Text="{Binding Path=HolidayReasion,StringFormat= {} {0}}"/>
+                                        <Run  Text="{Binding Path=Remark,StringFormat= {} {0}}"  Foreground="Red"/>
                                     </TextBlock>
                                 </StackPanel>
                             </DataTemplate>

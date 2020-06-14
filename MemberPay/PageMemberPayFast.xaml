@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:AppCodes="clr-namespace:Office.Work.Platform.AppCodes"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="450" d:DesignWidth="900"
       Loaded="Page_Loaded"
       Title="快速发放待遇">
     <Page.Resources>

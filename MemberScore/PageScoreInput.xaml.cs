@@ -63,6 +63,7 @@ namespace Office.Work.Platform.MemberScore
                 UpDateTime = DateTime.Now,
                 MemberId = _PageViewModel.CurMember.Id,
                 MemberIndex = _PageViewModel.CurMember.OrderIndex,
+                Member = _PageViewModel.CurMember,
                 ScoreUnitName = AppSet.LoginUser.UnitName,
                 UserId = AppSet.LoginUser.Id
             };
@@ -164,6 +165,10 @@ namespace Office.Work.Platform.MemberScore
             /// <returns></returns>
             public async Task SearchRecords()
             {
+                if (string.IsNullOrWhiteSpace(SearchCondition.MemberId))
+                {
+                    return;
+                }
                 //1.先查询用户信息
                 List<Lib.Member> TempMembers = await DataMemberRepository.ReadMembers(new MemberSearch() { Id = SearchCondition.MemberId }).ConfigureAwait(false);
 
@@ -186,6 +191,7 @@ namespace Office.Work.Platform.MemberScore
                         MemberScores.Clear();
                         MemberScoreList?.ToList().ForEach(e =>
                         {
+                            e.Member = CurMember;
                             MemberScores.Add(e);
                         });
                     });

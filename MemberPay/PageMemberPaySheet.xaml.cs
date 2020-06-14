@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Packaging;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -21,77 +23,114 @@ namespace Office.Work.Platform.MemberPay
     /// </summary>
     public partial class PageMemberPaySheet : Page
     {
+        private CurPageViewModel _CurViewModel;
+
         public PageMemberPaySheet()
         {
+            _CurViewModel = new CurPageViewModel();
             InitializeComponent();
-            MemberSet = AppSet.ServerSetting;
-            JArrayResult = new JArray();
         }
 
-        private async void Page_LoadedAsync(object sender, RoutedEventArgs e)
+        private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            //获取已发放信息中所有工资表类型
-            PayTableTypes = await DataMemberPaySheetRepository.GetPayTableTypes().ConfigureAwait(false);
-            //获取所有已生成的待遇表中人员的类型
-            PayTableMemberTypes = await DataMemberPaySheetRepository.GetPayTableMemberTypes().ConfigureAwait(false);
-            App.Current.Dispatcher.Invoke(() =>
-            {
-                this.DataContext = this;
-            });
+            this.DataContext = _CurViewModel;
         }
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
             AppFuns.SetStateBarText("就绪");
         }
+
         /// <summary>
         /// 查询待发放信息
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void BtnSearchClickAsync(object sender, RoutedEventArgs e)
+        private async void Btn_Search_ClickAsync(object sender, RoutedEventArgs e)
         {
-            string SearchResult = await DataMemberPaySheetRepository.GetMemberPaySheet(new MemberPaySheetSearch()
+            //1.查询所有可发放的待遇项目信息
+            _CurViewModel.SearchCondition.PayYear = _CurViewModel.PayYearMonth.Year;
+            _CurViewModel.SearchCondition.PayMonth = _CurViewModel.PayYearMonth.Month;
+            _CurViewModel.SalaryJArray.Clear();
+            IEnumerable<MemberSalarySearchResult> SalaryList = await DataMemberSalaryRepository.GetRecords(_CurViewModel.SearchCondition).ConfigureAwait(false);
+            if (SalaryList != null && SalaryList.Count() > 0)
             {
-                PayYear = PayMonthDate.Year,
-                PayMonth = PayMonthDate.Month,
-                MemberType = MemberType,
-                PayTableType = PayTableName,
-                PayUnitName = AppSet.LoginUser.UnitName,
-                UserId = AppSet.LoginUser.Id
-            }).ConfigureAwait(false);
+                foreach (MemberSalarySearchResult item in SalaryList)
+                {
+                    JObject TempJobj = new JObject();
+                    PropertyInfo[] Props = item.GetType().GetProperties();
+                    for (int i = 0; i < Props.Length; i++)
+                    {
+                        if (_CurViewModel.NoPrintItemNames.Contains(Props[i].Name)) { continue; }
+                        var CurValue = Props[i].GetValue(item);
+                        if (CurValue != null)
+                        {
+                            if (Props[i].Name == "SalaryItems")
+                            {
+                                _CurViewModel.SalaryItems = CurValue as List<SalaryItem>;
+                                for (int ik = 0; ik < _CurViewModel.SalaryItems.Count; ik++)
+                                {
+                                    TempJobj[_CurViewModel.SalaryItems[ik].Name] = _CurViewModel.SalaryItems[ik].Amount;
+                                }
+                            }
+                            else
+                            {
+                                if (Props[i].Name.Equals("UpDateTime"))
+                                {
+                                    DateTime upDate = DateTime.MinValue;
+                                    DateTime.TryParse(CurValue.ToString(), out upDate);
+
+                                    if (upDate == DateTime.MinValue) { upDate = DateTime.Now; }
+
+                                    TempJobj[_CurViewModel.NamesEnCn[Props[i].Name]] = upDate.ToString("yyyy-MM-dd");
+                                }
+                                else
+                                {
+                                    TempJobj[_CurViewModel.NamesEnCn[Props[i].Name]] = CurValue.ToString();
+                                }
+                            }
+                        }
+                        else
+                        {
+
+                            TempJobj[_CurViewModel.NamesEnCn[Props[i].Name]] = "";
+                            continue;
+                        }
+                    }
+                    _CurViewModel.SalaryJArray.Add(TempJobj);
+                }
+            }
+            else
+            {
+                _CurViewModel.SalaryJArray.Clear();
+                AppFuns.ShowMessage("未发现指定的待遇发放记录！");
+                return;
+            }
             App.Current.Dispatcher.Invoke(() =>
             {
-                if (SearchResult != null)
+                AppFuns.SetStateBarText($"共查询到：{_CurViewModel.SalaryJArray.Count} 条数据。");
+                string Caption = $"{AppSet.LoginUser.UnitShortName}{_CurViewModel.SearchCondition.MemberType}人员{_CurViewModel.SearchCondition.TableType}";
+                string DateStr = $"发放月份：（{_CurViewModel.SearchCondition.PayYear}年{_CurViewModel.SearchCondition.PayMonth}月）";
+                if (!_CurViewModel.SearchCondition.TableType.Contains("月"))
                 {
-                    try
-                    {
-                        JArray TempJArrayResult = (JArray)JsonConvert.DeserializeObject(SearchResult);
-                        JArrayResult.Clear();
-                        foreach (JObject item in TempJArrayResult)
-                        {
-                            JArrayResult.Add(item);
-                        }
-                        AppFuns.SetStateBarText($"共查询到：{JArrayResult.Count} 条数据。");
-                    }
-                    catch (Exception ex)
-                    {
-                        AppFuns.ShowMessage(ex.Message, "错误", true);
-                        return;
-                    }
+                    DateStr = $"发放时间：{_CurViewModel.PayYearMonth.Year}年{_CurViewModel.PayYearMonth.Month}月{_CurViewModel.PayYearMonth.Day}日";
                 }
-                else
-                {
-                    AppFuns.SetStateBarText($"共查询到： 0 条数据。");
-                }
-                string Caption = $"{AppSet.LoginUser.UnitShortName}{MemberType}人员{PayTableName}";
-                string DateStr = $"发放月份：（{PayMonthDate.Year}年{PayMonthDate.Month}月）";
-                if (!PayTableTypes.Contains("月"))
-                {
-                    DateStr = $"发放时间：{PayMonthDate.Year}年{PayMonthDate.Month}月{PayMonthDate.Day}日";
-                }
-                CreateFlowDoc("PrintMemberPaySheetDot.xaml", Caption, DateStr, JArrayResult, P_DocWidth: 1122, P_DocHeight: 793);
+                CreateFlowDoc("PrintMemberPaySheetDot.xaml", Caption, DateStr, _CurViewModel.SalaryJArray, P_DocWidth: 1122, P_DocHeight: 793);
             });
         }
+
+        private DocumentPaginator GetPaginator(FlowDocument doc)
+        {
+            bool? bPrintHeaderAndFooter = doc.Resources["PrintHeaderAndFooter"] as bool?;
+            if (bPrintHeaderAndFooter == true)
+            {
+                return new PaginatorHeaderFooter(((IDocumentPaginatorSource)doc).DocumentPaginator);
+            }
+            else
+            {
+                return ((IDocumentPaginatorSource)doc).DocumentPaginator;
+            }
+        }
+
         private void CreateFlowDoc(string SheetTemplet, string Caption, string DateStr, JArray data, double P_DocWidth, double P_DocHeight)
         {
             //1.导入流文件格式模板
@@ -100,8 +139,7 @@ namespace Office.Work.Platform.MemberPay
             m_doc.PageHeight = P_DocHeight;
             m_doc.ColumnWidth = P_DocWidth;
             m_doc.Background = System.Windows.Media.Brushes.Transparent;
-            m_doc.PagePadding = new Thickness(85, 70, 85, 70);//设置页面与页面之间的边距宽度
-
+            m_doc.PagePadding = new Thickness(85, 70, 85, 90);//设置页面与页面之间的边距宽度
             //2.填充模板内容
             PrintMemberPaySheetRender renderer = new PrintMemberPaySheetRender();
             if (renderer != null)
@@ -123,7 +161,9 @@ namespace Office.Work.Platform.MemberPay
 
             //将flow document写入基于内存的xps document中去
             XpsDocumentWriter writer = XpsDocument.CreateXpsDocumentWriter(xpsDocument);
-            writer.Write(((IDocumentPaginatorSource)m_doc).DocumentPaginator);
+            writer.Write(GetPaginator(m_doc));
+            //使用自定义的 DocumentPaginator 取待之，以便可以设置页眉页脚。
+            //writer.Write(((IDocumentPaginatorSource)m_doc).DocumentPaginator);
 
             //获取这个基于内存的xps document的fixed document
             docViewer.Document = xpsDocument.GetFixedDocumentSequence();
@@ -132,13 +172,7 @@ namespace Office.Work.Platform.MemberPay
             xpsDocument.Close();
         }
 
-        public DateTime PayMonthDate { get; set; } = DateTime.Now;
-        public string MemberType { get; set; }
-        public string PayTableName { get; set; }
-        public Lib.SettingServer MemberSet { get; set; }
-        public string[] PayTableTypes { get; set; }
-        public string[] PayTableMemberTypes { get; set; }
-        public JArray JArrayResult { get; set; }
+
 
         #region 备注
         ///// <summary>
@@ -177,5 +211,61 @@ namespace Office.Work.Platform.MemberPay
         //    //printDlg.PrintDocument(source.DocumentPaginator, "sum");
         //}
         #endregion
+
+
+        /// <summary>
+        /// 当前页面的视图模型
+        /// </summary>
+        private class CurPageViewModel : NotificationObject
+        {
+            private bool _CanOperation = false;
+
+
+            public JArray SalaryJArray { get; set; }
+            public SettingServer ServerSettings { get; set; }
+            public MemberSalarySearch SearchCondition { get; set; }
+            public DateTime PayYearMonth { get; set; }
+            public Dictionary<string, string> NamesEnCn = new Dictionary<string, string>();
+            public List<SalaryItem> SalaryItems { get; set; }
+            public string[] NoPrintItemNames { get; set; }
+            public bool CanOperation
+            {
+                get { return _CanOperation; }
+                set
+                {
+                    _CanOperation = value; RaisePropertyChanged();
+                }
+            }
+
+            public CurPageViewModel()
+            {
+                ServerSettings = AppSet.ServerSetting;
+                SearchCondition = new MemberSalarySearch()
+                {
+                    UserId = AppSet.LoginUser.Id,
+                    PayUnitName = AppSet.LoginUser.UnitName,
+                    FillEmpty = false
+                };
+                PayYearMonth = DateTime.Now;
+                SalaryJArray = new JArray();
+
+                NamesEnCn.Add("Id", "编号");
+                NamesEnCn.Add("PayUnitName", "发放单位");
+                NamesEnCn.Add("PayYear", "年度");
+                NamesEnCn.Add("PayMonth", "月份");
+                NamesEnCn.Add("TableType", "发放类型");
+                NamesEnCn.Add("MemberId", "身份证号");
+                NamesEnCn.Add("MemberName", "姓名");
+                NamesEnCn.Add("Remark", "备注");
+                NamesEnCn.Add("UpDateTime", "更新时间");
+                NamesEnCn.Add("UserId", "操作人员");
+
+                NoPrintItemNames = new string[] { "Id", "PayUnitName", "PayYear", "PayMonth", "TableType", "MemberId", "UpDateTime", "UserId" };
+            }
+        }
+
+
     }
+
+
 }

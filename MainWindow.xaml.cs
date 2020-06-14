@@ -274,7 +274,7 @@ namespace Office.Work.Platform
                 string TokenResult = await DataApiRepository.GetAccessToken(AppSet.LoginUser.Id, AppSet.LoginUser.PassWord);
                 if (TokenResult != "Ok")
                 {
-                    this.notifyIcon.ShowBalloonTip(1000, "错误", $"重连失败{TokenResult},将继续重试！", ToolTipIcon.Error);
+                    this.notifyIcon.ShowBalloonTip(1000, "错误", $"重连失败{TokenResult}，将继续重试！", ToolTipIcon.Error);
                 }
                 else
                 {
