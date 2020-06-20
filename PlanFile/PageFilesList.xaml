@@ -22,19 +22,19 @@
             </TextBlock>
         </Border>
         <ToolBar Grid.Row="1">
-            <TextBox Width="200" Text="{Binding SearchPlanFile.SearchNameOrDesc}"/>
-            <Button Content="刷新记录" Click="btn_Refrash_ClickAsync" />
-            <Separator />
-            <TextBlock VerticalAlignment="Center" Background="#FFF6F7E7" Padding="5,0" FontSize="14">
-                <Run Text="{Binding SearchPlanFile.PageIndex,StringFormat=第{0}页}"/>
-                <Run Text="{Binding SearchPlanFile.PageCount,StringFormat=共{0}页}"/>
+            <TextBox Width="200" Text="{Binding SearchCondition.SearchNameOrDesc}"/>
+            <Button Content="开始查询" Click="btn_Refrash_ClickAsync" />
+            <Separator  Visibility="{Binding CanVisible}"/>
+            <TextBlock VerticalAlignment="Center" Background="#FFF6F7E7" Padding="5,0" FontSize="14"  Visibility="{Binding CanVisible}">
+                <Run Text="{Binding SearchCondition.PageIndex,StringFormat=第{0}}"/>
+                <Run Text="{Binding SearchCondition.PageCount,StringFormat=/ {0}页}"/>
             </TextBlock>
-            <Button Content="上一页" Click="btn_PrevPage_ClickAsync" />
-            <Button Content="下一页" Click="btn_NextPage_ClickAsync" />
+            <Button Content="上一页" Click="btn_PrevPage_ClickAsync"  Visibility="{Binding CanVisible}"/>
+            <Button Content="下一页" Click="btn_NextPage_ClickAsync"  Visibility="{Binding CanVisible}"/>
         </ToolBar>
         <Grid Grid.Row="2" TextElement.FontSize="15">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*" x:Name="Col_FileList"/>
+                <ColumnDefinition Width="1*" x:Name="Col_FileList"/>
                 <ColumnDefinition Width="0"  x:Name="Col_UCFileInfo"/>
             </Grid.ColumnDefinitions>
             <ListBox x:Name="LB_FileList" Grid.Column="0" 
@@ -73,7 +73,7 @@
                             <TextBlock Grid.Row="1" Grid.Column="1"  Foreground="#666" Margin="10,5,5,5" TextWrapping="Wrap">
                                 <Run Text="{Binding Path=ContentType}"/>
                                 <Run Text="{Binding Path=Length,Converter={StaticResource ByteLengthToMBLength},StringFormat={}{0}M  }"/>
-                                <Run Text="{Binding Path=UpDateTime,Mode=OneWay,StringFormat= {}{0:yyyy/MM/dd}}" />
+                                <Run Text="{Binding Path=Pubdate,Mode=OneWay,StringFormat= {}{0:yyyy/MM/dd}}" />
                             </TextBlock>
                         </Grid>
                     </DataTemplate>
@@ -88,7 +88,7 @@
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                    <Border x:Name="border" CornerRadius="0" Margin="0" BorderBrush="#eaeaea" BorderThickness="2">
+                                    <Border x:Name="border" CornerRadius="10" Margin="2,3" BorderBrush="#eaeaea" BorderThickness="2">
                                         <ContentPresenter 
                                             HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                             VerticalAlignment="{TemplateBinding VerticalContentAlignment}"

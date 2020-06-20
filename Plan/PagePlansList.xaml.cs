@@ -23,41 +23,40 @@ namespace Office.Work.Platform.Plan
             this.UCPlanInfo.Visibility = Visibility.Collapsed;
             col_panInfo.Width = new GridLength(0);
             _SearchPlanType = SearchPlanType;
+            _CurPageViewModel = new CurPageViewModel();
         }
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             //设置查询条件类
-            if (_CurPageViewModel == null)
+            switch (_SearchPlanType)
             {
-                _CurPageViewModel = new CurPageViewModel();
-                _CurPageViewModel.SearchPlan.UnitName = AppSet.LoginUser.UnitName;
-                switch (_SearchPlanType)
-                {
-                    case "MyNoFinishPlans":
-                        _CurPageViewModel.SearchPlan.ResponsiblePerson = AppSet.LoginUser.Id;
-                        _CurPageViewModel.SearchPlan.LongPlan = "no";
-                        _CurPageViewModel.SearchPlan.CurrectState = PlanStatus.WaitBegin + "," + PlanStatus.Running;
-                        _CurPageViewModel.SearchPlan.PageSize = 50;
-                        break;
-                    case "AllNoFinishPlans":
-                        _CurPageViewModel.SearchPlan.CurrectState = PlanStatus.WaitBegin + "," + PlanStatus.Running;
-                        _CurPageViewModel.SearchPlan.PageSize = 50;
-                        _CurPageViewModel.SearchPlan.LongPlan = "no";
-                        break;
-                    case "LongPlans":
-                        _CurPageViewModel.SearchPlan.CurrectState = PlanStatus.WaitBegin + "," + PlanStatus.Running;
-                        _CurPageViewModel.SearchPlan.PageSize = 50;
-                        _CurPageViewModel.SearchPlan.LongPlan = "yes";
-                        break;
-                    case "AllFinihPlans":
-                        _CurPageViewModel.SearchPlan.CurrectState = PlanStatus.Finished;
-                        _CurPageViewModel.SearchPlan.LongPlan = "all";
-                        break;
-                    case "AllPlans":
-                        break;
-                }
-                btn_Refrash_ClickAsync(null, null);
+                case "MyNoFinishPlans":
+                    _CurPageViewModel.SearchCondition.ResponsiblePerson = AppSet.LoginUser.Id;
+                    _CurPageViewModel.SearchCondition.LongPlan = "no";
+                    _CurPageViewModel.SearchCondition.CurrectState = PlanStatus.WaitBegin + "," + PlanStatus.Running;
+                    _CurPageViewModel.SearchCondition.PageSize = 50;
+                    break;
+                case "AllNoFinishPlans":
+                    _CurPageViewModel.SearchCondition.CurrectState = PlanStatus.WaitBegin + "," + PlanStatus.Running;
+                    _CurPageViewModel.SearchCondition.PageSize = 50;
+                    _CurPageViewModel.SearchCondition.LongPlan = "no";
+                    break;
+                case "LongPlans":
+                    _CurPageViewModel.SearchCondition.CurrectState = PlanStatus.WaitBegin + "," + PlanStatus.Running;
+                    _CurPageViewModel.SearchCondition.PageSize = 50;
+                    _CurPageViewModel.SearchCondition.LongPlan = "yes";
+                    break;
+                case "AllFinihPlans":
+                    _CurPageViewModel.SearchCondition.CurrectState = PlanStatus.Finished;
+                    _CurPageViewModel.SearchCondition.LongPlan = "all";
+                    break;
+                case "AllPlans":
+                    break;
             }
+
+            DataContext = _CurPageViewModel;
+
+            btn_Refrash_ClickAsync(null, null);
         }
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
@@ -93,36 +92,34 @@ namespace Office.Work.Platform.Plan
         /// <param name="e"></param>
         private async void btn_Refrash_ClickAsync(object sender, RoutedEventArgs e)
         {
-            string SearchKeys = tb_SearchKeys.Text.Trim().Length > 0 ? tb_SearchKeys.Text.Trim() : null;
             //设置查询条件类
-            _CurPageViewModel.SearchPlan.KeysInMultiple = SearchKeys;
+            _CurPageViewModel.SearchCondition.PageIndex = 1;
             await _CurPageViewModel.GetPlansAsync();
-            DataContext = _CurPageViewModel;
-            AppFuns.SetStateBarText($"共查询到 :{_CurPageViewModel.SearchPlan.RecordCount}条记录,每页{_CurPageViewModel.SearchPlan.PageSize}条，共{_CurPageViewModel.SearchPlan.PageCount}页！");
+            AppFuns.SetStateBarText($"共查询到 :{_CurPageViewModel.SearchCondition.RecordCount}条记录,每页{_CurPageViewModel.SearchCondition.PageSize}条，共{_CurPageViewModel.SearchCondition.PageCount}页！");
         }
 
         private async void btn_PrevPage_ClickAsync(object sender, RoutedEventArgs e)
         {
-            if (_CurPageViewModel.SearchPlan.PageIndex <= 1)
+            if (_CurPageViewModel.SearchCondition.PageIndex <= 1)
             {
-                _CurPageViewModel.SearchPlan.PageIndex = _CurPageViewModel.SearchPlan.PageCount;
+                _CurPageViewModel.SearchCondition.PageIndex = _CurPageViewModel.SearchCondition.PageCount;
             }
             else
             {
-                _CurPageViewModel.SearchPlan.PageIndex--;
+                _CurPageViewModel.SearchCondition.PageIndex--;
             }
             await _CurPageViewModel.GetPlansAsync();
         }
 
         private async void btn_NextPage_ClickAsync(object sender, RoutedEventArgs e)
         {
-            if (_CurPageViewModel.SearchPlan.PageIndex >= _CurPageViewModel.SearchPlan.PageCount)
+            if (_CurPageViewModel.SearchCondition.PageIndex >= _CurPageViewModel.SearchCondition.PageCount)
             {
-                _CurPageViewModel.SearchPlan.PageIndex = 1;
+                _CurPageViewModel.SearchCondition.PageIndex = 1;
             }
             else
             {
-                _CurPageViewModel.SearchPlan.PageIndex++;
+                _CurPageViewModel.SearchCondition.PageIndex++;
             }
             await _CurPageViewModel.GetPlansAsync();
         }
@@ -136,8 +133,9 @@ namespace Office.Work.Platform.Plan
 
             public CurPageViewModel()
             {
-                SearchPlan = new PlanSearch()
+                SearchCondition = new PlanSearch()
                 {
+                    UnitName=AppSet.LoginUser.UnitName,
                     PageIndex = 1,
                     PageSize = 15
                 };
@@ -147,16 +145,16 @@ namespace Office.Work.Platform.Plan
             public async Task GetPlansAsync()
             {
                 EntityPlans.Clear();
-                PlanSearchResult PlanSearchResult = await DataPlanRepository.ReadPlans(SearchPlan);
+                PlanSearchResult PlanSearchResult = await DataPlanRepository.ReadPlans(SearchCondition);
                 if (PlanSearchResult == null) { return; }
 
-                SearchPlan.RecordCount = PlanSearchResult.SearchCondition.RecordCount;
+                SearchCondition.RecordCount = PlanSearchResult.SearchCondition.RecordCount;
 
                 PlanSearchResult.RecordList?.ToList().ForEach(e =>
                 {
                     EntityPlans.Add(e);
                 });
-                if (SearchPlan.PageCount > 1)
+                if (SearchCondition.PageCount > 1)
                 {
                     CanVisible = "Visible";
                 }
@@ -172,7 +170,7 @@ namespace Office.Work.Platform.Plan
             /// <summary>
             /// 查询条件
             /// </summary>
-            public PlanSearch SearchPlan { get; set; }
+            public PlanSearch SearchCondition { get; set; }
 
             /// <summary>
             /// 上下页按钮是否可见

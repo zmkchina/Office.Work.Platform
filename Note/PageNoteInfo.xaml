@@ -22,17 +22,17 @@
             </TextBlock>
         </Border>
         <ToolBar Grid.Row="1" FontSize="14" Padding="0,2" Cursor="Hand">
-            <TextBox Text="{Binding NoteSearch.Caption}" Width="200"/>
+            <TextBox Text="{Binding SearchCondition.KeysInMultiple}" MinWidth="120"/>
             <Button Content="开始查询" Name="btn_Refrash" Foreground="Blue" Margin="5,0" Click="btn_Search_ClickAsync" />
             <Button Content="新增备忘" Name="btn_Add" Foreground="Red" Margin="5,0" Click="btn_Add_ClickAsync" />
             <Button Content="删除选定" Name="btn_Delete" Foreground="Red" Margin="5,0" Click="btn_Delete_ClickAsync" />
-            <Separator />
-            <TextBlock VerticalAlignment="Center" Background="#FFF6F7E7" Padding="5,0" FontSize="14">
-                <Run Text="{Binding SearchNote.PageIndex,StringFormat=第{0}页}"/>
-                <Run Text="{Binding SearchNote.PageCount,StringFormat=共{0}页}"/>
+            <Separator  Visibility="{Binding CanVisible}"/>
+            <TextBlock VerticalAlignment="Center" Background="#FFF6F7E7" Padding="5,0" FontSize="14"  Visibility="{Binding CanVisible}">
+                <Run Text="{Binding SearchCondition.PageIndex,StringFormat=第{0}}"/>
+                <Run Text="{Binding SearchCondition.PageCount,StringFormat=/ {0}页}"/>
             </TextBlock>
-            <Button Content="上一页" Click="btn_PrevPage_ClickAsync" />
-            <Button Content="下一页" Click="btn_NextPage_ClickAsync" />
+            <Button Content="上一页" Click="btn_PrevPage_ClickAsync"  Visibility="{Binding CanVisible}"/>
+            <Button Content="下一页" Click="btn_NextPage_ClickAsync"  Visibility="{Binding CanVisible}"/>
         </ToolBar>
         <Grid Grid.Row="2" TextElement.FontSize="14">
             <Grid.ColumnDefinitions>

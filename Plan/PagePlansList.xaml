@@ -26,12 +26,12 @@
             </TextBlock>
         </Border>
         <ToolBar Grid.Row="1" FontSize="14" Padding="0,2" Cursor="Hand">
-            <TextBox x:Name="tb_SearchKeys" Width="200"/>
-            <Button Content="刷新记录" Name="btn_Refrash" Click="btn_Refrash_ClickAsync" Margin="5,0"/>
-            <Separator Visibility="{Binding CanVisible}" />
+            <TextBox MinWidth="200" Text="{Binding SearchCondition.KeysInMultiple}"/>
+            <Button Content="开始查询" Name="btn_Refrash" Click="btn_Refrash_ClickAsync" Margin="5,0"/>
+            <Separator  Visibility="{Binding CanVisible}"/>
             <TextBlock VerticalAlignment="Center" Background="#FFF6F7E7" Padding="5,0" FontSize="14" Visibility="{Binding CanVisible}" >
-                <Run Text="{Binding SearchPlan.PageIndex,StringFormat=第{0}页}"/>
-                <Run Text="{Binding SearchPlan.PageCount,StringFormat=共{0}页}"/>
+                <Run Text="{Binding SearchCondition.PageIndex,StringFormat=第{0}}"/>
+                <Run Text="{Binding SearchCondition.PageCount,StringFormat=/ {0}页}"/>
             </TextBlock>
             <Button Content="上一页" Click="btn_PrevPage_ClickAsync" Visibility="{Binding CanVisible}" />
             <Button Content="下一页" Click="btn_NextPage_ClickAsync" Visibility="{Binding CanVisible}" />
@@ -50,7 +50,7 @@
                      SelectionChanged="ListBox_FileList_SelectionChanged">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Grid >
+                        <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition/>
                                 <RowDefinition/>
@@ -67,20 +67,20 @@
                                 <TextBlock.ToolTip>
                                     <ToolTip>
                                         <StackPanel>
-                                           <TextBlock FontWeight="Heavy">
-                                           <Run  Text="{Binding Path=ContentType}" />
-                                           </TextBlock>
-                                           <TextBlock Margin="0,5">
-                                           <Run  Text="{Binding Path=Content,StringFormat=描述 : {0}}"/>
-                                           </TextBlock>
+                                            <TextBlock FontWeight="Heavy">
+                                                <Run  Text="{Binding Path=ContentType}" />
+                                            </TextBlock>
+                                            <TextBlock Margin="0,5">
+                                                <Run  Text="{Binding Path=Content,StringFormat=描述 : {0}}"/>
+                                            </TextBlock>
                                         </StackPanel>
                                     </ToolTip>
                                 </TextBlock.ToolTip>
-                            </TextBlock>
+                                </TextBlock>
                             <TextBlock Grid.Row="1" Grid.Column="1"  Foreground="#666" Margin="10,5,5,5" TextWrapping="Wrap">
-                                <Run Text="{Binding Path=BeginDate,Mode=OneWay,StringFormat= {}{0:yyyy/MM/dd}}" />
-                                <Run Text="—" />
-                                <Run Text="{Binding Path=EndDate,Mode=OneWay,StringFormat= {}{0:yyyy/MM/dd}}" />
+                                    <Run Text="{Binding Path=BeginDate,Mode=OneWay,StringFormat= {}{0:yyyy/MM/dd}}" />
+                                    <Run Text="—" />
+                                    <Run Text="{Binding Path=EndDate,Mode=OneWay,StringFormat= {}{0:yyyy/MM/dd}}" />
                             </TextBlock>
                         </Grid>
                     </DataTemplate>
@@ -95,7 +95,7 @@
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                    <Border x:Name="border" CornerRadius="0" Margin="0" BorderBrush="#eaeaea" BorderThickness="2,5">
+                                    <Border x:Name="border" CornerRadius="10" Margin="2,3" BorderBrush="#eaeaea" BorderThickness="2">
                                         <ContentPresenter 
                                             HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                             VerticalAlignment="{TemplateBinding VerticalContentAlignment}"

@@ -39,12 +39,10 @@
                         <Run Foreground="Blue" Text="{Binding Path=CurFile.DownIntProgress,StringFormat=(下载 {0:F0} %)}"/>
                     </TextBlock> 
                 </GroupBox.Header>
-                <TextBox BorderBrush="#EAEAEA" Margin="5"
-                     MaxLength="100"
-                     MinHeight="30"
+                <TextBox BorderBrush="#EAEAEA" Margin="5" TextBlock.LineHeight="20" FontSize="20" FontWeight="DemiBold"
                      TextWrapping="Wrap" 
                      VerticalAlignment="Center" 
-                     Padding="3" 
+                     Padding="3,10" 
                      Text="{Binding Path=CurFile.Name}" />
             </GroupBox>
             <GroupBox Header="发文单位">

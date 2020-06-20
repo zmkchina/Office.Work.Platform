@@ -30,9 +30,10 @@ namespace Office.Work.Platform.PlanFile
 
         private async void btn_Refrash_ClickAsync(object sender, RoutedEventArgs e)
         {
+            _CurPageViewModel.SearchCondition.PageIndex = 1;
             await _CurPageViewModel.GetFilesAsync();
             Col_UCFileInfo.Width = new GridLength(0);
-            AppFuns.SetStateBarText($"共查询到 :{_CurPageViewModel.SearchPlanFile.RecordCount}条记录,每页{_CurPageViewModel.SearchPlanFile.PageSize}条，共{_CurPageViewModel.SearchPlanFile.PageCount}页！");
+            AppFuns.SetStateBarText($"共查询到 :{_CurPageViewModel.SearchCondition.RecordCount}条记录,每页{_CurPageViewModel.SearchCondition.PageSize}条，共{_CurPageViewModel.SearchCondition.PageCount}页！");
         }
 
         private void ListBox_FileList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -41,8 +42,8 @@ namespace Office.Work.Platform.PlanFile
             {
                 if (Col_UCFileInfo.Width.Value == 0)
                 {
-                    Col_UCFileInfo.Width = new System.Windows.GridLength(1, System.Windows.GridUnitType.Star);
-                    Col_FileList.Width = new System.Windows.GridLength(2, System.Windows.GridUnitType.Star);
+                    Col_UCFileInfo.Width = new System.Windows.GridLength(2, System.Windows.GridUnitType.Star);
+                    Col_FileList.Width = new System.Windows.GridLength(1, System.Windows.GridUnitType.Star);
                 }
                 this.UCFileInfo.Init_FileInfo(curFile, (DelFile) =>
                 {
@@ -54,26 +55,26 @@ namespace Office.Work.Platform.PlanFile
 
         private async void btn_PrevPage_ClickAsync(object sender, RoutedEventArgs e)
         {
-            if (_CurPageViewModel.SearchPlanFile.PageIndex <= 1)
+            if (_CurPageViewModel.SearchCondition.PageIndex <= 1)
             {
-                _CurPageViewModel.SearchPlanFile.PageIndex = _CurPageViewModel.SearchPlanFile.PageCount;
+                _CurPageViewModel.SearchCondition.PageIndex = _CurPageViewModel.SearchCondition.PageCount;
             }
             else
             {
-                _CurPageViewModel.SearchPlanFile.PageIndex--;
+                _CurPageViewModel.SearchCondition.PageIndex--;
             }
             await _CurPageViewModel.GetFilesAsync();
         }
 
         private async void btn_NextPage_ClickAsync(object sender, RoutedEventArgs e)
         {
-            if (_CurPageViewModel.SearchPlanFile.PageIndex >= _CurPageViewModel.SearchPlanFile.PageCount)
+            if (_CurPageViewModel.SearchCondition.PageIndex >= _CurPageViewModel.SearchCondition.PageCount)
             {
-                _CurPageViewModel.SearchPlanFile.PageIndex = 1;
+                _CurPageViewModel.SearchCondition.PageIndex = 1;
             }
             else
             {
-                _CurPageViewModel.SearchPlanFile.PageIndex++;
+                _CurPageViewModel.SearchCondition.PageIndex++;
             }
             await _CurPageViewModel.GetFilesAsync();
         }
@@ -83,11 +84,13 @@ namespace Office.Work.Platform.PlanFile
         /// </summary>
         private class CurPageViewModel : NotificationObject
         {
-            public PlanFileSearch SearchPlanFile { get; set; }
+            private string _CanVisible;
+
+            public PlanFileSearch SearchCondition { get; set; }
             public ObservableCollection<Lib.PlanFile> PlanFiles { get; set; }
             public CurPageViewModel(string FilePlanType)
             {
-                SearchPlanFile = new PlanFileSearch()
+                SearchCondition = new PlanFileSearch()
                 {
                     PageIndex = 1,
                     PageSize=15,
@@ -96,14 +99,15 @@ namespace Office.Work.Platform.PlanFile
 
                 };
                 PlanFiles = new ObservableCollection<Lib.PlanFile>();
+                CanVisible = "Collapsed";
             }
             public async Task GetFilesAsync()
             {
                 PlanFiles.Clear();
-                PlanFileSearchResult SearchResult = await DataPlanFileRepository.ReadFiles(SearchPlanFile);
+                PlanFileSearchResult SearchResult = await DataPlanFileRepository.ReadFiles(SearchCondition);
                 if (SearchResult == null) { return; }
-                
-                SearchPlanFile.RecordCount = SearchResult.SearchCondition.RecordCount;
+
+                SearchCondition.RecordCount = SearchResult.SearchCondition.RecordCount;
                 
                 if (SearchResult.RecordList != null && SearchResult.RecordList.Count > 0)
                 {
@@ -112,6 +116,23 @@ namespace Office.Work.Platform.PlanFile
                         PlanFiles.Add(e);
                     });
                 }
+                if (SearchCondition.PageCount > 1)
+                {
+                    CanVisible = "Visible";
+                }
+                else
+                {
+                    CanVisible = "Collapsed";
+                }
+            }
+
+            /// <summary>
+            /// 上下页按钮是否可见
+            /// </summary>
+            public string CanVisible
+            {
+                get { return _CanVisible; }
+                set { _CanVisible = value; RaisePropertyChanged(); }
             }
         }
 

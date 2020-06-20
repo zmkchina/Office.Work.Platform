@@ -13,21 +13,21 @@
     </UserControl.Resources>
     <ScrollViewer>
         <StackPanel TextElement.FontSize="15"  HorizontalAlignment="Stretch" Background="Transparent">
-            <GroupBox>
+            <GroupBox Margin="0,0,0,8">
                 <GroupBox.Header>
                     <StackPanel Orientation="Horizontal">
                         <Image Width="24" VerticalAlignment="Center"  Source="{Binding Path=CurPlan.CurrectState,Converter={StaticResource PlanStateToImgeUri}}"/>
                         <Label Foreground="#777777">计划标题</Label>
                     </StackPanel>
                 </GroupBox.Header>
-                <TextBlock   TextBlock.LineHeight="20" FontSize="22" FontWeight="DemiBold"
+                <TextBlock   TextBlock.LineHeight="20" FontSize="20" FontWeight="DemiBold"
                              TextWrapping="Wrap"
                              Text="{Binding CurPlan.Caption}"
                              VerticalAlignment="Center" 
-                             Padding="2,20" >
+                             Padding="2,10" >
                 </TextBlock>
             </GroupBox>
-            <GroupBox>
+            <GroupBox Margin="0,0,0,8">
                 <GroupBox.Header>
                     <StackPanel Orientation="Horizontal">
                         <Image Width="24" VerticalAlignment="Center" Source="/Office.Work.Platform;component/AppRes/Images/mubiao.png"/>
@@ -41,7 +41,7 @@
                              Padding="2,15">
                 </TextBlock>
             </GroupBox>
-            <GroupBox>
+            <GroupBox Margin="0,0,0,8">
                 <GroupBox.Header>
                     <StackPanel Orientation="Horizontal">
                         <Image Width="24" VerticalAlignment="Center" Source="/Office.Work.Platform;component/AppRes/Images/wanchenjidu.png"/>
@@ -49,7 +49,7 @@
                     </StackPanel>
                 </GroupBox.Header>
                 <TextBox x:Name="Text_FinishNote"
-                         MinHeight="80"
+                         MinHeight="60"
                          BorderBrush="#EAEAEA"
                          BorderThickness="1"
                          TextBlock.LineHeight="22"
@@ -60,7 +60,7 @@
                          Padding="2,15">
                 </TextBox>
             </GroupBox>
-            <GroupBox>
+            <GroupBox Margin="0,0,0,8">
                 <GroupBox.Header>
                     <StackPanel Orientation="Horizontal">
                         <Image Width="24" VerticalAlignment="Center" Source="/Office.Work.Platform;component/AppRes/Images/FileAdd.png"/>
@@ -93,8 +93,8 @@
                                            MouseLeftButtonUp="TB_OpenFile_MouseLeftButtonUpAsync">
                                     <TextBlock.ToolTip>
                                         <TextBlock>
-                                            <Run Text="{Binding UpDateTime, StringFormat=yyyy/MM/dd}"/>
-                                            <Run Text="{Binding ContentType}"/>
+                                            <Run Text="{Binding Pubdate, StringFormat=成文时间：yyyy/MM/dd}"/>
+                                            <Run Text="{Binding ContentType,StringFormat=所属类别：{0}}"/>
                                             <LineBreak/>
                                             <Run Text="{Binding Describe}"/>
                                         </TextBlock>

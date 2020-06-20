@@ -44,9 +44,11 @@ namespace Office.Work.Platform.Note
         private async void btn_Search_ClickAsync(object sender, System.Windows.RoutedEventArgs e)
         {
             Col_NoteInfo.Width = new System.Windows.GridLength(0, System.Windows.GridUnitType.Pixel);
+            _CurPageViewModel.SearchCondition.PageIndex = 1;
+
             await _CurPageViewModel.GetNotesAsync();
             DataContext = _CurPageViewModel;
-            AppFuns.SetStateBarText($"共查询到 :{_CurPageViewModel.SearchNote.RecordCount}条记录,每页{_CurPageViewModel.SearchNote.PageSize}条，共{_CurPageViewModel.SearchNote.PageCount}页！");
+            AppFuns.SetStateBarText($"共查询到 :{_CurPageViewModel.SearchCondition.RecordCount}条记录,每页{_CurPageViewModel.SearchCondition.PageSize}条，共{_CurPageViewModel.SearchCondition.PageCount}页！");
         }
 
         /// <summary>
@@ -174,26 +176,26 @@ namespace Office.Work.Platform.Note
 
         private async void btn_PrevPage_ClickAsync(object sender, RoutedEventArgs e)
         {
-            if (_CurPageViewModel.SearchNote.PageIndex <= 1)
+            if (_CurPageViewModel.SearchCondition.PageIndex <= 1)
             {
-                _CurPageViewModel.SearchNote.PageIndex = _CurPageViewModel.SearchNote.PageCount;
+                _CurPageViewModel.SearchCondition.PageIndex = _CurPageViewModel.SearchCondition.PageCount;
             }
             else
             {
-                _CurPageViewModel.SearchNote.PageIndex--;
+                _CurPageViewModel.SearchCondition.PageIndex--;
             }
             await _CurPageViewModel.GetNotesAsync();
         }
 
         private async void btn_NextPage_ClickAsync(object sender, RoutedEventArgs e)
         {
-            if (_CurPageViewModel.SearchNote.PageIndex >= _CurPageViewModel.SearchNote.PageCount)
+            if (_CurPageViewModel.SearchCondition.PageIndex >= _CurPageViewModel.SearchCondition.PageCount)
             {
-                _CurPageViewModel.SearchNote.PageIndex = 1;
+                _CurPageViewModel.SearchCondition.PageIndex = 1;
             }
             else
             {
-                _CurPageViewModel.SearchNote.PageIndex++;
+                _CurPageViewModel.SearchCondition.PageIndex++;
             }
             await _CurPageViewModel.GetNotesAsync();
         }
@@ -203,13 +205,15 @@ namespace Office.Work.Platform.Note
         /// </summary>
         private class CurPageViewModel : NotificationObject
         {
+            private string _CanVisible;
+
             public CurPageViewModel(bool IsMySelf)
             {
                 UserGrantSelectList = new ObservableCollection<SelectObj<User>>();
                 CollectNotes = new ObservableCollection<Lib.Note>();
                 if (IsMySelf)
                 {
-                    SearchNote = new NoteSearch()
+                    SearchCondition = new NoteSearch()
                     {
                         PageIndex = 1,
                         PageSize = 15,
@@ -219,7 +223,7 @@ namespace Office.Work.Platform.Note
                 }
                 else
                 {
-                    SearchNote = new NoteSearch()
+                    SearchCondition = new NoteSearch()
                     {
                         PageIndex = 1,
                         PageSize = 15,
@@ -227,6 +231,7 @@ namespace Office.Work.Platform.Note
                         UserId = AppSet.LoginUser.Id
                     };
                 }
+                CanVisible = "Collapsed";
             }
 
 
@@ -244,15 +249,23 @@ namespace Office.Work.Platform.Note
             public async Task GetNotesAsync()
             {
                 CollectNotes.Clear();
-                NoteSearchResult NoteSearchResult = await DataNoteRepository.GetRecords(SearchNote);
+                NoteSearchResult NoteSearchResult = await DataNoteRepository.GetRecords(SearchCondition);
                 if (NoteSearchResult == null) { return; }
 
-                SearchNote.RecordCount = NoteSearchResult.SearchCondition.RecordCount;
+                SearchCondition.RecordCount = NoteSearchResult.SearchCondition.RecordCount;
 
                 NoteSearchResult.RecordList?.ToList().ForEach(e =>
                 {
                     CollectNotes.Add(e);
                 });
+                if (SearchCondition.PageCount > 1)
+                {
+                    CanVisible = "Visible";
+                }
+                else
+                {
+                    CanVisible = "Collapsed";
+                }
             }
             public async Task<ExcuteResult> DelNode()
             {
@@ -291,7 +304,15 @@ namespace Office.Work.Platform.Note
             public ObservableCollection<SelectObj<User>> UserGrantSelectList { get; set; }
             public ObservableCollection<Lib.Note> CollectNotes { get; set; }
             public Lib.Note CurNote { get; set; }
-            public NoteSearch SearchNote { get; set; }
+            public NoteSearch SearchCondition { get; set; }
+            /// <summary>
+            /// 上下页按钮是否可见
+            /// </summary>
+            public string CanVisible
+            {
+                get { return _CanVisible; }
+                set { _CanVisible = value; RaisePropertyChanged(); }
+            }
         }
     }
 }
