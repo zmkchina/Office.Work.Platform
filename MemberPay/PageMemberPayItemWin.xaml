@@ -33,14 +33,20 @@
         <Grid>
             <StackPanel Orientation="Vertical" Grid.Column="0"  Margin="10" HorizontalAlignment="Stretch">
 
+                <GroupBox Header="单位名称" Style="{StaticResource GroupBoxStyle}">
+                    <ComboBox Width="390" Text="{Binding CurPayItem.UnitName,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" FontSize="16" Margin="5" >
+                        <ComboBoxItem Content="{Binding CurLoginUser.UnitName}" IsSelected="True"/>
+                    </ComboBox>
+                </GroupBox>
+                
                 <StackPanel Orientation="Horizontal">
                     <GroupBox Header="项目名称" Style="{StaticResource GroupBoxStyle}">
                         <TextBox  x:Name="Tb_ItemName" Text="{Binding CurPayItem.Name}" 
                                   Style="{StaticResource TextboxStyle}"
-                                  Width="100"/>
+                                  Width="170"/>
                     </GroupBox>
                     <GroupBox Header="所属待遇表" Style="{StaticResource GroupBoxStyle}">
-                        <ComboBox Width="170" ItemsSource="{Binding MemberSets.PayTableTypeArr}"   
+                        <ComboBox Width="195" ItemsSource="{Binding MemberSets.PayTableTypeArr}"   
                           Text="{Binding CurPayItem.InTableType,UpdateSourceTrigger=PropertyChanged}" 
                           HorizontalAlignment="Left" FontSize="16" Margin="5" />
                     </GroupBox>
@@ -49,7 +55,7 @@
 
                 <StackPanel Orientation="Horizontal">
                     <GroupBox Header="待遇性质" Style="{StaticResource GroupBoxStyle}">
-                        <ComboBox Width="100"
+                        <ComboBox Width="170"
                                   Text="{Binding CurPayItem.PayType,UpdateSourceTrigger=PropertyChanged}" 
                                   HorizontalAlignment="Left" FontSize="16" Margin="5">
                             <ComboBoxItem Content="应发待遇"/>
@@ -58,14 +64,14 @@
                         </ComboBox>
                     </GroupBox>
                     <GroupBox Header="计入基数" Style="{StaticResource GroupBoxStyle}">
-                        <ComboBox Width="80"
+                        <ComboBox Width="100"
                                   Text="{Binding CurPayItem.InCardinality,UpdateSourceTrigger=PropertyChanged}" 
                                   HorizontalAlignment="Left" FontSize="16" Margin="5">
                             <ComboBoxItem Content="是"/>
                             <ComboBoxItem Content="否"/>
                         </ComboBox>
                     </GroupBox>
-                    <GroupBox Header="打印排序" Style="{StaticResource GroupBoxStyle}"  Width="90">
+                    <GroupBox Header="打印排序" Style="{StaticResource GroupBoxStyle}"  Width="95">
                         <TextBox Text="{Binding CurPayItem.OrderIndex}"
                                  Style="{StaticResource TextboxStyle}" />
                     </GroupBox>
@@ -74,7 +80,7 @@
                     <GroupBox.Header>
                         <TextBlock  Text="所属人员类型" Margin="5"/>
                     </GroupBox.Header>
-                    <ListBox ItemsSource="{Binding MemberTypeList}"  Margin="5">
+                    <ListBox ItemsSource="{Binding MemberTypeList}"  Margin="5" Width="380">
                         <ListBox.Template>
                             <ControlTemplate TargetType="{x:Type ListBox}">
                                 <WrapPanel VerticalAlignment="Center"  IsItemsHost="True"/>

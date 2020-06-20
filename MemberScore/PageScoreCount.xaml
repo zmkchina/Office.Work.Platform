@@ -1,23 +1,49 @@
-﻿<Page x:Class="Office.Work.Platform.MemberPay.PageMemberPayItem"
+﻿<Page x:Class="Office.Work.Platform.MemberScore.PageScoreCount"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Office.Work.Platform.MemberPay"
+       xmlns:memberuc="clr-namespace:Office.Work.Platform.MemberUc"
+      xmlns:local="clr-namespace:Office.Work.Platform.MemberScore"
+      xmlns:AppCodes="clr-namespace:Office.Work.Platform.AppCodes"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Loaded="Page_LoadedAsync"
+      Loaded="Page_Loaded" Unloaded="Page_Unloaded"
       Title="PageMakeNewPay">
     <Page.Resources>
+
+        <Style x:Key="TextboxStyle" TargetType="TextBox">
+            <Setter Property="TextAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Width" Value="180"/>
+        </Style>
+
+        <Style TargetType="DatePickerTextBox">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <TextBox Text="{Binding Path=SelectedDate, StringFormat=yyyy/MM, RelativeSource={RelativeSource AncestorType=DatePicker}}" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="DatePickerStyle" TargetType="DatePicker">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Margin" Value="3,5"/>
+            <Setter Property="Width" Value="185"/>
+        </Style>
         <Style TargetType="DataGrid">
             <Setter Property="ColumnHeaderStyle" Value="{DynamicResource ColumnHeaderStyle}"/>
             <Setter Property="CellStyle" Value="{DynamicResource CellStyle}"/>
             <Setter Property="RowStyle" Value="{DynamicResource RowStyle}"/>
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="Margin" Value="5"/>
-            <Setter Property="BorderBrush" Value="Transparent"/>
             <Setter Property="IsReadOnly" Value="True"/>
             <Setter Property="GridLinesVisibility" Value="None"/>
+            <Setter Property="FrozenColumnCount" Value="2"/>
             <!--禁止在尾行手动添加数据-->
             <Setter Property="AutoGenerateColumns" Value="False"/>
         </Style>
@@ -35,6 +61,8 @@
         <Style x:Key="RowStyle" TargetType="DataGridRow">
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Margin" Value="0,2" />
+            <Setter Property="Background" Value="White" />
+            <Setter Property="Foreground" Value="Black" />
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Background" Value="LightGoldenrodYellow"/>
@@ -48,7 +76,7 @@
 
         <!--单元格样式-->
         <Style x:Key="CellStyle" TargetType="DataGridCell">
-            <Setter Property="Margin" Value="0,10"/>
+            <Setter Property="Margin" Value="10,5"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="DataGridCell">
@@ -64,38 +92,34 @@
             </Style.Triggers>
         </Style>
     </Page.Resources>
-
-
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Border Grid.Row="0" Background="{DynamicResource ColorPageNavBar}" Padding="0,10" Margin="0,1" HorizontalAlignment="Stretch">
             <TextBlock  VerticalAlignment="Center" Foreground="#FF495981"
                         HorizontalAlignment="Left" FontSize="14" Padding="10,0,0,0">
-                <Run  Text="> 劳资管理—待遇项目"/>
-                <Run  Text="[设置本单位可能发放的待遇项目]"/>
+                <Run  Text="> 考勤考绩—积分统计"/>
             </TextBlock>
         </Border>
-        <ToolBar Grid.Row="1" FontSize="14" Padding="0,2" Cursor="Hand">
-            <Button Content="新增" Click="Btn_Add_ClickAnsyc" Padding="10,3" />
-            <Button Content="编辑" Click="Btn_Edit_ClickAnsyc" Padding="10,3" />
-            <Button Content="删除" Click="Btn_Del_ClickAnsyc" Padding="10,3" />
-        </ToolBar>
-        <DataGrid x:Name="RecordDataGrid"  Grid.Row="2" ItemsSource="{Binding PayItems}" >
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="单位名称" Binding="{Binding UnitName}" />
-                <DataGridTextColumn Header="项目名称" Binding="{Binding Name}" />
-                <DataGridTextColumn Header="待遇性质" Binding="{Binding PayType}"/>
-                <DataGridTextColumn Header="计入基数" Binding="{Binding InCardinality}"/>
-                <DataGridTextColumn Header="所属待遇表" Binding="{Binding InTableType}"/>
-                <DataGridTextColumn Header="员工类型" Binding="{Binding MemberTypes}"/>
-                <DataGridTextColumn Header="打印排序" Binding="{Binding OrderIndex}"/>
-                <DataGridTextColumn Header="相关说明" Binding="{Binding Remark}"/>
-                <DataGridTextColumn Header="更新时间" Binding="{Binding UpDateTime,StringFormat=yyyy/MM/dd}"/>
-            </DataGrid.Columns>
-        </DataGrid>
+
+        <StackPanel Grid.Row="1" Orientation="Vertical" 
+                        HorizontalAlignment="Stretch" >
+            <ToolBar FontSize="14" Cursor="Hand">
+                <TextBox Text="{Binding SearchCondition.YearNumber}" MinWidth="100" ToolTip="请输入年份"/>
+                <Button Click="BtnSearchClickAsync" Content="查询" Width="60" Margin="2,0,10,0"/>
+            </ToolBar>
+            <DataGrid x:Name="RecordDataGrid" ItemsSource="{Binding MemberScoreCounts}" >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="考核单位" Binding="{Binding ScoreUnitName}"/>
+                    <DataGridTextColumn Header="身份证号" Binding="{Binding MemberId}" />
+                    <DataGridTextColumn Header="姓名" Binding="{Binding MemberName}" />
+                    <DataGridTextColumn Header="年份" Binding="{Binding YearNumber}" />
+                    <DataGridTextColumn Header="得分" Binding="{Binding ScoreCount}"/>
+                    <DataGridTextColumn Header="统计日期" Binding="{Binding CountDate,StringFormat={}yyyy/MM/dd}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
     </Grid>
 </Page>

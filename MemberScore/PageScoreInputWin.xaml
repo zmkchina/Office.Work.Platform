@@ -64,14 +64,14 @@
                                 SelectedDate="{Binding _CurMemberScore.OccurDate}"
                                 AppCodes:DatePickerCalendar.IsMonthYear="True"/>
                     </GroupBox>
-                    <GroupBox Header="得分类型" Style="{StaticResource GroupBoxStyle}">
+                    <GroupBox Header="得分情由" Style="{StaticResource GroupBoxStyle}">
                         <ComboBox  ItemsSource="{Binding _MemberScoreTypes}"   
                                Text="{Binding _CurMemberScore.ScoreType}" 
                                SelectedIndex="0"
                                HorizontalAlignment="Left" Padding="2" />
                     </GroupBox>
                     <GroupBox Header="具体分值" Style="{StaticResource GroupBoxStyle}">
-                        <TextBox Text="{Binding _CurMemberScore.Score}" Padding="2,5"  Style="{StaticResource TextboxStyle}"/>
+                        <TextBox Text="{Binding _CurMemberScore.Score}" Padding="2,5" ToolTip="加分为正数，扣分为负数。" Style="{StaticResource TextboxStyle}"/>
                     </GroupBox>
                 </StackPanel>
                 <GroupBox Header="备注信息" >

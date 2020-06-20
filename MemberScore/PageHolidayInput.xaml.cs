@@ -60,7 +60,8 @@ namespace Office.Work.Platform.MemberScore
         {
             Lib.MemberHoliday NewRecord = new Lib.MemberHoliday()
             {
-                Member=_PageViewModel.CurMember,
+                UnitName = AppSet.LoginUser.UnitName,
+                Member = _PageViewModel.CurMember,
                 MemberId = _PageViewModel.CurMember.Id,
                 UserId = AppSet.LoginUser.Id
 

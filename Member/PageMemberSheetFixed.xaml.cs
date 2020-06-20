@@ -256,7 +256,12 @@ namespace Office.Work.Platform.Member
                     {
                         for (int pr = 0; pr < PResumes.Count; pr++)
                         {
-                            string tempValue = $"{PResumes[pr].BeginDate:yyyy.MM}--{PResumes[pr].EndDate:yyy.MM}  {PResumes[pr].Content}";
+                            string EndDateStr = PResumes[pr].EndDate.ToString("yyy.MM");
+                            if (PResumes[pr].EndDate.Year == 1)
+                            {
+                                EndDateStr = "今";
+                            }
+                            string tempValue = $"{PResumes[pr].BeginDate:yyyy.MM}--{EndDateStr}  {PResumes[pr].Content}";
                             if (pr == 0)
                             {
                                 CurPara.ReplaceText("[Resume]", tempValue);

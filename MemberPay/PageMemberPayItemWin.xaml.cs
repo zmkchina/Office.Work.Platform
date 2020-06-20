@@ -14,6 +14,7 @@ namespace Office.Work.Platform.MemberPay
     public partial class PageMemberPayItemWin : Window
     {
 
+        public Lib.User CurLoginUser { get; set; }
         public Lib.MemberPayItem CurPayItem { get; set; }
         public Lib.SettingServer MemberSets { get; set; } = AppSet.ServerSetting;
         /// <summary>
@@ -27,6 +28,7 @@ namespace Office.Work.Platform.MemberPay
             InitializeComponent();
             CurPayItem = PPayItem;
             MemberTypeList = new ObservableCollection<SelectObj<string>>();
+            CurLoginUser = AppSet.LoginUser;
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {

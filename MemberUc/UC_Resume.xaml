@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:Office.Work.Platform.MemberUc"
              mc:Ignorable="d" 
              >
     <UserControl.Resources>
@@ -43,6 +44,7 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <local:DateToToday x:Key="DateToToday"/>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -69,7 +71,7 @@
                         <StackPanel>
                             <TextBlock Margin="0,5" TextWrapping="Wrap">
                                     <Run  Text="{Binding Path=BeginDate,StringFormat= {}{0:yyyy/MM}}" />
-                                    <Run  Text="{Binding Path=EndDate,StringFormat= 至{0:yyyy/MM}}"/>
+                                    <Run  Text="{Binding Path=EndDate,Converter={StaticResource DateToToday},StringFormat= 至 {0:yyyy/MM} }"/>
                                     <Run  Text="{Binding Path=Content}"/>
                                     <Run  Text="{Binding Path=Remark,StringFormat={} {0}}"  Foreground="Red"/>
                             </TextBlock>

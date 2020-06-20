@@ -8,6 +8,9 @@
              d:DesignHeight="500" d:DesignWidth="400" 
              Background="Transparent"
              x:Name="UCPlanInfo">
+    <UserControl.Resources>
+        <local:ConverPlanStateToImgeUri x:Key="PlanStateToImgeUri"/>
+    </UserControl.Resources>
     <ScrollViewer>
         <StackPanel TextElement.FontSize="15"  HorizontalAlignment="Stretch" Background="Transparent">
             <GroupBox>

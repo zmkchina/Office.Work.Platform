@@ -39,7 +39,6 @@ namespace Office.Work.Platform.Settings
             _PageViewModel.EntitySettingServer = new SettingServer();
             this.DataContext = null;
             this.DataContext = _PageViewModel;
-            _PageViewModel.UpdateEntityInfoAsync();
         }
 
         private class PageViewModel : NotificationObject

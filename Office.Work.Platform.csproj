@@ -183,13 +183,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="MemberScore\PageHolidayCensus.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="MemberScore\PageHolidayInput.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="MemberScore\PageHolidayInputWin.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="MemberScore\PageHolidayCount.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="MemberScore\PageScoreCount.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="MemberUc\UC_Appraise.xaml.cs">
@@ -267,13 +270,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="MemberScore\PageHolidayCensus.xaml">
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="MemberScore\PageHolidayInput.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="MemberScore\PageHolidayInputWin.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="MemberScore\PageHolidayCount.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="MemberScore\PageScoreCount.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="MemberUc\UC_Appraise.xaml">

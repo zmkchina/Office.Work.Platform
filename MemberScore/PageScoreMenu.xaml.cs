@@ -25,7 +25,8 @@ namespace Office.Work.Platform.MemberScore
 
         private void Member_ScoreCount_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-
+            PageScoreCount CurPage = new PageScoreCount();
+            AppSet.AppMainWindow.FrameContentPage.Content = CurPage;
         }
 
         private void Page_HolidayInput_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -36,7 +37,8 @@ namespace Office.Work.Platform.MemberScore
 
         private void Page_HolidayCount_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-
+            PageHolidayCount CurPage = new PageHolidayCount();
+            AppSet.AppMainWindow.FrameContentPage.Content = CurPage;
         }
     }
 }

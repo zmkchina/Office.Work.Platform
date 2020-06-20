@@ -1,14 +1,17 @@
-﻿<Page x:Class="Office.Work.Platform.MemberScore.PageHolidayCensus"
+﻿<Page x:Class="Office.Work.Platform.MemberScore.PageHolidayCount"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:memberuc="clr-namespace:Office.Work.Platform.MemberUc"
+       xmlns:memberuc="clr-namespace:Office.Work.Platform.MemberUc"
+      xmlns:local="clr-namespace:Office.Work.Platform.MemberScore"
+      xmlns:AppCodes="clr-namespace:Office.Work.Platform.AppCodes"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Loaded="Page_Loaded" Unloaded="Page_Unloaded"
-      Title="休假信息录入">
+      Title="PageMakeNewPay">
     <Page.Resources>
+
         <Style x:Key="TextboxStyle" TargetType="TextBox">
             <Setter Property="TextAlignment" Value="Left"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -73,7 +76,7 @@
 
         <!--单元格样式-->
         <Style x:Key="CellStyle" TargetType="DataGridCell">
-            <Setter Property="Margin" Value="0,10"/>
+            <Setter Property="Margin" Value="10,5"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="DataGridCell">
@@ -97,16 +100,28 @@
         <Border Grid.Row="0" Background="{DynamicResource ColorPageNavBar}" Padding="0,10" Margin="0,1" HorizontalAlignment="Stretch">
             <TextBlock  VerticalAlignment="Center" Foreground="#FF495981"
                         HorizontalAlignment="Left" FontSize="14" Padding="10,0,0,0">
-                <Run Text="> 考勤考绩—请假信息统计"/>
+                <Run  Text="> 考勤考绩—休假统计"/>
             </TextBlock>
         </Border>
+
         <StackPanel Grid.Row="1" Orientation="Vertical" 
                         HorizontalAlignment="Stretch" >
             <ToolBar FontSize="14" Cursor="Hand">
-                <TextBox Text="{Binding SearchCondition.OccurYear}" MinWidth="60" ToolTip="请输入年份"/>
-                <TextBox Text="{Binding SearchCondition.MemberId}" MinWidth="200" ToolTip="请输入身份证号"/>
-                <Button Click="BtnSearchClickAsync" Content="统计" Width="60" Margin="2,0,10,0"/>
+                <TextBox Text="{Binding SearchCondition.YearNumber}" MinWidth="100" ToolTip="请输入年份"/>
+                <Button Click="BtnSearchClickAsync" Content="查询" Width="60" Margin="2,0,10,0"/>
             </ToolBar>
+            <DataGrid x:Name="RecordDataGrid" ItemsSource="{Binding MemberHolidayCounts}" >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="单位名称" Binding="{Binding UnitName}"/>
+                    <DataGridTextColumn Header="身份证号" Binding="{Binding MemberId}" />
+                    <DataGridTextColumn Header="姓名" Binding="{Binding MemberName}" />
+                    <DataGridTextColumn Header="年假" Binding="{Binding AnnualCount}" />
+                    <DataGridTextColumn Header="事假" Binding="{Binding PersonalLeaveCount}"/>
+                    <DataGridTextColumn Header="病假" Binding="{Binding SickLeaveCount}"/>
+                    <DataGridTextColumn Header="其他假期" Binding="{Binding OtherHolidayCount}"/>
+                    <DataGridTextColumn Header="统计日期" Binding="{Binding CountDate,StringFormat={}yyyy/MM/dd}"/>
+                </DataGrid.Columns>
+            </DataGrid>
         </StackPanel>
     </Grid>
 </Page>

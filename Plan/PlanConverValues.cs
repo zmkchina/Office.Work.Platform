@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Data;
 using Office.Work.Platform.AppCodes;
 using Office.Work.Platform.Lib;
@@ -48,7 +49,7 @@ namespace Office.Work.Platform.Plan
         {
             if (Helpers != null && Helpers.ToString().Contains(AppSet.LoginUser.Id, StringComparison.Ordinal))
             {
-                return "协助";
+                return "(协助)";
             }
             return "";
         }
@@ -64,9 +65,10 @@ namespace Office.Work.Platform.Plan
         //实现接口的两个方法
         public object Convert(object ResponsiblePerson, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if (ResponsiblePerson != null && ResponsiblePerson.ToString().Equals(AppSet.LoginUser.Id, StringComparison.Ordinal))
+            if (ResponsiblePerson != null)
             {
-                return "我的";
+                Lib.User theUser = AppSet.SysUsers.Where(x => x.Id == ResponsiblePerson.ToString()).FirstOrDefault();
+                return $"({theUser?.Name})";
             }
             return "";
         }

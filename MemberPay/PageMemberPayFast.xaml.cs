@@ -31,7 +31,7 @@ namespace Office.Work.Platform.MemberPay
         }
 
         /// <summary>
-        /// 设定发放条件
+        /// 获取上次数据，以便供编辑使用。
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -110,7 +110,11 @@ namespace Office.Work.Platform.MemberPay
             }
         }
 
-        //保存数据
+        /// <summary>
+        /// 保存数据
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void Btn_Save_ClickAnsyc(object sender, RoutedEventArgs e)
         {
             int AddedCount = 0;

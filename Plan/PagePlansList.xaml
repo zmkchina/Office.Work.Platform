@@ -7,6 +7,11 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="500"
       Title="PagePlansList" Loaded="Page_Loaded" Unloaded="Page_Unloaded">
+    <Page.Resources>
+        <local:ConverPlanStateToImgeUri x:Key="PlanStateToImgeUri"/>
+        <local:GetIsHelper x:Key="GetIsHelper"/>
+        <local:GetIsMyPlan x:Key="GetIsMyPlan"/>
+    </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>

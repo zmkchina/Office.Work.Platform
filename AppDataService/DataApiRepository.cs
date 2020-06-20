@@ -26,7 +26,7 @@ namespace Office.Work.Platform.AppDataService
             {
                 _Client = HttpClientFactory.Create();
             }
-            _Client.Timeout = TimeSpan.FromSeconds(60);
+            _Client.Timeout = TimeSpan.FromSeconds(300);
 
             //如果accessToken有值，则携带之。
             if (!string.IsNullOrWhiteSpace(IS4_AccessToken))

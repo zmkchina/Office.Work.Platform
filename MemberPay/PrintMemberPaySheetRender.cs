@@ -88,7 +88,7 @@ namespace Office.Work.Platform.MemberPay
             DrawingVisual footer = new DrawingVisual();
             using (DrawingContext ctx = footer.RenderOpen())
             {
-                string BottomStr = $"      审核人：                              证明人：                                   制表人：                                页码：{pageNumber + 1}"; //{PageCount}";
+                string BottomStr = $"      审核人：                                 证明人：                                      制表人：                                   页码：{pageNumber + 1}"; //{PageCount}";
                 FormattedText formattedBottomText = new FormattedText(BottomStr, CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
                     new Typeface("Verdana"), 15, Brushes.Black, VisualTreeHelper.GetDpi(page.Visual).PixelsPerDip);
                 ctx.DrawText(formattedBottomText, new Point(page.ContentBox.Left, page.ContentBox.Bottom - 15));
@@ -97,11 +97,11 @@ namespace Office.Work.Platform.MemberPay
             //将原页面微略压缩(使用矩阵变换)
             ContainerVisual mainPage = new ContainerVisual();
             mainPage.Children.Add(page.Visual);
-            mainPage.Transform = new MatrixTransform(1, 0, 0, 0.95, 0, 0.04 * page.ContentBox.Height);
+            mainPage.Transform = new MatrixTransform(1, 0, 0, 0.95, 0, 0.02 * page.ContentBox.Height); //矩阵变换,创建一个任意仿射矩阵转换，用于操作二维平面中的对象或坐标系。
 
             //在现页面中加入原页面，页眉和页脚
             newpage.Children.Add(mainPage);
-            newpage.Children.Add(header);
+            //newpage.Children.Add(header);
             newpage.Children.Add(footer);
 
             return new DocumentPage(newpage, page.Size, page.BleedBox, page.ContentBox);

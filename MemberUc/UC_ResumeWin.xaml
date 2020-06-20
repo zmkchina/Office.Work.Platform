@@ -66,6 +66,7 @@
                 </GroupBox>
                 <GroupBox Header="结束日期" Style="{StaticResource GroupBoxStyle}">
                     <DatePicker Style="{StaticResource DatePickerStyle}"
+                                ToolTip="输入“0001/01”表示至今在职。"
                         SelectedDate="{Binding EndDate}" 
                         AppCodes:DatePickerCalendar.IsMonthYear="True"/>
                 </GroupBox>

@@ -191,7 +191,7 @@ namespace Office.Work.Platform.Member
                 };
                 EntityList = new ObservableCollection<Lib.Member>();
                 FieldCn2En = new Dictionary<string, string>() {
-                    { "Name", "姓名" }, { "UnitName", "单位" },{ "Job", "岗位性质" }, { "TechnicalTitle", "技术职称" },
+                    { "Name", "姓名" }, { "UnitName", "单位" },{ "Job", "岗位性质" },{ "JobGrade", "岗位级别" },{ "Post", "行政职务" }, { "TechnicalTitle", "技术职称" },
                     { "EducationTop", "最高学历" }, { "Age", "年龄" },{ "PoliticalStatus", "政治面貌"  },{ "Remarks", "备注" }
                 };
                 _CanExportAll = AppSet.LoginUser.Grants.Contains("MemberExportAll");

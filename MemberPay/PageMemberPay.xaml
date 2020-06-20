@@ -7,8 +7,8 @@
       xmlns:local="clr-namespace:Office.Work.Platform.MemberPay"
       xmlns:AppCodes="clr-namespace:Office.Work.Platform.AppCodes"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Loaded="Page_LoadedAsync"
+      d:DesignHeight="450" d:DesignWidth="1000"
+      Loaded="Page_Loaded"
       Title="PageMakeNewPay">
     <Page.Resources>
 
@@ -35,30 +35,30 @@
             <Setter Property="Margin" Value="3,5"/>
             <Setter Property="Width" Value="185"/>
         </Style>
-        <Style TargetType="DataGrid">
+        <!--<Style TargetType="DataGrid">
             <Setter Property="ColumnHeaderStyle" Value="{DynamicResource ColumnHeaderStyle}"/>
             <Setter Property="CellStyle" Value="{DynamicResource CellStyle}"/>
             <Setter Property="RowStyle" Value="{DynamicResource RowStyle}"/>
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="Margin" Value="5"/>
-            <Setter Property="IsReadOnly" Value="True"/>
             <Setter Property="GridLinesVisibility" Value="None"/>
             <Setter Property="FrozenColumnCount" Value="2"/>
-            <!--禁止在尾行手动添加数据-->
+            --><!--禁止在尾行手动添加数据--><!--
             <Setter Property="AutoGenerateColumns" Value="False"/>
-        </Style>
+        </Style>-->
 
         <!--表头样式-->
-        <Style x:Key="ColumnHeaderStyle" TargetType="DataGridColumnHeader">
+        <!--<Style x:Key="ColumnHeaderStyle" TargetType="DataGridColumnHeader">
             <Setter Property="Margin" Value="0,5"/>
             <Setter Property="Padding" Value="7,10"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <!--水平居中-->
+            --><!--水平居中--><!--
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <!--垂直居中-->
-        </Style>
+            --><!--垂直居中--><!--
+        </Style>-->
+        
         <!--数据行样式-->
-        <Style x:Key="RowStyle" TargetType="DataGridRow">
+        <!--<Style x:Key="RowStyle" TargetType="DataGridRow">
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Margin" Value="0,2" />
             <Setter Property="Background" Value="White" />
@@ -66,16 +66,16 @@
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Background" Value="LightGoldenrodYellow"/>
-                    <!--<Setter Property="Foreground" Value="White"/>-->
+                    <Setter Property="Foreground" Value="White"/>
                 </Trigger>
                 <Trigger Property="IsSelected" Value="True">
                     <Setter Property="Background" Value="DeepSkyBlue"/>
                 </Trigger>
             </Style.Triggers>
-        </Style>
+        </Style>-->
 
         <!--单元格样式-->
-        <Style x:Key="CellStyle" TargetType="DataGridCell">
+        <!--<Style x:Key="CellStyle" TargetType="DataGridCell">
             <Setter Property="Margin" Value="0,10"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -90,7 +90,7 @@
                     <Setter Property="Foreground" Value="White"/>
                 </Trigger>
             </Style.Triggers>
-        </Style>
+        </Style>-->
     </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -106,55 +106,66 @@
         </Border>
         <Grid Grid.Row="1" >
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
-            <ListBox ItemsSource="{Binding PaySetMembers}"
-                     Margin="2,0"
-                     Padding="5,0"
-                     x:Name="ListBox_PaySetMembers" 
-                     HorizontalAlignment="Center"
-                     SelectionChanged="ListBox_SelectionChangedAsync">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock FontSize="15" Margin="2">
-                            <Run Text="{Binding MemberName}"/>
-                        </TextBlock>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-            <StackPanel Grid.Column="1"   Orientation="Vertical" 
-                        IsEnabled="{Binding CanOperation}"
+            <StackPanel Grid.Row="0"  Grid.Column="0" 
+                        Orientation="Vertical" 
                         HorizontalAlignment="Stretch" >
                 <ToolBar FontSize="14" Cursor="Hand">
-                    <DatePicker Style="{StaticResource DatePickerStyle}"
-                                SelectedDate="{Binding SearchDate}" 
-                                AppCodes:DatePickerCalendar.IsMonthYear="True"
-                                SelectedDateChanged="DatePicker_SelectedDateChangedAsync"
-                                    />
-                    <Button Click="BtnAddClickAsync" Content="新增" IsEnabled="{Binding CanOperation}" Width="60" Margin="2,0,10,0"/>
-                    <Button Click="BtnDelClickAsync" Content="删除" IsEnabled="{Binding CanOperation}" Width="60" Margin="2,0,10,0"/>
+                    <TextBox Text="{Binding SearchCondition.MemberId}" MinWidth="200" ToolTip="请输入身份证号" BorderBrush="Blue" BorderThickness="1"/>
+                    <TextBox Text="{Binding SearchCondition.PayYear}" MinWidth="50" ToolTip="请输入年份"  BorderBrush="Green" BorderThickness="1"/>
+                    <ComboBox ItemsSource="{Binding ServerSettings.PayTableTypeArr}"
+                                      Text="{Binding SearchCondition.TableType}" Width="150" Height="30" VerticalAlignment="Center" FontSize="15"/>
+                    <Button Click="Btn_GetData_ClickAsync" Content="读取数据" Margin="2,0,10,0"/>
+                    <Button Click="Btn_SaveData_ClickAsync" Content="保存数据" IsEnabled="{Binding CanOperation}"  Margin="2,0,10,0"/>
                 </ToolBar>
-                <DataGrid x:Name="RecordDataGrid" ItemsSource="{Binding MemberPays}" >
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="年份" Binding="{Binding PayYear}" />
-                        <DataGridTextColumn Header="月份" Binding="{Binding PayMonth}"/>
-                        <DataGridTextColumn Header="名称" Binding="{Binding PayName}"/>
-                        <DataGridTextColumn Header="金额" Binding="{Binding Amount}"/>
-                        <DataGridTextColumn Header="增减类别" Binding="{Binding AddOrCut}"/>
-                        <DataGridTextColumn Header="计入基数" Binding="{Binding InCardinality}"/>
-                        <DataGridTextColumn Header="所属待遇表" Binding="{Binding InTableType}"/>
-                        <DataGridTextColumn Header="人员性质" Binding="{Binding MemberType}"/>
-                        <DataGridTextColumn Header="发放单位" Binding="{Binding PayUnitName}"/>
-                        <DataGridTextColumn Header="备注信息" Binding="{Binding Remark}"/>
-                        <DataGridTextColumn Header="更新日期" Binding="{Binding UpDateTime,StringFormat= {} {0:yyyy/MM/dd}}"/>
-                        <DataGridTextColumn Header="项目序号" Binding="{Binding OrderIndex}"/>
-                    </DataGrid.Columns>
+                <DataGrid x:Name="DataGridResult" CanUserAddRows="False" GridLinesVisibility="None" HorizontalAlignment="Stretch"
+                          HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                          AutoGenerateColumns="True"
+                          BorderBrush="Transparent"
+                          SelectionUnit="FullRow">
+                    <DataGrid.CellStyle>
+                        <Style TargetType="{x:Type DataGridCell}">
+                            <!--<EventSetter Event="MouseDoubleClick" Handler="DataGridCell_MouseDoubleClick"></EventSetter>-->
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="DataGridCell">
+                                        <ContentPresenter HorizontalAlignment="Center"  VerticalAlignment="Center"  />
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Padding" Value="10,10"/>
+                            <Setter Property="Margin" Value="10,10"/>
+                            <Setter Property="FontSize" Value="16"/>
+                        </Style>
+                    </DataGrid.CellStyle>
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Setter Property="Cursor" Value="Hand"/>
+                            <Setter Property="Margin" Value="0" />
+                            <Setter Property="Background" Value="White" />
+                            <Setter Property="Foreground" Value="Black" />
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="LightGoldenrodYellow"/>
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="DeepSkyBlue"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.RowStyle>
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="HorizontalContentAlignment" Value="Center">
+                            </Setter>
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
                 </DataGrid>
             </StackPanel>
-            <GridSplitter Grid.Column="1" BorderThickness="2" BorderBrush="#FFDFF0E7"/>
-            <memberuc:UC_MemberFile x:Name="UcMemberPayFile" Grid.Column="2"  IsEnabled="{Binding CanOperation}"/>
+            <GridSplitter Grid.Column="0" BorderThickness="2" BorderBrush="#FFDFF0E7"/>
+            <memberuc:UC_MemberFile x:Name="UcMemberPayFile" Grid.Column="1"  IsEnabled="{Binding CanOperation}"/>
         </Grid>
     </Grid>
 </Page>

@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Office.Work.Platform.AppCodes;
 using Office.Work.Platform.AppDataService;
 using Office.Work.Platform.Lib;
@@ -16,240 +19,241 @@ namespace Office.Work.Platform.MemberPay
     /// </summary>
     public partial class PageMemberPay : Page
     {
-        private PageViewModel _PageViewModel;
+        private CurPageViewModel _CurViewModel;
         public PageMemberPay()
         {
             InitializeComponent();
-            _PageViewModel = new PageViewModel();
-
         }
-
-        private async void Page_LoadedAsync(object sender, System.Windows.RoutedEventArgs e)
+        private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            await _PageViewModel.InitPropValuesAsync();
-            //因为此函数为异步（即使用的是后台线程或者说非UI线程），故要更新界面需使用 Dispatcher 来向WPF的UI线程添加任务。
-            App.Current.Dispatcher.Invoke(() =>
-            {
-                this.DataContext = _PageViewModel;
-            });
-
-        }
-
-        //选择时间发生变化
-        private async void DatePicker_SelectedDateChangedAsync(object sender, SelectionChangedEventArgs e)
-        {
-            //if (_PageViewModel.CurMember != null)
-            //{
-            //    await _PageViewModel.SearchRecords(); //查询记录
-            //}
+            _CurViewModel = new CurPageViewModel();
+            DataContext = _CurViewModel;
         }
 
         /// <summary>
-        ///  新增记录
+        ///  获取上次数据，以便供编辑使用。
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void BtnAddClickAsync(object sender, RoutedEventArgs e)
+        private async void Btn_GetData_ClickAsync(object sender, RoutedEventArgs e)
         {
-            Lib.MemberSalary NewRecord = new Lib.MemberSalary()
+            string MemberId = null;
+            if (string.IsNullOrWhiteSpace(_CurViewModel.SearchCondition.TableType) || string.IsNullOrWhiteSpace(_CurViewModel.SearchCondition.MemberId))
             {
-                //MemberId = _PageViewModel.CurMember.MemberId,
-                //MemberName = _PageViewModel.CurMember.MemberName,
-                //MemberIndex = _PageViewModel.CurMember.OrderIndex,
-                //MemberType = _PageViewModel.CurMember.MemberType,
-                UserId = AppSet.LoginUser.Id
-            };
+                return;
+            }
+            //1.查询所有可发放的待遇项目信息
+            _CurViewModel.SalaryJArray.Clear();
+            IEnumerable<MemberSalarySearchResult> SalaryList = await DataMemberSalaryRepository.GetRecords(_CurViewModel.SearchCondition).ConfigureAwait(false);
+            if (SalaryList != null && SalaryList.Count() > 0)
+            {
+                await App.Current.Dispatcher.BeginInvoke(new Action(async () =>
+                {
+                    MemberId = _CurViewModel.SearchCondition.MemberId.Clone().ToString();
+                    foreach (MemberSalarySearchResult item in SalaryList)
+                    {
+                        JObject TempJobj = new JObject();
+                        PropertyInfo[] Props = item.GetType().GetProperties();
+                        for (int i = 0; i < Props.Length; i++)
+                        {
+                            var CurValue = Props[i].GetValue(item);
+                            if (CurValue != null)
+                            {
+                                if (Props[i].Name == "SalaryItems")
+                                {
+                                    _CurViewModel.SalaryItems = CurValue as List<SalaryItem>;
+                                    for (int ik = 0; ik < _CurViewModel.SalaryItems.Count; ik++)
+                                    {
+                                        TempJobj[_CurViewModel.SalaryItems[ik].Name] = _CurViewModel.SalaryItems[ik].Amount;
+                                    }
+                                }
+                                else
+                                {
+                                    if (Props[i].Name.Equals("UpDateTime"))
+                                    {
+                                        DateTime upDate = DateTime.MinValue;
+                                        DateTime.TryParse(CurValue.ToString(), out upDate);
 
-            PageMemberPayWin AddWin = new PageMemberPayWin()
+                                        if (upDate == DateTime.MinValue) { upDate = DateTime.Now; }
+
+                                        TempJobj[_CurViewModel.NamesEnCn[Props[i].Name]] = upDate.ToString("yyyy-MM-dd");
+                                    }
+                                    else
+                                    {
+                                        TempJobj[_CurViewModel.NamesEnCn[Props[i].Name]] = CurValue.ToString();
+                                    }
+                                }
+                            }
+                            else
+                            {
+
+                                TempJobj[_CurViewModel.NamesEnCn[Props[i].Name]] = "";
+                                continue;
+                            }
+                        }
+                        _CurViewModel.SalaryJArray.Add(TempJobj);
+                    }
+
+                    DataGridResult.ItemsSource = null;
+                    DataGridResult.ItemsSource = _CurViewModel.SalaryJArray;
+
+                    foreach (DataGridColumn item in DataGridResult.Columns)
+                    {
+                        if (_CurViewModel.NamesEnCn.Values.Contains(item.Header.ToString()))
+                        {
+                            if (item.Header.ToString().Equals("备注")) { continue; }
+                            item.IsReadOnly = true;
+                        }
+                    }
+                    _CurViewModel.CanOperation = true;
+                    await UcMemberPayFile.InitFileDatasAsync(MemberId, "个人待遇", true);
+                }), null);
+            }
+            else
             {
-                CurMemberSalary = NewRecord,
-                MemberPayItems = _PageViewModel.MemberPayItems.ToList(),
-                SelectPayDate = _PageViewModel.SearchDate
-            };
-            if (AddWin.ShowDialog().Value)
+                _CurViewModel.CanOperation = false;
+                AppFuns.ShowMessage("未查询到相关记录，请先使用快速发放！");
+            }
+        }
+
+        /// <summary>
+        /// 保存数据
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void Btn_SaveData_ClickAsync(object sender, RoutedEventArgs e)
+        {
+            int AddedCount = 0;
+            List<Lib.MemberSalary> MemberSalaries = new List<MemberSalary>();
+            for (int i = 0; i < _CurViewModel.SalaryJArray.Count; i++)
             {
-                IEnumerable<Lib.MemberSalarySearchResult> MemberPlays = await DataMemberSalaryRepository.GetRecords(new MemberSalarySearch()
+                JToken TempJtoken = _CurViewModel.SalaryJArray[i];
+                Lib.MemberSalary TempSalary = new MemberSalary();
+                PropertyInfo[] propertyInfos = TempSalary.GetType().GetProperties();
+                foreach (PropertyInfo item in propertyInfos)
                 {
-                    UserId = AppSet.LoginUser.Id,
-                    MemberId = NewRecord.MemberId,
-                    PayYear = NewRecord.PayYear,
-                    PayMonth = NewRecord.PayMonth,
-                });
-                if (MemberPlays.Count() > 0)
-                {
-                   // AppFuns.ShowMessage($"该工作人员{NewRecord.PayYear} 年 {NewRecord.PayMonth} 月份的[{NewRecord.PayName}]已经发放。", "无法新增");
-                    return;
+
+                    if (_CurViewModel.NamesEnCn.Keys.Contains(item.Name))
+                    {
+                        if (item.Name.Equals("PayYear") || item.Name.Equals("PayMonth"))
+                        {
+                            if (int.TryParse(TempJtoken[_CurViewModel.NamesEnCn[item.Name]].ToString(), out int CurNumValue))
+                            {
+                                item.SetValue(TempSalary, CurNumValue);
+                            }
+                            continue;
+                        }
+                        if (item.Name.Equals("UpDateTime"))
+                        {
+                            if (DateTime.TryParse(TempJtoken[_CurViewModel.NamesEnCn[item.Name]].ToString(), out DateTime CurDateValue))
+                            {
+                                item.SetValue(TempSalary, CurDateValue);
+                            }
+                            continue;
+                        }
+                        item.SetValue(TempSalary, TempJtoken[_CurViewModel.NamesEnCn[item.Name]].ToString());
+                        continue;
+                    }
+                    if (item.Name.Equals("NameAndAmount"))
+                    {
+                        for (int ik = 0; ik < _CurViewModel.SalaryItems.Count; ik++)
+                        {
+                            if (float.TryParse(TempJtoken[_CurViewModel.SalaryItems[ik].Name].ToString(), out float CurFloatValue))
+                            {
+                                _CurViewModel.SalaryItems[ik].Amount = CurFloatValue;
+                            }
+                            else
+                            {
+                                AppFuns.ShowMessage($"“{TempJtoken[_CurViewModel.SalaryItems[ik].Name].ToString()}”应为金额！");
+                                return;
+                            }
+                        }
+                        string SalaryJsonStr = JsonConvert.SerializeObject(_CurViewModel.SalaryItems);
+                        item.SetValue(TempSalary, SalaryJsonStr);
+                    }
                 }
+                if (string.IsNullOrWhiteSpace(TempSalary.UserId)) { TempSalary.UserId = AppSet.LoginUser.Id; }
 
-                ExcuteResult excuteResult = await DataMemberSalaryRepository.AddRecord(NewRecord);
-                if (excuteResult != null)
+                MemberSalaries.Add(TempSalary);
+            }
+            foreach (Lib.MemberSalary TempSalary in MemberSalaries)
+            {
+                ExcuteResult excuteResult = await DataMemberSalaryRepository.AddOrUpdate(TempSalary).ConfigureAwait(false);
+                if (excuteResult.State == 0)
                 {
-                    if (excuteResult.State == 0)
+                    JToken TempJtoken = _CurViewModel.SalaryJArray.Where(x => x["身份证号"].ToString().Equals(TempSalary.MemberId)).FirstOrDefault();
+                    if (TempJtoken != null)
                     {
-                        NewRecord.Id = excuteResult.Tag;
-                        _PageViewModel.MemberSalarys.Add(NewRecord);
+                        TempJtoken["编号"] = excuteResult.Tag;
                     }
-                    else
-                    {
-                        AppFuns.ShowMessage(excuteResult.Msg, Caption: "失败");
-                    }
+                    AddedCount++;
+                }
+            }
+
+            if (AddedCount > 0)
+            {
+                if (AddedCount == _CurViewModel.SalaryJArray.Count)
+                {
+                    AppFuns.ShowMessage("数据保存成功");
                 }
                 else
                 {
-                    AppFuns.ShowMessage("数据输入不正确！", Caption: "失败");
+                    AppFuns.ShowMessage($"数据部分保存成功{AddedCount}/{_CurViewModel.SalaryJArray.Count}");
                 }
             }
-        }
-        /// <summary>
-        /// 删除记录
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private async void BtnDelClickAsync(object sender, RoutedEventArgs e)
-        {
-            if (RecordDataGrid.SelectedItem is Lib.MemberSalary SelectedRec)
+            else
             {
-
-                if (AppFuns.ShowMessage($"确认要删除 {SelectedRec.PayMonth} 月份待遇吗？", Caption: "确认", showYesNo: true))
-                {
-                    ExcuteResult excuteResult = await DataMemberSalaryRepository.DeleteRecord(SelectedRec);
-                    if (excuteResult.State == 0)
-                    {
-                        _PageViewModel.MemberSalarys.Remove(SelectedRec);
-                    }
-                    else
-                    {
-                        AppFuns.ShowMessage(excuteResult.Msg, Caption: "失败");
-                    }
-                }
+                AppFuns.ShowMessage("数据保存失败！");
             }
-        }
-        /// <summary>
-        /// 选择用户发放变化。
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private async void ListBox_SelectionChangedAsync(object sender, SelectionChangedEventArgs e)
-        {
-            _PageViewModel.MemberSalarys.Clear();
-            //if (ListBox_PaySetMembers.SelectedItem is Lib.MemberPaySet MemberPset)
-            //{
-            //    _PageViewModel.CanOperation = true;
-            //    _PageViewModel.CurMember = MemberPset;
-            //    await UcMemberPayFile.InitFileDatasAsync(MemberPset.MemberId, "个人待遇", true);
-            //    await _PageViewModel.SearchRecords();
-            //}
-            //else
-            //{
-            //    _PageViewModel.CanOperation = false;
-            //    _PageViewModel.CurMember = null;
-            //}
 
         }
-        //****************************************************************************************************************************************
+
         /// <summary>
-        /// 该页面的视图模型类
+        /// 当前页面的视图模型
         /// </summary>
-        private class PageViewModel : NotificationObject
+        private class CurPageViewModel : NotificationObject
         {
             private bool _CanOperation = false;
 
-            public PageViewModel()
-            {
-                //MemberSalarys = new ObservableCollection<Lib.MemberSalary>();
-                //PaySetMembers = new ObservableCollection<MemberPaySet>();
-                //SearchCondition = new MemberSalarySearch();
-            }
-            /// <summary>
-            /// 初始化各类属性值
-            /// </summary>
-            /// <returns></returns>
-            public async Task InitPropValuesAsync()
-            {
-                ////读取可发放的所有待遇项目列表
-                //var TempPayItems = await DataMemberPayItemRepository.GetRecords(new Lib.MemberPayItemSearch()
-                //{
-                //    PayUnitName = AppSet.LoginUser.UnitName,
-                //    UserId = AppSet.LoginUser.Id
-                //}).ConfigureAwait(false);
-                //if (TempPayItems == null || TempPayItems.Count() < 1)
-                //{
-                //    //AppFuns.ShowMessage("未读到待遇项目数据，请稍候再试！");
-                //    return;
-                //}
-                //MemberPayItems = TempPayItems.ToList();
-                //MemberPayItems.Sort((x, y) => x.OrderIndex - y.OrderIndex);
-
-                ////读取可发放待遇的所有用户列表
-                //var TempMemberPaySets = await DataMemberPaySetRepository.GetRecords(new MemberPaySetSearch()
-                //{
-                //    PayUnitName = AppSet.LoginUser.UnitName,
-                //    UserId = AppSet.LoginUser.Id
-                //}).ConfigureAwait(false);
-                //PaySetMembers.Clear();
-                //TempMemberPaySets?.ToList().ForEach(e =>
-                //{
-                //    PaySetMembers.Add(e);
-                //});
-            }
-            /// <summary>
-            /// 查询数据
-            /// </summary>
-            /// <returns></returns>
-            public async Task SearchRecords()
-            {
-                //if (SearchCondition != null)
-                //{
-                //    IEnumerable<Lib.MemberSalary> MemberPlayMonths = await DataMemberSalaryRepository.GetRecords(new MemberSalarySearch()
-                //    {
-                //        PayYear = SearchDate.Year,
-                //        PayMonth = SearchDate.Month,
-                //        MemberId = CurMember.MemberId,
-                //        UserId = AppSet.LoginUser.Id
-                //    });
-                //    MemberSalarys.Clear();
-                //    MemberPlayMonths?.ToList().ForEach(e =>
-                //    {
-                //        MemberSalarys.Add(e);
-                //    });
-                //}
-            }
-
-
-            /// <summary>
-            /// 是否可以操作（只有选中一个用户后，才能操作）
-            /// </summary>
+            public JArray SalaryJArray { get; set; }
+            public SettingServer ServerSettings { get; set; }
+            public MemberSalarySearch SearchCondition { get; set; }
+            public Dictionary<string, string> NamesEnCn = new Dictionary<string, string>();
+            public List<SalaryItem> SalaryItems { get; set; }
             public bool CanOperation
             {
                 get { return _CanOperation; }
-                set { _CanOperation = value; RaisePropertyChanged(); }
+                set
+                {
+                    _CanOperation = value; RaisePropertyChanged();
+                }
             }
-            /// <summary>
-            /// 查询时间
-            /// </summary>
-            public DateTime SearchDate { get; set; } = DateTime.Now;
-            
-            /// <summary>
-            /// 查询条件类对象
-            /// </summary>
-            public MemberSalarySearch SearchCondition { get; set; }
 
-            /// <summary>
-            /// 当前职工工资月度发放记录
-            /// </summary>
-            public ObservableCollection<Lib.MemberSalary> MemberSalarys { get; set; }
-            /// <summary>
-            /// 当前用户所在单位设置可发放待遇项目。
-            /// </summary>
-            public List<MemberPayItem> MemberPayItems { get; set; }
+            public CurPageViewModel()
+            {
+                ServerSettings = AppSet.ServerSetting;
+                SearchCondition = new MemberSalarySearch()
+                {
+                    UserId = AppSet.LoginUser.Id,
+                    PayUnitName = AppSet.LoginUser.UnitName,
+                    PayYear = DateTime.Now.Year,
+                    FillEmpty = false
+                };
 
-            ///// <summary>
-            ///// 当前用户所在单位设置可发放待遇的所有人员（即在MemberPaySet中配置的人员）。
-            ///// </summary>
-            //public ObservableCollection<Lib.MemberPaySet> PaySetMembers { get; set; }
+                SalaryJArray = new JArray();
 
+                NamesEnCn.Add("Id", "编号");
+                NamesEnCn.Add("PayUnitName", "发放单位");
+                NamesEnCn.Add("PayYear", "年度");
+                NamesEnCn.Add("PayMonth", "月份");
+                NamesEnCn.Add("TableType", "发放类型");
+                NamesEnCn.Add("MemberId", "身份证号");
+                NamesEnCn.Add("MemberName", "姓名");
+                NamesEnCn.Add("Remark", "备注");
+                NamesEnCn.Add("UpDateTime", "更新时间");
+                NamesEnCn.Add("UserId", "操作人员");
+            }
         }
-
 
     }
 

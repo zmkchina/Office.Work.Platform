@@ -1,8 +1,9 @@
 ﻿<FixedDocument
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:ghelper="Office.Work.Platform.Member">
+    xmlns:muc="clr-namespace:Office.Work.Platform.MemberUc">
     <FixedDocument.Resources>
+        <muc:DateToToday x:Key="DateToToday"/>
         <PageContent Name="Page1" x:Key="Page1">
             <FixedPage Width="793.76" Height="1122.56">
                 <StackPanel Width="793.76" HorizontalAlignment="Stretch">
@@ -300,7 +301,7 @@
                                             <TextBlock ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                                        TextWrapping="Wrap" Padding="2,0" Width="550" HorizontalAlignment="Center" LineHeight="25">
                                                     <Run  Text="{Binding Path=BeginDate,StringFormat={}{0:yyyy.MM}}" />
-                                                    <Run  Text="{Binding Path=EndDate,StringFormat=-- {0:yyyy.MM }}"/>
+                                                    <Run  Text="{Binding Path=EndDate,Converter={StaticResource DateToToday},StringFormat=-- {0:yyyy.MM }}"/>
                                                     <Run  Text="{Binding Path=Content}"/>
                                                     <Run  Text="{Binding Path=Remark,StringFormat={} {0}}" />
                                             </TextBlock>

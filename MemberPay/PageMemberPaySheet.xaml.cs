@@ -47,6 +47,10 @@ namespace Office.Work.Platform.MemberPay
         /// <param name="e"></param>
         private async void Btn_Search_ClickAsync(object sender, RoutedEventArgs e)
         {
+            //获取所有可发放的待遇项目
+
+            IEnumerable<MemberPayItem> CollectPayItem = await DataMemberPayItemRepository.GetRecords(new MemberPayItemSearch() { PayUnitName = AppSet.LoginUser.UnitName, UserId = AppSet.LoginUser.Id }).ConfigureAwait(false);
+            _CurViewModel.PayItems = CollectPayItem?.ToList();
             //1.查询所有可发放的待遇项目信息
             _CurViewModel.SearchCondition.PayYear = _CurViewModel.PayYearMonth.Year;
             _CurViewModel.SearchCondition.PayMonth = _CurViewModel.PayYearMonth.Month;
@@ -56,6 +60,10 @@ namespace Office.Work.Platform.MemberPay
             {
                 foreach (MemberSalarySearchResult item in SalaryList)
                 {
+                    float YingFaDaiYu = 0f;
+                    float GeRenJiaoNa = 0f;
+                    float DanWeiJiaoNa = 0f;
+
                     JObject TempJobj = new JObject();
                     PropertyInfo[] Props = item.GetType().GetProperties();
                     for (int i = 0; i < Props.Length; i++)
@@ -67,9 +75,47 @@ namespace Office.Work.Platform.MemberPay
                             if (Props[i].Name == "SalaryItems")
                             {
                                 _CurViewModel.SalaryItems = CurValue as List<SalaryItem>;
+
+                                //在 _CurViewModel.SalaryItems 中添加相应的汇总项
+                                switch (item.TableType)
+                                {
+                                    case "月度工资表":
+                                        int k = 0;
+                                        for (k = 0; k < _CurViewModel.SalaryItems.Count; k++)
+                                        {
+                                            MemberPayItem CurPayItem = _CurViewModel.PayItems.Where(x => x.Name.Equals(_CurViewModel.SalaryItems[k].Name)).FirstOrDefault();
+                                            if (CurPayItem != null && CurPayItem.PayType.Equals("个人交纳")) { break; }
+                                        }
+                                        _CurViewModel.SalaryItems.Insert(k, new SalaryItem() { Name = "应发合计", Amount = 0 });
+                                        _CurViewModel.SalaryItems.Add(new SalaryItem() { Name = "实发合计", Amount = 0 });
+                                        break;
+                                    case "月度补贴表":
+                                        _CurViewModel.SalaryItems.Add(new SalaryItem() { Name = "补贴合计", Amount = 0 });
+                                        break;
+                                    case "其他待遇表":
+                                        _CurViewModel.SalaryItems.Add(new SalaryItem() { Name = "发放合计", Amount = 0 });
+                                        break;
+                                }
                                 for (int ik = 0; ik < _CurViewModel.SalaryItems.Count; ik++)
                                 {
                                     TempJobj[_CurViewModel.SalaryItems[ik].Name] = _CurViewModel.SalaryItems[ik].Amount;
+                                    MemberPayItem CurPayItem = _CurViewModel.PayItems.Where(x => x.Name.Equals(_CurViewModel.SalaryItems[ik].Name)).FirstOrDefault();
+
+                                    if (CurPayItem != null)
+                                    {
+                                        if (CurPayItem.PayType.Equals("应发待遇"))
+                                        {
+                                            YingFaDaiYu += _CurViewModel.SalaryItems[ik].Amount;
+                                        }
+                                        else if (CurPayItem.PayType.Equals("个人交纳"))
+                                        {
+                                            GeRenJiaoNa += _CurViewModel.SalaryItems[ik].Amount;
+                                        }
+                                        else if (CurPayItem.PayType.Equals("单位交纳"))
+                                        {
+                                            DanWeiJiaoNa += _CurViewModel.SalaryItems[ik].Amount;
+                                        }
+                                    }
                                 }
                             }
                             else
@@ -95,6 +141,19 @@ namespace Office.Work.Platform.MemberPay
                             TempJobj[_CurViewModel.NamesEnCn[Props[i].Name]] = "";
                             continue;
                         }
+                    }
+                    switch (item.TableType)
+                    {
+                        case "月度工资表":
+                            TempJobj["应发合计"] = YingFaDaiYu.ToString("0.00");
+                            TempJobj["实发合计"] = (YingFaDaiYu - GeRenJiaoNa).ToString("0.00");
+                            break;
+                        case "月度补贴表":
+                            TempJobj["补贴合计"] = YingFaDaiYu.ToString("0.00");
+                            break;
+                        case "其他待遇表":
+                            TempJobj["发放合计"] = YingFaDaiYu.ToString("0.00");
+                            break;
                     }
                     _CurViewModel.SalaryJArray.Add(TempJobj);
                 }
@@ -139,7 +198,7 @@ namespace Office.Work.Platform.MemberPay
             m_doc.PageHeight = P_DocHeight;
             m_doc.ColumnWidth = P_DocWidth;
             m_doc.Background = System.Windows.Media.Brushes.Transparent;
-            m_doc.PagePadding = new Thickness(85, 70, 85, 90);//设置页面与页面之间的边距宽度
+            m_doc.PagePadding = new Thickness(85, 70, 85, 100);//设置页面与页面之间的边距宽度
             //2.填充模板内容
             PrintMemberPaySheetRender renderer = new PrintMemberPaySheetRender();
             if (renderer != null)
@@ -227,6 +286,7 @@ namespace Office.Work.Platform.MemberPay
             public DateTime PayYearMonth { get; set; }
             public Dictionary<string, string> NamesEnCn = new Dictionary<string, string>();
             public List<SalaryItem> SalaryItems { get; set; }
+            public List<MemberPayItem> PayItems { get; set; }
             public string[] NoPrintItemNames { get; set; }
             public bool CanOperation
             {
