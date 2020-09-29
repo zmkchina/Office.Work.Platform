@@ -15,7 +15,7 @@ namespace Office.Work.Platform.Member
     {
 
         private DocViewModel DocVM = null;
-        public void Render(FlowDocument FlowDoc, string Caption, string DateStr, MemoryStream UserHeadStream, Lib.Member PCurMember)
+        public void Render(FlowDocument FlowDoc, string Caption, string DateStr, MemoryStream UserHeadStream, Lib.MemberInfoEntity PCurMember)
         {
             if (PCurMember == null) return;
 
@@ -97,7 +97,7 @@ namespace Office.Work.Platform.Member
             if (TempPrizePunish != null && TempPrizePunish.Count() > 0)
             {
                 TableCell Cell_PrizePunish = FlowDoc.FindName("Cell_PrizePunish") as TableCell;
-                List<Lib.MemberPrizePunish> MemberPrizePunishs = TempPrizePunish.OrderByDescending(x => x.PrizrOrPunishType).ToList();
+                List<Lib.MemberPrizePunishEntity> MemberPrizePunishs = TempPrizePunish.OrderByDescending(x => x.PrizrOrPunishType).ToList();
                 for (int i = 0; i < MemberPrizePunishs.Count; i++)
                 {
                     Paragraph TParagraph = new Paragraph();
@@ -167,7 +167,7 @@ namespace Office.Work.Platform.Member
         {
             public string Caption { get; set; }
             public string DateStr { get; set; }
-            public Lib.Member CurMember { get; set; }
+            public Lib.MemberInfoEntity CurMember { get; set; }
             /// <summary>
             /// 显示的用户图片
             /// </summary>

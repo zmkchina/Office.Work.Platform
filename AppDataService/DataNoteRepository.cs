@@ -13,15 +13,15 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="SearchCondition"></param>
         /// <returns></returns>
-        public static async Task<NoteSearchResult> GetRecords(NoteSearch SearchCondition)
+        public static async Task<Lib.NoteDtoPages> GetRecords(Lib.NoteDtoSearch SearchCondition)
         {
-            NoteSearchResult SearchResult = null;
+            Lib.NoteDtoPages SearchResult = null;
             //创建查询url参数
             string urlParams = DataApiRepository.CreateUrlParams(SearchCondition);
 
             if (urlParams.Length > 0)
             {
-                SearchResult = await DataApiRepository.GetApiUri<NoteSearchResult>(_ApiUrlBase + "Note/Search" + urlParams).ConfigureAwait(false);
+                SearchResult = await DataApiRepository.GetApiUri<Lib.NoteDtoPages>(_ApiUrlBase + "Note/Search" + urlParams).ConfigureAwait(false);
             }
             return SearchResult;
         }
@@ -30,16 +30,16 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="mSearchMember">查询条件类的实例</param>
         /// <returns></returns>
-        public static async Task<Lib.Note> GetOneById(string Id)
+        public static async Task<Lib.NoteDto> GetOneById(string Id)
         {
-            return await DataApiRepository.GetApiUri<Lib.Note>(_ApiUrlBase + "Note/" + Id);
+            return await DataApiRepository.GetApiUri<Lib.NoteDto>(_ApiUrlBase + "Note/" + Id);
         }
         /// <summary>
         /// 单个新增数据
         /// </summary>
         /// <param name="Entity"></param>
         /// <returns></returns>
-        public static async Task<ExcuteResult> AddRecord(Lib.Note PEntity)
+        public static async Task<ExcuteResult> AddRecord(Lib.NoteEntity PEntity)
         {
             ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(_ApiUrlBase + "Note", PEntity).ConfigureAwait(false);
             return JsonResult;
@@ -49,7 +49,7 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="P_Entity"></param>
         /// <returns></returns>
-        public static async Task<ExcuteResult> AddRecords(List<Lib.Note> Entitys)
+        public static async Task<ExcuteResult> AddRecords(List<Lib.NoteEntity> Entitys)
         {
             ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(_ApiUrlBase + "Note/AddRange", Entitys).ConfigureAwait(false);
             return JsonResult;
@@ -59,7 +59,7 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="Entity"></param>
         /// <returns></returns>
-        public static async Task<ExcuteResult> UpdateRecord(Lib.Note PEntity)
+        public static async Task<ExcuteResult> UpdateRecord(Lib.NoteEntity PEntity)
         {
             ExcuteResult JsonResult = await DataApiRepository.PutApiUriAsync(_ApiUrlBase + "Note", PEntity).ConfigureAwait(false);
             return JsonResult;

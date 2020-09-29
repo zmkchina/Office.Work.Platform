@@ -18,15 +18,15 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="mSearchFile">查询条件类的实例</param>
         /// <returns></returns>
-        public static async Task<IEnumerable<MemberFile>> ReadFiles(MemberFileSearch mSearchFile)
+        public static async Task<IEnumerable<Lib.MemberFileDto>> ReadFiles(Lib.MemberFileDtoSearch mSearchFile)
         {
-            IEnumerable<MemberFile> FileList = null;
+            IEnumerable<Lib.MemberFileDto> FileList = null;
             //创建查询url参数
             string urlParams = DataApiRepository.CreateUrlParams(mSearchFile);
 
             if (urlParams.Length > 0)
             {
-                FileList = await DataApiRepository.GetApiUri<IEnumerable<MemberFile>>(_ApiUrlBase + "MemberFile/Search" + urlParams).ConfigureAwait(false);
+                FileList = await DataApiRepository.GetApiUri<IEnumerable<Lib.MemberFileDto>>(_ApiUrlBase + "MemberFile/Search" + urlParams).ConfigureAwait(false);
             }
             return FileList;
         }
@@ -39,7 +39,7 @@ namespace Office.Work.Platform.AppDataService
         /// <param name="PostFileName">用于告诉服务器指定文件的名称。如服务器不使用之，可以为空</param>
         /// <param name="showUploadProgress">上传进度</param>
         /// <returns></returns>
-        public static async Task<ExcuteResult> UpLoadFileInfo(MemberFile UpFileInfo, Stream PostFileStream, string PostFileKey = null, string PostFileName = null, ProgressMessageHandler showUploadProgress = null)
+        public static async Task<ExcuteResult> UpLoadFileInfo(Lib.MemberFileEntity UpFileInfo, Stream PostFileStream, string PostFileKey = null, string PostFileName = null, ProgressMessageHandler showUploadProgress = null)
         {
             MultipartFormDataContent V_MultFormDatas = DataApiRepository.SetFormData(UpFileInfo, PostFileStream, PostFileKey, PostFileName);
             ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(_ApiUrlBase + "MemberFile/UpLoadFile", V_MultFormDatas, showUploadProgress).ConfigureAwait(false);
@@ -50,7 +50,7 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="UpdatePlan"></param>
         /// <returns></returns>
-        public static async Task<ExcuteResult> UpdateFileInfo(Lib.MemberFile PEntity)
+        public static async Task<ExcuteResult> UpdateFileInfo(Lib.MemberFileEntity PEntity)
         {
             ExcuteResult JsonResult = await DataApiRepository.PutApiUriAsync(_ApiUrlBase + "MemberFile", PEntity).ConfigureAwait(false);
             return JsonResult;
@@ -60,7 +60,7 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="DelFile">预删除的文件</param>
         /// <returns></returns>
-        public static async Task<ExcuteResult> DeleteFileInfo(MemberFile DelFile)
+        public static async Task<ExcuteResult> DeleteFileInfo(Lib.MemberFileEntity DelFile)
         {
             ExcuteResult JsonResult = await DataApiRepository.DeleteApiUri<ExcuteResult>(_ApiUrlBase + "MemberFile/?FileId=" + DelFile.Id).ConfigureAwait(false);
             return JsonResult;
@@ -96,7 +96,7 @@ namespace Office.Work.Platform.AppDataService
         /// <param name="ReDownLoad">是否重新下载，默认为false</param>
         /// <param name="showDownProgress">显示下载进度的委托方法,可为空</param>
         /// <returns>返回下载成功的文件目录（包括路径）</returns>
-        public static async Task<string> DownloadFile(MemberFile WillDownFile, bool ReDownLoad = false, ProgressMessageHandler showDownProgress = null)
+        public static async Task<string> DownloadFile(Lib.MemberFileEntity WillDownFile, bool ReDownLoad = false, ProgressMessageHandler showDownProgress = null)
         {
             //合成目录
             string tempFileDir = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DownFiles", WillDownFile.ContentType);

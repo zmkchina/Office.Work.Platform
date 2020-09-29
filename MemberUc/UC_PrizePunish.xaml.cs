@@ -19,7 +19,7 @@ namespace Office.Work.Platform.MemberUc
             InitializeComponent();
             _UCPrizePunishVM = new UC_PrizePunishVM();
         }
-        public async void initControlAsync(Lib.Member PMember)
+        public async void initControlAsync(Lib.MemberInfoEntity PMember)
         {
             await _UCPrizePunishVM.InitVMAsync(PMember);
             this.DataContext = _UCPrizePunishVM;
@@ -40,7 +40,7 @@ namespace Office.Work.Platform.MemberUc
         /// <param name="e"></param>
         private async void BtnAddClickAsync(object sender, RoutedEventArgs e)
         {
-            Lib.MemberPrizePunish NewRecord = new Lib.MemberPrizePunish()
+            Lib.MemberPrizePunishEntity NewRecord = new Lib.MemberPrizePunishEntity()
             {
                 MemberId = _UCPrizePunishVM.CurMember.Id,
                 UserId = AppSet.LoginUser.Id
@@ -51,7 +51,7 @@ namespace Office.Work.Platform.MemberUc
 
             if (AddWin.ShowDialog().Value)
             {
-                IEnumerable<MemberPrizePunish> MemberPlayMonths = await DataMemberPrizePunishRepository.GetRecords(new MemberPrizePunishSearch()
+                IEnumerable<MemberPrizePunishDto> MemberPlayMonths = await DataMemberPrizePunishRepository.GetRecords(new MemberPrizePunishSearch()
                 {
                     MemberId = NewRecord.MemberId,
                     UserId = NewRecord.UserId
@@ -76,7 +76,7 @@ namespace Office.Work.Platform.MemberUc
         /// <param name="e"></param>
         private async void BtnDelClickAsync(object sender, RoutedEventArgs e)
         {
-            if (RecordListBox.SelectedItem is Lib.MemberPrizePunish SelectedRec)
+            if (RecordListBox.SelectedItem is Lib.MemberPrizePunishDto SelectedRec)
             {
                 if ( AppFuns.ShowMessage($"确认要删除该条简历吗？", Caption: "确认", showYesNo: true))
                 {
@@ -99,9 +99,9 @@ namespace Office.Work.Platform.MemberUc
         /// <param name="e"></param>
         private async void BtnEditClickAsync(object sender, RoutedEventArgs e)
         {
-            if (RecordListBox.SelectedItem is Lib.MemberPrizePunish SelectedRec)
+            if (RecordListBox.SelectedItem is Lib.MemberPrizePunishEntity SelectedRec)
             {
-                Lib.MemberPrizePunish RecCloneObj = CloneObject<Lib.MemberPrizePunish, Lib.MemberPrizePunish>.Trans(SelectedRec);
+                Lib.MemberPrizePunishEntity RecCloneObj = CloneObject<Lib.MemberPrizePunishEntity, Lib.MemberPrizePunishEntity>.Trans(SelectedRec);
 
                 UC_PrizePunishWin AddWin = new UC_PrizePunishWin(RecCloneObj);
                 AddWin.Owner = AppSet.AppMainWindow;
@@ -136,16 +136,16 @@ namespace Office.Work.Platform.MemberUc
     {
         public UC_PrizePunishVM()
         {
-            CurRecords = new ObservableCollection<MemberPrizePunish>();
+            CurRecords = new ObservableCollection<MemberPrizePunishDto>();
             SearchCondition = new MemberPrizePunishSearch();
         }
-        public async System.Threading.Tasks.Task InitVMAsync(Lib.Member PMember)
+        public async System.Threading.Tasks.Task InitVMAsync(Lib.MemberInfoEntity PMember)
         {
             CurMember = PMember;
             if (PMember != null)
             {
                 MemberPrizePunishSearch SearchCondition = new MemberPrizePunishSearch() { MemberId = PMember.Id, UserId = AppSet.LoginUser.Id };
-                IEnumerable<MemberPrizePunish> MemberPrizePunishss = await DataMemberPrizePunishRepository.GetRecords(SearchCondition);
+                IEnumerable<MemberPrizePunishDto> MemberPrizePunishss = await DataMemberPrizePunishRepository.GetRecords(SearchCondition);
                 CurRecords.Clear();
                 MemberPrizePunishss?.ToList().ForEach(e =>
                 {
@@ -160,7 +160,7 @@ namespace Office.Work.Platform.MemberUc
                 SearchCondition.MemberId = CurMember.Id;
                 SearchCondition.UserId = AppSet.LoginUser.Id;
 
-                IEnumerable<MemberPrizePunish> TempRecords = await DataMemberPrizePunishRepository.GetRecords(SearchCondition);
+                IEnumerable<MemberPrizePunishDto> TempRecords = await DataMemberPrizePunishRepository.GetRecords(SearchCondition);
                 CurRecords.Clear();
                 TempRecords?.ToList().ForEach(e =>
                 {
@@ -175,11 +175,11 @@ namespace Office.Work.Platform.MemberUc
         /// <summary>
         /// 当前职工信息
         /// </summary>
-        public Lib.Member CurMember { get; set; }
+        public Lib.MemberInfoEntity CurMember { get; set; }
         /// <summary>
         /// 当前职工工资月度发放记录
         /// </summary>
-        public ObservableCollection<MemberPrizePunish> CurRecords { get; set; }
+        public ObservableCollection<MemberPrizePunishDto> CurRecords { get; set; }
     }
 
 }

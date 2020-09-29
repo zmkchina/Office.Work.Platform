@@ -19,7 +19,7 @@ namespace Office.Work.Platform.MemberUc
             InitializeComponent();
             _CurUcViewModel = new CurUcViewModel();
         }
-        public async void initControlAsync(Lib.Member PMember)
+        public async void initControlAsync(Lib.MemberInfoEntity PMember)
         {
             await _CurUcViewModel.InitVMAsync(PMember);
             this.DataContext = _CurUcViewModel;
@@ -137,7 +137,7 @@ namespace Office.Work.Platform.MemberUc
                 CurRecords = new ObservableCollection<MemberRelations>();
                 SearchCondition = new MemberRelationsSearch();
             }
-            public async System.Threading.Tasks.Task InitVMAsync(Lib.Member PMember)
+            public async System.Threading.Tasks.Task InitVMAsync(Lib.MemberInfoEntity PMember)
             {
                 CurMember = PMember;
                 CurRecords.Clear();
@@ -162,7 +162,7 @@ namespace Office.Work.Platform.MemberUc
             /// <summary>
             /// 当前职工信息
             /// </summary>
-            public Lib.Member CurMember { get; set; }
+            public Lib.MemberInfoEntity CurMember { get; set; }
             /// <summary>
             /// 当前职工工资月度发放记录
             /// </summary>

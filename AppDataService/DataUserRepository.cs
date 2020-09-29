@@ -12,9 +12,9 @@ namespace Office.Work.Platform.AppDataService
         /// 读取所有用户
         /// </summary>
         /// <returns></returns>
-        public static async Task<List<User>> GetAllRecords()
+        public static async Task<List<Lib.UserDto>> GetAllRecords()
         {
-            List<User> SysUsers = await DataApiRepository.GetApiUri<List<User>>(_ApiUrlBase + "User").ConfigureAwait(false);
+            List<Lib.UserDto> SysUsers = await DataApiRepository.GetApiUri<List<Lib.UserDto>>(_ApiUrlBase + "User").ConfigureAwait(false);
             return SysUsers;
         }
         /// <summary>
@@ -22,16 +22,16 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="mSearchMember">查询条件类的实例</param>
         /// <returns></returns>
-        public static async Task<Lib.User> GetOneById(string UserId)
+        public static async Task<Lib.UserDto> GetOneById(string UserId)
         {
-           return await DataApiRepository.GetApiUri<User>(_ApiUrlBase + "User/" + UserId);
+           return await DataApiRepository.GetApiUri<Lib.UserDto>(_ApiUrlBase + "User/" + UserId);
         }
         /// <summary>
         /// 单个新增数据
         /// </summary>
         /// <param name="Entity"></param>
         /// <returns></returns>
-        public static async Task<ExcuteResult> AddRecord(Lib.User PEntity)
+        public static async Task<ExcuteResult> AddRecord(Lib.UserEntity PEntity)
         {
             ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(_ApiUrlBase + "User", PEntity).ConfigureAwait(false);
             return JsonResult;
@@ -41,7 +41,7 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="P_Entity"></param>
         /// <returns></returns>
-        public static async Task<ExcuteResult> AddRecords(List<Lib.User> Entitys)
+        public static async Task<ExcuteResult> AddRecords(List<Lib.UserEntity> Entitys)
         {
             ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(_ApiUrlBase + "User/AddRange", Entitys).ConfigureAwait(false);
             return JsonResult;
@@ -51,7 +51,7 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="Entity"></param>
         /// <returns></returns>
-        public static async Task<ExcuteResult> UpdateRecord(Lib.User PEntity)
+        public static async Task<ExcuteResult> UpdateRecord(Lib.UserEntity PEntity)
         {
             ExcuteResult JsonResult = await DataApiRepository.PutApiUriAsync(_ApiUrlBase + "User", PEntity).ConfigureAwait(false);
             return JsonResult;

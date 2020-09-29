@@ -67,7 +67,7 @@ namespace Office.Work.Platform.Member
         /// <returns></returns>
         private async System.Threading.Tasks.Task SearchMember()
         {
-            List<Lib.Member> MemberList = await DataMemberRepository.ReadMembers(_PageViewModel.mSearch);
+            List<Lib.MemberInfoEntity> MemberList = await DataMemberRepository.ReadMembers(_PageViewModel.mSearch);
 
             if (MemberList == null)
             {
@@ -94,7 +94,7 @@ namespace Office.Work.Platform.Member
         /// <param name="e"></param>
         private void DataGridRow_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (((System.Windows.FrameworkElement)sender).DataContext is Lib.Member CurMember)
+            if (((System.Windows.FrameworkElement)sender).DataContext is Lib.MemberInfoEntity CurMember)
             {
                 PageEditMember pageEditMember = new PageEditMember(CurMember);
                 AppSet.AppMainWindow.FrameContentPage.Content = pageEditMember;
@@ -108,7 +108,7 @@ namespace Office.Work.Platform.Member
         /// <param name="e"></param>
         private async void btn_Delete_ClickAsync(object sender, RoutedEventArgs e)
         {
-            if (RecordDataGrid.SelectedItem is Lib.Member SelectMember)
+            if (RecordDataGrid.SelectedItem is Lib.MemberInfoEntity SelectMember)
             {
                 if (SelectMember != null && AppFuns.ShowMessage($"确定要删除[{SelectMember.Name}]信息吗？", "确认", showYesNo: true))
                 {
@@ -141,7 +141,7 @@ namespace Office.Work.Platform.Member
         /// <param name="e"></param>
         private void btn_Export_ClickAsync(object sender, RoutedEventArgs e)
         {
-            List<Lib.Member> EntityList = _PageViewModel.EntityList.ToList();
+            List<Lib.MemberInfoEntity> EntityList = _PageViewModel.EntityList.ToList();
             if (EntityList == null || EntityList.Count < 1)
             {
                 return;
@@ -171,7 +171,7 @@ namespace Office.Work.Platform.Member
         public class PageViewModel : NotificationObject
         {
 
-            public ObservableCollection<Lib.Member> EntityList { get; set; }
+            public ObservableCollection<Lib.MemberInfoEntity> EntityList { get; set; }
             public Dictionary<string, string> FieldCn2En { get; set; }
             public MemberSearch mSearch;
             public string FieldEnName { get; set; }
@@ -189,7 +189,7 @@ namespace Office.Work.Platform.Member
                 {
                     UnitName = AppSet.LoginUser.UnitName
                 };
-                EntityList = new ObservableCollection<Lib.Member>();
+                EntityList = new ObservableCollection<Lib.MemberInfoEntity>();
                 FieldCn2En = new Dictionary<string, string>() {
                     { "Name", "姓名" }, { "UnitName", "单位" },{ "Job", "岗位性质" },{ "JobGrade", "岗位级别" },{ "Post", "行政职务" }, { "TechnicalTitle", "技术职称" },
                     { "EducationTop", "最高学历" }, { "Age", "年龄" },{ "PoliticalStatus", "政治面貌"  },{ "Remarks", "备注" }

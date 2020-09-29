@@ -12,14 +12,14 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="mSearchPlan">查询条件类的实例</param>
         /// <returns></returns>
-        public static async Task<PlanSearchResult> ReadPlans(PlanSearch mSearchPlan)
+        public static async Task<Lib.PlanDtoPages> ReadPlans(Lib.PlanDtoSearch mSearchPlan)
         {
-            PlanSearchResult SearchResult = null;
+            Lib.PlanDtoPages SearchResult = null;
             string urlParams = DataApiRepository.CreateUrlParams(mSearchPlan);
 
             if (urlParams.Length > 0)
             {
-                SearchResult = await DataApiRepository.GetApiUri<PlanSearchResult>(_ApiUrlBase + "Plan/Search" + urlParams).ConfigureAwait(false);
+                SearchResult = await DataApiRepository.GetApiUri<Lib.PlanDtoPages>(_ApiUrlBase + "Plan/Search" + urlParams).ConfigureAwait(false);
             }
             return SearchResult;
         }
@@ -28,7 +28,7 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="Entity"></param>
         /// <returns></returns>
-        public static async Task<ExcuteResult> AddNewPlan(Lib.Plan PEntity)
+        public static async Task<ExcuteResult> AddNewPlan(Lib.PlanEntity PEntity)
         {
             ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(_ApiUrlBase + "Plan", PEntity).ConfigureAwait(false);
             return JsonResult;
@@ -38,7 +38,7 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="UpdatePlan"></param>
         /// <returns></returns>
-        public static async Task<ExcuteResult> UpdatePlan(Lib.Plan PEntity)
+        public static async Task<ExcuteResult> UpdatePlan(Lib.PlanEntity PEntity)
         {
             ExcuteResult JsonResult = await DataApiRepository.PutApiUriAsync(_ApiUrlBase + "Plan", PEntity).ConfigureAwait(false);
             return JsonResult;
@@ -48,7 +48,7 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="DelePlan"></param>
         /// <returns></returns>
-        public static async Task<ExcuteResult> DeletePlan(Lib.Plan DelePlan)
+        public static async Task<ExcuteResult> DeletePlan(Lib.PlanEntity DelePlan)
         {
             ExcuteResult JsonResult = await DataApiRepository.DeleteApiUri<ExcuteResult>(_ApiUrlBase + "Plan/" + DelePlan.Id).ConfigureAwait(false);
             return JsonResult;

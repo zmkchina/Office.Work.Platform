@@ -1,12 +1,11 @@
-﻿using Office.Work.Platform.AppCodes;
-using Office.Work.Platform.Lib;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Handlers;
 using System.Threading.Tasks;
+using Office.Work.Platform.AppCodes;
+using Office.Work.Platform.Lib;
 
 namespace Office.Work.Platform.AppDataService
 {
@@ -18,15 +17,15 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="mSearchFile">查询条件类的实例</param>
         /// <returns></returns>
-        public static async Task<PlanFileSearchResult> ReadFiles(PlanFileSearch mSearchFile)
+        public static async Task<Lib.PlanFileDtoPages> ReadFiles(Lib.PlanFileDtoSearch mSearchFile)
         {
-            PlanFileSearchResult FileSearchResult = null;
+            Lib.PlanFileDtoPages FileSearchResult = null;
             //创建查询url参数
             string urlParams = DataApiRepository.CreateUrlParams(mSearchFile);
 
             if (urlParams.Length > 0)
             {
-                FileSearchResult = await DataApiRepository.GetApiUri<PlanFileSearchResult>(_ApiUrlBase + "PlanFile/Search" + urlParams).ConfigureAwait(false);
+                FileSearchResult = await DataApiRepository.GetApiUri<Lib.PlanFileDtoPages>(_ApiUrlBase + "PlanFile/Search" + urlParams).ConfigureAwait(false);
             }
             return FileSearchResult;
         }
@@ -39,7 +38,7 @@ namespace Office.Work.Platform.AppDataService
         /// <param name="PostFileName">用于告诉服务器指定文件的名称。如服务器不使用之，可以为空</param>
         /// <param name="showUploadProgress">上传进度</param>
         /// <returns></returns>
-        public static async Task<ExcuteResult> UpLoadFileInfo(Lib.PlanFile UpFileInfo, Stream PostFileStream, string PostFileKey = null, string PostFileName = null, ProgressMessageHandler showUploadProgress = null)
+        public static async Task<ExcuteResult> UpLoadFileInfo(Lib.PlanFileEntity UpFileInfo, Stream PostFileStream, string PostFileKey = null, string PostFileName = null, ProgressMessageHandler showUploadProgress = null)
         {
             MultipartFormDataContent V_MultFormDatas = DataApiRepository.SetFormData(UpFileInfo, PostFileStream, PostFileKey, PostFileName);
             ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(_ApiUrlBase + "PlanFile/UpLoadFile", V_MultFormDatas, showUploadProgress).ConfigureAwait(false);
@@ -50,7 +49,7 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="UpdatePlan"></param>
         /// <returns></returns>
-        public static async Task<ExcuteResult> UpdateFileInfo(Lib.PlanFile PEntity)
+        public static async Task<ExcuteResult> UpdateFileInfo(Lib.PlanFileEntity PEntity)
         {
             ExcuteResult JsonResult = await DataApiRepository.PutApiUriAsync(_ApiUrlBase + "PlanFile", PEntity).ConfigureAwait(false);
             return JsonResult;
@@ -60,7 +59,7 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="DelFile">预删除的文件</param>
         /// <returns></returns>
-        public static async Task<ExcuteResult> DeleteFileInfo(Lib.PlanFile DelFile)
+        public static async Task<ExcuteResult> DeleteFileInfo(Lib.PlanFileEntity DelFile)
         {
             ExcuteResult JsonResult = await DataApiRepository.DeleteApiUri<ExcuteResult>(_ApiUrlBase + "PlanFile/?FileId=" + DelFile.Id).ConfigureAwait(false);
             return JsonResult;
@@ -96,7 +95,7 @@ namespace Office.Work.Platform.AppDataService
         /// <param name="ReDownLoad">是否重新下载，默认为false</param>
         /// <param name="showDownProgress">显示下载进度的委托方法,可为空</param>
         /// <returns>返回下载成功的文件目录（包括路径）</returns>
-        public static async Task<string> DownloadFile(Lib.PlanFile WillDownFile, bool ReDownLoad = false, ProgressMessageHandler showDownProgress = null)
+        public static async Task<string> DownloadFile(Lib.PlanFileEntity WillDownFile, bool ReDownLoad = false, ProgressMessageHandler showDownProgress = null)
         {
             //合成目录
             string tempFileDir = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DownFiles", WillDownFile.ContentType);

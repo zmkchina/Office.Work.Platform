@@ -69,7 +69,7 @@ namespace Office.Work.Platform.Plan
         /// <param name="e"></param>
         private void ListBox_FileList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (this.LB_PlanList.SelectedItem is Lib.Plan SelectPlan)
+            if (this.LB_PlanList.SelectedItem is Lib.PlanEntity SelectPlan)
             {
                 UCPlanInfo.Init_PlanInfoAsync(SelectPlan, (thePlan) =>
                    {
@@ -139,7 +139,7 @@ namespace Office.Work.Platform.Plan
                     PageIndex = 1,
                     PageSize = 15
                 };
-                EntityPlans = new ObservableCollection<Lib.Plan>();
+                EntityPlans = new ObservableCollection<Lib.PlanEntity>();
                 CanVisible = "Collapsed";
             }
             public async Task GetPlansAsync()
@@ -166,7 +166,7 @@ namespace Office.Work.Platform.Plan
             /// <summary>
             /// 查询到的计划列表
             /// </summary>
-            public ObservableCollection<Lib.Plan> EntityPlans { get; set; }
+            public ObservableCollection<Lib.PlanEntity> EntityPlans { get; set; }
             /// <summary>
             /// 查询条件
             /// </summary>

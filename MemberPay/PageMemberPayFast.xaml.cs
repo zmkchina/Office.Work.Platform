@@ -208,7 +208,7 @@ namespace Office.Work.Platform.MemberPay
         /// <param name="e"></param>
         private void Btn_AddPerson_ClickAnsyc(object sender, RoutedEventArgs e)
         {
-            Lib.Member NewMamber = new Lib.Member();
+            Lib.MemberInfoEntity NewMamber = new Lib.MemberInfoEntity();
             PageMemberPayFastWin WinAddMember = new PageMemberPayFastWin(NewMamber);
 
             if (WinAddMember.ShowDialog().Value == false)

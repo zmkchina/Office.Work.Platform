@@ -15,7 +15,7 @@ namespace Office.Work.Platform.Member
     public partial class PageEditMember : Page
     {
         private CurPageViewModel _CurPageViewModel;
-        public PageEditMember(Lib.Member PMember = null)
+        public PageEditMember(Lib.MemberEntity PMember = null)
         {
             InitializeComponent();
             _CurPageViewModel = new CurPageViewModel(PMember);
@@ -56,13 +56,12 @@ namespace Office.Work.Platform.Member
                 //  AppFuns.ShowMessage("若要开始，请选输入员工身份证号！", "输入不正确")).ShowDialog();
                 return;
             }
-            MemberSearch msearch = new MemberSearch() { Id = _CurPageViewModel.EntityMember.Id };
-            var members = await DataMemberRepository.ReadMembers(msearch);
+            var MemberInfo = await DataMemberRepository.ReadEntity(_CurPageViewModel.EntityMember.Id);
             Stream UserHeadStream = null;
-            if (members != null && members.Count > 0)  //数据表中已存在该记录。
+            if (MemberInfo != null)  //数据表中已存在该记录。
             {
                 _CurPageViewModel.isEditFlag = true;
-                _CurPageViewModel = new CurPageViewModel(members[0]);
+                _CurPageViewModel = new CurPageViewModel(MemberInfo);
                 //读取用户头像信息
                 var UserPhotos = await DataMemberFileRepository.ReadFiles(new MemberFileSearch()
                 {
@@ -170,12 +169,12 @@ namespace Office.Work.Platform.Member
             ExcuteResult excuteResult;
             if (_CurPageViewModel.isEditFlag)
             {
-                excuteResult = await DataMemberRepository.UpdateMember(_CurPageViewModel.EntityMember);
+                excuteResult = await DataMemberRepository.UpdateEntity(_CurPageViewModel.EntityMember);
                 AppFuns.ShowMessage(excuteResult.Msg);
             }
             else
             {
-                excuteResult = await DataMemberRepository.AddMember(_CurPageViewModel.EntityMember);
+                excuteResult = await DataMemberRepository.AddEntity(_CurPageViewModel.EntityMember);
                 if (excuteResult.State == 0)
                 {
                     //保存成功表示可以进行编辑了，即其他控件可以保存了。
@@ -193,7 +192,7 @@ namespace Office.Work.Platform.Member
         /// <param name="e"></param>
         private async void BtnUpdateClickAsync(object sender, RoutedEventArgs e)
         {
-            ExcuteResult excuteResult = await DataMemberRepository.UpdateMember(_CurPageViewModel.EntityMember);
+            ExcuteResult excuteResult = await DataMemberRepository.UpdateEntity(_CurPageViewModel.EntityMember);
             AppFuns.ShowMessage(excuteResult.Msg);
         }
 
@@ -209,12 +208,12 @@ namespace Office.Work.Platform.Member
             private bool _isEditFlag;
             private string _AddOrEditStr;
 
-            public CurPageViewModel(Lib.Member PMember)
+            public CurPageViewModel(Lib.MemberInfoEntity PMember)
             {
                 if (PMember == null)
                 {
                     isEditFlag = false;
-                    EntityMember = new Lib.Member();
+                    EntityMember = new Lib.MemberInfoEntity();
                 }
                 else
                 {
@@ -261,8 +260,8 @@ namespace Office.Work.Platform.Member
                     _AddOrEditStr = value; RaisePropertyChanged();
                 }
             }
-            public Lib.Member EntityMember { get; set; }
-            public Lib.SettingServer MSettings { get; set; }
+            public Lib.MemberInfoEntity EntityMember { get; set; }
+            public Lib.SettingServerDto MSettings { get; set; }
             #endregion
         }
     }

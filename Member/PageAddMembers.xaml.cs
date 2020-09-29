@@ -59,12 +59,12 @@ namespace Office.Work.Platform.Member
 
                         if (UserTable != null && UserTable.Rows.Count > 0)
                         {
-                            Lib.Member tempMember = new Lib.Member();
+                            Lib.MemberInfoEntity tempMember = new Lib.MemberInfoEntity();
                             PropertyInfo[] Attri = tempMember.GetType().GetProperties();
 
                             for (int i = 0; i < UserTable.Rows.Count; i++)
                             {
-                                tempMember = new Lib.Member();
+                                tempMember = new Lib.MemberInfoEntity();
                                 foreach (PropertyInfo item in Attri)
                                 {
                                     //获取该属性的描述特性值（比如：[Description("身份证号")]中的 "身份证号" ）
@@ -146,7 +146,7 @@ namespace Office.Work.Platform.Member
         private async void BtnExport_ClickAsync(object sender, RoutedEventArgs e)
         {
             Button CurBtn = sender as Button;
-            List<Lib.Member> MemberList = await DataMemberRepository.ReadMembers(new MemberSearch()
+            List<Lib.MemberInfoEntity> MemberList = await DataMemberRepository.ReadMembers(new MemberSearch()
             {
             });
 

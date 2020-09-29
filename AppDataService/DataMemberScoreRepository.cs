@@ -13,15 +13,15 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="SearchCondition"></param>
         /// <returns></returns>
-        public static async Task<List<Lib.MemberScore>> GetRecords(MemberScoreSearch SearchCondition)
+        public static async Task<List<Lib.MemberScoreDto>> GetRecords(MemberScoreDtoSearch SearchCondition)
         {
-            List<Lib.MemberScore> RecordList = new List<Lib.MemberScore>();
+            List<Lib.MemberScoreDto> RecordList = new List<Lib.MemberScoreDto>();
             //创建查询url参数
             string urlParams = DataApiRepository.CreateUrlParams(SearchCondition);
 
             if (urlParams.Length > 0)
             {
-                RecordList = await DataApiRepository.GetApiUri<List<Lib.MemberScore>>(_ApiUrlBase + "MemberScore/Search" + urlParams).ConfigureAwait(false);
+                RecordList = await DataApiRepository.GetApiUri<List<Lib.MemberScoreDto>>(_ApiUrlBase + "MemberScore/Search" + urlParams).ConfigureAwait(false);
             }
             return RecordList;
         }
@@ -30,16 +30,16 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="Id">查询条件类的实例</param>
         /// <returns></returns>
-        public static async Task<Lib.MemberScore> GetOneById(string Id)
+        public static async Task<Lib.MemberScoreDto> GetOneById(string Id)
         {
-            return await DataApiRepository.GetApiUri<Lib.MemberScore>(_ApiUrlBase + "MemberScore/" + Id);
+            return await DataApiRepository.GetApiUri<Lib.MemberScoreDto>(_ApiUrlBase + "MemberScore/" + Id);
         }
         /// <summary>
         /// 单个新增数据
         /// </summary>
         /// <param name="Entity"></param>
         /// <returns></returns>
-        public static async Task<ExcuteResult> AddRecord(Lib.MemberScore PEntity)
+        public static async Task<ExcuteResult> AddRecord(Lib.MemberScoreEntity PEntity)
         {
             ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(_ApiUrlBase + "MemberScore", PEntity).ConfigureAwait(false);
             return JsonResult;
@@ -50,7 +50,7 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="Entity"></param>
         /// <returns></returns>
-        public static async Task<ExcuteResult> UpdateRecord(Lib.MemberScore PEntity)
+        public static async Task<ExcuteResult> UpdateRecord(Lib.MemberScoreEntity PEntity)
         {
             ExcuteResult JsonResult = await DataApiRepository.PutApiUriAsync(_ApiUrlBase + "MemberScore", PEntity).ConfigureAwait(false);
             return JsonResult;

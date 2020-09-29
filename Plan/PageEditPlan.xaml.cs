@@ -16,7 +16,7 @@ namespace Office.Work.Platform.Plan
     public partial class PageEditPlan : Page
     {
         private PageViewModel _PageViewModel = null;
-        public PageEditPlan(Lib.Plan P_Plan = null)
+        public PageEditPlan(Lib.PlanEntity P_Plan = null)
         {
             InitializeComponent();
             _PageViewModel = new PageViewModel(P_Plan);
@@ -62,7 +62,7 @@ namespace Office.Work.Platform.Plan
 
             _PageViewModel.EntityPlan.Helpers = _PageViewModel.GetSelectUserIds(_PageViewModel.UserHelperSelectList);
 
-            List<SelectObj<User>> NeedAddUsers = _PageViewModel.UserHelperSelectList.Where(x => x.IsSelect && !_PageViewModel.UserGrantSelectList.Where(y => y.IsSelect).Contains(x)).ToList();
+            List<SelectObj<Lib.UserEntity>> NeedAddUsers = _PageViewModel.UserHelperSelectList.Where(x => x.IsSelect && !_PageViewModel.UserGrantSelectList.Where(y => y.IsSelect).Contains(x)).ToList();
 
             NeedAddUsers.ForEach(x =>
             {
@@ -116,7 +116,7 @@ namespace Office.Work.Platform.Plan
         /// </summary>
         private class PageViewModel : NotificationObject
         {
-            public PageViewModel(Lib.Plan CurPlan)
+            public PageViewModel(Lib.PlanEntity CurPlan)
             {
                 EntityPlan = CurPlan;
                 ServerSettings = AppSet.ServerSetting;
@@ -130,7 +130,7 @@ namespace Office.Work.Platform.Plan
                 else
                 {
                     IsEditFlag = false;
-                    EntityPlan = new Lib.Plan()
+                    EntityPlan = new Lib.PlanEntity()
                     {
                         CreateUserId = AppSet.LoginUser.Id,
                         ResponsiblePerson = AppSet.LoginUser.Id,
@@ -142,12 +142,12 @@ namespace Office.Work.Platform.Plan
                         ReadGrant = "all"
                     };
                 }
-                UserGrantSelectList = new ObservableCollection<SelectObj<User>>();
-                UserHelperSelectList = new ObservableCollection<SelectObj<User>>();
-                foreach (User item in AppSet.SysUsers.Where(e => !e.Id.Equals("admin", StringComparison.Ordinal)).OrderBy(x => x.OrderIndex))
+                UserGrantSelectList = new ObservableCollection<SelectObj<Lib.UserEntity>>();
+                UserHelperSelectList = new ObservableCollection<SelectObj<Lib.UserEntity>>();
+                foreach (Lib.UserEntity item in AppSet.SysUsers.Where(e => !e.Id.Equals("admin", StringComparison.Ordinal)).OrderBy(x => x.OrderIndex))
                 {
-                    UserGrantSelectList.Add(new SelectObj<User>(EntityPlan.ReadGrant != null && (EntityPlan.ReadGrant.Contains(item.Id) || EntityPlan.ReadGrant.Equals("all", StringComparison.Ordinal)), item));
-                    UserHelperSelectList.Add(new SelectObj<User>(EntityPlan.Helpers != null && (EntityPlan.Helpers.Contains(item.Id) || EntityPlan.Helpers.Equals("all", StringComparison.Ordinal)), item));
+                    UserGrantSelectList.Add(new SelectObj<Lib.UserEntity>(EntityPlan.ReadGrant != null && (EntityPlan.ReadGrant.Contains(item.Id) || EntityPlan.ReadGrant.Equals("all", StringComparison.Ordinal)), item));
+                    UserHelperSelectList.Add(new SelectObj<Lib.UserEntity>(EntityPlan.Helpers != null && (EntityPlan.Helpers.Contains(item.Id) || EntityPlan.Helpers.Equals("all", StringComparison.Ordinal)), item));
                 }
             }
           
@@ -158,27 +158,27 @@ namespace Office.Work.Platform.Plan
             /// <summary>
             /// 当前正在操作的计划
             /// </summary>
-            public Lib.Plan EntityPlan { get; set; }
+            public Lib.PlanEntity EntityPlan { get; set; }
 
             /// <summary>
             /// 系统参数配置
             /// </summary>
-            public Lib.SettingServer ServerSettings { get; set; }
+            public Lib.SettingServerEntity ServerSettings { get; set; }
 
             /// <summary>
             /// 有权读取该计划的用户选择
             /// </summary>
-            public ObservableCollection<SelectObj<User>> UserGrantSelectList { get; set; }
+            public ObservableCollection<SelectObj<Lib.UserEntity>> UserGrantSelectList { get; set; }
             /// <summary>
             /// 该计划的协助用户选择标志
             /// </summary>
-            public ObservableCollection<SelectObj<User>> UserHelperSelectList { get; set; }
+            public ObservableCollection<SelectObj<Lib.UserEntity>> UserHelperSelectList { get; set; }
             /// <summary>
             /// 获取所有选中的用记信息
             /// </summary>
             /// <param name="UserSelectList"></param>
             /// <returns></returns>
-            public string GetSelectUserIds(ObservableCollection<SelectObj<User>> UserSelectList)
+            public string GetSelectUserIds(ObservableCollection<SelectObj<Lib.UserEntity>> UserSelectList)
             {
                 List<string> SelectIds = UserSelectList.Where(x => x.IsSelect).Select(y => y.Obj.Id).ToList();
                 return string.Join(",", SelectIds.ToArray());

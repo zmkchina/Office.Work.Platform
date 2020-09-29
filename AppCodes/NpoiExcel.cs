@@ -283,7 +283,7 @@ namespace Office.Work.Platform.AppCodes
         /// </summary>
         /// <param name="dataGridView1">要导出的dataGridView控件</param>
         /// <param name="sheetName">sheet表名</param>
-        private void ExportToExcel(List<Lib.Member> EntityList, string sheetName)
+        private void ExportToExcel(List<Lib.MemberInfoEntity> EntityList, string sheetName)
         {
             if (EntityList == null || EntityList.Count < 1)
             {

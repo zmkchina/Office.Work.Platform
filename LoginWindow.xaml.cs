@@ -57,7 +57,7 @@ namespace Office.Work.Platform
                     return;
                 }
                 //从服务器读取指定的用户并在服务器上登陆
-                User LoginUser = await DataUserRepository.GetOneById(V_UserId);
+                Lib.UserDto LoginUser = await DataUserRepository.GetOneById(V_UserId);
                 if (LoginUser != null)
                 {
                     DataRWLocalFileRepository.SaveObjToFile<SettingLocal>(AppSet.LocalSetting, AppSet.LocalSettingFileName);

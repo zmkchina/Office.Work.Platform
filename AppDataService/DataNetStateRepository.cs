@@ -10,9 +10,9 @@ namespace Office.Work.Platform.AppDataService
         /// 向服务器请求时间，以确定是否连接是否正常。
         /// </summary>
         /// <returns></returns>
-        public static async Task<Lib.NetState> GetSeverState()
+        public static async Task<Lib.NetStateDto> GetSeverState()
         {
-            return await DataApiRepository.GetApiUri<Lib.NetState>(_ApiUrlBase + "NetState/GetTime");
+            return await DataApiRepository.GetApiUri<Lib.NetStateDto>(_ApiUrlBase + "NetState/GetTime");
         }
     }
 }

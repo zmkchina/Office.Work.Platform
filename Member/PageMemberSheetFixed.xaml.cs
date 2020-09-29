@@ -52,7 +52,7 @@ namespace Office.Work.Platform.Member
         private async void BtnSearchClickAsync(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(_MemberSearch.Id)) { return; }
-            List<Lib.Member> Members = await DataMemberRepository.ReadMembers(_MemberSearch);
+            List<Lib.MemberInfoEntity> Members = await DataMemberRepository.ReadMembers(_MemberSearch);
             if (Members == null || Members.Count < 1)
             {
                 AppFuns.ShowMessage("未找到此用户信息！");
@@ -186,7 +186,7 @@ namespace Office.Work.Platform.Member
                 }
             }
         }
-        private void ReplaceKey(XWPFParagraph CurPara, Lib.Member PMember)
+        private void ReplaceKey(XWPFParagraph CurPara, Lib.MemberInfoEntity PMember)
         {
             if (CurPara.ParagraphText.Trim().Contains("[PrintCaption]"))
             {
@@ -221,7 +221,7 @@ namespace Office.Work.Platform.Member
         /// <param name="PRelations"></param>
         /// <param name="PPrizePunishs"></param>
         /// <param name="PAppraises"></param>
-        private void ReplaceKeyInCell(XWPFDocument WDoc, XWPFTableCell CurCell, Lib.Member PMember, List<MemberResume> PResumes, List<MemberRelations> PRelations, List<MemberPrizePunish> PPrizePunishs, List<MemberAppraise> PAppraises)
+        private void ReplaceKeyInCell(XWPFDocument WDoc, XWPFTableCell CurCell, Lib.MemberInfoEntity PMember, List<MemberResume> PResumes, List<MemberRelations> PRelations, List<MemberPrizePunish> PPrizePunishs, List<MemberAppraise> PAppraises)
         {
             for (int i = 0; i < CurCell.Paragraphs.Count; i++)
             {
@@ -577,7 +577,7 @@ namespace Office.Work.Platform.Member
     /// </summary>
     public class FixedDocViewModel
     {
-        public FixedDocViewModel(Lib.Member PMember)
+        public FixedDocViewModel(Lib.MemberInfoEntity PMember)
         {
             CurMember = PMember;
             MemberAge = DateTime.Now.Year - CurMember.Birthday.Year;
@@ -656,7 +656,7 @@ namespace Office.Work.Platform.Member
             if (this.PrizePunishs == null) { this.PrizePunishs = new List<MemberPrizePunish>(); }
             if (this.Appraises == null) { this.Appraises = new List<MemberAppraise>(); }
         }
-        public Lib.Member CurMember { get; set; }
+        public Lib.MemberInfoEntity CurMember { get; set; }
         public BitmapImage HeadImage { get; set; } = null;
         public List<MemberResume> Resumes { get; set; }
         public List<MemberRelations> Relations { get; set; }

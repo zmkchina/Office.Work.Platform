@@ -17,15 +17,15 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="SearchCondition"></param>
         /// <returns></returns>
-        public static async Task<IEnumerable<MemberAppraise>> GetRecords(MemberAppraiseSearch SearchCondition)
+        public static async Task<IEnumerable<Lib.MemberAppraiseDto>> GetRecords(Lib.MemberAppraiseDtoSearch SearchCondition)
         {
-            IEnumerable<MemberAppraise> RecList = null;
+            IEnumerable<Lib.MemberAppraiseDto> RecList = null;
             //创建查询url参数
             string urlParams = DataApiRepository.CreateUrlParams(SearchCondition);
 
             if (urlParams.Length > 0)
             {
-                RecList = await DataApiRepository.GetApiUri<IEnumerable<MemberAppraise>>(_ApiUrlBase + "MemberAppraise/Search" + urlParams).ConfigureAwait(false);
+                RecList = await DataApiRepository.GetApiUri<IEnumerable<Lib.MemberAppraiseDto>>(_ApiUrlBase + "MemberAppraise/Search" + urlParams).ConfigureAwait(false);
             }
             return RecList;
         }
@@ -34,7 +34,7 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="PEntity"></param>
         /// <returns></returns>
-        public static async Task<ExcuteResult> AddRecord(Lib.MemberAppraise PEntity)
+        public static async Task<ExcuteResult> AddRecord(Lib.MemberAppraiseEntity PEntity)
         {
             ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(_ApiUrlBase + "MemberAppraise", PEntity).ConfigureAwait(false);
             return JsonResult;
@@ -44,7 +44,7 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="PEntity"></param>
         /// <returns></returns>
-        public static async Task<ExcuteResult> UpdateRecord(Lib.MemberAppraise PEntity)
+        public static async Task<ExcuteResult> UpdateRecord(Lib.MemberAppraiseEntity PEntity)
         {
             ExcuteResult JsonResult = await DataApiRepository.PutApiUriAsync(_ApiUrlBase + "MemberAppraise", PEntity).ConfigureAwait(false);
             return JsonResult;
@@ -54,7 +54,7 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="PEntity"></param>
         /// <returns></returns>
-        public static async Task<ExcuteResult> DeleteRecord(Lib.MemberAppraise PEntity)
+        public static async Task<ExcuteResult> DeleteRecord(Lib.MemberAppraiseEntity PEntity)
         {
             ExcuteResult JsonResult = await DataApiRepository.DeleteApiUri<ExcuteResult>(_ApiUrlBase + "MemberAppraise/?Id=" + PEntity.Id).ConfigureAwait(false);
             return JsonResult;

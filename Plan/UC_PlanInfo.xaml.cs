@@ -19,12 +19,12 @@ namespace Office.Work.Platform.Plan
     public partial class UC_PlanInfo : UserControl
     {
         private CurUcViewModel _UCPlanInfoVM;
-        private Action<Lib.Plan> _CallBack = null;
+        private Action<Lib.PlanEntity> _CallBack = null;
         public UC_PlanInfo()
         {
             InitializeComponent();
         }
-        public async void Init_PlanInfoAsync(Lib.Plan P_Entity, Action<Lib.Plan> P_CallBack = null)
+        public async void Init_PlanInfoAsync(Lib.PlanEntity P_Entity, Action<Lib.PlanEntity> P_CallBack = null)
         {
             _CallBack = P_CallBack;
             _UCPlanInfoVM = new CurUcViewModel();
@@ -298,7 +298,7 @@ namespace Office.Work.Platform.Plan
             {
                 PlanFiles = new ObservableCollection<Lib.PlanFile>();
             }
-            public async Task Init_PlanInfoVMAsync(Lib.Plan P_Entity)
+            public async Task Init_PlanInfoVMAsync(Lib.PlanEntity P_Entity)
             {
                 CurPlan = P_Entity;
                 if (PlanFiles.Count < 1)
@@ -337,7 +337,7 @@ namespace Office.Work.Platform.Plan
             /// <summary>
             /// 当前所选计划信息
             /// </summary>
-            public Lib.Plan CurPlan { get; set; }
+            public Lib.PlanEntity CurPlan { get; set; }
             /// <summary>
             /// 当前计划的文件。
             /// </summary>

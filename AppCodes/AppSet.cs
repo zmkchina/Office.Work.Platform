@@ -8,11 +8,11 @@ namespace Office.Work.Platform.AppCodes
         /// <summary>
         /// 系统所有用户对象列表
         /// </summary>
-        public static List<User> SysUsers { get; set; }
+        public static List<Lib.UserDto> SysUsers { get; set; }
         /// <summary>
         /// 系统当前登陆的用户对象
         /// </summary>
-        public static User LoginUser { get; set; }
+        public static Lib.UserDto LoginUser { get; set; }
         /// <summary>
         /// 系统本地设置类对象
         /// </summary>
@@ -20,7 +20,7 @@ namespace Office.Work.Platform.AppCodes
         /// <summary>
         /// 系统服务器端设置类的对象
         /// </summary>
-        public static SettingServer ServerSetting { get; set; }
+        public static Lib.SettingServerDto ServerSetting { get; set; }
         /// <summary>
         /// 系统主窗口对象
         /// </summary>

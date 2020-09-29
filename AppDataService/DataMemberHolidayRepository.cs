@@ -17,15 +17,15 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="SearchCondition"></param>
         /// <returns></returns>
-        public static async Task<List<Lib.MemberHoliday>> GetRecords(MemberHolidaySearch SearchCondition)
+        public static async Task<List<Lib.MemberHolidayDto>> GetRecords(Lib.MemberHolidayDtoSearch SearchCondition)
         {
-            List<Lib.MemberHoliday> RecList = null;
+            List<Lib.MemberHolidayDto> RecList = null;
             //创建查询url参数
             string urlParams = DataApiRepository.CreateUrlParams(SearchCondition);
 
             if (urlParams.Length > 0)
             {
-                RecList = await DataApiRepository.GetApiUri<List<Lib.MemberHoliday>>(_ApiUrlBase + "MemberHoliday/Search" + urlParams).ConfigureAwait(false);
+                RecList = await DataApiRepository.GetApiUri<List<Lib.MemberHolidayDto>>(_ApiUrlBase + "MemberHoliday/Search" + urlParams).ConfigureAwait(false);
             }
             return RecList;
         }
@@ -34,7 +34,7 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="PEntity"></param>
         /// <returns></returns>
-        public static async Task<ExcuteResult> AddRecord(Lib.MemberHoliday PEntity)
+        public static async Task<ExcuteResult> AddRecord(Lib.MemberHolidayEntity PEntity)
         {
             ExcuteResult JsonResult = await DataApiRepository.PostApiUriAsync(_ApiUrlBase + "MemberHoliday", PEntity).ConfigureAwait(false);
             return JsonResult;
@@ -45,7 +45,7 @@ namespace Office.Work.Platform.AppDataService
         /// </summary>
         /// <param name="PEntity"></param>
         /// <returns></returns>
-        public static async Task<ExcuteResult> UpdateRecord(Lib.MemberHoliday PEntity)
+        public static async Task<ExcuteResult> UpdateRecord(Lib.MemberHolidayEntity PEntity)
         {
             ExcuteResult JsonResult = await DataApiRepository.PutApiUriAsync(_ApiUrlBase + "MemberHoliday", PEntity).ConfigureAwait(false);
             return JsonResult;

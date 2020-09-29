@@ -14,9 +14,9 @@ namespace Office.Work.Platform.MemberPay
     public partial class PageMemberPayFastWin : Window
     {
         public string InputMemberId { get; set; }
-        public Lib.Member CurMember { get; set; }
+        public Lib.MemberInfoEntity CurMember { get; set; }
 
-        public PageMemberPayFastWin(Lib.Member PMember)
+        public PageMemberPayFastWin(Lib.MemberInfoEntity PMember)
         {
             InitializeComponent();
             this.Owner = App.Current.MainWindow;
@@ -58,7 +58,7 @@ namespace Office.Work.Platform.MemberPay
         /// <param name="e"></param>
         private async void BtnSearch_ClickAsync(object sender, RoutedEventArgs e)
         {
-            List<Lib.Member> MemberList = await DataMemberRepository.ReadMembers(new Lib.MemberSearch() { Id = InputMemberId }).ConfigureAwait(false);
+            List<Lib.MemberInfoEntity> MemberList = await DataMemberRepository.ReadMembers(new Lib.MemberSearch() { Id = InputMemberId }).ConfigureAwait(false);
             Dispatcher.Invoke(new Action(() =>
             {
                 if (MemberList.Count == 1)

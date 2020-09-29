@@ -19,7 +19,7 @@ namespace Office.Work.Platform.MemberUc
             InitializeComponent();
             _UCResumeVM = new UC_ResumeVM();
         }
-        public async void initControlAsync(Lib.Member PMember)
+        public async void initControlAsync(Lib.MemberInfoEntity PMember)
         {
             await _UCResumeVM.InitVMAsync(PMember);
             this.DataContext = _UCResumeVM;
@@ -140,7 +140,7 @@ namespace Office.Work.Platform.MemberUc
             CurRecords = new ObservableCollection<MemberResume>();
             SearchCondition = new MemberResumeSearch();
         }
-        public async System.Threading.Tasks.Task InitVMAsync(Lib.Member PMember)
+        public async System.Threading.Tasks.Task InitVMAsync(Lib.MemberInfoEntity PMember)
         {
             CurMember = PMember;
             if (PMember != null)
@@ -176,7 +176,7 @@ namespace Office.Work.Platform.MemberUc
         /// <summary>
         /// 当前职工信息
         /// </summary>
-        public Lib.Member CurMember { get; set; }
+        public Lib.MemberInfoEntity CurMember { get; set; }
         /// <summary>
         /// 当前职工工资月度发放记录
         /// </summary>

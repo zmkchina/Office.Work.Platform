@@ -173,7 +173,7 @@ namespace Office.Work.Platform.MemberScore
             /// <summary>
             /// 查询得到的用户信息
             /// </summary>
-            public Lib.Member CurMember { get; set; }
+            public Lib.MemberInfoEntity CurMember { get; set; }
 
             /// <summary>
             /// 查询条件类对象
@@ -207,7 +207,7 @@ namespace Office.Work.Platform.MemberScore
                     return;
                 }
                 //1.先查询用户信息
-                List<Lib.Member> TempMembers = await DataMemberRepository.ReadMembers(new MemberSearch() { Id = SearchCondition.MemberId }).ConfigureAwait(false);
+                List<Lib.MemberInfoEntity> TempMembers = await DataMemberRepository.ReadMembers(new MemberSearch() { Id = SearchCondition.MemberId }).ConfigureAwait(false);
 
                 if (TempMembers != null && TempMembers.Count > 0)
                 {

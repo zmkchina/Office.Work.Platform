@@ -45,7 +45,7 @@ namespace Office.Work.Platform.Member
         private async void BtnSearchClickAsync(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(mSearch.Id)) { return; }
-            List<Lib.Member> Members = await DataMemberRepository.ReadMembers(mSearch);
+            List<Lib.MemberInfoEntity> Members = await DataMemberRepository.ReadMembers(mSearch);
             if (Members == null || Members.Count < 1)
             {
                 return;
@@ -78,7 +78,7 @@ namespace Office.Work.Platform.Member
             string DateStr = $"打印日期：{DateTime.Now:yyy-MM-dd}";
             CreateFlowDoc("PrintMemberSheetFlowDot.xaml", null, DateStr, UserHeadStream, Members[0], P_DocWidth: 793, P_DocHeight: 1122);
         }
-        private void CreateFlowDoc(string SheetTemplet, string Caption, string DateStr, MemoryStream UserHeadStream, Lib.Member data, double P_DocWidth, double P_DocHeight)
+        private void CreateFlowDoc(string SheetTemplet, string Caption, string DateStr, MemoryStream UserHeadStream, Lib.MemberInfoEntity data, double P_DocWidth, double P_DocHeight)
         {
             //1.导入流文件格式模板
             App.Current.Dispatcher.Invoke(() =>
